@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configdata>
+    <production>
+        <apiCalls>
+            <call0>
+                <apiName></apiName>
+                <class></class>
+                <method></method>
+            </call0> 
+        </apiCalls>
+    </production>
+</configdata>    

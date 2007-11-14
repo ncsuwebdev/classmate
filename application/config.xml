@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<configdata>
+	<production>
+    	<authentication>Internal_Auth_Adapter_WrapAuth</authentication>
+    	<authorization>Internal_Authz_Adapter_DbAuthz</authorization>
+    	<timezone>America/New_York</timezone>
+    	<branding>
+    	   <appTitle>Classmate</appTitle>
+    	   <appSubTitle>IT Education System</appSubTitle>
+    	   <appDescription>IT Education System</appDescription>
+    	   <graphic>
+    	       <filename></filename>
+    	       <author>Outreach Technology</author>
+    	   </graphic>
+    	</branding>
+    	<aclConfigFile>./library/Internal/Acl/aclConfig.xml</aclConfigFile>
+    	<cronDirectory>./cron</cronDirectory>
+    	<display>
+    	   <headerRowRepeat>25</headerRowRepeat>
+    	   <dateTimeFormat>%m/%d/%Y %I:%M %p</dateTimeFormat>
+    	   <dateFormat>%m/%d/%Y</dateFormat>
+    	   <timeFormat>%I:%M %p</timeFormat>
+    	</display>
+    	<bugContactRole>administrator</bugContactRole>
+    	<navigation>
+    	   <tab0>
+    	       <module>default</module>
+    	       <display>Home</display>
+    	       <submenu>
+    	           <tab1>
+    	               <controller>index</controller>
+    	               <display>Home</display>
+    	               <select>home</select>
+    	               <link></link>
+    	           </tab1>
+    	           <tab2>
+    	               <controller>documentation</controller>
+    	               <display>Documentation</display>
+    	               <select>documentation</select>
+    	               <link></link>
+    	           </tab2>
+    	           <tab3>
+    	               <controller>faq</controller>
+    	               <display>F.A.Q.</display>
+    	               <select>faq</select>
+    	               <link></link>
+    	           </tab3>
+    	           <tab4>
+    	               <controller>bug</controller>
+    	               <display>Bug Reports</display>
+    	               <select>bug</select>
+    	               <link></link>
+    	           </tab4>
+    	       </submenu>
+    	   </tab0>
+    	   <tab3>
+    	       <module>admin</module>
+    	       <display>Admin</display>
+    	       <submenu>
+    	           <tab1>
+    	               <controller>user</controller>
+    	               <display>Users</display>
+    	               <select>user</select>
+    	               <link></link>
+    	           </tab1>
+    	           <tab2>
+    	               <controller>acl</controller>
+    	               <display>Access Roles</display>
+    	               <select>acl</select>
+    	               <link></link>
+    	           </tab2>
+    	           <tab3>
+    	               <controller>emailqueue</controller>
+    	               <display>Email Queue</display>
+    	               <select>emailqueue</select>
+    	               <link></link>
+    	           </tab3>
+    	           <tab4>
+    	               <controller>log</controller>
+    	               <display>Action Logs</display>
+    	               <select>log</select>
+    	               <link></link>
+    	           </tab4>
+    	           <tab5>
+    	               <controller>semester</controller>
+    	               <display>Semesters</display>
+    	               <select>semester</select>
+    	               <link></link>
+    	           </tab5>
+    	           <tab6>
+    	               <controller>cron</controller>
+    	               <display>Cron Status</display>
+    	               <select>cron</select>
+    	               <link></link>
+    	           </tab6>
+                   <tab6>
+                       <controller>api</controller>
+                       <display>Api Access</display>
+                       <select>api</select>
+                       <link></link>
+                   </tab6>    	           
+    	       </submenu>
+    	   </tab3>
+    	</navigation>
+   	</production>
+</configdata>

@@ -1,0 +1,594 @@
+/* Adapted from Gemstone by Viktor Persson (http://arcsin.se)*/
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #999999 url(../images/bg.gif) repeat-y;
+    font-family: Tahoma,sans-serif;
+    font-size: 0.8em;
+    padding-left: 25px;
+}
+
+input, select, textarea {
+    font-family: Tahoma,sans-serif;
+    font-size: 90%;
+    padding: 2px;
+    border: 1px solid #C0C0C0;
+
+}
+
+input[type='radio'], input[type='checkbox'] {
+    border: 0px;
+}
+
+input.required, select.required, textarea.required {
+    background-color: #B2C6DC;
+}
+
+p {
+    margin-bottom: 1.2em;
+}
+
+ul {
+    margin: 0 0 10px 22px;
+}
+
+li {
+    list-style-image: url(../images/li.gif);
+}
+
+img {
+    border: 0px;
+    vertical-align: middle;
+}
+
+
+/* Misc */
+.clear {
+    clear: both;
+}
+
+div.quote {
+    border-left: 4px solid #3366CC;
+    clear: both;
+    color: #555555;
+    display: block;
+    font: italic 1.1em Verdana,serif;
+    margin: 12px 0 12px 16px;
+    padding-left: 12px;
+}
+
+
+/* Top & Header */
+.top {
+    background: url(../images/pan.gif);
+    height: 45px;
+    width: 939px;
+}
+.top h1 {
+    font: bold 2em sans-serif;
+    padding: 8px 16px 0;
+    color: #FFFFFF;
+}
+.top h1 span {
+    font: normal 70% Verdana,sans-serif;
+    color: #333333;
+}
+.header {
+    background: url(../images/header.gif);
+    height: 77px;
+    width: 939px;
+}
+
+
+div.menu {
+    width: 758px;
+}
+
+
+/* Menu */
+div.menu div {
+    float: left;
+    margin: 1px 1px 0 0;
+    background: #4B4B4B;
+}
+
+div.menu a {
+    color: #DDDDDD;
+
+    font-family: sans-serif;
+    font-size: 85%;
+    padding: 5px 0 5px 8px;
+    text-decoration: none;
+    width: 150px;
+    display: block;
+}
+
+div.menu a:hover {
+    background: #555555;
+    color: #FFFFFF;
+}
+
+div.menu #menuItemActive {
+    background: #666666;
+    color: #FFFFFF;
+}
+
+/* Left side */
+div.content_left {
+    margin: 1px;
+    width: 758px;
+}
+
+div.date {
+    background: #0070CD url(../images/bgdate.gif) repeat-x;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 10px;
+    height: 16px;
+}
+
+div.newsitem {
+    background: #F0F0F0 url(../images/bg_newsitem.png) repeat-x;
+    border: 1px solid #EEEEEE;
+    border-color: #EEEEEE #EEEEEE #DDDDDD #EEEEEE;
+    clear: both;
+    color: #333333;
+    line-height: 1.5;
+    margin: 6px;
+    padding: 10px;
+    min-height: 150px;
+    padding-bottom: 30px;
+}
+
+div.newsitem a {
+    text-decoration: none;
+    color: #00C;
+}
+
+div.newsitem a:hover {
+    text-decoration: underline;
+}
+
+/* Right side */
+div.content_right {
+    width: 166px;
+    position: absolute;
+    top: 92px;
+    left: 785px;
+}
+
+div.links a {
+    background: url(../images/bg_navitem.gif) repeat-x #FFFFFF;
+    display: block;
+    font: bold 0.8em Verdana,Tahoma,sans-serif;
+    padding: 6px 0 8px 8px;
+    text-decoration: none; color: #333333;
+}
+
+div.links a:hover {
+    color: #0080DD; background-position: left bottom;
+}
+
+div.links div.line {
+    height: 1px; background-color: #EEEEF5;
+}
+
+div.links .title {
+    background: #333333 url(../images/bgsubtitle.gif) repeat-x;
+    color: #FFFFFF;
+    font: normal 85% Tahoma,sans-serif;
+    padding: 5px 8px;
+}
+
+/* Footer */
+div.footer {
+    background: #F0F0F0 url(../images/bgdate.gif) repeat-x;
+    border: 1px solid #EEEEEE;
+    border-left: 0px solid #000;
+    color: #FFFFFF;
+    margin-left: 1px;
+    width: 758px;
+}
+
+div.footer .copyright {
+    padding: 6px 12px;
+    font-size: 80%;
+    line-height: 24px;
+    text-align: center;
+    height: 24px;
+}
+
+div.footer a {
+    color: #FFFFFF;
+    font: bold 1em "Trebuchet MS",sans-serif;
+    text-decoration: none;
+}
+
+div#oitocfooter {
+    background: #F0F0F0 url(../images/bgdate.gif) repeat-x;
+    border: 1px solid #EEEEEE;
+    border-left: 0px solid #000;
+    color: #FFFFFF;
+    margin-left: 1px;
+    width: 748px;
+    line-height: 26px;
+    padding: 5px;
+    font-size: 80%;
+    text-align: center;
+}
+
+div#oitocfooter .left {
+	float:left;
+}
+
+div#oitocfooter .right {
+	float: right;
+	padding-top: 2px;
+}
+	
+#flickr {
+    text-align: center;
+}
+
+
+table.list {
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+table.list th {
+    background-color: #000000;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 90%;
+    text-align: center;
+    height: 18px;
+    background-image: url(../images/blk.gif);
+    background-repeat: repeat-x;
+    background-position: top;
+}
+
+table.list td {
+    border: 1px solid #C0C0C0;
+    height: 25px;
+    padding: 3px;
+}
+
+table.list td.noResults {
+    text-align: center;
+    height: 35px;
+    background-color: #FFFFFF;
+    width: 500px;
+}
+
+.row1 {
+    background-color: #FFFFFF;
+}
+
+.row2 {
+    background-color: #F0F0F0;
+}
+
+table.form {
+    display: block;
+    border: 1px solid #E7E7E7;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+table.form td {
+    padding: 5px 7px 5px 7px;
+    vertical-align: top;
+}
+
+table.form label {
+    font-weight: bold;
+}
+
+.sortable th {
+    cursor: pointer;
+}
+
+div.aclSection {
+    margin-bottom: 20px;
+}
+
+div#accessList div.module {
+    background-color: #CC0000;
+    color: #FFFFFF;
+    text-align: left;
+    font-weight: bold;
+    padding: 2px;
+}
+
+div#accessList table.list tr.module {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+div#accessList table.list tr.controller {
+    background-color: #E7E7E7;
+    font-weight: bold;
+}
+
+div#accessList table.list tr.controller td.td1 {
+    padding-left: 20px;
+    background: #E7E7E7 url(../images/indent.gif) 3px 2px no-repeat;
+}
+
+div#accessList table.list tr.action td {
+    padding-left: 20px;
+}
+
+div#accessList table.list tr.action td.td1 {
+    padding-left: 35px;
+    background: #FFFFFF url(../images/indent.gif) 18px 2px no-repeat;
+}
+
+.highlight {
+    background-color: #FFFD77;
+}
+
+.enabled {
+	background-color: #00CC00;
+	color: #FFFFFF;
+}
+
+.disabled {
+    background-color: #CC0000;
+    color: #FFFFFF;
+}
+
+input.jscalendar {
+    width: 150px;
+}
+
+.calImage {
+    padding: 0 3px 4px 3px;
+}
+
+
+.gridTime td {
+    width: 96px;
+}
+
+#gridTimesTable tr td {
+    /*border-left: 1px solid #000000;*/
+}
+
+.gridBox {
+    overflow: hidden;
+	color: #FFFFFF;
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    background-image: url(../images/gridRoomBg-green.gif);
+    /*display: table-cell;*/
+    height: 25px;
+}
+
+.available {
+    background-image: none;
+    color: #000000;
+}
+
+.task {
+    background-image: url(../images/gridBoxFilterBg.gif);
+}
+
+.check {
+    background-image: url(../images/gridBoxCheckBg.gif);
+}
+
+.gridRow {
+    background-color: #1155A6;
+}
+
+.gridRow td table tr {
+    height: 30px;
+}
+
+table.gridRoomScheduleRow {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    border-collapse: collapse;
+    width: 576px;
+
+}
+
+table.gridRoomScheduleRow tr td {
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.gridBox table {
+    position: absolute;
+    display: block;
+    line-height: 30px;
+    height: 30px;
+    border-left: 1px solid #a69f74;
+    overflow: hidden;
+}
+
+.gridRoomNumber {
+    width: 96px;
+    cursor: pointer;
+    color: #FFFFFF;
+    background-color: #0F54B6;
+    border: 1px solid #a69f74;
+    padding-left: 4px;
+    background-image: url(../images/gridRoomBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
+.gridSpacer {
+    width: 576px;
+    height: 1px;
+    background-color: #a69f74;
+}
+
+.gridRoomSchedule {
+    width: 576px;
+    background-image: url(../images/gridBoxAvailableBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+    background-color: #CAC187;
+}
+
+.gridToolTip-tip {
+	color: #000000;
+	width: 150px;
+	z-index: 13000;
+	border: 1px solid #000000;
+}
+
+.gridToolTip-title {
+	font-weight: bold;
+	font-size: 11px;
+	margin: 0;
+	color: #3E4F14;
+	padding: 8px 8px 4px;
+	background-color: #9BBF40;
+	border-bottom: 1px solid #456F54;
+}
+
+.gridToolTip-text {
+	font-size: 11px;
+	padding: 4px 8px 8px;
+	background: #C6E086;
+}
+
+.classInfo {
+    background-image: url(../images/classInfoBoxBg.png);
+    background-color: #64AAEA;
+    background-repeat: repeat-x;
+    background-position: top;
+}
+
+.classInfo div {
+    padding: 5px;
+}
+
+div#success {
+    border: 1px solid #00CC00;
+    background-color: #CCFFCC;
+    padding: 7px 7px 7px 29px;;
+    margin: 10px 0px 15px 0px;
+    background-image: url(../images/success.png);
+    background-position: 7px 7px;
+    background-repeat: no-repeat;
+}
+
+div#warning {
+    border: 1px solid #CCCC00;
+    background-color: #FFFFCC;
+    padding: 7px 7px 7px 29px;;
+    margin: 10px 0px 15px 0px;
+    background-image: url(../images/warning.png);
+    background-position: 7px 7px;
+    background-repeat: no-repeat;
+}
+
+.red {
+    color: #CC0000;
+}
+
+.classSelected {
+    background-image: url(../images/gridRoomBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
+table.component {
+    border: 1px solid #000;
+    margin-bottom: 10px;
+    width: 320px;
+    padding: 0px;
+    border-collapse: collapse;
+    background-color: #5087CE;
+    color: #FFF;
+
+}
+
+span#componentListStatus {
+    background-color: #FFFD77;
+    color: #000;
+    line-height: 22px;
+    
+}
+table.component a {
+	color: #FFF;
+}
+
+table.component td {
+    padding: 4px;
+}
+
+table.component td.description div {
+    width: 240px;
+    overflow: auto;
+}
+
+table.component td.order {
+	color: #000;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+    width: 22px;
+    background-image: url(../images/menu.gif);
+    background-repeat: repeat-x;
+    background-position: top;
+    background-color: #FFF;
+    cursor: pointer;
+    vertical-align: top;
+    line-height: 22px;
+}
+
+table.checksheet td.component {
+    font-weight: bold;
+}
+
+table.checksheet td.function {
+    padding-left: 23px;
+    background: url(../images/indent.gif) 5px 5px no-repeat;
+    height: 30px;
+}
+
+table.checksheet tr.problemRow {
+    background-color: #9E0200;
+    color: #FFF;
+}
+
+table.checksheet tr.problemRow td {
+	padding-left: 23px;
+}
+
+table.checksheet tr.working {
+    background-image: url(../images/gridRoomBg-green.gif);
+    background-repeat: repeat-x;
+    background-position: top;
+    background-color: #4B9812;
+    color: #FFF;
+}
+
+table.checksheet tr.notWorking {
+    background-image: url(../images/gridBoxFilterBg.gif);
+    background-repeat: repeat-x;
+    background-position: top;
+    background-color: #9E0200;
+    color: #FFF;
+}
+
+tr.complete {
+    background-color: #BFFFBF;
+}
+
+tr.incomplete {
+    background-color: #FFF;
+}
