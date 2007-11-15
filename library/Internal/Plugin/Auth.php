@@ -120,7 +120,6 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $config = Zend_Registry::get('config');
         Zend_Loader::loadClass($config->authentication);
 
-        $identity = null;
         $role = '';
 
         // We check to see if the adapter allows auto logging in, if it does we do it

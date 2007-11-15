@@ -93,12 +93,12 @@
     	               <select>cron</select>
     	               <link></link>
     	           </tab6>
-                   <tab6>
+                   <tab7>
                        <controller>api</controller>
                        <display>Api Access</display>
                        <select>api</select>
                        <link></link>
-                   </tab6>    	           
+                   </tab7>    	           
     	       </submenu>
     	   </tab3>
     	</navigation>

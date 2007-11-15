@@ -3,7 +3,7 @@
     roles to inherit permission from an existing role.  Inhertance is optional
     but is useful in implementing a tiered access system.<br /><br />
 
-    <form method="POST" action="{$sitePrefix}/admin/acl/{$action}">
+    <form method="POST" id="aclEditor" action="{$sitePrefix}/admin/acl/{$action}">
         <input type="hidden" name="originalRoleName" id="originalRoleName" value="{$originalRoleName}" />
         <table class="form">
             <tr>
@@ -37,21 +37,45 @@
             <div class="aclSection">
                 <table class="list">
                     <tr class="module">
-                        <td colspan="3" width="460"><b>{$module|capitalize}</b></td>
+                        <td width="300"><b>{$module|capitalize}</b></td>
+                        <td width="120">Currently:</td>
+                        <td width="150">Grant/Revoke:</td>
                     </tr>
                     {foreach from=$controllers key=controller item=actions}
                     <tr class="controller">
-                        <td class="td1" width="300">{$controller|capitalize}
+                        <td class="td1">{$controller|capitalize}
                         </td>
-                        <td width="80"><input type="radio" value="allow" onclick="toggle(this);" name="{$module}[{$controller}][all]" id="{$module}[{$controller}][all]"{if $actions.all.access} checked="checked"{/if} /> Allow All</td>
-                        <td width="80"><input type="radio" value="deny" onclick="toggle(this);" name="{$module}[{$controller}][all]" id="{$module}[{$controller}][all]"{if !$actions.all.access} checked="checked"{/if} /> Deny All</td>
+                        <td class="{if $actions.all.access}access{else}{if $actions.someaccess}someAccess{else}noAccess{/if}{/if}">
+                        {if $actions.all.access}
+                            All Access
+                        {else}
+                            {if $actions.someaccess}
+                            Some Access
+                            {else}
+                            No Access
+                            {/if}
+                        {/if}
+                        </td>
+                        <td>
+                        <select size="1" class="allAccess" name="{$module}[{$controller}][all]" id="{$module}_{$controller}">
+                            <option value="{if $actions.all.access}allow{else}{if $actions.someaccess}some{else}deny{/if}{/if}">No Change</option>
+                        {if !$actions.all.access}
+                            <option value="allow">Grant All Access</option>
+                        {/if}       
+                        {if !$actions.someaccess || $actions.all.access}                 
+                            <option value="some">{if !$actions.all.access}Grant{else}Revoke{/if} Some Access</option>
+                        {/if}
+                        {if $actions.all.access || $actions.someaccess}
+                            <option value="deny">Revoke All Access</option>
+                        {/if}
+                        </select>                        
+                        </td>
                     </tr>
                         {foreach from=$actions.part key=action item=access}
-                    <tr class="action">
-                        <td class="td1">{$action|capitalize}
-                        </td>
-                        <td><input type="radio" value="allow" name="{$module}[{$controller}][part][{$action}]" id="{$module}[{$controller}][part][{$action}]"{if $access.access} checked="checked"{/if}/> Allow</td>
-                        <td><input type="radio" value="deny" name="{$module}[{$controller}][part][{$action}]" id="{$module}[{$controller}][part][{$action}]"{if !$access.access} checked="checked"{/if}/> Deny</td>
+                    <tr class="action {$module}_{$controller}" style="display:{if !$actions.someaccess || $actions.all.access}none{/if}">
+                        <td class="td1">{$action|capitalize}</td>
+                        <td class="{if $access.access}access{else}noAccess{/if}">{if $access.access}Has Access{else}No Access{/if}</td>
+                        <td class="td3"><input type="checkbox" class="{$module}_{$controller}_action" value="{if $access.access}deny{else}allow{/if}" name="{$module}[{$controller}][part][{$action}]" id="{$module}_{$controller}_part_{$action}" /> {if $access.access}Revoke Access{else}Grant Access{/if}</td>
                     </tr>
                         {/foreach}
                     {/foreach}

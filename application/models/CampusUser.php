@@ -26,19 +26,9 @@
  */
 
 /**
- * Grab the model interface from the library
- */
-require_once 'Itdcs/Model/Interface.php';
-
-/**
  * Gets the Key Manager
  */
 require_once $_SERVER['KEY_MANAGER_PATH'];
-
-/**
- * Gets the NCSU LDAP reader
- */
-require_once 'Itdcs/Ldap/Ncsu.php';
 
 /**
  * Handles all interaction dealing with User Accounts
@@ -49,15 +39,8 @@ require_once 'Itdcs/Ldap/Ncsu.php';
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  *
  */
-class CampusUser implements Itdcs_Model_Interface
+class CampusUser
 {
-
-    /**
-     * Error messages
-     *
-     * @var array
-     */
-    protected $_messages = array();
 
     /**
      * LDAP object
@@ -78,35 +61,10 @@ class CampusUser implements Itdcs_Model_Interface
 
         $this->_ldap = new Itdcs_Ldap_Ncsu();
 
-        try {
-            $result = $this->_ldap->connect($key->host, $key->bindDn, $key->password);
-        } catch (Exception $e) {
-            die('LDAP Error: ' . $e->getMessage());
-        }
-    }
-    /**
-     * Checks validity of the data object
-     *
-     * !! Since no data object is checked, we always return true !!
-     *
-     * @param string $data
-     * @return boolean
-     */
-    public function isValid(&$data)
-    {
-        return true;
-    }
+        $this->_ldap->connect($key->host, $key->bindDn, $key->password);
 
-    /**
-     * Gets any error messages generated
-     *
-     * @return array
-     */
-    public function getMessages()
-    {
-        return $this->_messages;
     }
-
+ 
     /**
      * Looks up a users information by their ID
      *
@@ -114,17 +72,11 @@ class CampusUser implements Itdcs_Model_Interface
      * @return unknown
      */
     public function getUserByUserId($userId)
-    {
-        try {
-            $result = $this->_ldap->lookupByUserId($userId);
-        } catch (Exception $e) {
-            $this->_messages[] = $e->getMessage();
-            return false;
-        }
+    {        
+        $result = $this->_ldap->lookupByUserId($userId);
 
         if (!isset($result[0])) {
-            $this->_messages[] = 'User ID not found';
-            return false;
+            throw new Exception('User ID not found');
         }
 
         $data = array(

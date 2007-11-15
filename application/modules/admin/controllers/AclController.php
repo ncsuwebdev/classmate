@@ -151,9 +151,9 @@ class Admin_AclController extends Internal_Controller_Action
      */
     public function editAction()
     {
-        $this->view->javascript = "aclAdd.js";
-
-        $availableRoles = $this->_acl->getAvailableRoles();
+        $this->view->javascript = 'acl.js';
+    	
+    	$availableRoles = $this->_acl->getAvailableRoles();
 
         $filter = Zend_Registry::get('inputFilter');
 
@@ -270,12 +270,25 @@ class Admin_AclController extends Internal_Controller_Action
             }
 
             $this->view->children = $temp;
+            
+            $resources = $this->_getResources($role['name']);
+ 
+            foreach ($resources as &$r) {
+            	foreach ($r as &$c) {
+	            	$c['someAccess'] = false;
+	            	foreach ($c['part'] as $p) {
+	            		if ($p['access']) {
+	            			$c['someaccess'] = true;
+	            		}
+	            	}
+            	}
+            }
 
             $this->view->originalRoleName = $originalRoleName;
             $this->view->roleName         = ($roleName == '') ? $originalRoleName : $roleName;
             $this->view->inheritRoleName  = ($inheritRoleName == '') ? $role['inherit'] : $inheritRoleName;
             $this->view->action           = 'edit';
-            $this->view->resources        = $this->_getResources($role['name']);
+            $this->view->resources        = $resources;
             $this->view->title            = "Edit Role";
         }
     }

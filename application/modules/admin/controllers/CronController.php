@@ -35,26 +35,6 @@
  */
 class Admin_CronController extends Internal_Controller_Action 
 {
-
-    /**
-     * Runs when the class is initialized.  Sets up the view instance and the
-     * various models used in the class.
-     *
-     */
-    public function init()
-    {
-        $zcf = Zend_Controller_Front::getInstance();
-
-        $this->_front = $zcf;
-
-        $this->_acl      = $zcf->getParam('acl');
-        $this->_role     = Itdcs_Authz::getInstance()->getRole();
-        $this->_resource = $zcf->getRequest()->module . '_' . $zcf->getRequest()->controller;
-
-        $this->_logger = Zend_Registry::get('logger');
-    }
-
-
     /**
      * shows all the semesters
      *
@@ -70,9 +50,6 @@ class Admin_CronController extends Internal_Controller_Action
         $cs = new CronStatus();
 
         $jobs = $cs->getAvailableCronJobs();
-        if ($jobs === false) {
-            $this->printError('Error getting cron jobs', $cs->getMessages());
-        }
 
         if (count($jobs) != 0) {
             $this->view->javascript = 'sortable.js';
@@ -96,10 +73,6 @@ class Admin_CronController extends Internal_Controller_Action
 
             $result = $cs->setCronStatus($path, $status);
 
-            if ($result === false) {
-                $this->printError('error setting status', $cs->getMessages());
-            }
-
             $this->_redirect('/admin/cron/');
         } else {
             $get = Zend_Registry::get('get');
@@ -110,11 +83,7 @@ class Admin_CronController extends Internal_Controller_Action
             } else {
                 $cj = $cs->find($path);
 
-                if ($cj === false) {
-                    $this->printError('Error getting path', $cs->getMessages());
-                }
-
-                if ($cj->count() != 1) {
+                if (is_null($cj)) {
                     $cj = array(
                         'status' => 'disabled',
                         'path'   => $path
@@ -123,7 +92,7 @@ class Admin_CronController extends Internal_Controller_Action
                     $status = 'disabled';
                 } else {
 
-                    $cj = $cj->current()->toArray();
+                    $cj = $cj->toArray();
 
                     $status = $cj['status'];
                 }

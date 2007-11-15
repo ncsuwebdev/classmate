@@ -35,24 +35,6 @@
  */
 class Admin_ApiController extends Internal_Controller_Action 
 {
-    /**
-     * Runs when the class is initialized.  Sets up the view instance and the
-     * various models used in the class.
-     *
-     */
-    public function init()
-    {
-        $zcf = Zend_Controller_Front::getInstance();
-
-        $this->_acl      = $zcf->getParam('acl');
-        $this->_role     = Itdcs_Authz::getInstance()->getRole();
-        $this->_resource = strtolower($zcf->getRequest()->module . '_' . $zcf->getRequest()->controller);
-
-        $this->_logger = Zend_Registry::get('logger');
-
-    }
-
-
      /**
      * shows the homepage
      *
@@ -69,9 +51,6 @@ class Admin_ApiController extends Internal_Controller_Action
         $apiCode = new ApiCode();
 
         $codes = $apiCode->fetchAll(null, 'userId');
-        if ($codes === false) {
-            $this->printError('Error getting codes', $apiCode->getMessages());
-        }
 
         $this->view->codes = $codes->toArray();
     }
@@ -93,17 +72,12 @@ class Admin_ApiController extends Internal_Controller_Action
 
             $result = $apiCode->insert($data);
 
-            if ($result === false) {
-                $this->printError('Error inserting code', $apiCode->getMessages());
-            }
-
             $this->_logger->setEventItem('attributeName', 'apiCode');
             $this->_logger->setEventItem('attributeId', $data['userId']);
             $this->_logger->info('access code granted');
             
             $this->_redirect('/admin/api/');
             
-
         } else {
             $this->view->title = 'Add Api Code';
         }
@@ -125,10 +99,6 @@ class Admin_ApiController extends Internal_Controller_Action
             
             $result = $apiCode->delete($where);
 
-            if ($result === false) {
-                $this->printError('Error deleting code', $apiCode->getMessages());
-            }
-            
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->info('code removed');
@@ -139,7 +109,7 @@ class Admin_ApiController extends Internal_Controller_Action
             $get = Zend_Registry::get('get');
 
             if (!isset($get['userId'])) {
-                $this->printError('Error getting code', 'Link ID not found in query string');
+                throw new Internal_Exception_Input('Link ID not found in query string');
             }
 
             $this->view->userId = $filter->filter($get['userId']);
