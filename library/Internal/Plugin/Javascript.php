@@ -54,6 +54,6 @@ class Internal_Plugin_Javascript extends Zend_Controller_Plugin_Abstract
              }
         }
         
-        $view->scripts = $scripts;                      
+        $view->javascript = $scripts;                      
     }
 }

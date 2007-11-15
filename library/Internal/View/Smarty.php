@@ -84,7 +84,11 @@ class Internal_View_Smarty extends Zend_View_Abstract
     public function __set($var, $val)
     {
         $this->_smarty->assign($var, $val);
-        parent::__set($var, $val);
+    }
+    
+    public function __get($var)
+    {
+    	return $this->_smarty->get_template_vars($var);
     }
 
     /**

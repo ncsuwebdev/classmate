@@ -10,7 +10,7 @@
 <script language="javascript" type="text/javascript" src="{$sitePrefix}/public/packages/calendar/calendar-setup_stripped.js"></script>
 <script language="javascript" type="text/javascript" src="{$sitePrefix}/public/packages/calendar/calendar-en.js"></script>
 <link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/packages/calendar/calendar-red.css" />
-{foreach from=$scripts item=script}
+{foreach from=$javascript item=script}
 <script language="javascript" type="text/javascript" src="{$sitePrefix}/public/scripts/{$script}"></script>
 {/foreach}
 </head>
