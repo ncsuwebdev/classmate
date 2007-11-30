@@ -57,6 +57,10 @@ Zend_Registry::set('config', $config);
 
 date_default_timezone_set($config->timezone);
 
+$userConfig = new Zend_Config_Xml('./library/Internal/Config/userConfig.xml', 'production');
+Zend_Registry::set('userConfigFile', $config->userConfigFile);
+Zend_Registry::set('userConfig', $userConfig->toArray());
+
 $db = Zend_Db::factory($dbConfig['adapter'], $dbConfig);
 Zend_Db_Table::setDefaultAdapter($db);
 Zend_Registry::set('dbAdapter', $db);

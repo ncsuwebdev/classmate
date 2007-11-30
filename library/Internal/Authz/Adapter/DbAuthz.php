@@ -121,7 +121,7 @@ class Internal_Authz_Adapter_DbAuthz implements Ot_Authz_Interface, Ot_Authz_Ada
             return new Ot_Authz_Result(true, $result[0]['role'], array());
         }
 
-        return new Ot_Authz_Result(false, null, array());
+        //return new Ot_Authz_Result(false, null, array());
     }
 
 	/**
@@ -134,11 +134,12 @@ class Internal_Authz_Adapter_DbAuthz implements Ot_Authz_Interface, Ot_Authz_Ada
         return true;
     }
 
-    public function addUser($userId, $role)
+    public function addUser($userId, $role, $realm)
     {
         $data = array(
             'userId' => $userId,
-            'role'   => $role
+            'role'   => $role,
+            'realm'  => $realm,
             );
 
          return $this->_db->insert($this->_authzTable, $data);

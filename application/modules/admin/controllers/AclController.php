@@ -1,11 +1,9 @@
 <?php
 /**
- * Aerial
- *
  * LICENSE
  *
  * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
+ * with this package in the file _LICENSE.txt.
  *
  * This license is also available via the world-wide-web at
  * http://itdapps.ncsu.edu/bsd.txt
@@ -14,32 +12,41 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Aerial (Admin)
+ * @package    RSPM
  * @subpackage Admin_AclController
  * @category   Controller
- * @copyright  Copyright (c) 2007 NC State University Information Technology Division
- * @license    http://itdapps.ncsu.edu/bsd.txt  BSD License
- * @author     Jason Austin <jason_austin@ncsu.edu>
- * @author     Garrison Locke <garrison_locke@ncsu.edu>
+ * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
+ * @license    BSD License
+ * @author     Jason Austin
+ * @author     Garrison Locke
  * @see        http://itdapps.ncsu.edu
- * @version    SVN: $Id: AclController.php 210 2007-08-01 18:23:50Z jfaustin@EOS.NCSU.EDU $
+ * @version    SVN: $Id: $
  */
 
 /**
- * Controller to manage the ACL peice of the site, which allows users to manage their
- * own access lists.
+ * Manages all access control the the application.  Allows the user to build
+ * custom roles.
  *
- * @package    Aerial (Admin)
+ * @package    RSPM
  * @subpackage Admin_AclController
  * @category   Controller
- * @copyright  Copyright (c) 2007 NC State University Information Technology Division
+ * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
 class Admin_AclController extends Internal_Controller_Action 
 {
-
+    /**
+     * Authz adapter
+     *
+     * @var mixed
+     */
 	protected $_authzAdapter = null;
 	
+	/**
+	 * Authentication adapter
+	 *
+	 * @var mixed
+	 */
 	protected $_authAdapter = null;
 	
     /**
@@ -59,7 +66,7 @@ class Admin_AclController extends Internal_Controller_Action
 
 
     /**
-     * The main index page for the ACL
+     * List of all existing roles in the application.
      *
      */
     public function indexAction()
@@ -85,7 +92,11 @@ class Admin_AclController extends Internal_Controller_Action
      */
     public function addAction()
     {
-        $this->view->javascript = "aclAdd.js";
+    	$config = Zend_Registry::get('config');
+            
+        if (!is_writable($config->aclConfigFile)) {
+            throw new Exception('ACL file is not writable, therefore you can not add roles to it.  Contact system administrator for assistance');
+        }
 
         $roles = $this->_acl->getAvailableRoles();
 
@@ -151,8 +162,12 @@ class Admin_AclController extends Internal_Controller_Action
      */
     public function editAction()
     {
-        $this->view->javascript = 'acl.js';
-    	
+        $config = Zend_Registry::get('config');
+            
+        if (!is_writable($config->aclConfigFile)) {
+            throw new Exception('ACL file is not writable, therefore you can not add roles to it.  Contact system administrator for assistance');
+        }
+            	
     	$availableRoles = $this->_acl->getAvailableRoles();
 
         $filter = Zend_Registry::get('inputFilter');
@@ -299,6 +314,12 @@ class Admin_AclController extends Internal_Controller_Action
      */
     public function deleteAction()
     {
+        $config = Zend_Registry::get('config');
+            
+        if (!is_writable($config->aclConfigFile)) {
+            throw new Exception('ACL file is not writable, therefore you can not add roles to it.  Contact system administrator for assistance');
+        }
+            	
         $filter = Zend_Registry::get('inputFilter');
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
@@ -321,7 +342,7 @@ class Admin_AclController extends Internal_Controller_Action
     }
 
     /**
-     * Gets the details of a role
+     * Shows the details of a role
      *
      */
     public function detailsAction()
@@ -456,6 +477,14 @@ class Admin_AclController extends Internal_Controller_Action
         return $ret;
     }
 
+    /**
+     * Gets all the children of a given role
+     *
+     * @param string $role
+     * @param string $roles
+     * @param array $children
+     * @return array
+     */
     protected function _getChildrenOfRole($role, $roles = '', $children = array())
     {
         if ($roles == '') {
@@ -588,6 +617,8 @@ class Admin_AclController extends Internal_Controller_Action
                     $class = new ReflectionClass($classname);
                     $methods = $class->getMethods();
 
+                    $result[$key][$controllerName]['description'] = $this->_getDescriptionFromCommentBlock($class->getDocComment());
+                    
                     foreach ($methods as $m) {
                         if (preg_match('/action/i', $m->name) &&
                             basename($class->getMethod($m->name)->getFileName()) == $file) {
@@ -598,6 +629,8 @@ class Admin_AclController extends Internal_Controller_Action
                             } else {
                                 $result[$key][$controllerName]['part'][$action]['access'] = false;
                             }
+                            
+                            $result[$key][$controllerName]['part'][$action]['description'] = $this->_getDescriptionFromCommentBlock($m->getDocComment());
 
                             $noInheritance = ($role['inherit'] == '');
                             $inherit = $role['inherit'];
@@ -652,6 +685,15 @@ class Admin_AclController extends Internal_Controller_Action
         }
 
         return $result;
+    }
+    
+    protected function _getDescriptionFromCommentBlock($str)
+    {
+    	$str = preg_replace('/@[^\n]*/', '', $str);
+    	$str = preg_replace('/\s*\*\s/', '', $str);
+    	$str = preg_replace('/(\/\*|\*\/)*/', '', $str);
+    	
+    	return trim($str);
     }
 
 }

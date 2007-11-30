@@ -120,7 +120,7 @@ class Internal_Auth_Adapter_DbAuth implements Zend_Auth_Adapter_Interface, Ot_Au
 	 */
 	public static function autoLogout()
 	{
-	    //do nothing since we use Zend_Auth to log us out
+	    Zend_Auth::getInstance()->clearIdentity();
 	}
 
 	/**

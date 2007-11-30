@@ -18,6 +18,10 @@ class Internal_Controller_Action extends Zend_Controller_Action
         $this->_resource = strtolower($zcf->getRequest()->module . '_' . $zcf->getRequest()->controller);
 
         $this->_logger = Zend_Registry::get('logger');		
+        
+	    if (Zend_Auth::getInstance()->hasIdentity()) {
+            $this->view->loggedInUser = Zend_Auth::getInstance()->getIdentity();
+        }        
 	}
 }
 ?>

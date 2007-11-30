@@ -1,9 +1,9 @@
 <div id="aclIndexAdd">
     Select the name that you would like to call the role.  This system also allows
-    roles to inherit permission from an existing role.  Inhertance is optional
+    roles to inherit permission from an existing role.  Inheritance is optional
     but is useful in implementing a tiered access system.<br /><br />
 
-    <form method="POST" id="aclEditor" action="{$sitePrefix}/admin/acl/{$action}">
+    <form method="POST" id="aclEditor" action="{$sitePrefix}/admin/acl/{$action}" class="checkRequiredFields">
         <input type="hidden" name="originalRoleName" id="originalRoleName" value="{$originalRoleName}" />
         <table class="form">
             <tr>
@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <td><label for="role">Inherit From:</label></td>
-                <td>{html_options name=inheritRoleName id=inheritRoleName options=$roles selected=$inheritRoleName}
+                <td>{html_options name=inheritRoleName id=inheritRoleName options=$roles class=required selected=$inheritRoleName}
                 <input type="button" value="Pre-Populate" onclick="if (confirm('You will lose any changes you have made.')) location.href='{$sitePrefix}/admin/acl/{$action}/?roleName=' + document.getElementById('roleName').value + '&originalRoleName=' + document.getElementById('originalRoleName').value + '&inheritRoleName=' + document.getElementById('inheritRoleName').value; return false;" /></td>
             </tr>
         </table><br /><br />
@@ -43,7 +43,9 @@
                     </tr>
                     {foreach from=$controllers key=controller item=actions}
                     <tr class="controller">
-                        <td class="td1">{$controller|capitalize}
+                        <td title="{$actions.description}" class="td1 description">
+                        <img src="{$sitePrefix}/public/images/help.png" class="info" width="16" height="16" />
+                        {$controller|capitalize}
                         </td>
                         <td class="{if $actions.all.access}access{else}{if $actions.someaccess}someAccess{else}noAccess{/if}{/if}">
                         {if $actions.all.access}
@@ -73,7 +75,10 @@
                     </tr>
                         {foreach from=$actions.part key=action item=access}
                     <tr class="action {$module}_{$controller}" style="display:{if !$actions.someaccess || $actions.all.access}none{/if}">
-                        <td class="td1">{$action|capitalize}</td>
+                        <td class="td1 description" title="{$access.description}">
+                        <img src="{$sitePrefix}/public/images/help.png" width="16" height="16" class="info" />
+                        {$action|capitalize}
+                        </td>
                         <td class="{if $access.access}access{else}noAccess{/if}">{if $access.access}Has Access{else}No Access{/if}</td>
                         <td class="td3"><input type="checkbox" class="{$module}_{$controller}_action" value="{if $access.access}deny{else}allow{/if}" name="{$module}[{$controller}][part][{$action}]" id="{$module}_{$controller}_part_{$action}" /> {if $access.access}Revoke Access{else}Grant Access{/if}</td>
                     </tr>

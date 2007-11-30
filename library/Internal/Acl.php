@@ -83,7 +83,11 @@ class Internal_Acl extends Zend_Acl
         $this->add(new Zend_Acl_Resource('admin_semester'));
         $this->add(new Zend_Acl_Resource('admin_cron'));
         $this->add(new Zend_Acl_Resource('admin_api'));
-
+        $this->add(new Zend_Acl_Resource('admin_custom'));
+        $this->add(new Zend_Acl_Resource('admin_config'));
+        $this->add(new Zend_Acl_Resource('admin_email'));
+        $this->add(new Zend_Acl_Resource('login_index'));
+        
         foreach ($xml->role as $x) {
 
             $this->addRole(new Zend_Acl_Role(trim($x->name)), (trim($x->inherit) != '') ? trim($x->inherit) : null);

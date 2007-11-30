@@ -1,11 +1,22 @@
 <?xml version="1.0"?>
 <configdata>
 	<production>
-    	<authentication>Internal_Auth_Adapter_WrapAuth</authentication>
+    	<authentication>
+    	   <ncsu>
+    	       <class>Internal_Auth_Adapter_WrapAuth</class>
+    	       <name>NCSU Wrap</name>
+    	       <description>Authentication using your Unity ID and Password</description>    
+    	   </ncsu>
+    	   <guest>
+               <class>Internal_Auth_Adapter_DbAuth</class>
+               <name>ClassMate Account</name>
+               <description>Authentication using an account created through ClassMate</description>       	   
+    	   </guest>
+    	</authentication>
     	<authorization>Internal_Authz_Adapter_DbAuthz</authorization>
     	<timezone>America/New_York</timezone>
     	<branding>
-    	   <appTitle>Classmate</appTitle>
+    	   <appTitle>ClassMate</appTitle>
     	   <appSubTitle>IT Education System</appSubTitle>
     	   <appDescription>IT Education System</appDescription>
     	   <graphic>
@@ -14,6 +25,7 @@
     	   </graphic>
     	</branding>
     	<aclConfigFile>./library/Internal/Acl/aclConfig.xml</aclConfigFile>
+        <userConfigFile>./library/Internal/Config/userConfig.xml</userConfigFile>
     	<cronDirectory>./cron</cronDirectory>
     	<display>
     	   <headerRowRepeat>25</headerRowRepeat>
@@ -98,7 +110,25 @@
                        <display>Api Access</display>
                        <select>api</select>
                        <link></link>
-                   </tab7>    	           
+                   </tab7>  
+                   <tab8>
+                       <controller>custom</controller>
+                       <display>Custom Attributes</display>
+                       <select>custom</select>
+                       <link></link>
+                   </tab8>
+                   <tab9>
+                       <controller>email</controller>
+                       <display>Email Triggers</display>
+                       <select>email</select>
+                       <link></link>
+                   </tab9>
+                   <tab10>
+                       <controller>config</controller>
+                       <display>App Config</display>
+                       <select></select>
+                       <link></link>
+                   </tab10>                       	           
     	       </submenu>
     	   </tab3>
     	</navigation>

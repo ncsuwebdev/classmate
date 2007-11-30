@@ -42,26 +42,7 @@ class IndexController extends Internal_Controller_Action
      */
     public function indexAction()
     {
-        $flickr = new Zend_Service_Flickr('68791cfdb5be228b2a99b0761d294488');
-
-        $results = $flickr->tagSearch(array("nc state"), array("page" => rand(0,9)));
-
-        $random = rand(0, $results->totalResultsReturned-1);
-
-        $results->seek($random);
-        $img = $results->current();
-
-        $flickrImage[] = array();
-
-
-        $flickrImage['uri'] = $img->Small->uri;
-        $flickrImage['clickUri'] = $img->Small->clickUri;
-        $flickrImage['width'] = $img->Small->width;
-        $flickrImage['height'] = $img->Small->height;
-
-        $this->view->flickrImage = $flickrImage;
-
-        $this->view->title = 'Welcome to Aerial';
+        $this->view->title = 'Welcome to Classmate';
     }
 
     public function imageAction()
@@ -83,5 +64,5 @@ class IndexController extends Internal_Controller_Action
 
         header("Content-type: " . $result['contentType']);
         echo $result['source'];
-    }
+    }   
 }

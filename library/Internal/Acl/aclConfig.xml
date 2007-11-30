@@ -4,7 +4,16 @@
     <name>guest</name>
     <inherit></inherit>
     <editable>1</editable>
-    <allows/>
+    <allows>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>*</privilege>
+      </allow>
+      <allow>
+        <resource>default_index</resource>
+        <privilege>*</privilege>
+      </allow>      
+    </allows>
     <denys/>
   </role>
   <role>

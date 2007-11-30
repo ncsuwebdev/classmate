@@ -110,43 +110,71 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if (!$this->_acl->has($resource)) {
             $resource = null;
         }
-
-        if ($this->_acl->isAllowed($this->_acl->getDefaultRole(), $resource, $action)) {
-            return;
-        }
-
-
-        // Run autologin stuff here
+        
         $config = Zend_Registry::get('config');
-        Zend_Loader::loadClass($config->authentication);
-
         $role = '';
 
-        // We check to see if the adapter allows auto logging in, if it does we do it
-        if (call_user_func(array($config->authentication, 'autoLogin'))) {
-            // Set up the authentication adapter
-            $authAdapter = new $config->authentication();
+        if (!$this->_acl->isAllowed($this->_acl->getDefaultRole(), $resource, $action)) {
 
-            // Attempt authentication, saving the result
-            $result = $this->_auth->authenticate($authAdapter);
-
-            if (!$result->isValid()) {
-                $this->printError('Login Error', $result->getMessages());
-            }
-        }
-
-        if ($this->_auth->hasIdentity() && $this->_auth->getIdentity() != '' && !is_null($this->_auth->getIdentity())) {
-
-            $config = Zend_Registry::get('config');
-            Zend_Loader::loadClass($config->authorization);
+        	$adapters = $config->authentication->toArray();
 
             $authz = Ot_Authz::getInstance();
+                    	
 
-            $roles = $authz->authorize(new $config->authorization($this->_auth->getIdentity()));
+        	foreach ($adapters as $a) {
+        		
+	            // We check to see if the adapter allows auto logging in, if it does we do it
+		        if (call_user_func(array($a['class'], 'autoLogin'))) {
 
-            if ($roles->isValid()) {
-                $role = $authz->getRole();
-            }
+		            // Set up the authentication adapter
+		            $authAdapter = new $a['class'];
+		
+		            // Attempt authentication, saving the result
+		            $result = $this->_auth->authenticate($authAdapter);
+		
+		            if (!$result->isValid()) {
+		                throw new Exception('Error getting login credentials');
+		            }
+		        }
+		
+		        if ($this->_auth->hasIdentity() && $this->_auth->getIdentity() != '' && !is_null($this->_auth->getIdentity())) {
+
+		            $roles = $authz->authorize(new $config->authorization($this->_auth->getIdentity()));
+		
+		            if ($roles->isValid()) {
+		                $role = $authz->getRole();
+		            }
+		        }
+		        
+		        if ($role != '') {
+		        	break;
+		        }
+        	}      
+        } else {
+        	$auth = Zend_Auth::getInstance();
+
+                if ($auth->hasIdentity() && $auth->getIdentity() != '' && !is_null($auth->getIdentity())) {
+
+                	$authZAdapter = new $config->authorization($auth->getIdentity());
+                	
+                    $user = $authZAdapter->getUser($auth->getIdentity());
+                    
+                    // We check to see if the adapter allows auto logging in, if it does we do it
+	                if (call_user_func(array($config->authentication->$user['realm']->class, 'autoLogin'))) {
+
+	                    // Set up the authentication adapter
+	                    $authAdapter = new $config->authentication->$user['realm']->class;
+	        
+	                    // Attempt authentication, saving the result
+	                    $result = $this->_auth->authenticate($authAdapter);
+	        
+	                    if (!$result->isValid()) {
+	                        throw new Exception('Error getting login credentials');
+	                    }
+	                }                    
+        
+                    $role = $user['role'];
+                }
         }
 
         if ($role == '') {

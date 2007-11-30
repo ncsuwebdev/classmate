@@ -1,232 +1,386 @@
-/* Adapted from Gemstone by Viktor Persson (http://arcsin.se)*/
+/* project: internet music template
+   author: luka cvrk (www.solucija.com) */
 
-body {
+   
+/* default styles
+   -------------- */
+  
+body { 
+    padding: 0; 
+    margin: 0; 
+    font: 0.74em Arial, Helvetica, sans-serif; 
+    line-height: 1.5em;
+    background: #fff; 
+    color: #454545; 
+}
+
+a {
+    color: #C3593C; 
+    background: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #C3593C;
+    background: inherit; 
+    text-decoration: underline;   
+}
+
+a.title {
+    color: #FE6700;
+    background: #FFF;
+}
+
+h1 {
+    font: bold 2em "Trebuchet MS", Arial, Helvetica, sans-serif;
+    letter-spacing: -1px; 
+    padding: 2px 0 0 0px;
     margin: 0;
-    padding: 0;
-    background: #999999 url(../images/bg.gif) repeat-y;
-    font-family: Tahoma,sans-serif;
-    font-size: 0.8em;
-    padding-left: 25px;
+    color: #464548;
+    background: inherit;
 }
 
-input, select, textarea {
-    font-family: Tahoma,sans-serif;
+h1 a, h2 a {
+    text-decoration: none;
+    color: #464548;
+    background: inherit;
+}
+
+h1 a:hover, h2 a:hover {
+    color: #C3593C;
+    background: #FFF;
+}
+
+h1 .red{
+    color: #C3593C;
+    background: inherit;
+}
+
+
+h2 { 
+    margin: 0 0 5px 0; 
+    padding: 0; 
+    font: bold 1.5em Arial, Helvetica, sans-serif;
+    letter-spacing: -1px;
+    color: #000; 
+    background: inherit;
+}
+
+h2 .yellow{
+    color: #FFFCD1;
+    background: inherit;
+}
+
+p { margin: 0 0 5px 0; }
+
+ul { 
+    margin: 0; 
+    padding : 0; 
+    list-style : none; 
+}
+
+form { 
+    margin: 0; 
+}
+
+
+select, input, textarea {
     font-size: 90%;
-    padding: 2px;
-    border: 1px solid #C0C0C0;
-
+    border: 1px solid #C85E35;
+    background-color: #F4F4F4;
 }
 
-input[type='radio'], input[type='checkbox'] {
-    border: 0px;
+.required {
+    font-size: 90%;
+    border: 1px solid #000000;
+    background-color: #C85E35;
+    color: #FFFFFF;
 }
 
-input.required, select.required, textarea.required {
-    background-color: #B2C6DC;
+input[type="submit"], input[type="button"] {
+	cursor:pointer;
+	border:outset 1px #ccc;
+	background:#999;
+	color:#666;
+	font-weight:bold;
+	padding: 1px 2px;
+	background:url(../images/formbg.gif) repeat-x left top;
 }
 
-p {
-    margin-bottom: 1.2em;
+input.search { 
+    width: 145px; 
+    height: 22px;
+    border: none;
+    background: #fff url(../images/input.gif) no-repeat; 
+    padding: 5px 10px 0 25px;
+    color: #808080;
 }
 
-ul {
-    margin: 0 0 10px 22px;
+input.button {
+    border: 0;
+    height: 27px;
+    width: 76px;
+    background: #ABC43C url(../images/button.gif) no-repeat;
+    color: #FFF;
+    font: bold 1.1em Arial, Helvetica, Sans-Serif;
 }
 
-li {
-    list-style-image: url(../images/li.gif);
+input.login { 
+    width: 150px;
+    border: none; 
+    background: url(../images/logininput.gif); 
+    padding: 4px; 
 }
 
 img {
-    border: 0px;
-    vertical-align: middle;
+	border: 0px;
 }
 
+/* layout
+   ------ */
 
-/* Misc */
-.clear {
-    clear: both;
+.content { 
+    margin: 10px auto;
+    width: 760px; 
 }
 
-div.quote {
-    border-left: 4px solid #3366CC;
-    clear: both;
-    color: #555555;
-    display: block;
-    font: italic 1.1em Verdana,serif;
-    margin: 12px 0 12px 16px;
-    padding-left: 12px;
-}
-
-
-/* Top & Header */
-.top {
-    background: url(../images/pan.gif);
-    height: 45px;
-    width: 939px;
-}
-.top h1 {
-    font: bold 2em sans-serif;
-    padding: 8px 16px 0;
-    color: #FFFFFF;
-}
-.top h1 span {
-    font: normal 70% Verdana,sans-serif;
-    color: #333333;
-}
-.header {
-    background: url(../images/header.gif);
-    height: 77px;
-    width: 939px;
-}
-
-
-div.menu {
-    width: 758px;
-}
-
-
-/* Menu */
-div.menu div {
+.logo {
     float: left;
-    margin: 1px 1px 0 0;
-    background: #4B4B4B;
+    width: 180px;
+    padding: 10px 0 11px 10px;
 }
 
-div.menu a {
-    color: #DDDDDD;
-
-    font-family: sans-serif;
-    font-size: 85%;
-    padding: 5px 0 5px 8px;
-    text-decoration: none;
-    width: 150px;
-    display: block;
+.header_right {
+    float: right;
+    width: 550px;
+    height: 72px;
 }
 
-div.menu a:hover {
-    background: #555555;
-    color: #FFFFFF;
+.logo p {
+    font-size: 0.9em;
+    color: #808080;
+    padding: 0 0 0 7px;
+    background: inherit;
 }
 
-div.menu #menuItemActive {
-    background: #666666;
-    color: #FFFFFF;
+
+.top_info {
+    width: 540px;
+    margin: 12px 0 5px 0;
+    padding: 0 5px 5px 0;
+    text-align: right;
+    background: #FFF url(../images/dot.gif) repeat-x bottom;
+    color: #444;
+}
+    
+
+.slogan {
+    text-align: right;
+    width: 160px;
 }
 
-/* Left side */
-div.content_left {
-    margin: 1px;
-    width: 758px;
+
+.bar { 
+    text-align: right;
+    font-size: 1.1em;
+    height: 30px; 
 }
 
-div.date {
-    background: #0070CD url(../images/bgdate.gif) repeat-x;
-    color: #FFFFFF;
+.bar li { 
+    
+    padding: 0px 10px 8px 10px;
+    color: #808080;
+    background: #FFF;
+    display: inline;
+}
+
+.bar li.active { 
+    background: #FFF url(../images/bar.gif) no-repeat center bottom; 
+    color: #464548;
+    font-weight: bold; 
+    padding-bottom: 8px; 
+}
+
+.bar a { 
     font-weight: bold;
-    padding: 10px;
-    height: 16px;
-}
+    color: #C3593C;; 
+    background: inherit;    
+} 
 
-div.newsitem {
-    background: #F0F0F0 url(../images/bg_newsitem.png) repeat-x;
-    border: 1px solid #EEEEEE;
-    border-color: #EEEEEE #EEEEEE #DDDDDD #EEEEEE;
+.search_field { 
+    text-align: right;
+    float: right;
+    width: 540px;
+    height: 38px;
+    background: #464548 url(../images/searchbg.gif) no-repeat top right; 
+    color: #000;
     clear: both;
-    color: #333333;
-    line-height: 1.5;
-    margin: 6px;
-    padding: 10px;
-    min-height: 150px;
-    padding-bottom: 30px;
+    padding: 10px 10px 0 0;
 }
 
-div.newsitem a {
-    text-decoration: none;
-    color: #00C;
+.grey {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #ccc;
+    background: inherit;
+    
 }
 
-div.newsitem a:hover {
-    text-decoration: underline;
+.search {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #FFF;
+    background: inherit; 
+    border: 0px;   
 }
 
-/* Right side */
-div.content_right {
-    width: 166px;
-    position: absolute;
-    top: 92px;
-    left: 785px;
+.newsletter {
+    float: left;
+    height: 33px;
+    padding: 15px 0 0 15px;
+    width: 192px;
+    background: #6E6E6E url(../images/newsletterbg.gif) no-repeat;
+    color: #FFF;
+    margin: 0 0 3px 0;
 }
 
-div.links a {
-    background: url(../images/bg_navitem.gif) repeat-x #FFFFFF;
-    display: block;
-    font: bold 0.8em Verdana,Tahoma,sans-serif;
-    padding: 6px 0 8px 8px;
-    text-decoration: none; color: #333333;
+.subheader {
+    clear: both;
+    margin: 3px 0 10px 0;
+    padding: 8px;
+    background: #f4f4f4;
+    color: #808080;
+    border-bottom: 1px solid #ccc;
 }
 
-div.links a:hover {
-    color: #0080DD; background-position: left bottom;
+.subheader a {
+	color: #C85E35;
 }
 
-div.links div.line {
-    height: 1px; background-color: #EEEEF5;
+/* left side
+   --------- */
+
+.left {
+    float: left;
+    width: 490px;
+    margin: 0 0 10px 0;
 }
 
-div.links .title {
-    background: #333333 url(../images/bgsubtitle.gif) repeat-x;
-    color: #FFFFFF;
-    font: normal 85% Tahoma,sans-serif;
-    padding: 5px 8px;
+.full {
+	width: 760px;
 }
 
-/* Footer */
-div.footer {
-    background: #F0F0F0 url(../images/bgdate.gif) repeat-x;
-    border: 1px solid #EEEEEE;
-    border-left: 0px solid #000;
-    color: #FFFFFF;
-    margin-left: 1px;
-    width: 758px;
+.left_articles {
+    margin: 0 0 15px 0;
+    padding: 0 0 0 10px;
 }
 
-div.footer .copyright {
-    padding: 6px 12px;
-    font-size: 80%;
-    line-height: 24px;
-    text-align: center;
-    height: 24px;
+.lt {
+    height: 10px;
+    background: #6E6E6E url(../images/lt.gif) no-repeat;
+    color: #FFF;
+    width: 328px;
 }
 
-div.footer a {
-    color: #FFFFFF;
-    font: bold 1em "Trebuchet MS",sans-serif;
-    text-decoration: none;
+.lbox {
+    color: #eee;
+    padding: 3px 12px;
+    margin: 0 0 15px 0;
+    background: #6E6E6E url(../images/lb.gif) no-repeat bottom left;
+    height: 178px;
+    width: 304px;
+    text-align: left;
+}
+
+.lbox a {
+    color: #FFFCD1;
+    background: inherit;
+}
+
+.lbox h2 {
+    color: #FFF;
+    background: #6E6E6E;
+}
+    
+    
+.thumb {
+    float: left;
+    width: 150px;
+    border: 1px solid #d4d4d4;
+    color: #fff;
+    background: #6e6e6e;
+    margin: 0 15px 15px 0;
+    padding: 5px;
+}
+
+.thumb p { margin: 0; padding: 3px; color: #FFF; background: #6e6e6e; }
+    
+/* right side
+   ---------- */
+        
+.right {
+    float: right;
+    width: 245px;
+    margin: 0 0 10px 0;
+}
+
+.right a {
+    color: #FFFCD1;
+    background: inherit;
+}
+
+        
+.rt {
+    background: #C85E35 url(../images/rt.gif) no-repeat;
+    color: #FFF;
+    height: 7px;
+}
+    
+.right_articles {
+    font-size: 0.9em;
+    background: #C85E35 url(../images/rb.gif) no-repeat bottom;
+    color: #FEE1D5;
+    padding: 4px 8px;   
+    margin: 0 0 10px 0;
+}
+    
+            
+.image {
+    float: left;
+    margin: 0 9px 3px 0;
+}
+
+/* footer
+   ------ */
+div#oitocfooter a {
+    color: #C3593C;
+    background: none;
 }
 
 div#oitocfooter {
-    background: #F0F0F0 url(../images/bgdate.gif) repeat-x;
-    border: 1px solid #EEEEEE;
-    border-left: 0px solid #000;
-    color: #FFFFFF;
+	width: 760px;
+    background: #FFF url(../images/dot.gif) repeat-x;
+    clear: both; 
+    color: #808080;
     margin-left: 1px;
-    width: 748px;
-    line-height: 26px;
-    padding: 5px;
+    padding: 8px 0;
     font-size: 80%;
     text-align: center;
 }
 
 div#oitocfooter .left {
-	float:left;
+    float:left;
+    width: 150px;
 }
 
 div#oitocfooter .right {
-	float: right;
-	padding-top: 2px;
+    float: right;
+    padding-top: 2px;
+    text-align: right;
+    width: 150px;
 }
-	
+
+    
 #flickr {
     text-align: center;
 }
@@ -329,10 +483,10 @@ div#accessList table.list tr.action td.td1 {
 }
 
 div#accessList table.list td.access {
-	background: #FFFFFF url(../images/aclAccess.gif) 0 0 repeat-x;
-	color: #FFF;
-	font-weight: normal;
-	text-align: center;
+    background: #FFFFFF url(../images/aclAccess.gif) 0 0 repeat-x;
+    color: #FFF;
+    font-weight: normal;
+    text-align: center;
 }
 
 div#accessList table.list td.noAccess {
@@ -350,7 +504,26 @@ div#accessList table.list td.someAccess {
 }
 
 div#accessList table.list select {
-    font-weight: normal;	
+    font-weight: normal;    
+}
+
+
+div#accessList img.info {
+    float: right;   
+}
+
+.descriptionTab-tip {
+    color: #000000;
+    width: 250px;
+    z-index: 13000;
+    border: 1px solid #000000;
+}
+
+.descriptionTab-text {
+    font-size: 11px;
+    padding: 4px 8px 8px;
+    background: #DAE5F2;
+    text-align: left;
 }
 
 .highlight {
@@ -358,8 +531,8 @@ div#accessList table.list select {
 }
 
 .enabled {
-	background-color: #00CC00;
-	color: #FFFFFF;
+    background-color: #00CC00;
+    color: #FFFFFF;
 }
 
 .disabled {
@@ -375,246 +548,16 @@ input.jscalendar {
     padding: 0 3px 4px 3px;
 }
 
-
-.gridTime td {
-    width: 96px;
+table#loginForm {
+    display: none;
 }
 
-#gridTimesTable tr td {
-    /*border-left: 1px solid #000000;*/
-}
-
-.gridBox {
-    overflow: hidden;
-	color: #FFFFFF;
-    border: 0px;
-    margin: 0px;
-    padding: 0px;
-    background-image: url(../images/gridRoomBg-green.gif);
-    /*display: table-cell;*/
-    height: 25px;
-}
-
-.available {
-    background-image: none;
-    color: #000000;
-}
-
-.task {
-    background-image: url(../images/gridBoxFilterBg.gif);
-}
-
-.check {
-    background-image: url(../images/gridBoxCheckBg.gif);
-}
-
-.gridRow {
-    background-color: #1155A6;
-}
-
-.gridRow td table tr {
-    height: 30px;
-}
-
-table.gridRoomScheduleRow {
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    border-collapse: collapse;
-    width: 576px;
-
-}
-
-table.gridRoomScheduleRow tr td {
-    border: 0px;
-    margin: 0px;
-    padding: 0px;
-    vertical-align: top;
-}
-
-.gridBox table {
-    position: absolute;
+span#loginDescription {
     display: block;
-    line-height: 30px;
-    height: 30px;
-    border-left: 1px solid #a69f74;
-    overflow: hidden;
-}
-
-.gridRoomNumber {
-    width: 96px;
-    cursor: pointer;
-    color: #FFFFFF;
-    background-color: #0F54B6;
-    border: 1px solid #a69f74;
-    padding-left: 4px;
-    background-image: url(../images/gridRoomBg.gif);
-    background-repeat: repeat-x;
-    background-position: bottom;
-}
-
-.gridSpacer {
-    width: 576px;
-    height: 1px;
-    background-color: #a69f74;
-}
-
-.gridRoomSchedule {
-    width: 576px;
-    background-image: url(../images/gridBoxAvailableBg.gif);
-    background-repeat: repeat-x;
-    background-position: bottom;
-    background-color: #CAC187;
-}
-
-.gridToolTip-tip {
-	color: #000000;
-	width: 150px;
-	z-index: 13000;
-	border: 1px solid #000000;
-}
-
-.gridToolTip-title {
-	font-weight: bold;
-	font-size: 11px;
-	margin: 0;
-	color: #3E4F14;
-	padding: 8px 8px 4px;
-	background-color: #9BBF40;
-	border-bottom: 1px solid #456F54;
-}
-
-.gridToolTip-text {
-	font-size: 11px;
-	padding: 4px 8px 8px;
-	background: #C6E086;
-}
-
-.classInfo {
-    background-image: url(../images/classInfoBoxBg.png);
-    background-color: #64AAEA;
-    background-repeat: repeat-x;
-    background-position: top;
-}
-
-.classInfo div {
-    padding: 5px;
-}
-
-div#success {
-    border: 1px solid #00CC00;
-    background-color: #CCFFCC;
-    padding: 7px 7px 7px 29px;;
-    margin: 10px 0px 15px 0px;
-    background-image: url(../images/success.png);
-    background-position: 7px 7px;
-    background-repeat: no-repeat;
-}
-
-div#warning {
-    border: 1px solid #CCCC00;
-    background-color: #FFFFCC;
-    padding: 7px 7px 7px 29px;;
-    margin: 10px 0px 15px 0px;
-    background-image: url(../images/warning.png);
-    background-position: 7px 7px;
-    background-repeat: no-repeat;
-}
-
-.red {
-    color: #CC0000;
-}
-
-.classSelected {
-    background-image: url(../images/gridRoomBg.gif);
-    background-repeat: repeat-x;
-    background-position: bottom;
-}
-
-table.component {
-    border: 1px solid #000;
-    margin-bottom: 10px;
-    width: 320px;
-    padding: 0px;
-    border-collapse: collapse;
-    background-color: #5087CE;
+    background-color: #464548;
     color: #FFF;
-
-}
-
-span#componentListStatus {
-    background-color: #FFFD77;
-    color: #000;
-    line-height: 22px;
-    
-}
-table.component a {
-	color: #FFF;
-}
-
-table.component td {
-    padding: 4px;
-}
-
-table.component td.description div {
-    width: 240px;
-    overflow: auto;
-}
-
-table.component td.order {
-	color: #000;
-    font-weight: bold;
-    font-size: 1em;
+    padding: 3px;
+    margin: 10px 0 10px 0;
     text-align: center;
-    width: 22px;
-    background-image: url(../images/menu.gif);
-    background-repeat: repeat-x;
-    background-position: top;
-    background-color: #FFF;
-    cursor: pointer;
-    vertical-align: top;
-    line-height: 22px;
-}
-
-table.checksheet td.component {
-    font-weight: bold;
-}
-
-table.checksheet td.function {
-    padding-left: 23px;
-    background: url(../images/indent.gif) 5px 5px no-repeat;
-    height: 30px;
-}
-
-table.checksheet tr.problemRow {
-    background-color: #9E0200;
-    color: #FFF;
-}
-
-table.checksheet tr.problemRow td {
-	padding-left: 23px;
-}
-
-table.checksheet tr.working {
-    background-image: url(../images/gridRoomBg-green.gif);
-    background-repeat: repeat-x;
-    background-position: top;
-    background-color: #4B9812;
-    color: #FFF;
-}
-
-table.checksheet tr.notWorking {
-    background-image: url(../images/gridBoxFilterBg.gif);
-    background-repeat: repeat-x;
-    background-position: top;
-    background-color: #9E0200;
-    color: #FFF;
-}
-
-tr.complete {
-    background-color: #BFFFBF;
-}
-
-tr.incomplete {
-    background-color: #FFF;
+    border: 1px solid #000;
 }
