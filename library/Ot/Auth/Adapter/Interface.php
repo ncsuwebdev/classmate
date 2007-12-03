@@ -56,4 +56,13 @@ interface Ot_Auth_Adapter_Interface
 	 * @return boolean
 	 */
     public static function manageLocally();
+    
+    
+    /**
+     * Flag to tell the app whether a user can sign up on their own
+     * 
+     * @return boolean
+     *
+     */
+    public static function allowUserSignUp();
 }

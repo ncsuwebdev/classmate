@@ -113,14 +113,13 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         
         $config = Zend_Registry::get('config');
         $role = '';
+        
+        $authz = Ot_Authz::getInstance();
 
         if (!$this->_acl->isAllowed($this->_acl->getDefaultRole(), $resource, $action)) {
 
         	$adapters = $config->authentication->toArray();
-
-            $authz = Ot_Authz::getInstance();
-                    	
-
+        	
         	foreach ($adapters as $a) {
         		
 	            // We check to see if the adapter allows auto logging in, if it does we do it
@@ -153,28 +152,32 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         } else {
         	$auth = Zend_Auth::getInstance();
 
-                if ($auth->hasIdentity() && $auth->getIdentity() != '' && !is_null($auth->getIdentity())) {
+            if ($auth->hasIdentity() && $auth->getIdentity() != '' && !is_null($auth->getIdentity())) {
 
-                	$authZAdapter = new $config->authorization($auth->getIdentity());
+              	$authZAdapter = new $config->authorization($auth->getIdentity());
                 	
-                    $user = $authZAdapter->getUser($auth->getIdentity());
+                $realm = preg_replace('/^[^@]*@/', '', $auth->getIdentity());
                     
-                    // We check to see if the adapter allows auto logging in, if it does we do it
-	                if (call_user_func(array($config->authentication->$user['realm']->class, 'autoLogin'))) {
+                // We check to see if the adapter allows auto logging in, if it does we do it
+               if (call_user_func(array($config->authentication->$realm->class, 'autoLogin'))) {
 
-	                    // Set up the authentication adapter
-	                    $authAdapter = new $config->authentication->$user['realm']->class;
+                    // Set up the authentication adapter
+	                $authAdapter = new $config->authentication->$realm->class;
 	        
-	                    // Attempt authentication, saving the result
-	                    $result = $this->_auth->authenticate($authAdapter);
+	                // Attempt authentication, saving the result
+	                $result = $this->_auth->authenticate($authAdapter);
 	        
-	                    if (!$result->isValid()) {
-	                        throw new Exception('Error getting login credentials');
-	                    }
-	                }                    
+	                if (!$result->isValid()) {
+	                    throw new Exception('Error getting login credentials');
+	                }
+	            }                    
         
-                    $role = $user['role'];
+                $roles = $authz->authorize($authZAdapter);
+        
+                if ($roles->isValid()) {
+                    $role = $authz->getRole();
                 }
+            }
         }
 
         if ($role == '') {

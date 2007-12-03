@@ -42,13 +42,6 @@ class Admin_AclController extends Internal_Controller_Action
      */
 	protected $_authzAdapter = null;
 	
-	/**
-	 * Authentication adapter
-	 *
-	 * @var mixed
-	 */
-	protected $_authAdapter = null;
-	
     /**
      * Runs when the class is initialized.  Sets up the view instance and the
      * various models used in the class.
@@ -59,11 +52,9 @@ class Admin_AclController extends Internal_Controller_Action
         $config = Zend_Registry::get('config');
 
         $this->_authzAdapter = new $config->authorization(Zend_Auth::getInstance()->getIdentity());
-        $this->_authAdapter  = new $config->authentication();
 
         parent::init();
     }
-
 
     /**
      * List of all existing roles in the application.

@@ -23,9 +23,10 @@ class ErrorController extends Internal_Controller_Action
 	            	$this->view->messageTitle = 'Error processing request';
 	            }
 	            
-	            
 	            $this->view->message      = $exception->getMessage();
-	            
+	            echo "<pre>";
+	            print_r($exception->getTrace());
+	            echo "</pre>";
 	            break;
         }        
     }

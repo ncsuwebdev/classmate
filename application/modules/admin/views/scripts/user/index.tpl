@@ -10,7 +10,8 @@
     {foreach from=$users item=u name=users}
         {if $smarty.foreach.users.index % $config.headerRowRepeat == 0}
         <tr>
-            <th width="70">User ID</th>
+            <th width="80">User ID</th>
+            <th width="150">Realm</th>
             <th width="200">Access Role</th>
             {if $acl.log}
             <th width="50">Logs</th>
@@ -24,7 +25,9 @@
         </tr>
         {/if}
         <tr class="{cycle values="row1,row2"}">
-            <td>{$u.userId}</td>
+            {assign var='realm' value=$u.userId|regex_replace:"/^[^@]*@/":""}
+            <td>{$u.userId|regex_replace:"/@.*$/":""}</td>
+            <td align="center">{$realms.$realm.name}</td>
             <td align="center">{$u.role}</td>
             {if $acl.log}
             <td align="center">

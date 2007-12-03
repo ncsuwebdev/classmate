@@ -4,20 +4,13 @@ window.addEvent('domready', function() {
     realm.addEvent('change', function() {
         var sel = realm.options[realm.options.selectedIndex];
         
-        var login = $('loginForm');
-        var manual = $('manual');
+        var login = $('emailRow');
         
         if (sel.hasClass('autoLogin')) {
             login.style.display = 'none';
         } else {
-            login.style.display = 'block';           
+            login.style.display = '';           
         }       
-    
-        if (sel.hasClass('signup')) {
-            manual.style.display = 'inline';
-        } else {
-            manual.style.display = 'none';
-        }          
         
         $('loginDescription').setHTML(sel.title);
     });

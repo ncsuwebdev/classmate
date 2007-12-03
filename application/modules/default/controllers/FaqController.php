@@ -37,17 +37,6 @@
 class FaqController extends Internal_Controller_Action 
 {
     /**
-     * Runs when the class is initialized.  Sets up the view instance and the
-     * various models used in the class.
-     *
-     */
-    public function init()
-    {
-        $this->_logger = Zend_Registry::get('logger');
-    }
-
-
-    /**
      * shows all FAQ's
      *
      */

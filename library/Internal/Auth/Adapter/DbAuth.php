@@ -67,6 +67,8 @@ class Internal_Auth_Adapter_DbAuth implements Zend_Auth_Adapter_Interface, Ot_Au
      * @var object
      */
     protected $_db = null;
+    
+    protected $_adapterName = 'local';
 
     /**
      * Constructor to create new object
@@ -133,6 +135,16 @@ class Internal_Auth_Adapter_DbAuth implements Zend_Auth_Adapter_Interface, Ot_Au
 	    return true;
 	}
 
+    /**
+     * flag to tell the app whether a user can sign up or not
+     *
+     * @return boolean
+     */	
+    public static function allowUserSignUp()
+    {
+        return true;
+    }	
+    
 	/**
 	 * Tells the application whenter the user has an account or not
 	 *

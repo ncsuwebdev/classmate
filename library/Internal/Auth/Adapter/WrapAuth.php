@@ -67,6 +67,8 @@ class Internal_Auth_Adapter_WrapAuth implements Zend_Auth_Adapter_Interface, Ot_
      */
     const defaultPassword = '';
 
+    protected $_adapterName = 'wrap';
+    
     /**
      * Constructor to create new object
      *
@@ -95,7 +97,7 @@ class Internal_Auth_Adapter_WrapAuth implements Zend_Auth_Adapter_Interface, Ot_
             die();
         }
 
-        return new Zend_Auth_Result(true, $username, array());
+        return new Zend_Auth_Result(true, $username . '@' . $this->_adapterName, array());
 	}
 
 	/**
@@ -147,6 +149,16 @@ class Internal_Auth_Adapter_WrapAuth implements Zend_Auth_Adapter_Interface, Ot_
 	public static function manageLocally()
 	{
 	    return false;
+	}
+	
+	/**
+	 * flag to tell the app whether a user can sign up or not
+	 *
+	 * @return boolean
+	 */
+	public static function allowUserSignUp()
+	{
+		return false;
 	}
 
 }

@@ -20,7 +20,12 @@ class Internal_Controller_Action extends Zend_Controller_Action
         $this->_logger = Zend_Registry::get('logger');		
         
 	    if (Zend_Auth::getInstance()->hasIdentity()) {
-            $this->view->loggedInUser = Zend_Auth::getInstance()->getIdentity();
+	    	$user = explode('@', Zend_Auth::getInstance()->getIdentity());
+	    	
+	    	$config = Zend_Registry::get('config');
+	    		    	
+            $this->view->loggedInUser = $user[0];
+            $this->view->loggedInRealm = $config->authentication->{$user[1]}->name; 
         }        
 	}
 }

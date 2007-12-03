@@ -2,16 +2,16 @@
 <configdata>
 	<production>
     	<authentication>
-    	   <ncsu>
+    	   <wrap>
     	       <class>Internal_Auth_Adapter_WrapAuth</class>
     	       <name>NCSU Wrap</name>
     	       <description>Authentication using your Unity ID and Password</description>    
-    	   </ncsu>
-    	   <guest>
+    	   </wrap>
+    	   <local>
                <class>Internal_Auth_Adapter_DbAuth</class>
                <name>ClassMate Account</name>
                <description>Authentication using an account created through ClassMate</description>       	   
-    	   </guest>
+    	   </local>
     	</authentication>
     	<authorization>Internal_Authz_Adapter_DbAuthz</authorization>
     	<timezone>America/New_York</timezone>

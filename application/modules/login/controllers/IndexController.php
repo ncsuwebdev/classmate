@@ -69,6 +69,7 @@ class Login_IndexController extends Internal_Controller_Action
         if (Zend_Auth::getInstance()->hasIdentity()) {
         	$this->_redirect('/');
         }
+        
         if ((isset($authRealm->realm) && $authRealm->autoLogin) || strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 
             $post   = Zend_Registry::get('post');
@@ -80,7 +81,7 @@ class Login_IndexController extends Internal_Controller_Action
             }
 
             // Set up the authentication adapter
-            $authAdapter = new $config->authentication->$realm->class($filter->filter($post['userId']),
+            $authAdapter = new $config->authentication->$realm->class($filter->filter($post['userId']) . '@' . $realm,
                                                                       $filter->filter($post['password']));
             $auth = Zend_Auth::getInstance();            
             
@@ -91,19 +92,21 @@ class Login_IndexController extends Internal_Controller_Action
             $result = $auth->authenticate($authAdapter);
 
             $authRealm->unsetAll();
+
+            $userId = ($auth->hasIdentity()) ? $auth->getIdentity(): 'nouser';
             
             if (!$result->isValid()) {
 	            $this->_logger->setEventItem('attributeName', 'userId');
-	            $this->_logger->setEventItem('attributeId', $filter->filter($post['userId']));
+	            $this->_logger->setEventItem('attributeId', $userId);
 	            $this->_logger->info('Invalid Login Attempt');             	
                 throw new Internal_Exception_Data('Invalid Login Credentials');
             }
             
-            $authz = new $config->authorization($filter->filter($post['userId']));
-            $user = $authz->getUser($filter->filter($post['userId']));
+            $authz = new $config->authorization($userId);
+            $user = $authz->getUser($userId);
             
             $this->_logger->setEventItem('attributeName', 'userId');
-            $this->_logger->setEventItem('attributeId', $filter->filter($post['userId']));
+            $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->info('User Logged In');  
                         
             if ($user['role'] == 'activation_pending') {
@@ -127,6 +130,7 @@ class Login_IndexController extends Internal_Controller_Action
         	   'name'        => $value['name'],
         	   'description' => $value['description'],
         	   'autoLogin'  => $a->autoLogin(),
+        	   'signup'     => $a->allowUserSignUp(),
         	);
         }
         
@@ -143,22 +147,28 @@ class Login_IndexController extends Internal_Controller_Action
         $config = Zend_Registry::get('config');
         $filter = Zend_Registry::get('inputFilter');
 
-        Zend_Loader::loadClass($config->authentication);
-
-        $auth = new $config->authentication();
-
         if (Zend_Auth::getInstance()->hasIdentity()) {
             $this->_redirect('/');
             return;
-        }
-
-        $this->view->title = "Forgot My Password";
+        }        
 
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             $post = Zend_Registry::get('post');
+            
+            $userId = $filter->filter($post['userId']) . '@' . $realm;
 
-            $userId = $filter->filter($post['userId']);
-
+            if (!isset($post['realm'])) {
+                throw new Internal_Exception_Input('Realm not found');
+            }
+            
+            $realm = $filter->filter($post['realm']);
+            
+            $auth = new $config->authentication->$realm->class();
+            
+            if (!$auth->manageLocally()) {
+                throw new Exception('This action is not allowed on this adapter');
+            }
+            
             if ($userId != ''){
                 $newPassword = $auth->resetPassword($userId);
                             
@@ -184,6 +194,24 @@ class Login_IndexController extends Internal_Controller_Action
             
             $this->_redirect('/login/');
         }
+
+        $this->view->title = "Forgot My Password";
+        
+        $get = Zend_Registry::get('get');
+        if (!isset($get['realm'])) {
+            throw new Internal_Exception_Input('Realm not found');
+        }
+        
+        $realm = $filter->filter($get['realm']);
+        
+        $auth = new $config->authentication->$realm->class();
+        
+        if (!$auth->manageLocally()) {
+            throw new Exception('This action is not allowed on this adapter');
+        }   
+
+        $this->view->realm = $realm;
+        $this->view->realmName = $config->authentication->$realm->name;
     }
     
     /**
@@ -214,30 +242,41 @@ class Login_IndexController extends Internal_Controller_Action
      */
     public function signupAction()
     {
+    	$filter = Zend_Registry::get('inputFilter');
+    	$config = Zend_Registry::get('config');
+    	
     	if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
-    		$filter = Zend_Registry::get('inputFilter');
+    		
     		$post   = Zend_Registry::get('post');
-    		$config = Zend_Registry::get('config');
-    		
-    		//Zend_Loader::loadClass($config->authentication->guest);
-    		$auth = new $config->authentication->guest->class();
-    		$authz = new $config->authorization('nouser');
-    		
-	    	if (!$auth->manageLocally()) {
-	            $this->_redirect('/');
-	            return;
+
+	        if (!isset($post['realm'])) {
+	            throw new Internal_Exception_Input('Realm not found');
 	        }
 	        
+	        $realm = $filter->filter($post['realm']);
+	        
+	        $auth = new $config->authentication->$realm->class();
+	        
+	        if (!$auth->manageLocally()) {
+	            throw new Exception('This action is not allowed on this adapter');
+	        }
+	        
+	        if (!$auth->allowUserSignUp()) {
+	            throw new Exception('This adapter does not allow users to sign up on their own');
+	        }    		
+	        
+    		$authz = new $config->authorization('nouser');
+    		
 	        $uf = new Zend_Filter();
 	        $uf->addFilter(new Zend_Filter_Alnum());
 	        $uf->addFilter(new Zend_Filter_StringTrim());
 	        $uf->addFilter(new Zend_Filter_StripTags());
 	        
 	        $data = array(
-	           'userId' => $uf->filter($post['userId']),
+	           'userId' => $uf->filter($post['userId']) . '@' . $realm,
 	           'email'  => $filter->filter($post['email']),
 	           'role'   => 'activation_pending',
-	           'realm'  => 'guest',
+	           'realm'  => $realm,
 	        );
 	        
 	        if ($data['userId'] == '') {
@@ -261,7 +300,7 @@ class Login_IndexController extends Internal_Controller_Action
     		
 	        $data['password'] = $auth->addAccount($data['userId'], '', $data['email']);
 	        
-	        $authz->addUser($data['userId'], $data['role'], $data['realm']);
+	        $authz->addUser($data['userId'], $data['role']);
 	        
 	        $trigger = new EmailTrigger();
 	        $trigger->setVariables($data);
@@ -276,7 +315,26 @@ class Login_IndexController extends Internal_Controller_Action
             $this->_redirect('/login/');
     	}
     	
+    	$get = Zend_Registry::get('get');
+    	if (!isset($get['realm'])) {
+    		throw new Internal_Exception_Input('Realm not found');
+    	}
+    	
+    	$realm = $filter->filter($get['realm']);
+    	
+    	$auth = new $config->authentication->$realm->class();
+    	
+    	if (!$auth->manageLocally()) {
+    		throw new Exception('This action is not allowed on this adapter');
+    	}
+    	
+    	if (!$auth->allowUserSignUp()) {
+    		throw new Exception('This adapter does not allow users to sign up on their own');
+    	}
+    	
     	$this->view->title = 'Sign-up for an account';
+        $this->view->realm = $realm;
+        $this->view->realmName = $config->authentication->$realm->name;    	
     }
 
     /**

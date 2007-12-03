@@ -134,12 +134,11 @@ class Internal_Authz_Adapter_DbAuthz implements Ot_Authz_Interface, Ot_Authz_Ada
         return true;
     }
 
-    public function addUser($userId, $role, $realm)
+    public function addUser($userId, $role)
     {
         $data = array(
             'userId' => $userId,
             'role'   => $role,
-            'realm'  => $realm,
             );
 
          return $this->_db->insert($this->_authzTable, $data);

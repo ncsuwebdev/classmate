@@ -17,9 +17,9 @@
                     <p>
 
 		            {if $loggedInUser == ''} 
-		            <b>You are not Logged in!</b> <a href="{$sitePrefix}/login/">Log in</a>  or <a href="#">register</a> to take classes!
+		            <b>You are not Logged in!</b> <a href="{$sitePrefix}/login/">Log in</a> here.
 		            {else}
-		            Logged in as {$loggedInUser}  &nbsp;|&nbsp;
+		            Logged in as {$loggedInUser} via {$loggedInRealm}  &nbsp;|&nbsp;
 		            <a href="{$sitePrefix}/profile/index/edit/">Edit Profile</a>  &nbsp;|&nbsp;
 		            <a href="{$sitePrefix}/login/index/changePassword/">Change Password</a> &nbsp;|&nbsp;
 		            <a href="{$sitePrefix}/login/index/logout/">Sign Out</a>

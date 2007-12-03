@@ -43,13 +43,6 @@ class Admin_UserController extends Internal_Controller_Action
     protected $_authzAdapter = null;
 
     /**
-     * Auth adapter
-     *
-     * @var Zend_Auth_Adapter
-     */
-    protected $_authAdapter = null;
-
-    /**
      * Runs when the class is initialized.  Sets up the view instance and the
      * various models used in the class.
      *
@@ -59,7 +52,6 @@ class Admin_UserController extends Internal_Controller_Action
         $config = Zend_Registry::get('config');
 
         $this->_authzAdapter = new $config->authorization(Zend_Auth::getInstance()->getIdentity());
-        $this->_authAdapter  = new $config->authentication();
         
         parent::init();
     }
@@ -73,26 +65,20 @@ class Admin_UserController extends Internal_Controller_Action
     {
         $users = $this->_authzAdapter->getUsers();
 
-        if (!$this->_authzAdapter->manageLocally() && !$this->_authAdapter->manageLocally()) {
-            $this->view->acl = array(
-                'add'    => false,
-                'edit'   => false,
-                'delete' => false,
-                'log'    => $this->_acl->isAllowed($this->_role, 'admin_log', 'index'),
-                );
-        } else {
-            $this->view->acl = array(
-                'add'    => $this->_acl->isAllowed($this->_role, $this->_resource, 'add'),
-                'edit'   => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
-                'delete' => $this->_acl->isAllowed($this->_role, $this->_resource, 'delete'),
-                'log'    => $this->_acl->isAllowed($this->_role, 'admin_log', 'index'),
-                );
-        }
+        $this->view->acl = array(
+            'add'    => $this->_acl->isAllowed($this->_role, $this->_resource, 'add'),
+            'edit'   => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
+            'delete' => $this->_acl->isAllowed($this->_role, $this->_resource, 'delete'),
+            'log'    => $this->_acl->isAllowed($this->_role, 'admin_log', 'index'),
+        );
 
         if (count($users) != 0) {
             $this->view->javascript = 'sortable.js';
         }
 
+        $config = Zend_Registry::get('config');
+        $this->view->realms = $config->authentication->toArray();
+        
         $this->view->title = "Manage Users";
         $this->view->users = $users;
     }
@@ -103,13 +89,15 @@ class Admin_UserController extends Internal_Controller_Action
      */
     public function addAction()
     {
-        if (!$this->_authAdapter->manageLocally() && !$this->_authzAdapter->manageLocally()) {
+        if (!$this->_authzAdapter->manageLocally()) {
             throw new Internal_Exception_Data(
-                'The authentication adapter provided is using an external source ' .
+                'The authorization adapter provided is using an external source ' .
                 'to manage user lists, meaning this application can not manage ' .
                 'the lists locally.');
         }
 
+        $config = Zend_Registry::get('config');
+        
         $roles = $this->_acl->getAvailableRoles();
 
         $temp = array();
@@ -119,50 +107,89 @@ class Admin_UserController extends Internal_Controller_Action
 
         $roles = $temp;
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if ($this->_request->isPost()) {
 
             $post   = Zend_Registry::get('post');
             $filter = Zend_Registry::get('inputFilter');
 
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
-            } else {
-                $userId = $filter->filter($post['userId']);
-                $role   = $filter->filter($post['role']);
-
-                if (!in_array($role, $roles)) {
-                    throw new Internal_Exception_Input("The role '$role' is not a valid role");
-                }
-
-                if ($userId == '') {
-                    throw new Internal_Exception_Input('User ID is required');
-                }
-
-                $this->_authzAdapter->addUser($userId, $role);
-
-                $this->_logger->setEventItem('attributeName', 'userId');
-                $this->_logger->setEventItem('attributeId', $userId);
-                $this->_logger->info('Account was added for ' . $userId . '.');
-
-                $this->_redirect('/admin/user');
+            $uf = new Zend_Filter();
+            $uf->addFilter(new Zend_Filter_Alnum());
+            $uf->addFilter(new Zend_Filter_StringTrim());
+            $uf->addFilter(new Zend_Filter_StripTags());
+                        
+            $userId = $uf->filter($post['userId']);
+            $role   = $filter->filter($post['role']);
+            $realm  = $filter->filter($post['realm']);
+            
+            $authAdapter = new $config->authentication->$realm->class();
+            
+            if ($userId == '') {
+                throw new Internal_Exception_Input('No valid user ID was entered');
             }
+            
+            $userId .= '@' . $realm;
+            
+            if (!in_array($role, $roles)) {
+                throw new Internal_Exception_Input("The role '$role' is not a valid role");
+            }            
+            
+            if ($authAdapter->manageLocally()) {
+            	$email = $filter->filter($post['email']);
+            	
+	            if ($email == '') {
+	                throw new Internal_Exception_Input('No email address was entered');
+	            }
+	            
+	            $ev = new Zend_Validate_EmailAddress();
+	            if (!$ev->isValid($email)) {
+	                throw new Internal_Exception_Input('Email address is not valid');
+	            }
+	            
+                $user = $authAdapter->getUser($userId);
+            
+	            if (count($user) != 0) {
+	                throw new Internal_Exception_Input('User ID is taken.  Please select a different ID');
+	            }
+	            
+	            $password = $authAdapter->addAccount($userId, '', $email);	    
 
-        } else {
-            $this->view->title = 'Add User';
-            $this->view->roles = $roles;
+                $trigger = new EmailTrigger();
+                $trigger->password = $password;
+                $trigger->userId = $userId;
+                $trigger->role = $role;
+                $trigger->dispatch('Admin_User_Add');	            
+            }        
+            
+            $this->_authzAdapter->addUser($userId, $role);
 
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
-            }
+            $this->_logger->setEventItem('attributeName', 'userId');
+            $this->_logger->setEventItem('attributeId', $userId);
+            $this->_logger->info('Account was added for ' . $userId . '.');
+
+            $this->_redirect('/admin/user');            
+
+        } 
+        
+        $adapters = $config->authentication->toArray();
+        
+        $auth = array();
+        foreach ($adapters as $key => $value) {
+            $a = new $value['class'];
+            
+            $auth[] = array(
+               'realm'       => $key,
+               'name'        => $value['name'],
+               'description' => $value['description'],
+               'autoLogin'  => $a->autoLogin(),
+               'signup'     => $a->allowUserSignUp(),
+            );
         }
+        
+        $this->view->authAdapters = $auth;
+                
+        $this->view->title = 'Add User';
+        $this->view->roles = $roles;
+
     }
 
     /**
@@ -171,13 +198,15 @@ class Admin_UserController extends Internal_Controller_Action
      */
     public function editAction()
     {
-        if (!$this->_authAdapter->manageLocally() && !$this->_authzAdapter->manageLocally()) {
+        if (!$this->_authzAdapter->manageLocally()) {
             throw new Internal_Exception_Data(
-                'The authentication adapter provided is using an external source ' .
+                'The authorization adapter provided is using an external source ' .
                 'to manage user lists, meaning this application can not manage ' .
                 'the lists locally.');
         }
 
+        $config = Zend_Registry::get('config');
+        
         $roles = $this->_acl->getAvailableRoles();
 
         $temp = array();
@@ -189,57 +218,81 @@ class Admin_UserController extends Internal_Controller_Action
 
         $filter = Zend_Registry::get('inputFilter');
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if ($this->_request->isPost()) {
 
             $post = Zend_Registry::get('post');
+                        
+            $userId = $filter->filter($post['userId']);
+            $role   = $filter->filter($post['role']);
 
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
-            } else {
-                $userId = $filter->filter($post['userId']);
-                $role   = $filter->filter($post['role']);
-
-                if (!in_array($role, $roles)) {
-                    throw new Internal_Exception_Input("The role '$role' is not a valid role");
-                }
-
-                if ($userId == '') {
-                    throw new Internal_Exception_Input('User ID is required');
-                }
-
-                $this->_authzAdapter->editUser($userId, $role);
-
-                $this->_logger->setEventItem('attributeName', 'userId');
-                $this->_logger->setEventItem('attributeId', $userId);
-                $this->_logger->info('Account was modified for ' . $userId . '.');
-
-                $this->_redirect('/admin/user');
+            if (!in_array($role, $roles)) {
+                throw new Internal_Exception_Input("The role '$role' is not a valid role");
             }
 
-        } else {
-            $get = Zend_Registry::get('get');
-
-            $userId = $filter->filter($get['userId']);
-
-            $user = $this->_authzAdapter->getUser($userId);
-
-            $this->view->userId = $userId;
-            $this->view->role   = $user['role'];
-            $this->view->title  = 'Edit User';
-            $this->view->roles  = $roles;
-
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
+            if ($userId == '') {
+                throw new Internal_Exception_Input('User ID is required');
             }
+            
+            $realm = preg_replace('/^[^@]*@/', '', $userId);
+            
+            $authAdapter = new $config->authentication->$realm->class();
+
+            if ($authAdapter->manageLocally()) {
+                $email = $filter->filter($post['email']);
+                                           
+                if ($email == '') {
+                    throw new Internal_Exception_Input('No email address was entered');
+                }
+                                
+            	$ev = new Zend_Validate_EmailAddress();
+                if (!$ev->isValid($email)) {
+                    throw new Internal_Exception_Input('Email address is not valid');
+                }            	
+            	
+            	$authAdapter->editAccount($userId, '', $email);
+            }
+                
+            $this->_authzAdapter->editUser($userId, $role);
+
+            $this->_logger->setEventItem('attributeName', 'userId');
+            $this->_logger->setEventItem('attributeId', $userId);
+            $this->_logger->info('Account was modified for ' . $userId . '.');
+
+            $this->_redirect('/admin/user');
+
         }
+
+        $get = Zend_Registry::get('get');
+        $userId = $filter->filter($get['userId']);
+        $user = $this->_authzAdapter->getUser($userId);
+        
+        $realm = preg_replace('/^[^@]*@/', '', $userId);
+        
+        
+        $adapter = $config->authentication->$realm->toArray();
+
+        $a = new $adapter['class'];
+            
+        $this->view->adapter = array(
+           'realm'       => $realm,
+           'name'        => $adapter['name'],
+           'description' => $adapter['description'],
+           'autoLogin'   => $a->autoLogin(),
+           'signup'      => $a->allowUserSignUp(),
+        );
+
+        if (!$a->autoLogin()) {
+        	$au = $a->getUser($userId);
+        	
+        	$this->view->email = $au[0]['email'];
+        }
+        
+        $this->view->userId = $userId;
+        $this->view->displayUserId = preg_replace('/@.*$/', '', $userId);;
+        $this->view->role   = $user['role'];
+        $this->view->title  = 'Edit User';
+        $this->view->roles  = $roles;
+
     }
 
     /**
@@ -248,59 +301,57 @@ class Admin_UserController extends Internal_Controller_Action
      */
     public function deleteAction()
     {
-        if (!$this->_authAdapter->manageLocally() && !$this->_authzAdapter->manageLocally()) {
+        if (!$this->_authzAdapter->manageLocally()) {
             throw new Internal_Exception_Data(
-                'The authentication adapter provided is using an external source ' .
+                'The authorization adapter provided is using an external source ' .
                 'to manage user lists, meaning this application can not manage ' .
                 'the lists locally.');
         }
+        
+        $config = Zend_Registry::get('config');
 
         $filter = Zend_Registry::get('inputFilter');
 
-        if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if ($this->_request->isPost()) {
             $post = Zend_Registry::get('post');
 
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
-            } else {
-                $userId = $filter->filter($post['userId']);
+            $userId = $filter->filter($post['userId']);
 
-                if ($userId == '') {
-                    throw new Internal_Exception_Input('User ID is required');
-                }
-
-                $this->_authzAdapter->deleteUser($userId);
-
-                $this->_logger->setEventItem('attributeName', 'userId');
-                $this->_logger->setEventItem('attributeId', $userId);
-                $this->_logger->info('Account was deleted for ' . $userId . '.');
+            if ($userId == '') {
+                throw new Internal_Exception_Input('User ID is required');
             }
+
+            $realm = preg_replace('/^[^@]*@/', '', $userId);
+            
+            $authAdapter = new $config->authentication->$realm->class();
+            
+            if ($authAdapter->manageLocally()) {
+            	$authAdapter->deleteAccount($userId);
+            }
+            
+            $this->_authzAdapter->deleteUser($userId);
+
+            $this->_logger->setEventItem('attributeName', 'userId');
+            $this->_logger->setEventItem('attributeId', $userId);
+            $this->_logger->info('Account was deleted for ' . $userId . '.');
 
             $this->_redirect('/admin/user');
 
-        } else {
-
-            $get = Zend_Registry::get('get');
-
-            $userId = $filter->filter($get['userId']);
-
-            $user = $this->_authzAdapter->getUser($userId);
-
-            $this->view->userId = $userId;
-            $this->view->role   = $user['role'];
-            $this->view->title  = 'Delete User';
-
-            if ($this->_authAdapter->manageLocally()) {
-                if ($this->_authzAdapter->manageLocally()) {
-                    throw new Internal_Exception_Data('Autorization Adapter is not supported currently');
-                } else {
-                    throw new Internal_Exception_Data('Authentication Adapter is not supported currently');
-                }
-            }
         }
+
+        $get = Zend_Registry::get('get');
+        $userId = $filter->filter($get['userId']);
+
+        $realm = preg_replace('/^[^@]*@/', '', $userId);
+            
+        $this->view->realmName = $config->authentication->$realm->name;
+                
+        $user = $this->_authzAdapter->getUser($userId);
+
+        $this->view->userId = $userId;
+        $this->view->displayUserId = preg_replace('/@.*$/', '', $userId);
+        $this->view->role   = $user['role'];
+        $this->view->title  = 'Delete User';
+        
     }
 }
