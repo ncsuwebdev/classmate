@@ -334,6 +334,7 @@ img {
     background: #C85E35 url(../images/rt.gif) no-repeat;
     color: #FFF;
     height: 7px;
+    margin: 0;
 }
     
 .right_articles {
@@ -560,4 +561,68 @@ span#loginDescription {
     margin: 10px 0 10px 0;
     text-align: center;
     border: 1px solid #000;
+}
+
+
+.accToggler {
+    margin: 0;
+    padding: 5px 5px;
+    height: 15px;
+    font-size: 11px;
+    font-weight: normal;
+    cursor: pointer;
+    font-family: 'Andale Mono', sans-serif;
+}
+ 
+.accElement p {
+	padding-top: 5px; 
+}
+
+div.autocompleter-loading
+{
+	float: left;
+    clear: right;
+    background: #fff url(../images/spinner.gif) no-repeat center;
+    width: 20px;
+    height: 16px;
+}
+
+ul.autocompleter-choices
+{
+    position: absolute;
+    margin: 0;
+    padding:  0;
+    list-style: none;
+    border: 1px solid #eee;
+    background-color: white;
+    border-right-color: #ddd;
+    border-bottom-color: #ddd;
+    text-align: left;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    z-index: 50;
+}
+
+ul.autocompleter-choices li
+{
+    position: relative;
+    padding: 0.1em 1.5em 0.1em 1em;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+ul.autocompleter-choices li.autocompleter-selected
+{
+    background-color: #444;
+    color: #fff;
+}
+
+ul.autocompleter-choices span.autocompleter-queried
+{
+    font-weight: bold;
+}
+
+ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
+{
+    color: #9FCFFF;
 }

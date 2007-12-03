@@ -5,11 +5,17 @@
 <title>{$appTitle} - {$title}</title>
 <link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/site.css" />
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/mootools.v1.11.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/global.js"></script>
+{if $showNews}
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/news.js"></script>
+{/if}
 {foreach from=$javascript item=script}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/{$script}"></script>
 {/foreach}
 </head>
 <body>
+    <input type="hidden" name="sitePrefix" id="sitePrefix" value="{$sitePrefix}" />
     <div class="content">
         <div class="header_right">
             <div class="top_info">
@@ -31,12 +37,12 @@
             <div class="bar">
                 <ul>
                     <li class="slogan">Navigation:</li>
-{foreach from=$tabs item=t name=tabs}
-{if $branch eq $t.module}
-{assign var=sectionTitle value=$t.display}
-{/if}
+                    {foreach from=$tabs item=t name=tabs}
+                    {if $branch eq $t.module}
+                    {assign var=sectionTitle value=$t.display}
+                    {/if}
                     <li{if $branch eq $t.module} class="active">{$t.display}{else}><a href="{$sitePrefix}/{if $t.module eq 'default'}index{else}{$t.module}{/if}/">{$t.display}</a>{/if}</li>
-{/foreach}
+                    {/foreach}
                 </ul>
             </div>
         </div>
@@ -48,7 +54,7 @@
         
         <div class="search_field">
             <form method="post" action="?">
-                <p><span class="grey">Search Example:</span> <span class="search">Excel</span>&nbsp;&nbsp; <input type="text" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
+                <p><span class="grey">Search Example:</span> <span class="search">Excel</span>&nbsp;&nbsp; <input type="text" id="searchBox" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
             </form>
         </div>
         
@@ -67,6 +73,7 @@
             Welcome to {$appTitle}!
             {/foreach}
             </p>
+            
         </div>
         
         {if $showNews}
@@ -78,18 +85,18 @@
                 </div>
             </div>
         </div>  
-        <div class="right">
+        <div class="right" id="newsDiv">
                         
-            <div class="rt"></div>
-            <div class="right_articles">
+            <p class="rt accToggler">New Excel Class</p>
+            <div class="right_articles accElement">
                 <p><img src="{$sitePrefix}/public/images/image.gif" alt="Image" title="Image" class="image" /><b>New Excel Class!</b><br />We are now teaching super advanced ultra cool classes or Excel!  <a href="#">Click here</a> to find a class now!.</p>
             </div>
-            <div class="rt"></div>
-            <div class="right_articles">
+            <p class="rt accToggler">Lorem Ipsom Dolor</p>
+            <div class="right_articles accElement">    
                 <p><img src="images/image.gif" alt="Image" title="Image" class="image" /><b>Lorem ipsum dolor sit amet</b><br />consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam <a href="#">erat volutpat</a>. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis <a href="#">nisl ut aliquip ex</a>.</p>
             </div>
-            <div class="rt"></div>
-            <div class="right_articles">
+            <p class="rt accToggler">Consectetuer</p>
+            <div class="right_articles accElement">
                 <p><img src="images/image.gif" alt="Image" title="Image" class="image" /><b>Lorem ipsum dolor sit amet</b><br />consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam <a href="#">erat volutpat</a>. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis <a href="#">nisl ut aliquip ex</a>.</p>
             </div>
         </div>  

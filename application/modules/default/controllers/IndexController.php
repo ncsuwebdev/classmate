@@ -43,6 +43,14 @@ class IndexController extends Internal_Controller_Action
     public function indexAction()
     {
         $this->view->title = 'Welcome to Classmate';
+        $this->view->showNews = true;
+    }
+    
+    public function searchAction()
+    {
+        $this->_helper->viewRenderer->setNeverRender();
+        
+        echo Zend_Json_Encoder::encode(array("excel", "photoshop", "php", "word"));
     }
 
     public function imageAction()
