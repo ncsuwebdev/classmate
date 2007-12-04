@@ -47,4 +47,28 @@ class Profile extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'userId';
+    
+    public function addProfile($userId)
+    {
+    	$profile = null;
+    	
+    	$uc = Zend_Registry::get('userConfig');
+    	
+    	while (is_null($profile)) {
+    	    $profile = parent::find($userId);
+    	    
+    	    if (!is_null($profile)) {
+    	    	return true;
+    	    }
+    	    
+            $data = array(
+                'userId'         => $userId,
+                'availableVotes' => $uc['profileInitialVotes'],
+            );
+
+            parent::insert($data);
+    	}
+    	
+    	return null;
+    }
 }

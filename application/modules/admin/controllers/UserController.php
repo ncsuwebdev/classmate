@@ -69,7 +69,7 @@ class Admin_UserController extends Internal_Controller_Action
             'add'    => $this->_acl->isAllowed($this->_role, $this->_resource, 'add'),
             'edit'   => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
             'delete' => $this->_acl->isAllowed($this->_role, $this->_resource, 'delete'),
-            'log'    => $this->_acl->isAllowed($this->_role, 'admin_log', 'index'),
+            'profile' => $this->_acl->isAllowed($this->_role, 'profile_index', 'details'),
         );
 
         if (count($users) != 0) {

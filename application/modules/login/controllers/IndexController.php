@@ -105,6 +105,12 @@ class Login_IndexController extends Internal_Controller_Action
             $authz = new $config->authorization($userId);
             $user = $authz->getUser($userId);
             
+            $uc = Zend_Registry::get('userConfig');
+            
+            $profile = new Profile();
+
+            $profile->addProfile($userId);
+            
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->info('User Logged In');  
@@ -155,13 +161,13 @@ class Login_IndexController extends Internal_Controller_Action
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
             $post = Zend_Registry::get('post');
             
-            $userId = $filter->filter($post['userId']) . '@' . $realm;
-
             if (!isset($post['realm'])) {
                 throw new Internal_Exception_Input('Realm not found');
             }
             
             $realm = $filter->filter($post['realm']);
+            
+            $userId = $filter->filter($post['userId']) . '@' . $realm;
             
             $auth = new $config->authentication->$realm->class();
             

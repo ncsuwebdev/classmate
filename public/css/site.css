@@ -275,6 +275,11 @@ img {
     padding: 0 0 0 10px;
 }
 
+.left_articles h2 {
+    color: #6e6e6e;
+    padding: 10px 0 15px 0;
+}
+
 .lt {
     height: 10px;
     background: #6E6E6E url(../images/lt.gif) no-repeat;

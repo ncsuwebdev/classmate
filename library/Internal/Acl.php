@@ -87,6 +87,7 @@ class Internal_Acl extends Zend_Acl
         $this->add(new Zend_Acl_Resource('admin_config'));
         $this->add(new Zend_Acl_Resource('admin_email'));
         $this->add(new Zend_Acl_Resource('login_index'));
+        $this->add(new Zend_Acl_Resource('profile_index'));
         
         foreach ($xml->role as $x) {
 

@@ -13,8 +13,8 @@
             <th width="80">User ID</th>
             <th width="150">Realm</th>
             <th width="200">Access Role</th>
-            {if $acl.log}
-            <th width="50">Logs</th>
+            {if $acl.profile}
+            <th width="50">Profile</th>
             {/if}
             {if $acl.edit}
             <th width="50">Edit</th>
@@ -29,9 +29,9 @@
             <td>{$u.userId|regex_replace:"/@.*$/":""}</td>
             <td align="center">{$realms.$realm.name}</td>
             <td align="center">{$u.role}</td>
-            {if $acl.log}
+            {if $acl.profile}
             <td align="center">
-                <a href="{$sitePrefix}/admin/log/?userId={$u.userId}"><img src="{$sitePrefix}/public/images/log.png" alt="Logs for {$u.userId}" /></a>
+                <a href="{$sitePrefix}/profile/?userId={$u.userId}"><img src="{$sitePrefix}/public/images/profile.png" alt="User profile for {$u.userId}" /></a>
             </td>
             {/if}
             {if $acl.edit}

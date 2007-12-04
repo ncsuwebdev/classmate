@@ -64,8 +64,8 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
      * @var array
      */
     private $_noAcl = array('module'     => 'default',
-                            'controller' => 'index',
-                            'action'     => 'access'
+                            'controller' => 'error',
+                            'action'     => 'error'
                             );
 
     /**
@@ -118,36 +118,14 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
         if (!$this->_acl->isAllowed($this->_acl->getDefaultRole(), $resource, $action)) {
 
-        	$adapters = $config->authentication->toArray();
-        	
-        	foreach ($adapters as $a) {
-        		
-	            // We check to see if the adapter allows auto logging in, if it does we do it
-		        if (call_user_func(array($a['class'], 'autoLogin'))) {
+        	// already logged in
+            if ($this->_auth->hasIdentity() && $this->_auth->getIdentity() != '' && !is_null($this->_auth->getIdentity())) {
 
-		            // Set up the authentication adapter
-		            $authAdapter = new $a['class'];
-		
-		            // Attempt authentication, saving the result
-		            $result = $this->_auth->authenticate($authAdapter);
-		
-		            if (!$result->isValid()) {
-		                throw new Exception('Error getting login credentials');
-		            }
-		        }
-		
-		        if ($this->_auth->hasIdentity() && $this->_auth->getIdentity() != '' && !is_null($this->_auth->getIdentity())) {
-
-		            $roles = $authz->authorize(new $config->authorization($this->_auth->getIdentity()));
-		
-		            if ($roles->isValid()) {
-		                $role = $authz->getRole();
-		            }
-		        }
-		        
-		        if ($role != '') {
-		        	break;
-		        }
+                $roles = $authz->authorize(new $config->authorization($this->_auth->getIdentity()));
+        
+                if ($roles->isValid()) {
+                    $role = $authz->getRole();
+                }
         	}      
         } else {
         	$auth = Zend_Auth::getInstance();
@@ -183,26 +161,7 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         if ($role == '') {
             $role = $this->_acl->getDefaultRole();
         }
-
-        //echo "$role is trying to access $resource $action";
-
-        if (!$this->_acl->isAllowed($role, $resource, $action)) {
-            if (!$this->_auth->hasIdentity()) {
-                $module     = $this->_noAuth['module'];
-                $controller = $this->_noAuth['controller'];
-                $action     = $this->_noAuth['action'];
-            } else {
-                $module     = $this->_noAcl['module'];
-                $controller = $this->_noAcl['controller'];
-                $action     = $this->_noAcl['action'];
-            }
-        }
-
-        $request->setModuleName($module);
-        $request->setControllerName($controller);
-        $request->setActionName($action);
-
-
+        
         try {
             $resources = $this->_acl->getResourcesWithSomeAccess($role);
         } catch (Exception $e) {
@@ -250,5 +209,21 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $view->branch = $request->module;
         $view->tabs   = $viewTabs;
         $view->subnav = $subTabs;
+        
+        //echo "$role is trying to access $resource $action";
+
+        if (!$this->_acl->isAllowed($role, $resource, $action)) {
+            if (!$this->_auth->hasIdentity()) {
+                $module     = $this->_noAuth['module'];
+                $controller = $this->_noAuth['controller'];
+                $action     = $this->_noAuth['action'];
+            } else {
+                throw new Internal_Exception_Access('You do not have the proper credentials to access this page.');
+            }
+        }
+
+        $request->setModuleName($module);
+        $request->setControllerName($controller);
+        $request->setActionName($action);        
     }
 }

@@ -55,7 +55,7 @@ class IndexController extends Internal_Controller_Action
 
     public function imageAction()
     {
-        $this->_helper->viewRenderer->setNoRender();
+        $this->_helper->viewRenderer->setNeverRender();
         
         $get = Zend_Registry::get('get');
         $filter = Zend_Registry::get('inputFilter');
@@ -68,9 +68,13 @@ class IndexController extends Internal_Controller_Action
 
         $image = new Image;
 
-        $result = $image->find((int)$imageId);
+        $result = $image->find($imageId);     
 
-        header("Content-type: " . $result['contentType']);
-        echo $result['source'];
+        if (!is_null($result)) {
+        	$result = $result->toArray();
+        	
+	        header("Content-type: " . $result['contentType']);
+	        echo $result['source'];
+        }
     }   
 }

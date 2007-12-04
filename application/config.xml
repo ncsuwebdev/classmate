@@ -24,6 +24,12 @@
     	       <author>Outreach Technology</author>
     	   </graphic>
     	</branding>
+    	<profileTypes>
+    	   <faculty>Faculty</faculty>
+    	   <staff>Staff</staff>
+    	   <student>Student</student>
+    	   <guest>Guest</guest>
+    	</profileTypes>
     	<aclConfigFile>./library/Internal/Acl/aclConfig.xml</aclConfigFile>
         <userConfigFile>./library/Internal/Config/userConfig.xml</userConfigFile>
     	<cronDirectory>./cron</cronDirectory>

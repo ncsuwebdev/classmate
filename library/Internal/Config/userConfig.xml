@@ -11,5 +11,6 @@
         <fileUploadPathProposal>./public/files/proposal</fileUploadPathProposal>
         <fileUploadAllowableExtensions>pdf,doc,ppt,html</fileUploadAllowableExtensions>
         <homeNumberBlogPosts>10</homeNumberBlogPosts>
+        <profileInitialVotes>5</profileInitialVotes>
     </production>
 </configdata>

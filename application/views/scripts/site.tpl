@@ -81,7 +81,7 @@
         {if $showNews}
         <div class="left">
             <div class="left_articles">
-                <h2><a href="#">{$title}</a></h2>
+                <h2>{$title}</h2>
                 <div id="actionTemplate">
                 {$actionTemplate}
                 </div>
@@ -105,7 +105,7 @@
         {else}
         <div class="left full">
             <div class="left_articles">
-                <h2><a href="#">{$title}</a></h2>
+                <h2>{$title}</h2>
                 <div id="actionTemplate">
                 {$actionTemplate}
                 </div>
