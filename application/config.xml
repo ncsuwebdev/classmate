@@ -95,7 +95,7 @@
     	           </tab3>
     	           <tab4>
     	               <controller>log</controller>
-    	               <display>Action Logs</display>
+    	               <display>Logs</display>
     	               <select>log</select>
     	               <link></link>
     	           </tab4>
@@ -128,7 +128,13 @@
                        <display>App Config</display>
                        <select></select>
                        <link></link>
-                   </tab10>                       	           
+                   </tab10>
+                   <tab11>
+                       <controller>location</controller>
+                       <display>Locations</display>
+                       <select></select>
+                       <link></link>
+                   </tab11>                       	           
     	       </submenu>
     	   </tab3>
     	</navigation>

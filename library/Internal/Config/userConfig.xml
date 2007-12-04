@@ -2,15 +2,14 @@
 <configdata>
     <production>
         <timezone>America/New_York</timezone>
-        <appTitle>Resnet Symposium Proposal Manager</appTitle>
-        <appDescription>Resnet Symposium Proposal Manager</appDescription>
-        <fromEmailAddress>admin@rspm.com</fromEmailAddress>
+        <appTitle>ClassMate</appTitle>
+        <appDescription>Where all your classmate classness comes true.</appDescription>
+        <fromEmailAddress>admin@classmate.ncsu.edu</fromEmailAddress>
         <fromEmailName>Steve Dave</fromEmailName>
-        <activeConference>3</activeConference>
         <numHoursEvaluationAvailability>24</numHoursEvaluationAvailability>
         <fileUploadPathProposal>./public/files/proposal</fileUploadPathProposal>
         <fileUploadAllowableExtensions>pdf,doc,ppt,html</fileUploadAllowableExtensions>
-        <homeNumberBlogPosts>10</homeNumberBlogPosts>
+        <homeNumberNewsPosts>5</homeNumberNewsPosts>
         <profileInitialVotes>5</profileInitialVotes>
     </production>
 </configdata>

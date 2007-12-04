@@ -85,7 +85,6 @@ form {
 
 
 select, input, textarea {
-    font-size: 90%;
     border: 1px solid #C85E35;
     background-color: #F4F4F4;
 }
@@ -393,6 +392,7 @@ div#oitocfooter .right {
 
 
 table.list {
+    margin-bottom: 5px;
     border: 1px solid #000;
     border-collapse: collapse;
 }
