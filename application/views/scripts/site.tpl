@@ -26,8 +26,10 @@
 		            <b>You are not Logged in!</b> <a href="{$sitePrefix}/login/">Log in</a> here.
 		            {else}
 		            Logged in as {$loggedInUser} via {$loggedInRealm}  &nbsp;|&nbsp;
-		            <a href="{$sitePrefix}/profile/index/edit/">Edit Profile</a>  &nbsp;|&nbsp;
+		            <a href="{$sitePrefix}/profile/">My Profile</a>  &nbsp;|&nbsp;
+		            {if $authManageLocally}
 		            <a href="{$sitePrefix}/login/index/changePassword/">Change Password</a> &nbsp;|&nbsp;
+		            {/if}
 		            <a href="{$sitePrefix}/login/index/logout/">Sign Out</a>
 		            {/if}                    
                     </p>                    
@@ -48,7 +50,7 @@
         </div>
             
         <div class="logo">
-            <h1><a href="#">Class<span class="red">Mate</span></a></h1>
+            <h1><a href="{$sitePrefix}/">Class<span class="red">Mate</span></a></h1>
             <p>Do it to it...</p>
         </div>
         

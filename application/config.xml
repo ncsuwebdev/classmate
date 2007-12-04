@@ -93,12 +93,6 @@
     	               <select>log</select>
     	               <link></link>
     	           </tab4>
-    	           <tab5>
-    	               <controller>semester</controller>
-    	               <display>Semesters</display>
-    	               <select>semester</select>
-    	               <link></link>
-    	           </tab5>
     	           <tab6>
     	               <controller>cron</controller>
     	               <display>Cron Status</display>

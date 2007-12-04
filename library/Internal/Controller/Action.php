@@ -26,6 +26,7 @@ class Internal_Controller_Action extends Zend_Controller_Action
 	    		    	
             $this->view->loggedInUser = $user[0];
             $this->view->loggedInRealm = $config->authentication->{$user[1]}->name; 
+            $this->view->authManageLocally = call_user_func(array($config->authentication->{$user[1]}->class, 'manageLocally'));
         }        
 	}
 }
