@@ -71,6 +71,10 @@
     	           </tab4>
     	       </submenu>
     	   </tab0>
+           <tab1>
+               <module>calendar</module>
+               <display>Calendar</display>
+           </tab1>
     	   <tab3>
     	       <module>admin</module>
     	       <display>Admin</display>
