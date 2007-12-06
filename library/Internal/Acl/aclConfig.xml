@@ -6,6 +6,10 @@
     <editable>1</editable>
     <allows>
       <allow>
+        <resource>calendar_index</resource>
+        <privilege>*</privilege>
+      </allow>
+      <allow>
         <resource>default_bug</resource>
         <privilege>details</privilege>
       </allow>

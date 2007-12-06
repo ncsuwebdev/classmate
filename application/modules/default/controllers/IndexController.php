@@ -46,6 +46,7 @@ class IndexController extends Internal_Controller_Action
         $this->view->showNews = true;
     }
     
+    
     public function searchAction()
     {
         $this->_helper->viewRenderer->setNeverRender();

@@ -137,6 +137,9 @@ img {
 
 /* layout
    ------ */
+.clear {
+    clear: both;	
+}
 
 .content { 
     margin: 10px auto;
@@ -630,4 +633,48 @@ ul.autocompleter-choices span.autocompleter-queried
 ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 {
     color: #9FCFFF;
+}
+
+#calendar {
+	width: 700px;
+    text-align: center;
+    background-color: #F4F4F4;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 20px;
+}
+
+#calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendarTitle {
+    font-weight: bold;
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 5px;    
+}
+
+.calendarDay {
+	width: 100px;
+	height: 60px;
+	vertical-align: top;
+	text-align: left;
+	cursor: pointer;
+}
+
+.calendarDay p.num {
+    text-align: center;
+    width: 20px;
+    margin: -4px 0 0 -4px;
+    border-bottom: 1px solid #464548;
+    border-right: 1px solid #464548;
+    color: #C3593C;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#loading {
+    visibility: hidden;
 }

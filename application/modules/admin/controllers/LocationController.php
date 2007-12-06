@@ -42,8 +42,7 @@ class Admin_LocationController extends Internal_Controller_Action
             
         $locations = $location->fetchAll()->toArray();
         
-        $this->view->locations = $locations;
-            
+        $this->view->locations = $locations;       
     }
     
     public function addAction()

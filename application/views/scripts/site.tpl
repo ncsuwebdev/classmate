@@ -10,6 +10,11 @@
 {if $showNews}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/news.js"></script>
 {/if}
+{if $useInlineEditor}
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/moo.prompt.v1.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/sLedit.v1.js"></script>
+{/if}
 {foreach from=$javascript item=script}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/{$script}"></script>
 {/foreach}
