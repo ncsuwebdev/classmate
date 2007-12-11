@@ -13,7 +13,7 @@
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
  * @package    Classmate
- * @subpackage ClassTypeTag
+ * @subpackage Workshop
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  * @license    BSD License
@@ -24,27 +24,27 @@
  */
 
 /**
- * Model to interact with the tags of classes
+ * Model to interact with the workshops
  *
  * @package    Classmate
- * @subpackage ClassTypeTag
+ * @subpackage Workshop
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class ClassTypeTag extends Ot_Db_Table
+class Workshop extends Ot_Db_Table
 {
     /**
      * Name of the table in the database
      *
      * @var string
      */
-    protected $_name = 'tbl_class_type_tag';
+    protected $_name = 'tbl_workshop';
 
     /**
      * Primary key of the table
      *
      * @var string
      */
-    protected $_primary = array('classId', 'tagId');
+    protected $_primary = 'workshopId';
 }

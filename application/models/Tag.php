@@ -47,4 +47,28 @@ class Tag extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'tagId';
+    
+    public function getTagsForAttribute($attributeName, $attributeId)
+    {
+        $tagMap = new TagMap();
+        
+        $where = $tagMap->getAdapter()->quoteInto('attributeName = ?', $attributeName) . 
+           ' AND ' . 
+           $tagMap->getAdapter()->quoteInto('attributeId = ?', $attributeId);
+           
+        $tags = $tagMap->fetchAll($where);
+        
+        $tagIds = array();
+        foreach ($tags as $t) {
+            $tagIds[] = $t->tagId;
+        }
+        
+        if (count($tagIds) == 0) {
+            return array();
+        }
+        
+        $where = $this->getAdapter()->quoteInto('tagId IN (?)', $tagIds);
+        
+        return $this->fetchAll($where, 'name')->toArray();    	
+    }
 }

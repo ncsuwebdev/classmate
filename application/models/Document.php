@@ -47,4 +47,28 @@ class Document extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'documentId';
+    
+    public function getDocumentsForAttribute($attributeName, $attributeId)
+    {
+    	$docMap = new DocumentMap();
+    	
+    	$where = $docMap->getAdapter()->quoteInto('attributeName = ?', $attributeName) . 
+    	   ' AND ' . 
+    	   $docMap->getAdapter()->quoteInto('attributeId = ?', $attributeId);
+    	   
+    	$docs = $docMap->fetchAll($where);
+    	
+    	$docIds = array();
+    	foreach ($docs as $d) {
+    		$docIds[] = $d->documentId;
+    	}
+    	
+    	if (count($docIds) == 0) {
+    		return array();
+    	}
+    	
+    	$where = $this->getAdapter()->quoteInto('documentId IN (?)', $docIds);
+    	
+    	return $this->fetchAll($where, 'name')->toArray();
+    }
 }

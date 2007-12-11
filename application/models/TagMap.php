@@ -13,7 +13,7 @@
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
  * @package    Classmate
- * @subpackage ClassType
+ * @subpackage TagMap
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  * @license    BSD License
@@ -24,27 +24,27 @@
  */
 
 /**
- * Model to interact with the classes
+ * Model to map tags to attributes
  *
  * @package    Classmate
- * @subpackage ClassType
+ * @subpackage TagMap
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class ClassType extends Ot_Db_Table
+class TagMap extends Ot_Db_Table
 {
     /**
      * Name of the table in the database
      *
      * @var string
      */
-    protected $_name = 'tbl_class_type';
+    protected $_name = 'tbl_tag_map';
 
     /**
      * Primary key of the table
      *
      * @var string
      */
-    protected $_primary = 'classId';
+    protected $_primary = array('attributeName', 'attributeId', 'tagId');
 }

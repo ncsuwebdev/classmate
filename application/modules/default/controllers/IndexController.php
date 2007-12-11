@@ -46,14 +46,40 @@ class IndexController extends Internal_Controller_Action
         $this->view->showNews = true;
     }
     
-    
-    public function searchAction()
+    public function autoSuggestAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
         
-        echo Zend_Json_Encoder::encode(array("excel", "photoshop", "php", "word"));
+        $tag = new Tag();
+        
+        $post = Zend_Registry::get('post');
+
+        $filter = Zend_Registry::get('inputFilter');
+        $search = $filter->filter($post['search']);
+        
+        while (preg_match('/,/', $search)) {
+            $search = trim(preg_replace('/^[^,]*,/', '', $search));
+        }
+        
+        $ret = array();
+        if ($search != '') {
+	        $where = $tag->getAdapter()->quoteInto('name LIKE ?', $search . '%');
+	        
+	        $tags = $tag->fetchAll($where, 'name');
+	                
+	        foreach ($tags as $t) {
+	        	$ret[] = $t->name;
+	        }
+        }
+                
+        echo Zend_Json_Encoder::encode($ret);
     }
 
+    public function searchAction()
+    {
+    	
+    }
+    
     public function imageAction()
     {
         $this->_helper->viewRenderer->setNeverRender();

@@ -36,6 +36,7 @@
     	<display>
     	   <headerRowRepeat>25</headerRowRepeat>
     	   <dateTimeFormat>%m/%d/%Y %I:%M %p</dateTimeFormat>
+    	   <longDateFormat>%A, %B %e, %Y</longDateFormat>
     	   <dateFormat>%m/%d/%Y</dateFormat>
     	   <timeFormat>%I:%M %p</timeFormat>
     	</display>
@@ -72,9 +73,33 @@
     	       </submenu>
     	   </tab0>
            <tab1>
+               <module>workshop</module>
+               <display>Our Workshops</display>
+               <submenu>
+                   <tab1>
+                       <controller>index</controller>
+                       <display>Our Workshops</display>
+                       <select>home</select>
+                       <link></link>
+                   </tab1>
+                   <tab2>
+                       <controller>proposal</controller>
+                       <display>Teach a New Workshop!</display>
+                       <select></select>
+                       <link></link>
+                   </tab2>  
+                   <tab3>
+                       <controller>request</controller>
+                       <display>Request a Custom Workshop</display>
+                       <select></select>
+                       <link></link>
+                   </tab3>                               
+               </submenu>
+           </tab1>    	   
+           <tab2>
                <module>calendar</module>
                <display>Calendar</display>
-           </tab1>
+           </tab2>
     	   <tab3>
     	       <module>admin</module>
     	       <display>Admin</display>

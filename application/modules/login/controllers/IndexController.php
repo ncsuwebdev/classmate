@@ -104,9 +104,7 @@ class Login_IndexController extends Internal_Controller_Action
             
             $authz = new $config->authorization($userId);
             $user = $authz->getUser($userId);
-            
-            $uc = Zend_Registry::get('userConfig');
-            
+                        
             $profile = new Profile();
 
             $profile->addProfile($userId);
@@ -172,7 +170,7 @@ class Login_IndexController extends Internal_Controller_Action
             $auth = new $config->authentication->$realm->class();
             
             if (!$auth->manageLocally()) {
-                throw new Exception('This action is not allowed on this adapter');
+                throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
             }
             
             if ($userId != ''){
@@ -213,7 +211,7 @@ class Login_IndexController extends Internal_Controller_Action
         $auth = new $config->authentication->$realm->class();
         
         if (!$auth->manageLocally()) {
-            throw new Exception('This action is not allowed on this adapter');
+            throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
         }   
 
         $this->view->realm = $realm;
@@ -264,11 +262,11 @@ class Login_IndexController extends Internal_Controller_Action
 	        $auth = new $config->authentication->$realm->class();
 	        
 	        if (!$auth->manageLocally()) {
-	            throw new Exception('This action is not allowed on this adapter');
+	            throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
 	        }
 	        
 	        if (!$auth->allowUserSignUp()) {
-	            throw new Exception('This adapter does not allow users to sign up on their own');
+	            throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
 	        }    		
 	        
     		$authz = new $config->authorization('nouser');
@@ -331,11 +329,11 @@ class Login_IndexController extends Internal_Controller_Action
     	$auth = new $config->authentication->$realm->class();
     	
     	if (!$auth->manageLocally()) {
-    		throw new Exception('This action is not allowed on this adapter');
+    		throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
     	}
     	
     	if (!$auth->allowUserSignUp()) {
-    		throw new Exception('This adapter does not allow users to sign up on their own');
+    		throw new Internal_Exception_Access('The authentication adapter for your account does not allow users to signup');
     	}
     	
     	$this->view->title = 'Sign-up for an account';
@@ -351,14 +349,22 @@ class Login_IndexController extends Internal_Controller_Action
     {
         $this->view->title = 'Change your password';
         
+        $userId = Zend_Auth::getInstance()->getIdentity();
+            
+        $realm = preg_replace('/^[^@]*@/', '', $userId);
+            
+        $config   = Zend_Registry::get('config');
+        $auth = new $config->authentication->$realm->class();
+        
+        if (!$auth->manageLocally()) {
+        	throw new Internal_Exception_Access('The authentication adapter for your account does not support this feature');
+        }
+                   
         if ($this->_request->isPost()) {
             $post     = Zend_Registry::get('post');
-            $filter   = Zend_Registry::get('inputFilter');
-            $config   = Zend_Registry::get('config');
-            
-            $auth = new $config->authentication->guest;
-                        
-            $user = $auth->getUser(Zend_Auth::getInstance()->getIdentity());
+            $filter   = Zend_Registry::get('inputFilter');    
+                                
+            $user = $auth->getUser($userId);
             if (count($user) != 1) {
                 throw new Internal_Exception_Data('User account not found');
             }
@@ -382,7 +388,7 @@ class Login_IndexController extends Internal_Controller_Action
             if (Ot_Authz::getInstance()->getRole() == 'activation_pending') {
                 
                 $authz = new $config->authorization(Zend_Auth::getInstance()->getIdentity());
-                $authz->editUser($user['userId'], 'proposer');
+                $authz->editUser($user['userId'], 'authUser');
             }
             
             $this->_flashMessenger->addMessage('Your password has been changed.  You can now log in with your new credentials');
@@ -393,23 +399,5 @@ class Login_IndexController extends Internal_Controller_Action
                             
             $this->logoutAction();
         } 
-    }
-    
-    public function ncsuAction()
-    {
-    	$config = Zend_Registry::get('config');
-    	$auth = Zend_Auth::getInstance();
-    	
-        // Set up the authentication adapter
-        $authAdapter = new $config->authentication->ncsu();
-        
-        // Attempt authentication, saving the result
-        $result = $auth->authenticate($authAdapter);
-        
-        if (!$result->isValid()) {
-            throw new Exception('Error getting login credentials');
-        }  
-
-        $this->_redirect('/');
     }
 }

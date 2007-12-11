@@ -73,6 +73,8 @@ class Ot_Authz
      */
     protected $_storage = null;
 
+    protected $_sessionName = 'Ot_Authz';
+    
     /**
      * Singleton pattern implementation makes "new" unavailable
      *
@@ -114,7 +116,7 @@ class Ot_Authz
     public function authorize(Ot_Authz_Interface $adapter)
     {
         $result = $adapter->authorize();
-
+        
         $this->getStorage()->write($result->getRole());
 
         return $result;
@@ -134,8 +136,13 @@ class Ot_Authz
             /**
              * @see Zend_Auth_Storage_Session
              */
-            require_once 'Zend/Auth/Storage/Session.php';
-            $this->setStorage(new Zend_Auth_Storage_Session('Ot_Authz'));
+            require_once 'Ot/Auth/Storage/Session.php';
+            
+            $sessionSpace = $_SERVER['SERVER_NAME'] . 
+                substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], '/index.php')) .
+                'authz';
+                
+            $this->setStorage(new Ot_Auth_Storage_Session($sessionSpace));
         }
 
         return $this->_storage;

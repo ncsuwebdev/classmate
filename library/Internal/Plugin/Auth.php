@@ -210,8 +210,6 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $view->tabs   = $viewTabs;
         $view->subnav = $subTabs;
         
-        //echo "$role is trying to access $resource $action";
-
         if (!$this->_acl->isAllowed($role, $resource, $action)) {
             if (!$this->_auth->hasIdentity()) {
                 $module     = $this->_noAuth['module'];

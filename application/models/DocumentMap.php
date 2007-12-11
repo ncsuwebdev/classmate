@@ -46,5 +46,5 @@ class DocumentMap extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_primary = '';
+    protected $_primary = array('attributeName', 'attributeId', 'documentId');
 }

@@ -6,6 +6,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/site.css" />
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/mootools.v1.11.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.Remote.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/Observer.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/global.js"></script>
 {if $showNews}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/news.js"></script>

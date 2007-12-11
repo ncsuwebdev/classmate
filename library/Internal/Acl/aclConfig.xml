@@ -39,7 +39,23 @@
       </allow>
       <allow>
         <resource>login_index</resource>
-        <privilege>*</privilege>
+        <privilege>forgot</privilege>
+      </allow>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>index</privilege>
+      </allow>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>logout</privilege>
+      </allow>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>ncsu</privilege>
+      </allow>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>signup</privilege>
       </allow>
     </allows>
     <denys/>
@@ -50,8 +66,20 @@
     <editable>1</editable>
     <allows>
       <allow>
-        <resource>admin_api</resource>
-        <privilege>*</privilege>
+        <resource>default_bug</resource>
+        <privilege>add</privilege>
+      </allow>
+      <allow>
+        <resource>login_index</resource>
+        <privilege>changePassword</privilege>
+      </allow>
+      <allow>
+        <resource>profile_index</resource>
+        <privilege>edit</privilege>
+      </allow>
+      <allow>
+        <resource>profile_index</resource>
+        <privilege>index</privilege>
       </allow>
     </allows>
     <denys/>
@@ -81,33 +109,8 @@
     <denys/>
   </role>
   <role>
-    <name>test_role</name>
-    <inherit>authUser</inherit>
-    <editable>1</editable>
-    <allows>
-      <allow>
-        <resource>admin_acl</resource>
-        <privilege>add</privilege>
-      </allow>
-      <allow>
-        <resource>admin_acl</resource>
-        <privilege>delete</privilege>
-      </allow>
-      <allow>
-        <resource>admin_cron</resource>
-        <privilege>*</privilege>
-      </allow>
-    </allows>
-    <denys>
-      <deny>
-        <resource>admin_api</resource>
-        <privilege>*</privilege>
-      </deny>
-    </denys>
-  </role>
-  <role>
     <name>activation_pending</name>
-    <inherit>guest</inherit>
+    <inherit>authUser</inherit>
     <editable>1</editable>
     <allows/>
     <denys/>

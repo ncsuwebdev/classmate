@@ -47,4 +47,77 @@ class Event extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'eventId';
+    
+    public function getEventsForWorkshop($workshopId, $startDt = null, $endDt = null, $status = null)
+    {
+    	$dba = $this->getAdapter();
+    	
+    	$where = $dba->quoteInto('workshopId = ?', $workshopId);
+    	
+    	if (!is_null($status)) {
+    		$where .= ' AND ' . $dba->quoteInto('status = ?', $status);
+    	}
+    	
+    	if (!is_null($startDt)) {
+    		$startDate = date('Y-m-d', $startDt);
+    		$startTime = date('H:i:s', $startDt);
+    	}
+    	
+    	if (!is_null($endDt)) {
+    		$endDate = date('Y-m-d', $endDt);
+    		$endTime   = date('H:i:s', $endDt);
+    	}
+    	
+    	if (!is_null($startDt) && !is_null($endDt)) {
+            $where .= ' AND ' . 
+                '(' .
+	                '(' . 
+	                    $dba->quoteInto('date > ?', $startDate) . 
+	                    ' AND ' . 
+	                    $dba->quoteInto('date < ?', $endDate) . 
+	                ')' . 	                    
+	                ' OR ' . 
+                    '(' . 
+                        $dba->quoteInto('date = ?', $startDate) . 
+                        ' AND ' .
+                        $dba->quoteInto('startTime >= ?', $startTime) . 
+                    ')' . 
+                    ' OR ' . 
+                    '(' . 
+                        $dba->quoteInto('date = ?', $endDate) . 
+                        ' AND ' .
+                        $dba->quoteInto('endTime <= ?', $endTime) . 
+                    ')' . 
+                ')';                        
+    	} elseif (!is_null($startDt)) {
+    		$where .= ' AND ' . 
+    		    '(' . 
+                    '(' . 
+                        $dba->quoteInto('date > ?', $startDate) .
+                    ')' .                       
+                    ' OR ' . 
+                    '(' . 
+                        $dba->quoteInto('date = ?', $startDate) . 
+                        ' AND ' .
+                        $dba->quoteInto('startTime >= ?', $startTime) . 
+                    ')' .    
+                ')';
+                         		
+    	} elseif (!is_null($endDt)) {
+            $where .= ' AND ' . 
+                '(' . 
+                    '(' . 
+                        $dba->quoteInto('date > ?', $endDate) .
+                    ')' .                       
+                    ' OR ' . 
+                    '(' . 
+                        $dba->quoteInto('date = ?', $endDate) . 
+                        ' AND ' .
+                        $dba->quoteInto('endTime >= ?', $endTime) . 
+                    ')' .    
+                ')';    		
+    	}
+    	
+    	return $this->fetchAll($where, array('date', 'startTime'));
+    }
 }

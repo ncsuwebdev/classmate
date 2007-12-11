@@ -71,29 +71,10 @@ class Internal_Authz_Adapter_DbAuthz implements Ot_Authz_Interface, Ot_Authz_Ada
      */
     public function __construct($identity)
     {
-        /*
-        require_once $_SERVER['KEY_MANAGER_PATH'];
-
-        $km = new KeyManager;
-
-        $key = $km->getKeyObject('userauth_writer');
-
-        $dbConfig = array(
-            'adapter'  => 'PDO_MYSQL',
-            'username' => $key->user,
-            'password' => $key->password,
-            'host'     => $key->host,
-            'port'     => $key->port,
-            'dbname'   => $key->dbname
-            );
-
-        $this->_db = Zend_Db::factory($dbConfig['adapter'], $dbConfig);
-        */
         $this->_db = Zend_Registry::get('dbAdapter');
         $this->_identity = $identity;
-
     }
-
+    
     /**
      * Given a userId, gets all roles associated with that userId
      *

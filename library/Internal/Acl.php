@@ -77,6 +77,7 @@ class Internal_Acl extends Zend_Acl
         $this->add(new Zend_Acl_Resource('admin_email'));
         $this->add(new Zend_Acl_Resource('login_index'));
         $this->add(new Zend_Acl_Resource('profile_index'));
+        $this->add(new Zend_Acl_Resource('workshop_index'));
         $this->add(new Zend_Acl_Resource('calendar_index'));
         
         foreach ($xml->role as $x) {
@@ -183,32 +184,13 @@ class Internal_Acl extends Zend_Acl
      */
     public function hasSomeAccess($role, $resource)
     {
-        $r = $role;
-        $res = $resource;
+        $access = $this->getResourcesWithSomeAccess($role);
 
-        if (null !== $role) {
-            $role = $this->_getRoleRegistry()->get($role);
+        if ($access == "*") {
+            return true;
         }
 
-        if (null !== $resource) {
-            $resource = $this->get($resource);
-        }
-
-        $rules = $this->_getRules($resource, $role);
-
-        if (null !== $rules) {
-            if (isset($rules['allPrivileges']['type']) && $rules['allPrivileges']['type'] === self::TYPE_ALLOW) {
-                return true;
-            }
-
-            foreach ($rules['byPrivilegeId'] as $privilege => $rule) {
-                if (self::TYPE_ALLOW === ($ruleTypeOnePrivilege = $this->_getRuleType($resource, $role, $privilege))) {
-                    return true;
-                }
-            }
-        }
-
-        return $this->isAllowed($role, $resource);
+        return in_array($resource, $access);
     }
 
     public function getResourcesWithSomeAccess($role)

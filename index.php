@@ -67,6 +67,7 @@ Zend_Registry::set('dbAdapter', $db);
 
 // Get the current instance of Zend_Auth
 $auth = Zend_Auth::getInstance();
+$auth->setStorage(new Ot_Auth_Storage_Session($_SERVER['SERVER_NAME'] . $baseUrl . 'auth'));
 
 // Create new instance of the ACL
 $acl = new Internal_Acl();
