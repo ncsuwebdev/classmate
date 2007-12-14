@@ -92,8 +92,10 @@ class Workshop_IndexController extends Internal_Controller_Action
     	
     	$this->view->locations = $locs;
     	
-    	$this->view->javascript = 'mootabs1.2.js';
+    	$this->view->javascript = array('mootabs1.2.js');
+    	$this->view->useInlineEditor = true;
     	$this->view->title    = $thisWorkshop->title;
+    	$this->view->hideTitle = true;
     	$this->view->workshop = $thisWorkshop->toArray();
     }
     
@@ -104,6 +106,47 @@ class Workshop_IndexController extends Internal_Controller_Action
     
     public function editAction()
     {
+    	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
     	
+    	$editable = array('wsTitle', 'description', 'prerequisites');
+    	
+    	if ($this->_request->isPost()) {
+    		$post = Zend_Registry::get('post');
+    	    $filter = Zend_Registry::get('inputFilter');
+    	    
+    	    if (!isset($post['workshopId'])) {
+    	    	echo 'workshop ID not set';
+    	    	return;
+    	    }
+    	    
+    	    $workshopId = $filter->filter($post['workshopId']);
+    	    
+    	    if ($workshopId == '') {
+    	    	echo 'workshop ID can not be blank';
+    	    	return;
+    	    }
+    	    
+    	    $data = array(
+    	        'workshopId' => $workshopId,
+    	    );
+    	    
+    	    $htmlFilter = Zend_Registry::get('htmlFilter');
+    	    
+    	    foreach ($editable as $e) {
+    	    	if (isset($post[$e])) {
+    	    	    if ($e == 'wsTitle') {
+    	    	    	$data['title'] = $htmlFilter->filter($post[$e]);
+    	    	    } else {
+        	    		$data[$e] = $htmlFilter->filter($post[$e]);
+    	    	    }
+    	    	}
+    	    }
+    	    
+    	    $workshop = new Workshop();
+    	    $workshop->update($data, null);
+    	    
+    	    echo 'Workshop saved successfully';
+    	    return;    	    
+    	}
     }
 }

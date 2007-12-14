@@ -1,26 +1,33 @@
-<div id="tagList">
-	<b>Tags:</b>
-	{foreach from=$tags item=t}
-	<a href="{$sitePrefix}/index/search/?search={$t.name}">{$t.name}</a> &nbsp; 
-	{foreachelse}
-	None
-	{/foreach}
+<div id="response" class="response">&nbsp;</div> 
+<input type="hidden" name="workshopId" value="{$workshop.workshopId}" class="postArgs description wsTitle prerequisites" />   
+<div id="workshopTitleContainer">
+	<div id="editTitle" class="inlineEdit" target="wsTitle"></div>
+	<div id="wsTitle" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.title}</div>
 </div>
-
+{if $acl.edit}
+<div id="editDescription" class="inlineEdit" target="description"></div>
+<div id="description" rel="type=textarea&cols=110&rows=30&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.description}</div>
+{else}
+<div id="description">{$workshop.description}</div>
+{/if}
+<br />
+<div id="editTags" class="inlineEdit" target="tagList"></div>
+<div id="tagList">
+    <b>Tags:</b>
+    {foreach from=$tags item=t}
+    <a href="{$sitePrefix}/index/search/?search={$t.name}">{$t.name}</a> &nbsp; 
+    {foreachelse}
+    None
+    {/foreach}
+</div>
+<div id="editPrerequisites" class="inlineEdit" target="prerequisites"></div>
 <div id="tabContainer">
+
     <ul class="mootabs_title">
-        <li title="tabDescription">Workshop Description</li>
         <li title="tabSchedule">Upcoming Schedule</li>        
         <li title="tabPrereqs">Pre-Requisites</li>
         <li title="tabDocuments">Handouts</li>
     </ul>
-	
-	<div class="mootabs_panel" id="tabDescription">
-	    {if $acl.edit}
-	    <img src="{$sitePrefix}/public/images/edit.png" width="16" height="16" style="float:right" /><br />
-	    {/if}
-		<span id="descriptionContent">{$workshop.description}</span>
-    </div>
     
     <div class="mootabs_panel" id="tabDocuments">
         Click on the document to download it.<br /><br />
@@ -33,10 +40,14 @@
 		    </div>
 		    {/foreach}
 		</div>
-	</div>
-	
+	</div>	
 	<div class="mootabs_panel" id="tabPrereqs">
-        {$workshop.prerequisites}
+        {if $acl.edit}
+        <div id="prerequisites" rel="type=textarea&cols=100&rows=15&url={$sitePrefix}/workshop/index/edit/&response=prerequisitesResponse">{$workshop.prerequisites}</div>
+        {else}
+        <div id="prerequisites">{$workshop.prerequisites}</div>
+        {/if}	
+        
     </div>
     
     <div class="mootabs_panel" id="tabSchedule">

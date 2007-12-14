@@ -21,18 +21,42 @@ window.addEvent('domready', function() {
     myTabs1 = new mootabs('tabContainer', {
         width: '100%',
         height: '300px',
-        changeTransition: Fx.Transitions.Quad.easeOut,
-        duration: 1000,
+        changeTransition: '',
+        duration: 0,
         mouseOverClass: 'over',
         activateOnLoad: 'first',
         useAjax: false,
     });
+
+
+    var editorClass = '.inlineEdit';
     
-    $$('.inlineEdit').each(function (el) {
-    
-        el.addEvent('dblclick', function(e) {
-            
+    $$(editorClass).each(function(el) {
+        el.addEvent('click', function() {
+            var editor = new myIEdit(el, editorClass);
         });
     });
     
+}); 
+    
+var myIEdit = iEdit.extend({
+    class: '',
+    
+    initialize: function(el, class) {
+        $$(class).each(function (hide) {
+            hide.style.display = 'none';
+        });
+        
+        this.class = class;
+        this.parent(el);
+    },
+    
+    cleanup: function() {
+        $$(this.class).each(function (show) {
+            show.style.display = '';
+        });
+            
+        this.parent();
+    }
 });
+

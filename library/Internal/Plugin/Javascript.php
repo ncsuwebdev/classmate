@@ -40,8 +40,8 @@ class Internal_Plugin_Javascript extends Zend_Controller_Plugin_Abstract
         $scriptsDir = './public/scripts';
         $scripts = $view->javascript;
         
-        $autoload = $request->module . '/' . $request->controller . '/' . $request->action . '.js';
-          
+        $autoload = $request->getModuleName() . '/' . $request->getControllerName() . '/' . $request->getActionName() . '.js';
+        
         if (is_file($scriptsDir . '/' . $autoload)) {
              if (is_array($scripts)) {
                 array_push($scripts, $autoload);    	

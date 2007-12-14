@@ -73,7 +73,7 @@ h2 .yellow{
 
 p { margin: 0 0 5px 0; }
 
-ul { 
+div.bar ul { 
     margin: 0; 
     padding : 0; 
     list-style : none; 
@@ -534,7 +534,7 @@ div#accessList img.info {
 }
 
 .highlight {
-    background-color: #FFFD77;
+    background-color: #ffffcc;
 }
 
 .enabled {
@@ -726,19 +726,20 @@ div#documents a {
     margin-right: 4px;
     cursor: pointer;
     height: 20px;
-    background-color: #C3593C;
+    background-color: #6e6e6e;
     color: #FFF;
 }
 
 .mootabs_title li.active {
-    background-color: #464548;
+    
+    background-color: #C3593C;
 }
 
 .mootabs_panel {
     display: none;
     background-color: #ddd;
     position: relative;
-    width: 100%;
+    width: 748px;
     top: -1px;
     clear: both;
     overflow: auto;
@@ -746,7 +747,44 @@ div#documents a {
 }
 
 .mootabs_panel.active {
-    background-color: #e6e6e6;
+    background-color: #F4F4F4;
     display: block;
-    border: 1px solid #464548;
+    border: 1px solid #C3593C;
+}
+
+.response {
+	background-color: #ffffcc;
+    display: inline;
+}
+
+.searchTitle {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+div.inlineEdit {
+    background-image: url(../images/editFlag.png);
+    background-position: top right;
+    width: 40px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    left: -45px;
+    float: left;
+    margin-right: -45px;
+    z-index: 55;
+}
+
+div.inlineEdit:hover {
+    background-position: top left;
+}
+
+div#workshopTitleContainer {
+    padding-bottom: 20px;
+}
+
+div#workshopTitleContainer div#wsTitle {
+    font-size: 140%;
+    font-weight: bold;
+    color: #6E6E6E;
 }

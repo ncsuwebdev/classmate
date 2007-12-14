@@ -36,7 +36,35 @@ class Workshop_ProposalController extends Internal_Controller_Action
 {	
 	public function indexAction()
 	{
+		if ($this->_request->isPost()) {
+			$post       = Zend_Registry::get('post');
+			$filter     = Zend_Registry::get('inputFilter');
+			$htmlFilter = Zend_Registry::get('htmlFilter');
+			
+			$data = array(
+			    'title'              => $filter->filter($post['title']),
+			    'description'        => $htmlFilter->filter($post['description']),
+			    'prerequisites'      => $htmlFilter->filter($post['prerequisites']),
+			    'softwareDependency' => $filter->filter($post['softwareDependency']), 
+			);
+			
+			$tags = explode(',', $filter->filter($post['tags']));
+			
+			foreach ($tags as &$t) {
+				$t = $filter->filter($t);
+			}
+
+            $workshop = new Workshop();
+            $data['workshopId'] = $workshop->insert($data);			
+			
+			$tag = new Tag();
+			$tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);
+			
+			$this->_redirect('/workshop/');
+		}
 		$this->view->title = 'Teach a New Workshop!';
+		
+		$this->view->javascript = 'tiny_mce/tiny_mce.js';
 	}
 	
     /**

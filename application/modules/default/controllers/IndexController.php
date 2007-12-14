@@ -77,7 +77,33 @@ class IndexController extends Internal_Controller_Action
 
     public function searchAction()
     {
+    	$get = Zend_Registry::get('get');
+    	$filter = Zend_Registry::get('inputFilter');
     	
+    	if (!isset($get['search'])) {
+    		throw new Internal_Exception_Input('No search term was set');
+    	}
+    	
+    	$search = $filter->filter($get['search']);
+    	if ($search == '') {
+    		throw new Internal_Exception_Input('No search term was set');
+    	}
+    	
+    	$tag = new Tag();
+    	
+    	$ids = $tag->getAttributeIdsWithTag('workshopId', $search);
+    	
+    	if (count($ids) != 0) {
+	    	$workshop = new Workshop;
+	    	$where = $workshop->getAdapter()->quoteInto('workshopId IN (?)', $ids);
+	    	
+	    	$workshops = $workshop->fetchAll($where, 'workshopId DESC')->toArray();
+    	} else {
+    		$workshops = array();
+    	}
+    	
+    	$this->view->title = "Your search for &quot;" . $search . "&quot; returned " . count($workshops) . " workshop" . ((count($workshops) != 1) ? "s" : "") . ":";
+    	$this->view->workshops = $workshops;
     }
     
     public function imageAction()

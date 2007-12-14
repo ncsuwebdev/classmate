@@ -45,6 +45,19 @@ $inputFilter->addFilter(new Zend_Filter_StripTags())
 
 Zend_Registry::set('inputFilter', $inputFilter);
 
+$allowedTags = array('b','i','em','strong','u','img','li','ul','ol','p','a',
+    'span','font','h1','h2','h3','h4','h5','div');
+            
+$allowedAttributes = array('href','id','class','face','size','src','target',
+    'border','align','color','name','style','alt','width','height','hspace',
+    'vspace');
+            
+$htmlFilter = new Zend_Filter();
+$htmlFilter->addFilter(new Zend_Filter_StripTags($allowedTags, $allowedAttributes));
+$htmlFilter->addFilter(new Zend_Filter_StringTrim());
+
+Zend_Registry::set('htmlFilter', $htmlFilter);
+
 Zend_Registry::set('sitePrefix', $baseUrl);
 
 //register input filters

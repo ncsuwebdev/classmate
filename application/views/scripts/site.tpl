@@ -15,7 +15,8 @@
 {if $useInlineEditor}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/moo.prompt.v1.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="{$sitePrefix}/public/scripts/sLedit.v1.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/iEdit.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/tinyMceConfig.js"></script>
 {/if}
 {foreach from=$javascript item=script}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/{$script}"></script>
@@ -62,7 +63,7 @@
         </div>
         
         <div class="search_field">
-            <form method="post" action="?">
+            <form method="get" action="{$sitePrefix}/index/search/">
                 <p><span class="grey">Search Example:</span> <span class="search">Excel</span>&nbsp;&nbsp; <input type="text" id="searchBox" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
             </form>
         </div>
@@ -112,7 +113,9 @@
         {else}
         <div class="left full">
             <div class="left_articles">
+                {if !$hideTitle}
                 <h2>{$title}</h2>
+                {/if}
                 <div id="actionTemplate">
                 {$actionTemplate}
                 </div>

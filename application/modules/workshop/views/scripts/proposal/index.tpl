@@ -4,7 +4,7 @@ in mind that you want to teach?  If so, tell us about it.
 <form method="POST" class="checkRequiredFields" id="add">
 <table class="form">
     <tr>
-        <td><label for="title">Workshop Title:</label></td>
+        <td width="140"><label for="title">Workshop Title:</label></td>
         <td><input type="text" name="title" id="title" value="" class="required" size="30" maxlength="64" /></td>
     </tr>
     <tr>
@@ -31,7 +31,7 @@ in mind that you want to teach?  If so, tell us about it.
         please describe them below:</label></td>
     </tr>
     <tr>
-        <td colspan="2"><textarea name="softwareDependency" id="softwareDependency" rows="8" cols="70"></textarea></td>
+        <td colspan="2"><textarea class="mceNoEditor" name="softwareDependency" id="softwareDependency" rows="8" cols="70"></textarea></td>
     </tr>                  
 </table>
 <input type="submit" value="Submit" />

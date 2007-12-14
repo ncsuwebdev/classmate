@@ -71,4 +71,114 @@ class Tag extends Ot_Db_Table
         
         return $this->fetchAll($where, 'name')->toArray();    	
     }
+    
+    public function getAttributeIdsWithTag($attributeName, $tag)
+    {
+    	$tagMap = new TagMap();
+    	$ids = array();
+    	
+    	$dba = $this->getAdapter();
+    	$where = $dba->quoteInto('name = ?', $tag);
+    	
+    	$result = $this->fetchAll($where);
+    	if ($result->count() == 0) {
+    		return $ids;
+    	}
+    	
+    	$tag = $result->current();
+    	
+    	$where = $dba->quoteInto('attributeName = ?', $attributeName) . 
+    	   ' AND ' . 
+    	   $dba->quoteInto('tagId = ?', $tag->tagId);
+    	   
+    	$result = $tagMap->fetchAll($where, 'attributeId DESC');
+    	
+    	foreach ($result as $r) {
+    		$ids[] = $r->attributeId;
+    	}
+    	
+    	return $ids;
+    }
+    
+    /**
+     * Given an array of tags, sets them as tags for a given attribute
+     *
+     * @param string $attributeName
+     * @param mixed $attributeId
+     * @param array $tags
+     */
+    public function setTagsForAttribute($attributeName, $attributeId, $tags)
+    {
+        $tagMap = new TagMap();
+        $dba = $tagMap->getAdapter();
+        
+        $dba->beginTransaction();
+        
+        $where = $tagMap->getAdapter()->quoteInto('attributeName = ?', $attributeName) . 
+           ' AND ' . 
+           $tagMap->getAdapter()->quoteInto('attributeId = ?', $attributeId);
+
+        try {
+            $tagMap->delete($where);
+        } catch (Exception $e) {
+        	$dba->rollback();
+        	throw $e;
+        }
+        
+        if (count($tags) != 0) {
+        	$ids = array();
+        	$ignore = array();
+            
+        	/**
+        	 * @todo this is a fix that had to be added because quoteInto does a 
+        	 * foreach by reference on the array values, causing them to change
+        	 * the values in the base array.  When that bug gets fixed, this
+        	 * can be removed and $tags can be passed to quoteInto
+        	 */
+        	$tagList = array();
+        	foreach ($tags as $t) {
+        		$tagList[] = $t;
+        	}
+        	
+        	$where = $dba->quoteInto('name IN (?)', $tagList);
+        	
+        	$existing = $this->fetchAll($where);
+
+        	foreach ($existing as $e) {
+        		$ids[] = $e->tagId;
+        		$ignore[] = $e->name;
+        	}
+        	
+        	$new = array_diff($tags, $ignore);
+        	
+        	
+        	foreach ($new as $n) {
+        		try {
+        		    $this->insert(array('name' => $n));
+        		} catch (Exception $e) {
+        			$dba->rollBack();
+        			throw $e;
+        		}
+
+        		$ids[] = $dba->lastInsertId($this->_name);
+        	}
+        	
+        	foreach ($ids as $i) {
+        		$data = array(
+        		   'attributeName' => $attributeName,
+        		   'attributeId'   => $attributeId,
+        		   'tagId'         => $i,
+        		);
+        		
+        		try {
+        			$tagMap->insert($data);
+        		} catch (Exception $e) {
+        			$dba->rollback();
+        			throw $e;
+        		}
+        	}
+        }
+        
+        $dba->commit();        
+    }
 }
