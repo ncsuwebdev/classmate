@@ -94,15 +94,22 @@ class Calendar
             
             // put the numbers in the rows
             for ($z = $sd; $z < 7; $z++) {
-                
                                
                 $tmp = array();
                 if ($dayCounter <= $calData['monthDays']) {
                     
                     $zd->setDay($dayCounter);
                 
-                    // set the week number
+                    // set the week number  
                     $calData['rows'][$x]['weekNum'] = $zd->get(Zend_Date::WEEK);
+
+                    // we want to make sure that we don't get the previous year's dates, so 
+                    // we make any extra days week 53 in December of the current year instead of 01 of the next year
+                    if (isset($calData['rows'][$x-1]['weekNum'])) {
+                        if ($calData['rows'][$x-1]['weekNum'] == 52) {
+                            $calData['rows'][$x]['weekNum'] = 53;
+                        }
+                    }
                     
                     $tmp['num'] = $dayCounter;
                     $calData['rows'][$x]['days'][$z] = $tmp;
