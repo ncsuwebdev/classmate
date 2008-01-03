@@ -99,6 +99,7 @@ function setupCal()
 
 var lastMorph;
 var lastEl;
+
 function initializeCalendar()
 {
     var tds = $ES('td','calendar') //gets all the tds in the calendar;
@@ -166,20 +167,64 @@ function initializeCalendar()
             } else { // the cell is a week number
                 
                 var weekNum = $ES('p', el).getText();
-                var url = sitePrefix + "/calendar/index/getWeek";
-                var varStr = Object.toQueryString({year: currYear, month: currMonth, week: weekNum});
+                var url = sitePrefix + "/calendar/index/weekView";
+                var varStr = Object.toQueryString({year: currYear, week: weekNum, newWindow: 1});
                 
                 new StickyWinModal.Ajax({
                     url: url + "?" + varStr,
-                    width: 900,
+                    width: 1000,
                     height: 550,
                     className: 'weekViewWrapper',
+                    onDisplay: initializeWeekView,
+                    
                 }).update();
             }
              
         });
                 
     });    
+}
+
+function initializeWeekView()
+{          
+    var nextWeekButton = $('nextWeekButton');
+    var prevWeekButton = $('prevWeekButton');
+    
+    var url = sitePrefix + "/calendar/index/weekView";
+    
+    nextWeekButton.addEvent('click', function (e) {
+        var varStr = Object.toQueryString({year: $('weekViewNextYear').value, week: $('weekViewNextWeekNum').value, newWindow: 0});
+        
+        new Ajax(url, {
+            method: 'get',
+            data: varStr,
+            update: $('weekViewData'),
+            onRequest: function() {
+                $('weekLoading').style.visibility = 'visible';
+            },
+            onComplete: function() {
+                $('weekLoading').setStyle('visibility', 'hidden');
+            }
+        }).request();
+    });
+    
+    prevWeekButton.addEvent('click', function (e) {
+        var varStr = Object.toQueryString({year: $('weekViewPrevYear').value, week: $('weekViewPrevWeekNum').value});
+        
+        new Ajax(url, {
+            method: 'get',
+            data: varStr,
+            update: $('weekViewData'),
+            onRequest: function() {
+                $('weekLoading').style.visibility = 'visible';
+            },
+            onComplete: function() {
+                $('weekLoading').setStyle('visibility', 'hidden');
+            }
+        }).request();
+    });
+    
+    $('weekLoading').setStyle('visibility', 'hidden');
 }
 
 function setDates()

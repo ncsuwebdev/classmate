@@ -89,7 +89,7 @@ class Calendar_IndexController extends Internal_Controller_Action
         $this->_response->setBody($this->view->render('index/getCal.tpl'));
     }
     
-    public function getWeekAction()
+    public function weekViewAction()
     {
         
         $this->_helper->viewRenderer->setNeverRender();
@@ -98,19 +98,44 @@ class Calendar_IndexController extends Internal_Controller_Action
         $filter = Zend_Registry::get('inputFilter');
         
         $year  = $filter->filter($get['year']);
-        $month = $filter->filter($get['month']);
         $week  = $filter->filter($get['week']);
         
+        $newWindow = 0;
+        if (isset($get['newWindow'])) {
+            $newWindow = $filter->filter($get['newWindow']);
+        }
+        
         $this->view->year = $year;
-        $this->view->month = $month;
         $this->view->week = $week;
         
         $cal = new Calendar();
-        $c = $cal->getWeek($week, $month, $year);
+        $c = $cal->getWeek($week, $year);
+
+        $this->view->weekNum     = $c['weekNum'];
+        $this->view->year        = $c['year'];
+        
+        $this->view->nextWeekNum = $c['nextWeekNum'];
+        $this->view->nextYear    = $c['nextYear'];
+        
+        $this->view->prevWeekNum = $c['prevWeekNum'];
+        $this->view->prevYear    = $c['prevYear'];
+        
+        unset($c['year']);
+        unset($c['weekNum']);
+
+        unset($c['nextWeekNum']);
+        unset($c['nextYear']);
+        
+        unset($c['prevWeekNum']);
+        unset($c['prevYear']);
         
         $this->view->calendar = $c;
         
-        $this->_response->setBody($this->view->render('index/getWeek.tpl'));
+        if ($newWindow) {
+            $this->_response->setBody($this->view->render('index/weekView.tpl'));
+        } else {
+            $this->_response->setBody($this->view->render('index/getWeek.tpl'));
+        }
         
     }
 

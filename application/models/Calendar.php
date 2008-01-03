@@ -135,42 +135,52 @@ class Calendar
         return $calData;
     }
     
-    public function getWeek($week, $month = null, $year = null)
+    public function getWeek($week, $year)
     {
         
-        $zd = new Zend_Date();      
-        
-        if (is_null($month)) {
-            $month = date('n');         
-        }
-        
-        if (is_null($year)) {
-            $year = date('Y');
-        }
-        
-        $zd->setMonth($month);
+        $zd = new Zend_Date();
+        $event = new Event();
+        $workshop = new Workshop();      
+               
         $zd->setYear($year);
         $zd->setWeek($week);
         
-        $zd->setWeekday("sunday");
-
-        $event = new Event();
-        $workshop = new Workshop();
+        $zd->setWeekday("saturday");
         
-        $calData = array();
+        $month = $zd->get(Zend_Date::MONTH_SHORT);
+        
+        $calData = array();       
+        
+        // go to the week before the current week
+        $zd->subWeek(1);
+        $calData['prevWeekNum'] = $zd->get(Zend_Date::WEEK);
+        $calData['prevYear']    = $zd->get(Zend_Date::YEAR);
 
+        // go to the next week after the current week
+        $zd->addWeek(2);
+        $calData['nextWeekNum'] = $zd->get(Zend_Date::WEEK);
+        $calData['nextYear']    = $zd->get(Zend_Date::YEAR);
+        
+        // go back to the current week
+        $zd->subWeek(1);
+                
+        
+        // set the weekday to sunday for the display purposes
+        $zd->setWeekday("sunday");
+        
         for ($x = 0; $x < 7; $x++) {
             
             $tmp = array();
        
             $tmp['startDay']  = $zd->get(Zend_Date::WEEKDAY_DIGIT);
             $tmp['month']     = $zd->get(Zend_Date::MONTH_SHORT);
-            $tmp['day']     = $zd->get(Zend_Date::DAY_SHORT);
+            $tmp['day']       = $zd->get(Zend_Date::DAY_SHORT);
             $tmp['monthName'] = $zd->get(Zend_Date::MONTH_NAME);
             $tmp['monthDays'] = $zd->get(Zend_Date::MONTH_DAYS);
             $tmp['year']      = $zd->get(Zend_Date::YEAR);
+            $tmp['weekNum']   = $zd->get(Zend_Date::WEEK);
             $tmp['date']      = $zd->getDate();
-                      
+               
             $calData[$x] = $tmp;
             
             $where = $event->getAdapter()->quoteInto('date = ?', $tmp['year'] . "-" . $tmp['month'] . "-" . $tmp['day']);
@@ -190,6 +200,18 @@ class Calendar
             $zd->addDay(1);
         }
         
+        if ($calData[0]['weekNum'] == 52 && $calData[6]['weekNum'] == 1) {
+            if ($month == 12) {
+                $calData['weekNum'] = 53;
+            } else {
+                $calData['weekNum'] = 1;
+            }
+        } else {
+            $calData['weekNum'] = $zd->get(Zend_Date::WEEK);
+        }
+        
+        $calData['year']  = $year;
+         
         return $calData;
     }
 }

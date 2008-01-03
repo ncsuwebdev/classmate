@@ -207,7 +207,7 @@ img {
 
 .bar a { 
     font-weight: bold;
-    color: #C3593C;; 
+    color: #C3593C; 
     background: inherit;    
 } 
 
@@ -641,6 +641,7 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 	width: 700px;
     text-align: center;
     background-color: #F4F4F4;
+    background-image: url(../images/window_bg.gif);
     border-bottom: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
     padding: 20px;
@@ -649,6 +650,7 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 #calendar table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #F4F4F4;
 }
 
 .calendarTitle {
@@ -658,8 +660,10 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
     padding-bottom: 5px;    
 }
 
-#calendarTable thead tr th{
+.calendarTable thead tr th {
     overflow: hidden;
+    background-color: #C3593C;
+    color: #FFFFFF;
 }
 
 .calendarDay {
@@ -712,6 +716,19 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 
 .weekViewTitle {
     font-weight: bold;
+    font-size: 125%;
+    text-align: center;
+}
+
+.weekDays {
+    background-color: #C3593C;
+    color: #FFFFFF;	
+}
+
+table.weekViewTable {
+	background-color: #F4F4F4;
+	border-collapse: collapse;
+	width: 99%;
 }
 
 table.weekViewTable thead tr th span {
@@ -719,7 +736,9 @@ table.weekViewTable thead tr th span {
 }
 
 .weekNum {
-    cursor: pointer;	
+    cursor: pointer;
+    background-color: #C3593C;
+    color: #FFFFFF;
 }
 
 

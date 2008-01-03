@@ -1,6 +1,6 @@
 <p>
-    <input type="button" id="previousButton" value="Previous" /> 
-    <input type="button" id="nextButton" value="Next" />
+    <input type="button" id="previousButton" value="&lsaquo; Previous Month" /> 
+    <input type="button" id="nextButton" value="Next Month &rsaquo;" />
     <img id="loading" src="{$sitePrefix}/public/images/loading.gif" width="16" height="16" />
 </p>
 
