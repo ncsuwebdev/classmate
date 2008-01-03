@@ -32,7 +32,7 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class Workshop_IndexController extends Internal_Controller_Action 
+class Workshop_RequestController extends Internal_Controller_Action 
 {	
     /**
      * Action when going to the main login page

@@ -7,7 +7,23 @@
     <allows>
       <allow>
         <resource>calendar_index</resource>
-        <privilege>*</privilege>
+        <privilege>getCal</privilege>
+      </allow>
+      <allow>
+        <resource>calendar_index</resource>
+        <privilege>getEventDetails</privilege>
+      </allow>
+      <allow>
+        <resource>calendar_index</resource>
+        <privilege>getEvents</privilege>
+      </allow>
+      <allow>
+        <resource>calendar_index</resource>
+        <privilege>getWeek</privilege>
+      </allow>
+      <allow>
+        <resource>calendar_index</resource>
+        <privilege>index</privilege>
       </allow>
       <allow>
         <resource>default_bug</resource>
@@ -48,10 +64,6 @@
       <allow>
         <resource>login_index</resource>
         <privilege>logout</privilege>
-      </allow>
-      <allow>
-        <resource>login_index</resource>
-        <privilege>ncsu</privilege>
       </allow>
       <allow>
         <resource>login_index</resource>

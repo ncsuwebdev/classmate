@@ -79,29 +79,108 @@ class Calendar
             $sd = 0;
             
             if ($x == 0) {
-                
+                                
                 // this sets the first row to start on the correct day of the week
                 for ($y = 0; $y < $calData['startDay']; $y++) {
                     $tmp = array();
-                    $tmp['num'] = "&nbsp;";
-                    $calData['rows'][$x]['days'][] = $tmp; 
+                    $tmp['num'] = "";
+                    $calData['rows'][$x]['days'][$y] = $tmp; 
                 }
                 
                 $sd = $calData['startDay']; 
             }
             
+            $event = new Event();
+            
             // put the numbers in the rows
             for ($z = $sd; $z < 7; $z++) {
-                    $tmp = array();
+                
+                               
+                $tmp = array();
                 if ($dayCounter <= $calData['monthDays']) {
+                    
+                    $zd->setDay($dayCounter);
+                
+                    // set the week number
+                    $calData['rows'][$x]['weekNum'] = $zd->get(Zend_Date::WEEK);
+                    
                     $tmp['num'] = $dayCounter;
-                    $calData['rows'][$x]['days'][] = $tmp;
+                    $calData['rows'][$x]['days'][$z] = $tmp;
+
+                                       
+                    $where = $event->getAdapter()->quoteInto('date = ?', $year . "-" . $month . "-" . $dayCounter);
+                    $where .= " AND ";
+                    $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
+                
+                    
+                    $events = $event->fetchAll($where)->toArray();
+             
+                    $calData['rows'][$x]['days'][$z]['numEvents'] = count($events);
+                    
                 } else {
-                    $tmp['num'] = "&nbsp;";
-                    $calData['rows'][$x]['days'][] = $tmp;
+                    $tmp['num'] = "";
+                    $calData['rows'][$x]['days'][$z] = $tmp;
                 }
                 $dayCounter++;
             }
+        }
+        
+        return $calData;
+    }
+    
+    public function getWeek($week, $month = null, $year = null)
+    {
+        
+        $zd = new Zend_Date();      
+        
+        if (is_null($month)) {
+            $month = date('n');         
+        }
+        
+        if (is_null($year)) {
+            $year = date('Y');
+        }
+        
+        $zd->setMonth($month);
+        $zd->setYear($year);
+        $zd->setWeek($week);
+        
+        $zd->setWeekday("sunday");
+
+        $event = new Event();
+        $workshop = new Workshop();
+        
+        $calData = array();
+
+        for ($x = 0; $x < 7; $x++) {
+            
+            $tmp = array();
+       
+            $tmp['startDay']  = $zd->get(Zend_Date::WEEKDAY_DIGIT);
+            $tmp['month']     = $zd->get(Zend_Date::MONTH_SHORT);
+            $tmp['day']     = $zd->get(Zend_Date::DAY_SHORT);
+            $tmp['monthName'] = $zd->get(Zend_Date::MONTH_NAME);
+            $tmp['monthDays'] = $zd->get(Zend_Date::MONTH_DAYS);
+            $tmp['year']      = $zd->get(Zend_Date::YEAR);
+            $tmp['date']      = $zd->getDate();
+                      
+            $calData[$x] = $tmp;
+            
+            $where = $event->getAdapter()->quoteInto('date = ?', $tmp['year'] . "-" . $tmp['month'] . "-" . $tmp['day']);
+            $where .= " AND ";
+            $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
+        
+            $calData[$x]['events'] = $event->fetchAll($where)->toArray();
+
+            for ($y = 0; $y < count($calData[$x]['events']); $y++) {
+            
+                if (isset($calData[$x]['events'][$y]['workshopId'])) {
+                    $workshopId = $calData[$x]['events'][$y]['workshopId'];
+                    $calData[$x]['events'][$y]['workshop'] = $workshop->find($workshopId)->toArray();
+                }
+            }
+            
+            $zd->addDay(1);
         }
         
         return $calData;

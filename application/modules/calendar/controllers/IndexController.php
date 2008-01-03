@@ -44,7 +44,26 @@ class Calendar_IndexController extends Internal_Controller_Action
         $cal = new Calendar();
         
         $c = $cal->getCalendar();
-
+        
+        $this->view->javascript = array(
+                                     "cnet/common/utilities/dbug.js",
+                                     "cnet/common/utilities/simple.template.parser.js",
+                                     "cnet/mootools.extended/Native/element.shortcuts.js",
+                                     "cnet/mootools.extended/Native/element.dimensions.js",
+                                     "cnet/mootools.extended/Native/element.position.js",
+                                     "cnet/mootools.extended/Native/element.pin.js",
+                                     "cnet/mootools.extended/Native/element.pin.js",
+                                     "cnet/common/browser.fixes/IframeShim.js",
+                                     "cnet/common/js.widgets/modalizer.js",
+                                     "cnet/common/js.widgets/stickyWin.default.layout.js",
+                                     "cnet/common/js.widgets/stickyWin.js",
+                                     "cnet/common/js.widgets/stickyWinFx.js",
+                                     "cnet/common/js.widgets/stickyWin.Modal.js", 
+                                     "cnet/common/js.widgets/stickyWin.Ajax.js",
+                                     "cnet/common/js.widgets/popupdetails.js",
+                                  );
+        
+        
         $this->view->calendar = $c;        
     }
     
@@ -69,7 +88,50 @@ class Calendar_IndexController extends Internal_Controller_Action
         
         $this->_response->setBody($this->view->render('index/getCal.tpl'));
     }
+    
+    public function getWeekAction()
+    {
+        
+        $this->_helper->viewRenderer->setNeverRender();
+        
+        $get    = Zend_Registry::get('get');
+        $filter = Zend_Registry::get('inputFilter');
+        
+        $year  = $filter->filter($get['year']);
+        $month = $filter->filter($get['month']);
+        $week  = $filter->filter($get['week']);
+        
+        $this->view->year = $year;
+        $this->view->month = $month;
+        $this->view->week = $week;
+        
+        $cal = new Calendar();
+        $c = $cal->getWeek($week, $month, $year);
+        
+        $this->view->calendar = $c;
+        
+        $this->_response->setBody($this->view->render('index/getWeek.tpl'));
+        
+    }
 
+    
+    public function getEventDetailsAction()
+    {
+        $this->_helper->viewRenderer->setNeverRender();
+        
+        $get    = Zend_Registry::get('get');
+        $filter = Zend_Registry::get('inputFilter');
+        
+        $workshopId = $filter->filter($get['workshopId']);
+                             
+        $workshop = new Workshop();
+        
+        $w = $workshop->find($workshopId)->toArray();
+        
+        $w['description'] = $this->_truncate(strip_tags($w['description']), 300);
+                
+        echo Zend_Json_Encoder::encode($w);
+    }
     
     /**
      * AJAX function that returns the events for the day the user has
@@ -85,10 +147,43 @@ class Calendar_IndexController extends Internal_Controller_Action
         $year  = $filter->filter($get['year']);
         $month = $filter->filter($get['month']);
         $day   = $filter->filter($get['day']);
+        $date  = $year . "-" . $month . "-" . $day;
         
         $event = new Event();
-        //$events = $event->fetchAll();
+        $where = $event->getAdapter()->quoteInto('date = ?', $date);
+        $where .= " AND ";
+        $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
+               
+        $events = $event->fetchAll($where)->toArray();
         
-        echo Zend_Json_Encoder::encode(array("Word - 8:00 - 10:00", "Excel - 2:00 - 4:00", "Date: $month-$day-$year"));
+        $workshop = new Workshop();
+        
+        for ($x=0; $x < count($events); $x++) {
+            $where = $workshop->getAdapter()->quoteInto('workshopId = ?', $events[$x]['workshopId']);
+            $events[$x]['workshopData'] = $workshop->fetchAll($where)->current()->toArray();
+        }
+        
+        echo Zend_Json_Encoder::encode($events);
+    }
+    
+    
+    private function _truncate($string, $length = 80, $etc = '...', $break_words = false, $middle = false)
+    {
+        if ($length == 0)
+            return '';
+    
+        if (strlen($string) > $length) {
+            $length -= min($length, strlen($etc));
+            if (!$break_words && !$middle) {
+                $string = preg_replace('/\s+?(\S+)?$/', '', substr($string, 0, $length+1));
+            }
+            if(!$middle) {
+                return substr($string, 0, $length) . $etc;
+            } else {
+                return substr($string, 0, $length/2) . $etc . substr($string, -$length/2);
+            }
+        } else {
+            return $string;
+        }
     }
 }

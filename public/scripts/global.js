@@ -5,7 +5,9 @@ window.addEvent('domready', function() {
     var sitePrefix = $('sitePrefix').value;
 
     var completer = new Autocompleter.Ajax.Json(searchBox, sitePrefix + '/index/autoSuggest/', {
-        'postVar' : 'search',
+        'baseHref': sitePrefix + '/public/css/', 
+        
+        'postVar': 'search',
         
         'onRequest': function(el) {
             //indicator2.setStyle('display', '');

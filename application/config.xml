@@ -36,6 +36,7 @@
     	<display>
     	   <headerRowRepeat>25</headerRowRepeat>
     	   <dateTimeFormat>%m/%d/%Y %I:%M %p</dateTimeFormat>
+           <medDateFormat>%b %e, %Y</medDateFormat>
     	   <longDateFormat>%A, %B %e, %Y</longDateFormat>
     	   <dateFormat>%m/%d/%Y</dateFormat>
     	   <timeFormat>%I:%M %p</timeFormat>
