@@ -10,11 +10,12 @@
         &lt;h3 class="curve"&gt;
         &lt;div class="popupDetails"&gt;
           &lt;h2&gt;%title%&lt;/h2&gt;
-            <!--&lt;img src="%thumbnail%" width="88" height="140" align="left"&gt;-->
+          <!--&lt;img src="%thumbnail%" width="88" height="140" align="left"&gt;-->
           &lt;div style="float: left; width: 250px; overflow: auto;"&gt;
-                &lt;p&gt;&lt;b&gt;&lt;a href="{$sitePrefix}/workshop/index/details?workshopId=%workshopId%"&gt;Click Here For More Info&lt;/a&gt;&lt;/b&gt;&lt;/p&gt;
-                &lt;p&gt;&lt;b&gt;Description:&lt;/b&gt; %description%&lt;/p&gt;
-            &lt;/div&gt;
+              &lt;p&gt;&lt;b&gt;&lt;a href="{$sitePrefix}/workshop/index/details?workshopId=%workshopId%"&gt;Click Here For More Info&lt;/a&gt;&lt;/b&gt;&lt;/p&gt;
+              &lt;p&gt;&lt;b&gt;Time:&lt;/b&gt; %time%&lt;/p&gt;
+              &lt;p&gt;&lt;b&gt;Description:&lt;/b&gt; %description%&lt;/p&gt;
+          &lt;/div&gt;
         &lt;/div&gt;
         &lt;/h3&gt;
     &lt;div class="innerC"&gt;&lt;/div&gt;
@@ -43,6 +44,7 @@
                 <tr>
                     <td class="weekNum"> 
                         <p>{$r.weekNum}</p>
+                        <span style="display: none">{$r.weekYear}</span>
                     </td>
                     {foreach from=$r.days item=d}
                         <td class="calendarDay">

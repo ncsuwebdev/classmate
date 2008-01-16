@@ -80,6 +80,7 @@ class Internal_Acl extends Zend_Acl
         $this->add(new Zend_Acl_Resource('workshop_index'));
         $this->add(new Zend_Acl_Resource('workshop_proposal'));
         $this->add(new Zend_Acl_Resource('workshop_request'));
+        $this->add(new Zend_Acl_Resource('workshop_schedule'));
         $this->add(new Zend_Acl_Resource('calendar_index'));
         
         foreach ($xml->role as $x) {

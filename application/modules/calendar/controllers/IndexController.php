@@ -46,22 +46,20 @@ class Calendar_IndexController extends Internal_Controller_Action
         $c = $cal->getCalendar();
         
         $this->view->javascript = array(
-                                     "cnet/common/utilities/dbug.js",
-                                     "cnet/common/utilities/simple.template.parser.js",
-                                     "cnet/mootools.extended/Native/element.shortcuts.js",
-                                     "cnet/mootools.extended/Native/element.dimensions.js",
-                                     "cnet/mootools.extended/Native/element.position.js",
-                                     "cnet/mootools.extended/Native/element.pin.js",
-                                     "cnet/mootools.extended/Native/element.pin.js",
-                                     "cnet/common/browser.fixes/IframeShim.js",
-                                     "cnet/common/js.widgets/modalizer.js",
-                                     "cnet/common/js.widgets/stickyWin.default.layout.js",
-                                     "cnet/common/js.widgets/stickyWin.js",
-                                     "cnet/common/js.widgets/stickyWinFx.js",
-                                     "cnet/common/js.widgets/stickyWin.Modal.js", 
-                                     "cnet/common/js.widgets/stickyWin.Ajax.js",
-                                     "cnet/common/js.widgets/popupdetails.js",
-                                  );
+                     "cnet/common/utilities/simple.template.parser.js",
+                     "cnet/mootools.extended/Native/element.shortcuts.js",
+                     "cnet/mootools.extended/Native/element.dimensions.js",
+                     "cnet/mootools.extended/Native/element.position.js",
+                     "cnet/mootools.extended/Native/element.pin.js",
+                     "cnet/common/browser.fixes/IframeShim.js",
+                     "cnet/common/js.widgets/modalizer.js",
+                     "cnet/common/js.widgets/stickyWin.default.layout.js",
+                     "cnet/common/js.widgets/stickyWin.js",
+                     "cnet/common/js.widgets/stickyWinFx.js",
+                     "cnet/common/js.widgets/stickyWin.Modal.js", 
+                     "cnet/common/js.widgets/stickyWin.Ajax.js",
+                     "cnet/common/js.widgets/popupdetails.js",
+                  );
         
         
         $this->view->calendar = $c;        
@@ -89,6 +87,13 @@ class Calendar_IndexController extends Internal_Controller_Action
         $this->_response->setBody($this->view->render('index/getCal.tpl'));
     }
     
+    /**
+     * This is an AJAX function that gets the week view data.  If the
+     * newWindow flag is set in the query string, then it instructs it
+     * to render the entire week view window.  If it's not, it just
+     * renders the table of the week data.
+     *
+     */
     public function weekViewAction()
     {
         
@@ -148,12 +153,17 @@ class Calendar_IndexController extends Internal_Controller_Action
         $filter = Zend_Registry::get('inputFilter');
         
         $workshopId = $filter->filter($get['workshopId']);
+        $eventId    = $filter->filter($get['eventId']);
                              
         $workshop = new Workshop();
+        $event    = new Event();
         
         $w = $workshop->find($workshopId)->toArray();
+        $e = $event->find($eventId);
         
         $w['description'] = $this->_truncate(strip_tags($w['description']), 300);
+                
+        $w['time'] = strftime('%I:%M %p', strtotime($e->startTime)) . " - " . strftime('%I:%M %p', strtotime($e->endTime));
                 
         echo Zend_Json_Encoder::encode($w);
     }

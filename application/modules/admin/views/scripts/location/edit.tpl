@@ -17,4 +17,5 @@
         </tbody>
     </table>
     <input type="submit" value="Save Location" name="submit" />
+    <input type="button" value="Cancel" onclick="history.go(-1);" />
 </form>

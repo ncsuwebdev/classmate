@@ -19,6 +19,7 @@
                 <tr>
                     <td class="weekNum"> 
                         <p>{$r.weekNum}</p>
+                        <span style="display: none">{$r.weekYear}</span>
                     </td>
                     {foreach from=$r.days item=d}
                         <td class="calendarDay">

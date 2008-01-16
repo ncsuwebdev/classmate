@@ -725,6 +725,50 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
     color: #FFFFFF;	
 }
 
+.timeSlot {
+    width: 50px;
+    height: 30px;
+    padding: 0 4px 0 4px;
+    text-align: center;	
+}
+
+div.event {
+    background-color: #DFF1FF;
+    margin: 0;
+    background-image: url(../images/eventBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
+div.hoverDiv {
+    background-color: #FF833F;
+    margin: 0;
+}
+
+div.event div {
+    padding: 1px 0 0 3px;
+    overflow: hidden;
+}
+
+#hoverDivTable tbody tr td {
+    font-weight: bold;	
+}
+
+#hoverDivTable tbody tr td.top {
+    background-url: (../images/hoverDivTop.gif);
+}
+
+#hoverDivTable tbody tr td.bottom {
+    background-url: (../images/hoverDivBottom.gif);  
+}
+
+div.emptyTime {
+    margin: 0;
+    background-image: url(../images/eventBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
 table.weekViewTable {
 	background-color: #F4F4F4;
 	border-collapse: collapse;
@@ -733,6 +777,10 @@ table.weekViewTable {
 
 table.weekViewTable thead tr th span {
     font-size: 125%;	
+}
+
+table.weekViewTable tbody tr td {
+    padding: 0;	
 }
 
 .weekNum {
@@ -842,6 +890,36 @@ div.inlineEdit {
     float: left;
     margin-right: -45px;
     z-index: 55;
+}
+
+div#workshopSearchResults, div#workshopSearchWrapper {
+    width: 750px;
+}
+
+div#searchResultsTitle, div#workshopSearchTitle {
+    height: 20px;
+    background-color: #C85E35;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 5px 0 0 10px;
+    background-image: url(../images/rt-750.gif);
+    background-location: top;
+    background-repeat: no-repeat;
+}
+
+div#searchResultsContentWrapper, div#workshopSearchForm {
+    border: 1px solid #C85E35;
+    background-color: #F4F4F4;
+    padding: 5px;
+}
+
+div#searchResultsContentWrapper {
+    min-height: 300px;	
+}
+
+div#workshopSearchResultsLoading {
+    text-align: center;
+    display: none;	
 }
 
 div.inlineEdit:hover {

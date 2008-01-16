@@ -131,7 +131,7 @@ function initializeCalendar()
                                 new PopupDetail($('popupDetails').getValue(), {
                                   observer: link,
                                   useAjax: true,
-                                  ajaxLink: sitePrefix + "/calendar/index/getEventDetails?workshopId=" + event.workshopId,
+                                  ajaxLink: sitePrefix + "/calendar/index/getEventDetails?workshopId=" + event.workshopId + '&eventId=' + event.eventId,
                                   ajaxOptions: {method: 'get'},
                                   stickyWinOptions: {
                                     position: 'upperRight',
@@ -167,8 +167,9 @@ function initializeCalendar()
             } else { // the cell is a week number
                 
                 var weekNum = $ES('p', el).getText();
+                var weekYear = $ES('span', el).getText();
                 var url = sitePrefix + "/calendar/index/weekView";
-                var varStr = Object.toQueryString({year: currYear, week: weekNum, newWindow: 1});
+                var varStr = Object.toQueryString({year: weekYear, week: weekNum, newWindow: 1});
                 
                 new StickyWinModal.Ajax({
                     url: url + "?" + varStr,
@@ -209,7 +210,7 @@ function initializeWeekView()
     });
     
     prevWeekButton.addEvent('click', function (e) {
-        var varStr = Object.toQueryString({year: $('weekViewPrevYear').value, week: $('weekViewPrevWeekNum').value});
+        var varStr = Object.toQueryString({year: $('weekViewPrevYear').value, week: $('weekViewPrevWeekNum').value, newWindow: 0});
         
         new Ajax(url, {
             method: 'get',

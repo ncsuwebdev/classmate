@@ -20,5 +20,6 @@
             </tbody>
         </table>
         <input type="submit" value="Add Location" name="submit" />
+        <input type="button" value="Cancel" onclick="history.go(-1);" />
     </form>
 </div>

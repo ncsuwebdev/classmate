@@ -102,12 +102,12 @@ class Calendar
                 
                     // set the week number  
                     $calData['rows'][$x]['weekNum'] = $zd->get(Zend_Date::WEEK);
+                    $calData['rows'][$x]['weekYear'] = $zd->get(Zend_Date::YEAR);
 
-                    // we want to make sure that we don't get the previous year's dates, so 
-                    // we make any extra days week 53 in December of the current year instead of 01 of the next year
                     if (isset($calData['rows'][$x-1]['weekNum'])) {
                         if ($calData['rows'][$x-1]['weekNum'] == 52) {
-                            $calData['rows'][$x]['weekNum'] = 53;
+                            $calData['rows'][$x]['weekNum'] = "01";
+                            $calData['rows'][$x]['weekYear'] = $year + 1;
                         }
                     }
                     
@@ -140,33 +140,37 @@ class Calendar
         
         $zd = new Zend_Date();
         $event = new Event();
-        $workshop = new Workshop();      
-               
+        $workshop = new Workshop();
+        
+        if ($week == 1) {
+        	
+        	$calData['prevWeekNum'] = 52;
+        	$calData['prevYear'] = $year - 1;
+        	$calData['nextWeekNum'] = 2;
+        	$calData['nextYear'] = $year;
+        
+        } else if ($week == 52) {
+        	
+        	$calData['prevWeekNum'] = 51;
+            $calData['prevYear'] = $year;
+            $calData['nextWeekNum'] = 1;
+            $calData['nextYear'] = $year + 1;
+        	
+        } else {
+        	
+        	$calData['prevWeekNum'] = $week - 1;
+            $calData['prevYear'] = $year;
+            $calData['nextWeekNum'] = $week + 1;
+            $calData['nextYear'] = $year;
+        }
+        
+        // go back to the current week
         $zd->setYear($year);
         $zd->setWeek($week);
         
-        $zd->setWeekday("saturday");
-        
-        $month = $zd->get(Zend_Date::MONTH_SHORT);
-        
-        $calData = array();       
-        
-        // go to the week before the current week
-        $zd->subWeek(1);
-        $calData['prevWeekNum'] = $zd->get(Zend_Date::WEEK);
-        $calData['prevYear']    = $zd->get(Zend_Date::YEAR);
-
-        // go to the next week after the current week
-        $zd->addWeek(2);
-        $calData['nextWeekNum'] = $zd->get(Zend_Date::WEEK);
-        $calData['nextYear']    = $zd->get(Zend_Date::YEAR);
-        
-        // go back to the current week
-        $zd->subWeek(1);
-                
-        
         // set the weekday to sunday for the display purposes
         $zd->setWeekday("sunday");
+        $month = $zd->get(Zend_Date::MONTH_SHORT);
         
         for ($x = 0; $x < 7; $x++) {
             
@@ -192,6 +196,12 @@ class Calendar
             for ($y = 0; $y < count($calData[$x]['events']); $y++) {
             
                 if (isset($calData[$x]['events'][$y]['workshopId'])) {
+                    
+                    $tmpStart = strtotime($calData[$x]['events'][$y]['startTime']);
+                    $tmpEnd   = strtotime($calData[$x]['events'][$y]['endTime']);
+        
+                    $calData[$x]['events'][$y]['numMinutes'] = ($tmpEnd - $tmpStart) / 60;
+                    
                     $workshopId = $calData[$x]['events'][$y]['workshopId'];
                     $calData[$x]['events'][$y]['workshop'] = $workshop->find($workshopId)->toArray();
                 }
@@ -200,15 +210,7 @@ class Calendar
             $zd->addDay(1);
         }
         
-        if ($calData[0]['weekNum'] == 52 && $calData[6]['weekNum'] == 1) {
-            if ($month == 12) {
-                $calData['weekNum'] = 53;
-            } else {
-                $calData['weekNum'] = 1;
-            }
-        } else {
-            $calData['weekNum'] = $zd->get(Zend_Date::WEEK);
-        }
+        $calData['weekNum'] = $zd->get(Zend_Date::WEEK);
         
         $calData['year']  = $year;
          

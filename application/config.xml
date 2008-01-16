@@ -94,7 +94,13 @@
                        <display>Request a Custom Workshop</display>
                        <select></select>
                        <link></link>
-                   </tab3>                               
+                   </tab3>
+                   <tab4>
+                       <controller>schedule</controller>
+                       <display>Schedule Workshops</display>
+                       <select></select>
+                       <link></link>
+                   </tab4>                     
                </submenu>
            </tab1>    	   
            <tab2>
