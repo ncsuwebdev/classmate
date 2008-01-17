@@ -47,4 +47,25 @@ class Instructor extends Ot_Db_Table
      * @var string
      */
     protected $_primary = array('eventId', 'userId');
+    
+    public function getInstructorsForEvent($eventId)
+    {
+    	$where = $this->getAdapter()->quoteInto('eventId = ?', $eventId);
+    	
+    	$result = $this->fetchAll($where);
+    	
+    	$userIds = array();
+    	foreach ($result as $r) {
+    		$userIds[] = $r->userId;
+    	}
+    	
+    	if (count($userIds) == 0) {
+    		return array();
+    	}
+    	
+    	$profile = new Profile();
+    	$where = $profile->getAdapter()->quoteInto('userId IN (?)', $userIds);
+    	
+    	return $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();    	
+    }
 }

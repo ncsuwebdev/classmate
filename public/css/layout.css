@@ -11,7 +11,7 @@ body {
     font: 0.74em Arial, Helvetica, sans-serif; 
     line-height: 1.5em;
     background: #fff; 
-    color: #454545; 
+    color: #3F3F3F; 
 }
 
 a {
@@ -207,7 +207,7 @@ img {
 
 .bar a { 
     font-weight: bold;
-    color: #C3593C; 
+    color: #C3593C;; 
     background: inherit;    
 } 
 
@@ -391,70 +391,7 @@ div#oitocfooter .right {
 }
 
     
-#flickr {
-    text-align: center;
-}
 
-
-table.list {
-    margin-bottom: 5px;
-    border: 1px solid #000;
-    border-collapse: collapse;
-}
-
-table.list th {
-    background-color: #000000;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 90%;
-    text-align: center;
-    height: 18px;
-    background-image: url(../images/blk.gif);
-    background-repeat: repeat-x;
-    background-position: top;
-}
-
-table.list td {
-    border: 1px solid #C0C0C0;
-    height: 25px;
-    padding: 3px;
-}
-
-table.list td.noResults {
-    text-align: center;
-    height: 35px;
-    background-color: #FFFFFF;
-    width: 500px;
-}
-
-.row1 {
-    background-color: #FFFFFF;
-}
-
-.row2 {
-    background-color: #F0F0F0;
-}
-
-table.form {
-    display: block;
-    border: 1px solid #E7E7E7;
-    border-collapse: collapse;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
-table.form td {
-    padding: 5px 7px 5px 7px;
-    vertical-align: top;
-}
-
-table.form label {
-    font-weight: bold;
-}
-
-.sortable th {
-    cursor: pointer;
-}
 
 div.aclSection {
     margin-bottom: 20px;
@@ -641,7 +578,6 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 	width: 700px;
     text-align: center;
     background-color: #F4F4F4;
-    background-image: url(../images/window_bg.gif);
     border-bottom: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;
     padding: 20px;
@@ -650,7 +586,6 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 #calendar table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #F4F4F4;
 }
 
 .calendarTitle {
@@ -660,10 +595,8 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
     padding-bottom: 5px;    
 }
 
-.calendarTable thead tr th {
+#calendarTable thead tr th{
     overflow: hidden;
-    background-color: #C3593C;
-    color: #FFFFFF;
 }
 
 .calendarDay {
@@ -716,77 +649,14 @@ ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 
 .weekViewTitle {
     font-weight: bold;
-    font-size: 125%;
-    text-align: center;
-}
-
-.weekDays {
-    background-color: #C3593C;
-    color: #FFFFFF;	
-}
-
-.timeSlot {
-    width: 50px;
-    height: 30px;
-    padding: 0 4px 0 4px;
-    text-align: center;	
-}
-
-div.event {
-    background-color: #DFF1FF;
-    margin: 0;
-    background-image: url(../images/eventBg.gif);
-    background-repeat: repeat-x;
-    background-position: bottom;
-}
-
-div.hoverDiv {
-    background-color: #FF833F;
-    margin: 0;
-}
-
-div.event div {
-    padding: 1px 0 0 3px;
-    overflow: hidden;
-}
-
-#hoverDivTable tbody tr td {
-    font-weight: bold;	
-}
-
-#hoverDivTable tbody tr td.top {
-    background-url: (../images/hoverDivTop.gif);
-}
-
-#hoverDivTable tbody tr td.bottom {
-    background-url: (../images/hoverDivBottom.gif);  
-}
-
-div.emptyTime {
-    margin: 0;
-    background-image: url(../images/eventBg.gif);
-    background-repeat: repeat-x;
-    background-position: bottom;
-}
-
-table.weekViewTable {
-	background-color: #F4F4F4;
-	border-collapse: collapse;
-	width: 99%;
 }
 
 table.weekViewTable thead tr th span {
     font-size: 125%;	
 }
 
-table.weekViewTable tbody tr td {
-    padding: 0;	
-}
-
 .weekNum {
-    cursor: pointer;
-    background-color: #C3593C;
-    color: #FFFFFF;
+    cursor: pointer;	
 }
 
 
@@ -794,154 +664,11 @@ table.weekViewTable tbody tr td {
     visibility: hidden;
 }
 
-div#tagList {
-    font-size: 110%;
-    padding-bottom: 20px;
-}
-
-div#tagList b {
-    padding-right: 10px;
-}
-
-div#documents div.document {
-    width: 100px;
-    text-align: center;
-    float:left;
-}
-
-div#documents span.doctype {
-    display: block;	
-}
-
-div#documents a {
-    color: #000;
-    text-decoration: none;
-}
-
-.documentDescription-tip {
-    border: 1px solid #000;
-    background-color: #6E6E6E;
-    color: #FFF;
-    padding: 3px;
-    width: 150px;
-    z-index: 13000;    
-}
-
-
-.mootabs_title {
-    list-style-image: none;
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    height: 24px;
-}
-
-.mootabs_title li {
-    float: left;
-    background-color: #ddd;
-    padding: 2px 8px 2px 8px;
-    margin-right: 4px;
-    cursor: pointer;
-    height: 20px;
-    background-color: #6e6e6e;
-    color: #FFF;
-}
-
-.mootabs_title li.active {
-    
-    background-color: #C3593C;
-}
-
-.mootabs_panel {
-    display: none;
-    background-color: #ddd;
-    position: relative;
-    width: 748px;
-    top: -1px;
-    clear: both;
-    overflow: auto;
-    padding: 6px;
-}
-
-.mootabs_panel.active {
-    background-color: #F4F4F4;
-    display: block;
-    border: 1px solid #C3593C;
-}
-
-.response {
-	background-color: #ffffcc;
-    display: inline;
-}
-
-.searchTitle {
-    font-size: 120%;
-    font-weight: bold;
-}
-
-div.inlineEdit {
-    background-image: url(../images/editFlag.png);
-    background-position: top right;
-    width: 40px;
-    height: 16px;
-    cursor: pointer;
-    position: relative;
-    left: -45px;
-    float: left;
-    margin-right: -45px;
-    z-index: 55;
-}
-
-div#workshopSearchResults, div#workshopSearchWrapper {
-    width: 750px;
-}
-
-div#searchResultsTitle, div#workshopSearchTitle {
-    height: 20px;
-    background-color: #C85E35;
-    color: #FFFFFF;
-    font-weight: bold;
-    padding: 5px 0 0 10px;
-    background-image: url(../images/rt-750.gif);
-    background-location: top;
-    background-repeat: no-repeat;
-}
-
-div#searchResultsContentWrapper, div#workshopSearchForm {
-    border: 1px solid #C85E35;
-    background-color: #F4F4F4;
-    padding: 5px;
-}
-
-div#searchResultsContentWrapper {
-    min-height: 300px;	
-}
-
-div#workshopSearchResultsLoading {
-    text-align: center;
-    display: none;	
-}
-
-div.inlineEdit:hover {
-    background-position: top left;
-}
-
-div#workshopTitleContainer {
-    padding-bottom: 20px;
-}
-
-div#workshopTitleContainer div#wsTitle {
-    font-size: 140%;
-    font-weight: bold;
-    color: #6E6E6E;
-}
-
 /**** Popup Styles ****/
 h3.curve {margin:0; padding:10px 0 0 51px; background: url(../images/popup_top_01.png) no-repeat top left; *background: url(../images/popup_top_01.gif) no-repeat top left; width:363px; min-height: 190px; *height: 190px; z-index:30; text-align: left;}
 h3.curve p {margin:0;padding:0 0 4px 0;color:#000;font:normal 10px verdana,helvetica;text-decoration:none;text-align: left;}
 h3.curve span.red {color:#900;font:normal 10px verdana,helvetica;display:inline;}
 div.innerC {width:363px; height:24px; background: url(../images/popup_btm_02.png) no-repeat top left; *background: url(../images/popup_btm_02.gif) no-repeat top left; margin-right: 60px; z-index: 30;}
-
 .infobox {position: relative; z-index: 30; width:363px; height: 220px;} 
 .infobox * {visibility: visible; position: relative; z-index: 31;}
 
@@ -990,6 +717,7 @@ div.DefaultStickyWin h1.caption{
 	top:8px; left:5px; 
 	float: left; 
 	height: 22px;
+	background:none;
 }
 div.DefaultStickyWin div.middle, div.DefaultStickyWin div.closeBody {
 	background:url(../images/body.png) top left repeat-y; 

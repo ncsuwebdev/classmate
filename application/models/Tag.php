@@ -125,10 +125,19 @@ class Tag extends Ot_Db_Table
         	throw $e;
         }
         
+        $realTags = array();
+        foreach ($tags as $t) {
+        	if (trim($t) != '') {
+        		$realTags[] = $t;
+        	}
+        }
+        
+        $tags = $realTags;
+        
         if (count($tags) != 0) {
         	$ids = array();
         	$ignore = array();
-            
+        	
         	/**
         	 * @todo this is a fix that had to be added because quoteInto does a 
         	 * foreach by reference on the array values, causing them to change
@@ -137,7 +146,7 @@ class Tag extends Ot_Db_Table
         	 */
         	$tagList = array();
         	foreach ($tags as $t) {
-        		$tagList[] = $t;
+        		$tagList[] = trim($t);
         	}
         	
         	$where = $dba->quoteInto('name IN (?)', $tagList);

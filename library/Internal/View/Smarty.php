@@ -60,7 +60,11 @@ class Internal_View_Smarty extends Zend_View_Abstract
         $this->_smarty->config_dir   = './smarty/configs';
         $this->_smarty->template_dir = './';
     }
-
+    
+    public function getView() {
+    	return $this->_smarty;
+    }
+    
     /**
      * Renders the page through smarty
      *

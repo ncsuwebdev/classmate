@@ -71,4 +71,15 @@ class Document extends Ot_Db_Table
     	
     	return $this->fetchAll($where, 'name')->toArray();
     }
+    
+    public function deleteDocument($documentId)
+    {
+        $docMap = new DocumentMap();
+        
+        $where = $docMap->getAdapter()->quoteInto('documentId = ?', $documentId);
+        
+        $docMap->delete($where);
+
+        $this->delete($where);
+    }
 }

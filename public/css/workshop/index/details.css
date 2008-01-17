@@ -1,0 +1,380 @@
+div#detailsLeft {
+    width: 500px;	
+}
+
+div#detailsRight {
+	margin-top: 18px;
+    width: 200px;
+    float: right;
+    
+}
+
+div.rightTitle {
+	background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
+    text-align: center;
+    font-weight: bold;
+    line-height: 20px;
+    color: #FFF;
+    font-size: 100%;
+}
+
+div.rightContent {
+	padding: 10px 2px 10px 2px;
+	margin-bottom: 20px;
+	background-color: #F4F4F4;
+	border: 1px solid #C3593C;
+}
+
+div.rightContent div.event {
+	padding: 0px 2px 2px 25px;
+	margin-bottom: 10px;
+	background-image: url(../../../images/calendar.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 1px;
+    border: 0px solid #F4F4F4;
+}
+
+div.rightContent div.event .date {
+    display: block;
+    font-weight: bold;
+}
+
+div.rightContent div.event .status {
+    display: block;
+    color: #C3593C;
+}
+
+div.rightContent div.event:hover {
+    background-color: #e4e4e4;	
+    cursor: pointer;
+}
+
+div.rightContent div.link {
+    background-image: url(../../../images/link.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 1px;	
+    padding-left: 25px;
+}
+
+div.rightContent div.link .edit {
+	background-image: url(../../../images/edit.png);
+	background-repeat: no-repeat;  
+	width: 16px;
+	height: 16px;
+	float: right;
+	cursor: pointer;
+}
+
+div.rightContent div.link * {
+    background-image: none;	
+}
+
+div#detailsRight div.toolboxItem {
+	margin-bottom: 5px;
+	padding-left: 22px;
+	line-height: 19px;
+}
+
+div#detailsRight div.notify {
+	background-image: url(../../../images/notify.png);
+    background-repeat: no-repeat;  
+    background-position: 1px 1px;
+}
+
+div#tags {
+    background-image: url(../../../images/tag.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 3px;	
+    margin-bottom: 20px;
+    padding-left: 25px;
+}
+
+div#tags b {
+    padding-right: 10px;
+}
+
+div#tags div#taglist {
+    display: inline;    
+}
+
+div#tags div#taglist a {
+    margin: 0 3px 0 3px;    
+}
+
+
+div#documents {
+    padding-top: 10px;
+}
+
+div#addDocumentForm {
+    border: 1px solid #777;
+    background-color: #DFDFDF;
+    padding: 5px;
+    margin: 10px 5px 10px 5px;
+}
+
+div#addDocumentForm .item {
+    padding: 3px;
+}
+
+div#addDocumentForm .deleteButton {
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-image: url(../../../images/hourglass_delete.png);
+    background-repeat: no-repeat;  
+    cursor: pointer;  
+}
+
+.add {
+	display: block;
+    float: right;
+    background-image: url(../../../images/add.png);
+    background-repeat: no-repeat;  
+    cursor: pointer;  
+    line-height: 18px;   
+    padding-left: 25px;
+    width: 100px;
+    font-weight: bold;
+    background-position: 3px 1px;
+}
+
+div.linkForm {
+	margin: 10px 3px 10px 3px;
+	border: 1px solid #777;
+	background-color: #DFDFDF;
+	padding: 3px;
+}
+
+div.linkForm label {
+	font-weight: bold;
+	display: block;
+	width: 40px;
+	float: left;
+}
+
+div.rightContent .add {
+    clear: left;
+    float: none;
+    text-align: right;
+    background-position: 85px 1px;
+    width: 160px;
+    margin-bottom: 10px;
+}
+
+div.document {
+    padding-top: 3px;
+    margin: 0px 5px 10px 5px;
+    background-color: #F4F4F4;
+    min-height: 45px;
+}
+
+div.delete {
+    float: right;
+    padding-right: 3px;
+    cursor: pointer;
+    background-image: url(../../../images/delete.png);
+    background-repeat: no-repeat;  
+    width: 16px;
+    height: 16px;
+}
+
+div.document .icon {
+    background-image: url(../../../images/doctype/generic.png);
+    background-repeat: no-repeat;
+    background-position: center 5px;
+    height: 40px;   
+    float: left;
+    text-align: center;
+    width: 70px;
+}
+
+span.filesize {
+    color: #777777;
+    font-size: 80%;
+}
+
+span.name {
+	font-weight: bold;
+}
+
+div.document .data {
+    padding-left: 70px;
+}
+
+div.document .data span.title {
+    display: block;
+}
+
+div.document .data span.editable:hover {
+    background-color: #ffffcc;
+    cursor: pointer;
+}
+
+
+div.document .data span.description {
+    display: block;
+    overflow: auto;
+}
+
+div.document div.docType-image {
+    background-image: url(../../../images/doctype/image.png);
+}
+
+div.document div.docType-zip {
+    background-image: url(../../../images/doctype/zip.png);
+}
+
+div.document div.docType-document {
+    background-image: url(../../../images/doctype/document.png);
+}
+
+div.document div.docType-pdf {
+    background-image: url(../../../images/doctype/pdf.png);
+}
+
+div.document div.docType-presentation {
+    background-image: url(../../../images/doctype/presentation.png);
+}
+
+div.document div.docType-spreadsheet {
+    background-image: url(../../../images/doctype/spreadsheet.png);
+}
+
+div.document div.docType-audio {
+    background-image: url(../../../images/doctype/audio.png);
+}
+
+div.document div.docType-video {
+    background-image: url(../../../images/doctype/video.png);
+}
+
+div.document div.docType-application {
+    background-image: url(../../../images/doctype/application.png);
+}
+
+div.document div.docType-text {
+    background-image: url(../../../images/doctype/text.png);
+}
+
+span.doctype {
+    display: block; 
+}
+
+span.docpath {
+    display: none; 
+}
+
+
+div#documents a {
+    color: #000;
+    text-decoration: none;
+}
+
+#upload {
+    display: none;  
+}
+
+.mootabs_title {
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    height: 24px;
+}
+
+.mootabs_title li {
+    float: left;
+    background-color: #ddd;
+    padding: 2px 8px 2px 8px;
+    margin-right: 4px;
+    cursor: pointer;
+    height: 20px;
+    background-color: #6e6e6e;
+    color: #FFF;
+}
+
+.mootabs_title li.active {
+    
+    background-color: #C3593C;
+}
+
+.mootabs_panel {
+    display: none;
+    background-color: #ddd;
+    position: relative;
+    width: 748px;
+    top: -1px;
+    clear: both;
+    overflow: auto;
+    padding: 6px;
+}
+
+.mootabs_panel.active {
+    background-color: #F4F4F4;
+    display: block;
+    border: 1px solid #C3593C;
+}
+
+div#response {
+    background-color: #ffffcc;
+    opacity: 0;
+    display: inline;
+}
+
+.searchTitle {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+div.inlineEdit {
+    background-image: url(../../../images/editFlag.png);
+    background-position: top right;
+    width: 40px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    left: -45px;
+    float: left;
+    margin-right: -45px;
+    z-index: 55;
+}
+
+div.inlineEdit:hover {
+    background-position: top left;
+}
+
+div#workshopTitleContainer {
+    padding-bottom: 5px;
+}
+
+div#workshopTitleContainer div#wsTitle {
+	color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+}
+
+div#description {
+    margin-bottom: 20px;
+}
+
+div#prerequisites {
+    display: inline;
+}
+
+div#detailsLeft .sectionTitle {
+    font-size: 110%;
+    margin-right: 10px;
+}
+
+div#prereqs {
+    margin-bottom: 20px;
+}
+
+div.event span.restricted {
+    display: block;
+    padding-left: 23px;
+    background-image: url(../../../images/restricted.png);
+    background-position: top left;    
+    background-repeat: no-repeat;
+}

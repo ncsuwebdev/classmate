@@ -2,7 +2,7 @@
                 mode : "",
                 theme : "advanced",
                 plugins : "",
-                theme_advanced_buttons1 : "bold,italic,underline,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright, justifyfull,bullist,numlist,undo,redo,link,unlink,separator,image,separator,fontselect,fontsizeselect,",
+                theme_advanced_buttons1 : "bold,italic,underline,forecolor,backcolor,separator,justifyleft,justifycenter,justifyright, justifyfull,bullist,numlist,undo,redo,link,unlink,separator,image",
                 theme_advanced_buttons2 : "",
                 theme_advanced_buttons3 : "",
                 theme_advanced_toolbar_location : "top",

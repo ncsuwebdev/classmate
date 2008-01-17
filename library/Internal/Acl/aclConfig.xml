@@ -69,6 +69,14 @@
         <resource>login_index</resource>
         <privilege>signup</privilege>
       </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>details</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>index</privilege>
+      </allow>
     </allows>
     <denys/>
   </role>

@@ -47,4 +47,40 @@ class Attendees extends Ot_Db_Table
      * @var string
      */
     protected $_primary = array('eventId', 'userId');
+    
+    public function getAttendeesForEvent($eventId, $status='all')
+    {
+        $where = $this->getAdapter()->quoteInto('eventId = ?', $eventId);
+        
+        if ($status != 'all') {
+        	$where .= ' AND ' . 
+        	   $this->getAdapter()->quoteInto('status = ?', $status);
+        }
+        
+        $result = $this->fetchAll($where, 'timestamp');
+        
+        $userIds = array();
+        foreach ($result as $r) {
+            $userIds[] = $r->userId;
+        }
+        
+        if (count($userIds) == 0) {
+            return array();
+        }
+        
+        $profile = new Profile();
+        $where = $profile->getAdapter()->quoteInto('userId IN (?)', $userIds);
+        
+        return $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();       
+    }
+
+    public function makeReservation($userId, $eventId)
+    {
+    	
+    }
+    
+    public function cancelReservation($userId, $eventId)
+    {
+    	
+    }
 }

@@ -9,7 +9,7 @@ window.addEvent('domready', function() {
 	
         'multi' : true,
         
-    });   
+    });  
 });
 
 tinyMCE.init({

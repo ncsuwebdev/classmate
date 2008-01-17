@@ -120,4 +120,53 @@ class Event extends Ot_Db_Table
     	
     	return $this->fetchAll($where, array('date', 'startTime'));
     }
+    
+    public function getStatusOfUserForEvent($userId, $eventId)
+    {
+    	
+    	$dba = $this->getAdapter();
+    	
+    	$instructor = new Instructor();
+    	$where = $dba->quoteInto('userId = ?', $userId) . 
+    	   ' AND ' . 
+    	   $dba->quoteInto('eventId = ?', $eventId);
+    	   
+    	$res = $instructor->fetchAll($where);
+    	if ($res->count() != 0) {
+    		return 'instructor';
+    	}
+    	
+    	$where .= ' AND ' . 
+    	   $dba->quoteInto('status != ?', 'canceled');
+    	   
+    	$attendees = new Attendees();
+    	
+    	$res = $attendees->fetchAll($where);
+    	
+    	if ($res->count() != 0) {
+    	    if ($res->current()->status == 'waitlist') {
+    	    	return 'waitlist';
+    	    }
+    	    
+    	    return 'attending';
+    	}
+    	
+    	$eventRestriction = new EventRestriction();
+    	$where = $dba->quoteInto('eventId = ?', $eventId);
+    	
+    	$res = $eventRestriction->fetchAll($where);
+    	if ($res->count() != 0) {
+    		$realm = strtolower(preg_replace('/^[^@]*@/', '', $userId));
+    		
+    		$res = $res->current();
+    		
+    		if ($realm == strtolower($res->realm) && preg_match('/' . preg_replace('/@.*/', '', $userId) . '/i', $res->users)) {
+    			return '';
+    		}
+    		
+    		return 'restricted';    		
+    	}
+    	
+    	return '';
+    }
 }

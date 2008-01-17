@@ -3,7 +3,11 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 <title>{$appTitle} - {$title}</title>
-<link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/site.css" />
+<link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/layout.css" />
+<link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/Ot/common.css" />
+{foreach from=$css item=c}
+<link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/{$c}" />
+{/foreach}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/mootools.v1.11.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.Remote.js"></script>
