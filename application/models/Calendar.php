@@ -120,7 +120,7 @@ class Calendar
                     $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
                 
                     
-                    $events = $event->fetchAll($where)->toArray();
+                    $events = $event->fetchAll($where, 'startTime')->toArray();
              
                     $calData['rows'][$x]['days'][$z]['numEvents'] = count($events);
                     
@@ -191,7 +191,7 @@ class Calendar
             $where .= " AND ";
             $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
         
-            $calData[$x]['events'] = $event->fetchAll($where)->toArray();
+            $calData[$x]['events'] = $event->fetchAll($where, 'startTime')->toArray();
 
             for ($y = 0; $y < count($calData[$x]['events']); $y++) {
             

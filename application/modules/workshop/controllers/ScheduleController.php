@@ -88,7 +88,6 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $cal = new Calendar();
         $zd = new Zend_Date();
 
-        $workshopId   = $filter->filter($get['workshopId']);
         $locationId   = $filter->filter($get['locationId']);
         $startTime    = $get['startTime'];
         $endTime      = $get['endTime'];
@@ -151,5 +150,41 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->calendar = $c;
         
         $this->_response->setBody($this->view->render('schedule/search.tpl'));
+    }
+    
+    public function createEventAction()
+    {
+        $this->_helper->viewRenderer->setNeverRender();
+
+        $post   = Zend_Registry::get('post');
+        $filter = Zend_Registry::get('inputFilter');
+
+        $workshopId   = $filter->filter($post['workshopId']);
+        $locationId   = $filter->filter($post['locationId']);
+        $startTime    = $filter->filter($post['startTime']);
+        $endTime      = $filter->filter($post['endTime']);
+        $date         = $filter->filter($post['date']);
+        $minSize      = $filter->filter($post['workshopMinSize']);
+        $maxSize      = $filter->filter($post['workshopMaxSize']);
+        $waitListSize = $filter->filter($post['workshopWaitListSize']);
+        
+        $date = explode("/", $date);
+        $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
+        
+        $data = array('workshopId'   => $workshopId,
+                      'locationId'   => $locationId,
+                      'startTime'    => $startTime,
+                      'endTime'      => $endTime,
+                      'date'         => $dateStr,
+                      'maxSize'      => $maxSize,
+                      'minSize'      => $minSize,
+                      'waitlistSize' => $waitListSize
+                     );
+        
+        $e = new Event();
+
+        echo $e->insert($data);       
+        
+        //$this->_response->setBody($this->view->render('schedule/createEvent.tpl'));
     }
 }

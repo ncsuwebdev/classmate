@@ -106,6 +106,7 @@ $view->copyrightDate = date('Y');
 $view->date = date("l, F d, Y");
 $view->appTitle = $config->branding->appTitle;
 $view->config = $config->display->toArray();
+$view->userConfig = $userConfig->toArray();
 $view->addScriptPath('./application/views/scripts/');
 
 

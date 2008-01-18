@@ -38,7 +38,7 @@
             
             {foreach from=$calendar item=d}
                 {assign var='currTime' value=$startTime}
-                <td class="eventColumn" width="100px;">
+                <td title="{$d.date|date_format:$config.dateFormat}" class="eventColumn" width="100px;">
                 {foreach name=events from=$d.events item=e}
                     {if $currTime < $e.startTime|timestamp}
                         <div class="emptyTime" style="height: {math equation="((x - y) / z)" x=$e.startTime|timestamp y=$currTime z=60}px">&nbsp;</div>
@@ -52,6 +52,7 @@
                         {/if}
                         <input type="hidden" id="event{$e.eventId}startTime" value="{$e.startTime|timestamp}" />
                         <input type="hidden" id="event{$e.eventId}endTime" value="{$e.endTime|timestamp}" />
+                        <p class="eventHeader">{$e.startTime|date_format:$config.timeFormat}</p>
                         {if $e.workshop}
                             {if $acl.details}
                             <a href="{$sitePrefix}/schedule/index/details?eventId={$e.eventId}">
@@ -64,7 +65,7 @@
                             {$e.workshop.title}
                         {/if}
                         <br />
-                        {$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}
+                        {* {$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat} *}
                         {assign var='currTime' value=$e.endTime|timestamp}
                         </div>
                     </div>

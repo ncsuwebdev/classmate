@@ -11,5 +11,8 @@
         <fileUploadAllowableExtensions>pdf,doc,ppt,html</fileUploadAllowableExtensions>
         <homeNumberNewsPosts>5</homeNumberNewsPosts>
         <profileInitialVotes>5</profileInitialVotes>
+        <defaultMinWorkshopSize>0</defaultMinWorkshopSize>
+        <defaultMaxWorkshopSize>25</defaultMaxWorkshopSize>
+        <defaultWorkshopWaitListSize>10</defaultWorkshopWaitListSize>
     </production>
 </configdata>

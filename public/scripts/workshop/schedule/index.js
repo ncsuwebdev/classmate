@@ -6,11 +6,13 @@ var searchButton;
 var hoverDiv;
 var baseTime;
 var startTime, endTime;
+var newEventStartTime, newEventEndTime;
 
 window.addEvent('domready', function() {
     
     sitePrefix = $('sitePrefix').value;
     searchUrl = sitePrefix + "/workshop/schedule/search";
+    createEventUrl = sitePrefix + "/workshop/schedule/createEvent";
     
     searchResultsContentBox = $('workshopSearchResultsContent');
     
@@ -35,23 +37,104 @@ window.addEvent('domready', function() {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
     
-    workshopWidth = 96;
+    workshopWidth = 94;
     
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');
+    hoverDiv.id = 'hoverDiv';
     hoverDiv.setStyle('width', workshopWidth);
     hoverDiv.setStyle('position', 'absolute');
-    hoverDiv.setStyle('display', 'none');    
+    hoverDiv.setStyle('display', 'none');
+    
+    hoverDiv.addEvent('click', function(e) {
+        
+        if (workshopBox.value == 0) {
+            alert("You must select a workshop");
+            return false;
+        }
+        
+        if ($('workshopMinSize').value == "") {
+            alert("You must enter a minimum class size");
+            return false;
+        }
+       
+        if ($('workshopMaxSize').value == "") {
+            alert("You must enter a maximum class size");
+            return false;
+        }
+        
+        if ($('workshopWaitListSize').value == "") {
+            alert("You must enter a wait list size");
+            return false;
+        }
+        
+        if (detectCollision()) {
+            alert("You cannot have the new event overlap with an existing event");
+            return false;
+        }
+        
+        var varStr = Object.toQueryString({
+                        startTime: newEventStartTime, 
+                        endTime: newEventEndTime, 
+                        date: currentColumn.title,
+                        workshopId: workshopBox.value,
+                        locationId: locationBox.value,
+                        workshopMinSize: $('workshopMinSize').value,
+                        workshopMaxSize: $('workshopMaxSize').value,
+                        workshopWaitListSize: $('workshopWaitListSize').value
+                     });
+
+        new Ajax(createEventUrl, {
+            method: 'post',
+            data: varStr,
+            onRequest: function() {
+                $('workshopSearchResultsLoading').style.display = 'block';
+            },
+            onComplete: function(txtStr, xmlStr) {
+                $('workshopSearchResultsLoading').style.display = 'none';
+                if (txtStr != 0) {
+                    alert('Workshop scheduled successfully!');
+                    hoverDiv.setStyle('display', 'none');
+                    search();
+                }
+            }
+        }).request();
+        
+    });
     
     $('workshopSearchResults').adopt(hoverDiv);
-    
-    setTimeBlock();
+       
     search();
 });
 
-function setTimeBlock()
+function detectCollision()
 {
+    var events = $ES('.event',currentColumn);
     
+    var hTop  = hoverDiv.getTop();
+    var hBottom = hoverDiv.getCoordinates().bottom;
+    
+    var retVal = false;
+    
+    events.each(function(el) {
+            
+        elTop = el.getTop();
+        elBottom = el.getCoordinates().bottom;
+        
+        if (hTop == elTop) { // hover div starts at the same time as an event
+            retVal = true;
+        } else if ((hTop < elTop) && (hBottom >= elTop)) { // hover div ends inside an event
+            retVal = true;
+        } else if ((hTop >= elTop) && (hBottom <= elBottom)) { // hover div is inside an event 
+            retVal = true;
+        } else if ((hTop < elBottom) && (hBottom >= elBottom)) { // hover div starts inside and ends outside an event
+            retVal = true;
+        } else if ((hTop < elTop) && (hBottom > elBottom)) { // hover div encompasses an event
+            retVal = true;
+        }
+    });
+    
+    return retVal;
 }
 
 function search()
@@ -61,7 +144,8 @@ function search()
     
     var extraData = Object.toQueryString({year: year, week: week});
 
-    searchResultsContentBox.empty();
+    hoverDiv.setStyle('display', 'none');
+    searchResultsContentBox.empty();    
 
     new Ajax(searchUrl, {
         method: 'get',
@@ -88,12 +172,14 @@ function processSearchResults()
     $('previousWeekButton').addEvent('click', function(e) {
         $('year').value = $('prevYear').value;
         $('week').value = $('prevWeek').value;
+        hoverDiv.setStyle('display', 'none');
         search();
     });
     
     $('nextWeekButton').addEvent('click', function(e) {
         $('year').value = $('nextYear').value;
         $('week').value = $('nextWeek').value;
+        hoverDiv.setStyle('display', 'none');
         search();
     });
     
@@ -148,7 +234,7 @@ function processSearchResults()
                 
                 hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
                 hoverDiv.setStyle('left', this.getLeft());
-                                
+                               
                 if (hoverDiv.getTop() <= this.getTop()) {
                     hoverDiv.setStyle('top', this.getTop());
                 }
@@ -166,14 +252,41 @@ function processSearchResults()
 
 function setTime()
 {
+
+    if (detectCollision()) {
+        hoverDiv.removeClass('hoverDiv');
+        hoverDiv.addClass('hoverDivOverlap');
+    } else {
+        hoverDiv.removeClass('hoverDivOverlap');
+        hoverDiv.addClass('hoverDiv');
+        
+    }
+
     var tmp = Math.round(((parseInt((hoverDiv.getTop() - currentColumn.getTop())/5))*5)*60);
+    
     var topTime = new Date();
     var bottomTime = new Date();
+    
     topTime.setTime((tmp + startTime) * 1000);
     bottomTime.setTime((tmp + startTime + workshopLength*60) * 1000);
+    
+    newEventStartTime = topTime.getHours() + ":" + topTime.getMinutes() + ":00";
+    newEventEndTime   = bottomTime.getHours() + ":" + bottomTime.getMinutes() + ":00";
+    
     var tmpTop = formatTime(topTime.getHours(), topTime.getMinutes());
     var tmpBottom = formatTime(bottomTime.getHours(), bottomTime.getMinutes());
-    hoverDiv.setHTML('<table height="100%" id="hoverDivTable" align="center"><tbody><tr><td class="top" valign="top">'+tmpTop+'</td></tr><tr><td class="top" valign="bottom">'+tmpBottom+'</td></tr></tbody></table>');
+       
+    var tmpLabel = workshopBox.options[workshopBox.options.selectedIndex].label.substring(0,25);
+    if (tmpLabel != "") {
+        tmpLabel += "...";    
+    }
+    
+    hoverDiv.setHTML('<table height="100%" id="hoverDivTable" align="center"><tbody><tr><td class="top" valign="top">'
+                     + tmpTop + '</td></tr><tr><td class="middle" valign="top">' 
+                     + tmpLabel
+                     + '</td></tr><tr><td class="bottom" valign="bottom">' 
+                     + tmpBottom + '</td></tr></tbody></table>'
+                    );
 }
 
 
