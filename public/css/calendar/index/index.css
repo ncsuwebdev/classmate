@@ -1,0 +1,129 @@
+#calendar {
+    width: 700px;
+    text-align: center;
+    background-color: #F4F4F4;
+    background-image: url(../images/window_bg.gif);
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 20px;
+}
+
+#calendar table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #F4F4F4;
+}
+
+.calendarTitle {
+    font-weight: bold;
+    font-size: 1.3em;
+    text-align: center;
+    padding-bottom: 5px;    
+}
+
+.calendarTable thead tr th {
+    overflow: hidden;
+    background-color: #C3593C;
+    color: #FFFFFF;
+}
+
+.calendarDay {
+    width: 100px;
+    height: 60px;
+    overflow: hidden;
+    vertical-align: top;
+    text-align: left;
+    cursor: pointer;
+    background-color: #F4F4F4;
+}
+
+.calendarDay p.num {
+    text-align: center;
+    width: 20px;
+    margin: -3px 0 0 -3px;
+    color: #C3593C;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.calendarDay span.numEvents {
+    float: right;
+    position: relative;
+    top: -3px;
+    left: -7px;
+    padding: 0 0 0 0;
+    color: #C3593C;
+    font-weight: bold;
+}
+
+.selectedCalendarDay {
+    background-color: #DDDDDD;
+    height: 200px;
+    width: 300px;
+    font-size: 13px;
+    overflow: hidden;
+    opacity: 1;
+    border: 2px solid #aaa;
+    margin: 0;
+    padding: 5px;
+}
+
+.weekViewWrapper {
+    background-color: #C6C6C6;
+    background-image: url(../images/window_bg.gif);
+    border: 2px solid #777777;
+    padding: 5px;
+}
+
+.weekViewTitle {
+    font-weight: bold;
+    font-size: 125%;
+    text-align: center;
+}
+
+.weekDays {
+    background-color: #C3593C;
+    color: #FFFFFF; 
+}
+
+table.weekViewTable {
+    background-color: #F4F4F4;
+    border-collapse: collapse;
+    width: 99%;
+}
+
+table.weekViewTable thead tr th span {
+    font-size: 125%;    
+}
+
+table.weekViewTable tbody tr td {
+    padding: 0; 
+}
+
+.weekNum {
+    cursor: pointer;
+    background-color: #C3593C;
+    color: #FFFFFF;
+}
+
+#loading {
+    visibility: hidden;
+}
+
+/**** Popup Styles ****/
+h3.curve {margin:0; padding:10px 0 0 51px; background: url(../../../images/popup_top_01.png) no-repeat top left; *background: url(../../../images/popup_top_01.gif) no-repeat top left; width:363px; min-height: 190px; *height: 190px; z-index:30; text-align: left;}
+h3.curve p {margin:0;padding:0 0 4px 0;color:#000;font:normal 10px verdana,helvetica;text-decoration:none;text-align: left;}
+h3.curve span.red {color:#900;font:normal 10px verdana,helvetica;display:inline;}
+div.innerC {width:363px; height:24px; background: url(../../../images/popup_btm_02.png) no-repeat top left; *background: url(../../../images/popup_btm_02.gif) no-repeat top left; margin-right: 60px; z-index: 30;}
+
+.infobox {position: relative; z-index: 30; width:363px; height: 220px;} 
+.infobox * {visibility: visible; position: relative; z-index: 31;}
+
+div.popupDetails {width: 280px; padding: 0px 0px 0px 18px;}
+div.popupDetails .prodlistName {color:#000; font:bold 16px arial,helvetica;padding-bottom: 4px;}
+div.popupDetails img {
+    padding: 6px 8px 0px 0px;
+}
+div.popupDetails h2{
+    padding-bottom: 4px;
+}
