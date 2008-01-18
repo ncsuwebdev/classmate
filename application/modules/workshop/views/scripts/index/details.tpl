@@ -4,6 +4,9 @@
     </div>
 
     <div class="rightContent">
+        {if $acl.addEvent}
+        <span id="addEvent" class="add">Add New Event</span>
+        {/if}      
 	    {foreach from=$events item=e name=events}
 	        <div class="event" id="event_{$e.eventId}">
 	            <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
@@ -54,7 +57,7 @@
 		        <div class="delete"></div>
 		        {/if}
 		        <div class="link" id="link_{$l.workshopLinkId}" rel="type=link&size=20&url={$sitePrefix}/workshop/index/editLink/&response=response">
-		            <a href="{$l.url}" target="_blank">{$l.name}</a>	            
+		            <a href="{$l.url}" target="_blank">{$l.name|truncate:30:'...':true}</a>	            
 		        </div>
 		    </div>
 	        {foreachelse}

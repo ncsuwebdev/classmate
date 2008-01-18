@@ -95,6 +95,12 @@ window.addEvent('domready', function() {
 		});
     }
     
+    if ($('addEvent')) {
+        $('addEvent').addEvent('click', function(e) {
+            location.href=sitePrefix + '/workshop/schedule/';
+        });
+    }
+    
     $$('.event').each(function(el) {
         el.addEvent('click', function() {
             if ($E('a', el)) {

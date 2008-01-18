@@ -68,7 +68,7 @@
     </div>      
 </div>
 <div id="detailsLeft">
-	<div id="wsTitle"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$event.workshopId}">{$title}</a></div>
+	<div id="wsTitle">Signup for <a href="{$sitePrefix}/workshop/index/details/?workshopId={$event.workshopId}">{$workshop.title|truncate:45}</a></div>
 	<div id="status">
 	{if $status == 'instructor'}
 	You are set as an instructor for this class, therefore you do not need to sign up.
@@ -79,13 +79,13 @@
 	<h3 id="signup">You are signed up for this class.</h3>
 	<a href="">Click here</a> to see your reservation details.  If for some reason 
 	you are unable to attend, please cancel your registration.<br /><br />
-	<input type="button" value="Cancel My Reservation">
+	<input type="button" value="Cancel My Reservation" onclick="location.href='{$sitePrefix}/workshop/signup/cancel/?eventId={$event.eventId}'">
 	{elseif $status == 'waitlist'}
 	<h3 id="signup">You are on the waitlist for this class.</h3>
 	You are on the waitlist for this class.  Once a spot becomes available, you will be automatically
 	put into the class.  If you do not wish to stay on the waitlist anymore, click the button
 	below to cancel.<br /><br />
-	<input type="button" value="Cancel My Reservation">
+	<input type="button" value="Cancel My Reservation" onclick="location.href='{$sitePrefix}/workshop/signup/cancel/?eventId={$event.eventId}'">
 	{elseif $status == 'restricted'}
 	<div id="restricted" class="banner">
         Access to this class is restricted.
@@ -97,7 +97,7 @@
             {math assign=openSeats equation="x-y" x=$event.maxSize y=$event.roleSize}
             <h3 id="signup">Congratulations!</h3>
 	        There {if $openSeats == 1}is{else}are{/if} <b>{$openSeats}</b> out of <b>{$event.maxSize}</b> seats remaining in this class.<br /><br />
-	        <input type="button" value="Sign-Up Now!">
+	        <input type="button" value="Sign-Up Now!" onclick="location.href='{$sitePrefix}/workshop/signup/reserve/?eventId={$event.eventId}'">
 	    {else}
 	        {if $event.waitlistSize != 0 && $event.waitlistSize > $event.waitlistTotal}
 	               <div id="fullClass" class="banner">
@@ -107,7 +107,7 @@
 	             spots available.  If someone already enrolled cancels before the class starts, you 
 	             will automatically be put into the class.             
 	             <br /><br />
-	             <input type="button" value="Sign-Up for the Waitlist Now!">
+	             <input type="button" value="Sign-Up for the Waitlist Now!" onclick="location.href='{$sitePrefix}/workshop/signup/reserve/?eventId={$event.eventId}'">
 	        {else}  
 	             <div id="fullClass" class="banner">
 	             We're Sorry, this class is currently full.  If you would still like to attend this workshop, you can try one of the other times this workshop is

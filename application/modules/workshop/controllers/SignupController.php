@@ -86,27 +86,47 @@ class Workshop_SignupController extends Internal_Controller_Action
         $this->view->title = "Signup for " . $thisWorkshop->title;
         $this->view->hideTitle = true;
         
-        if ($status == 'restricted' || $thisEvent->roleSize >= $thisEvent->maxSize) {
-            $events = $event->getEventsForWorkshop($thisEvent->workshopId, time(), null, 'open')->toArray();
+        $events = $event->getEvents($thisWorkshop->workshopId, null, time(), null, 'open')->toArray();
         
-            $newEvents = array();
-            
-	        foreach ($events as $e) {
-	        	if ($e['eventId'] != $eventId) {
-	               $e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $e['eventId']);
-	               $newEvents[] = $e;
-	        	}
-	        }   
+        $newEvents = array();
+          
+	    foreach ($events as $e) {
+	    	if ($e['eventId'] != $eventId) {
+	           $e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $e['eventId']);
+	           $newEvents[] = $e;
+	    	}
+	    }   
 
-	        $this->view->upcomingEvents = $newEvents;
-        }
+	    $this->view->upcomingEvents = $newEvents;
         
         $this->view->status = $status;
+    }
+    
+    public function reserveAction()
+    {
+        $get = Zend_Registry::get('get'); 
+        $filter = Zend_Registry::get('inputFilter');          
+        
+        if (!isset($get['eventId'])) {
+            throw new Internal_Exception_Input('Event ID not set');
+        }
+            
+        $eventId = $filter->filter($get['eventId']);
+            
+        if ($eventId == '') {
+            throw new Internal_Exception_Input('Event ID has no value');
+        } 
+        
+        $attendees = new Attendees();
+        $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
+        
+        $this->_redirect('/');        
     }
     
     public function cancelAction()
     {
     	$filter = Zend_Registry::get('inputFilter');
+    	$event = new Event();
     	
     	if ($this->_request->isPost()) {
     	    $post = Zend_Registry::get('post');           
@@ -177,7 +197,20 @@ class Workshop_SignupController extends Internal_Controller_Action
 	        $instructor = new Instructor();
 	        $instructors = $instructor->getInstructorsForEvent($eventId);        
 	        
-	        $this->view->title = "Cancel Reservation for " . $thisWorkshop->title;
+	        
+	        $events = $event->getEvents($thisWorkshop->workshopId, null, time(), null, 'open')->toArray();
+	        
+	        $newEvents = array();
+	          
+	        foreach ($events as $e) {
+	            if ($e['eventId'] != $eventId) {
+	               $e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $e['eventId']);
+	               $newEvents[] = $e;
+	            }
+	        }   
+	
+	        $this->view->upcomingEvents = $newEvents;
+        	        
 	        $this->view->hideTitle = true;
 	    }
     }

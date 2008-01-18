@@ -48,14 +48,35 @@ class Event extends Ot_Db_Table
      */
     protected $_primary = 'eventId';
     
-    public function getEventsForWorkshop($workshopId, $startDt = null, $endDt = null, $status = null)
+    public function getEvents($workshopId = null, $eventId = null, $startDt = null, $endDt = null, $status = null)
     {
     	$dba = $this->getAdapter();
     	
-    	$where = $dba->quoteInto('workshopId = ?', $workshopId);
+    	$where = '';
+    	
+    	if (!is_null($workshopId)) {
+    	   $where .= $dba->quoteInto('workshopId = ?', $workshopId);
+    	}
+    	
+    	if (!is_null($eventId)) {
+    		if ($where != '') {
+    			$where .= ' AND ';
+    		}
+    		
+    		if (is_array($eventId)) {
+    			$where .= $dba->quoteInto('eventId IN (?)', $eventId);
+    		} else {
+    			$where .= $dba->quoteInto('eventId = ?', $eventId);
+    		}
+    	}
+    	
     	
     	if (!is_null($status)) {
-    		$where .= ' AND ' . $dba->quoteInto('status = ?', $status);
+    		if ($where != '') {
+    			$where .= ' AND ';
+    		}
+    		
+    		$where .= $dba->quoteInto('status = ?', $status);
     	}
     	
     	if (!is_null($startDt)) {
@@ -69,7 +90,11 @@ class Event extends Ot_Db_Table
     	}
     	
     	if (!is_null($startDt) && !is_null($endDt)) {
-            $where .= ' AND ' . 
+    		if ($where != '') {
+    			$where .= ' AND ';
+    		}
+    		
+            $where .=
                 '(' .
 	                '(' . 
 	                    $dba->quoteInto('date > ?', $startDate) . 
@@ -90,7 +115,11 @@ class Event extends Ot_Db_Table
                     ')' . 
                 ')';                        
     	} elseif (!is_null($startDt)) {
-    		$where .= ' AND ' . 
+    	    if ($where != '') {
+                $where .= ' AND ';
+            }
+                		
+    		$where .= 
     		    '(' . 
                     '(' . 
                         $dba->quoteInto('date > ?', $startDate) .
@@ -104,7 +133,11 @@ class Event extends Ot_Db_Table
                 ')';
                          		
     	} elseif (!is_null($endDt)) {
-            $where .= ' AND ' . 
+    	    if ($where != '') {
+                $where .= ' AND ';
+            }
+            
+            $where .= 
                 '(' . 
                     '(' . 
                         $dba->quoteInto('date > ?', $endDate) .

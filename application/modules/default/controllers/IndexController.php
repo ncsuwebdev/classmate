@@ -42,6 +42,12 @@ class IndexController extends Internal_Controller_Action
      */
     public function indexAction()
     {
+    	if (Zend_Auth::getInstance()->hasIdentity()) {
+    		$attendees = new Attendees();
+    		$this->view->attendeeEvents = $attendees->getEventsForAttendee(Zend_Auth::getInstance()->getIdentity(), time());
+    		
+    		$this->_helper->viewRenderer->setScriptAction('index-loggedin');
+    	}
         $this->view->title = 'Welcome to Classmate';
         $this->view->showNews = true;
     }

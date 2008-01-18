@@ -1,0 +1,32 @@
+h3 {
+    background: #FFF url(../../../images/dot.gif) repeat-x center;
+}
+
+h3 span {
+    background-color: #FFF;
+    padding-right: 10px;
+}
+
+div.event {
+    padding: 2px 2px 2px 25px;
+    margin-bottom: 10px;
+    background-image: url(../../../images/date.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 3px;
+    background-color: #F4F4F4;
+}
+
+div.event .workshopName {
+    display: block;
+    font-weight: bold;
+}
+
+div.event .status {
+    display: block;
+    color: #C3593C;
+}
+
+div.event .date {
+    display: block;
+    font-weight: bold;
+}

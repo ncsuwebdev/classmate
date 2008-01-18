@@ -69,6 +69,7 @@ class Workshop_IndexController extends Internal_Controller_Action
     	   'addLink'       => $this->_acl->isAllowed($this->_role, $this->_resource, 'addLinks'),
     	   'deleteLink'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteLink'),
     	   'editLink'       => $this->_acl->isAllowed($this->_role, $this->_resource, 'editLink'),
+    	   'addEvent'       => $this->_acl->isAllowed($this->_role, 'workshop_schedule', 'index'),
     	);
     	
     	$workshop = new Workshop();
@@ -86,7 +87,7 @@ class Workshop_IndexController extends Internal_Controller_Action
     	$this->view->tags = $tag->getTagsForAttribute('workshopId', $thisWorkshop->workshopId);
     	
     	$event = new Event();
-    	$events = $event->getEventsForWorkshop($thisWorkshop->workshopId, time(), null, 'open')->toArray();
+    	$events = $event->getEvents($thisWorkshop->workshopId, null, time(), null, 'open')->toArray();
     	
     	foreach ($events as &$e) {
     		$e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $e['eventId']);
