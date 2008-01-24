@@ -1,6 +1,10 @@
-<p>
-    <input type="button" id="previousButton" value="&lsaquo; Previous Month" /> 
-    <input type="button" id="nextButton" value="Next Month &rsaquo;" />
+<p align="center">
+    <input type="button" id="previousButton" value="&lsaquo; Previous" />
+    <input type="button" id="viewWeekButton" value="Week" />
+    <input type="button" id="viewMonthButton" value="Month" />
+    <input type="button" id="nextButton" value="Next &rsaquo;" />
+    <input type="hidden" id="currentView" value="month" />
+    <input type="hidden" id="basetime" value="{$baseTime}" />
     <img id="loading" src="{$sitePrefix}/public/images/loading.gif" width="16" height="16" />
 </p>
 
@@ -23,55 +27,13 @@
     &lt;/div&gt;
 </textarea>
 
-<div id="calendarWrapper">
-    <div id="calendar" title="{$calendar.month}_{$calendar.year}">
-        <p class="calendarTitle">{$calendar.monthName} {$calendar.year}</p>
-        <table class="calendarTable" cellpadding="3" cellspacing="0" border="1" bordercolor="#464548">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Sunday</th>
-                    <th>Monday</th>
-                    <th>Tuesday</th>
-                    <th>Wednesday</th>
-                    <th>Thursday</th>
-                    <th>Friday</th>
-                    <th>Saturday</th>
-                </tr>
-            </thead>
-            <tbody>
-            {foreach from=$calendar.rows item=r}
-                <tr>
-                    <td class="weekNum"> 
-                        <p>{$r.weekNum}</p>
-                        <span style="display: none">{$r.weekYear}</span>
-                    </td>
-                    {foreach from=$r.days item=d}
-                        <td class="calendarDay">
-                            <span class="numEvents">
-                                {if $d.numEvents}
-                                    {$d.numEvents}
-                                    {if $d.numEvents == 1}
-                                        Event
-                                    {else}
-                                        Events
-                                    {/if}
-                                {/if}
-                            </span>
-                            <p class="num">{$d.num}</p>
-                            
-                            <div>
-                            {if $d.events}
-                                {foreach from=$d.events item=e}
-                                    {$e}<br />
-                                {/foreach}
-                            {/if}
-                            </div>
-                        </td>
-                    {/foreach}    
-                </tr>
-            {/foreach}
-            </tbody>
-        </table>
+<div id="workshopSearchResults">
+    <div id="searchResultsTitle">Search Results</div>
+    <div id="searchResultsContentWrapper">
+        <div id="searchResultsContent">
+            <input type="hidden" id="week" value="{$week}" />
+            <input type="hidden" id="year" value="{$year}" />
+            <input type="hidden" id="month" value="{$month}" />
+        </div>
     </div>
 </div>

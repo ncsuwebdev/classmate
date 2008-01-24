@@ -2,8 +2,9 @@ div#workshopSearchResults, div#workshopSearchWrapper {
     width: 750px;
 }
 
-div#searchResultsTitle, div#workshopSearchTitle {
-    height: 20px;
+div#searchResultsTitle {
+    height: 30px;
+    line-height: 30px;
     background-color: #C85E35;
     color: #FFFFFF;
     font-weight: bold;
@@ -13,7 +14,29 @@ div#searchResultsTitle, div#workshopSearchTitle {
     background-repeat: no-repeat;
 }
 
-div#searchResultsContentWrapper, div#workshopSearchForm {
+div#workshopAddFormTitle {
+    height: 20px;
+    width: 400px;
+    line-height: 20px;
+    background-color: #C85E35;
+    color: #FFFFFF;
+    font-weight: bold;
+    background-image: url(../../../images/rt-400.gif);
+    background-location: top;
+    background-repeat: no-repeat;
+}
+
+div#workshopAddFormTitle p {
+    padding-left: 5px;	
+}
+
+div#workshopAddForm {
+    border: 1px solid #C85E35;
+    background-color: #F4F4F4;
+    width: 398px;
+}
+
+div#searchResultsContentWrapper {
     border: 1px solid #C85E35;
     background-color: #F4F4F4;
     padding: 5px;
@@ -55,10 +78,22 @@ div.event p.eventHeader {
     background-color: #6E6E6E;
     margin: -1px -1px 0 -3px;
     padding-left: 5px;
-    line-height: 15px;
+    line-height: 18px;
     background-image: url(../../../images/eventBg.gif);
     background-repeat: repeat-x;
     background-position: bottom;
+}
+
+div.event p.eventHeader a.delete {
+	float: right;
+	line-height: 18px;
+}
+
+div.event p.eventHeader a.delete img {
+    vertical-align: top;
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
 #hoverDivTable {
@@ -95,8 +130,17 @@ div.event p.eventHeader {
     overflow: hidden;
 }
 
+#workshopId {
+    width: 250px;	
+}
+
 div.emptyTime {
     margin: 0;
+}
+
+#weekViewWrapper {
+	height: 600px;
+    overflow: auto;
 }
 
 .weekViewTitle {
@@ -107,19 +151,43 @@ div.emptyTime {
 
 .weekDays {
     background-color: #C3593C;
-    color: #FFFFFF; 
+    color: #FFFFFF;
+}
+
+.weekDays th.day {
+	width: 95px;
+}
+
+.weekDays th.time {
+    width: 59px;	
 }
 
 table.weekViewTable {
     background-color: #F4F4F4;
     border-collapse: collapse;
-    width: 99%;
+    width: 720px;
 }
 
-table.weekViewTable thead tr th span {
+table.weekViewDayHeader {
+    border-collapse: collapse;
+    width: 720px;
+}
+
+table.weekViewDayHeader thead tr th span {
     font-size: 125%;    
 }
 
-table.weekViewTable tbody tr td {
+table.weekViewTable tbody tr td.eventColumn {
     padding: 0; 
+    width: 95px;
+}
+
+table.weekViewTable tbody tr td.time {
+    padding: 0; 
+    width: 55px;
+}
+
+div.weekViewWrapper {
+    margin: 0;
+    padding: 0;
 }

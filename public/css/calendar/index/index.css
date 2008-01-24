@@ -127,3 +127,130 @@ div.popupDetails img {
 div.popupDetails h2{
     padding-bottom: 4px;
 }
+
+/***** Week Styles ****/
+div#workshopSearchResults, div#workshopSearchWrapper {
+    width: 750px;
+}
+
+div#searchResultsTitle, div#workshopSearchTitle {
+    height: 20px;
+    background-color: #C85E35;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 5px 0 0 10px;
+    background-image: url(../../../images/rt-750.gif);
+    background-location: top;
+    background-repeat: no-repeat;
+}
+
+div#searchResultsContentWrapper, div#workshopSearchForm {
+    border: 1px solid #C85E35;
+    background-color: #F4F4F4;
+    padding: 5px;
+}
+
+div#searchResultsContentWrapper {
+    min-height: 300px;  
+}
+
+div#workshopSearchResultsLoading {
+    text-align: center;
+    position: absolute;
+    display: none;  
+}
+
+.timeSlot {
+    width: 50px;
+    height: 30px;
+    padding: 0 4px 0 4px;
+    text-align: center; 
+    font-size: 0.9em;
+    whitespace: no-wrap;
+}
+
+div.event {
+    background-color: #DFF1FF;
+    margin: 0;
+    line-height: 11px;
+    color: #FFFFFF;
+}
+
+div.event div {
+    padding: 1px 1px 0 3px;
+    overflow: hidden;
+    background-image: url(../../../images/event.gif);
+}
+
+div.event p.eventHeader {
+    background-color: #6E6E6E;
+    margin: -1px -1px 0 -3px;
+    padding-left: 5px;
+    line-height: 15px;
+    background-image: url(../../../images/eventBg.gif);
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
+#hoverDivTable {
+    width: 100%;    
+}
+    
+#hoverDivTable tbody tr td.top, #hoverDivTable tbody tr td.bottom  {
+    font-weight: bold;
+    line-height: 10px;  
+}
+
+#hoverDivTable tbody tr td.top {
+    text-align: left;   
+}
+
+#hoverDivTable tbody tr td.bottom {
+    text-align: right;   
+}
+
+
+#hoverDivTable tbody tr td.middle {
+    line-height: 12px;
+}
+
+.hoverDiv {
+    background-image: url(../../../images/hoverDiv.gif);
+    border: 1px solid #2ba115;
+    overflow: hidden;
+}
+
+.hoverDivOverlap {
+    background-image: url(../../../images/hoverDivOverlap.gif);
+    border: 1px solid #e3171e;
+    overflow: hidden;
+}
+
+div.emptyTime {
+    margin: 0;
+}
+
+.weekViewTitle {
+    font-weight: bold;
+    font-size: 125%;
+    text-align: center;
+}
+
+.weekDays {
+    background-color: #C3593C;
+    color: #FFFFFF; 
+}
+
+table.weekViewTable {
+    background-color: #F4F4F4;
+    border-collapse: collapse;
+    width: 99%;
+}
+
+table.weekViewTable thead tr th span {
+    font-size: 125%;    
+}
+
+table.weekViewTable tbody tr td {
+    padding: 0; 
+}

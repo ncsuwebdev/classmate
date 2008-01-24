@@ -37,7 +37,7 @@
 class Calendar 
 {
     
-    public function getCalendar($month = null, $year = null)
+    public function getCalendar($month = null, $year = null, $location = null)
     {
         $zd = new Zend_Date();      
         
@@ -48,13 +48,11 @@ class Calendar
         if (is_null($year)) {
             $year = date('Y');
         }
-        
        
         $zd->setMonth($month);
         $zd->setYear($year);
         $zd->setDay(1);
         
-            
         $calData = array();
     
         $calData['startDay']  = $zd->get(Zend_Date::WEEKDAY_DIGIT);
@@ -62,6 +60,31 @@ class Calendar
         $calData['monthName'] = $zd->get(Zend_Date::MONTH_NAME);
         $calData['monthDays'] = $zd->get(Zend_Date::MONTH_DAYS);
         $calData['year']      = $zd->get(Zend_Date::YEAR);
+        
+        if ($calData['month'] == 12) {
+            $calData['nextMonth'] = 1;
+        } else {
+            $calData['nextMonth'] = $calData['month'] + 1;
+        }
+        
+        $calData['nextYear'] = $calData['year'];
+        if ($calData['nextMonth'] == 1) {
+            $calData['nextYear'] = $calData['year'] + 1;
+        }
+        
+        if ($calData['month'] == 1) {
+            $calData['prevMonth'] = 12;
+        } else {
+            $calData['prevMonth'] = $calData['month'] - 1;
+        }
+        
+        $calData['prevYear'] = $calData['year'];
+        if ($calData['prevMonth'] == 12) {
+            $calData['prevYear'] = $calData['year'] - 1;
+        }
+        
+        $tmpDate = new Zend_Date();
+        $calData['week'] = $tmpDate->get(Zend_Date::WEEK);
         
         $calData['rows'] = array();
                     
@@ -118,7 +141,11 @@ class Calendar
                     $where = $event->getAdapter()->quoteInto('date = ?', $year . "-" . $month . "-" . $dayCounter);
                     $where .= " AND ";
                     $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
-                
+                    
+                    if (!is_null($locationId)) {
+                        $where .= " AND ";
+                        $where .= $event->getAdapter()->quoteInto('locationId = ?', $locationId);
+                    }
                     
                     $events = $event->fetchAll($where, 'startTime')->toArray();
              
@@ -135,7 +162,7 @@ class Calendar
         return $calData;
     }
     
-    public function getWeek($week, $year)
+    public function getWeek($week, $year, $locationId = null)
     {
         
         $zd = new Zend_Date();
@@ -190,6 +217,11 @@ class Calendar
             $where = $event->getAdapter()->quoteInto('date = ?', $tmp['year'] . "-" . $tmp['month'] . "-" . $tmp['day']);
             $where .= " AND ";
             $where .= $event->getAdapter()->quoteInto('status = ?', 'open');
+
+            if (!is_null($locationId)) {
+                $where .= " AND ";
+                $where .= $event->getAdapter()->quoteInto('locationId = ?', $locationId);
+            }
         
             $calData[$x]['events'] = $event->fetchAll($where, 'startTime')->toArray();
 

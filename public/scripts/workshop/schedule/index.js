@@ -2,17 +2,18 @@ var sitePrefix;
 var workshopBox, locationBox, workshopLengthHours, workshopLengthMinutes, workshopLength, workshopWidth;
 var searchUrl;
 var searchResultsContentBox;
-var searchButton;
 var hoverDiv;
 var baseTime;
 var startTime, endTime;
 var newEventStartTime, newEventEndTime;
+var modeButton, currentMode;
 
 window.addEvent('domready', function() {
     
     sitePrefix = $('sitePrefix').value;
     searchUrl = sitePrefix + "/workshop/schedule/search";
     createEventUrl = sitePrefix + "/workshop/schedule/createEvent";
+    deleteEventUrl = sitePrefix + "/workshop/schedule/deleteEvent";
     
     searchResultsContentBox = $('workshopSearchResultsContent');
     
@@ -23,10 +24,27 @@ window.addEvent('domready', function() {
     workshopLengthHours = $('workshopLengthHours');
     workshopLengthMinutes = $('workshopLengthMinutes');
     workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
-    searchButton = $('searchButton');
     
-    searchButton.addEvent('click', function(e) {
+    locationBox.addEvent('change', function(e) {
         search();
+    });
+    
+    modeButton = $('modeButton');
+    modeButton.addEvent('click', function(e) {
+        if (modeButton.value == "Switch to Edit Mode") {
+            hideHoverDiv();
+            $$('.delete').each (function(el){
+                el.setStyle('visibility', 'visible');
+            });
+            currentMode = "edit";
+            modeButton.value = "Switch to Add Mode";
+        } else {
+            currentMode = "add";
+            $$('.delete').each (function(el){
+                el.setStyle('visibility', 'hidden');
+            });
+            modeButton.value = "Switch to Edit Mode";
+        }
     });
     
     workshopLengthHours.addEvent('change', function(e) {
@@ -107,6 +125,32 @@ window.addEvent('domready', function() {
     search();
 });
 
+function deleteEvent(eventId)
+{
+
+    if (confirm("Are you sure you want to remove this event?")) {
+
+        var varStr = Object.toQueryString({eventId: eventId});
+               
+        new Ajax(deleteEventUrl, {
+            method: 'post',
+            data: varStr,
+            onRequest: function() {
+                $('workshopSearchResultsLoading').style.display = 'block';
+            },
+            onComplete: function(txtStr, xmlStr) {
+                $('workshopSearchResultsLoading').style.display = 'none';
+                search();
+            }
+        }).request();
+    }
+}
+
+function hideHoverDiv()
+{
+    hoverDiv.setStyle('display', 'none');
+}
+
 function detectCollision()
 {
     var events = $ES('.event',currentColumn);
@@ -117,9 +161,11 @@ function detectCollision()
     var retVal = false;
     
     events.each(function(el) {
+    
+        var yScroll = $('weekViewWrapper').getSize().scroll.y;
             
-        elTop = el.getTop();
-        elBottom = el.getCoordinates().bottom;
+        elTop = el.getTop() - yScroll;
+        elBottom = el.getCoordinates().bottom - yScroll;
         
         if (hTop == elTop) { // hover div starts at the same time as an event
             retVal = true;
@@ -166,6 +212,12 @@ function processSearchResults()
 
     startTime = parseInt($('startTime').value);
     endTime   = parseInt($('endTime').value);
+    
+    if (modeButton.value == "Switch to Edit Mode") {
+        currentMode = "add";
+    } else {
+        currentMode = "edit";
+    }
 
     $('workshopSearchResultsLoading').style.display = 'none';
     
@@ -189,18 +241,31 @@ function processSearchResults()
 
             var e = new Event(e);            
 
+            var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;            
+
             hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
             
             if (hoverDiv.getTop() <= currentColumn.getTop()) {
                 hoverDiv.setStyle('top', currentColumn.getTop());
             }
             
-            if (hoverDiv.getCoordinates().bottom >= currentColumn.getCoordinates().bottom) {
-                hoverDiv.setStyle('top', currentColumn.getCoordinates().bottom - workshopLength);
+            if (hoverDiv.getCoordinates().bottom >= currentColumn.getCoordinates().bottom || hoverDiv.getCoordinates().bottom >= weekViewWrapperBottom) {
+                hoverDiv.setStyle('top', weekViewWrapperBottom - workshopLength);
             }
 
             setTime();
         }
+    });
+    
+    $('weekViewWrapper').scrollTo(0, 480); // scroll to 8:00 AM
+
+
+    $$('.event').each(function (el) {
+    
+        el.addEvent('click', function (e) {
+            //alert(el.id);
+        });
+    
     });
 
   
@@ -211,39 +276,48 @@ function processSearchResults()
             
                 currentColumn = el;
             
-                hoverDiv.setStyle('display', 'block');
-                hoverDiv.setStyle('height', workshopLength);
+                if (currentMode == "add") {
+                    hoverDiv.setStyle('display', 'block');
+                    hoverDiv.setStyle('height', workshopLength);
             
-                var e = new Event(e);
-                
-                hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
-                hoverDiv.setStyle('left', this.getLeft());
-                
-                if (hoverDiv.getTop() <= this.getTop()) {
-                    hoverDiv.setStyle('top', this.getTop());
-                }
-                
-                if (hoverDiv.getCoordinates().bottom >= this.getCoordinates().bottom) {
-                    hoverDiv.setStyle('top', this.getCoordinates().bottom - workshopLength);
+                    var e = new Event(e);
+                    
+                    var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;
+                    
+                    hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
+                    hoverDiv.setStyle('left', this.getLeft());
+                    
+                    if (hoverDiv.getTop() <= this.getTop()) {
+                        hoverDiv.setStyle('top', this.getTop());
+                    }
+                    
+                    if (hoverDiv.getCoordinates().bottom >= this.getCoordinates().bottom || hoverDiv.getCoordinates().bottom >= weekViewWrapperBottom) {
+                        hoverDiv.setStyle('top', weekViewWrapperBottom - workshopLength);
+                    }
                 }
             },
             
             'mousemove': function(e) {
 
-                var e = new Event(e);
-                
-                hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
-                hoverDiv.setStyle('left', this.getLeft());
-                               
-                if (hoverDiv.getTop() <= this.getTop()) {
-                    hoverDiv.setStyle('top', this.getTop());
-                }
-                
-                if (hoverDiv.getCoordinates().bottom >= this.getCoordinates().bottom) {
-                    hoverDiv.setStyle('top', this.getCoordinates().bottom - workshopLength);
-                }
+                if (currentMode == "add") {
 
-	            setTime();
+                    var e = new Event(e);
+                    
+                    var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;
+                                       
+                    hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
+                    hoverDiv.setStyle('left', this.getLeft());
+                                   
+                    if (hoverDiv.getTop() <= this.getTop()) {
+                        hoverDiv.setStyle('top', this.getTop());
+                    }
+                    
+                    if (hoverDiv.getCoordinates().bottom >= this.getCoordinates().bottom || hoverDiv.getCoordinates().bottom >= weekViewWrapperBottom) {
+                        hoverDiv.setStyle('top', weekViewWrapperBottom - workshopLength);
+                    }
+    
+    	            setTime();
+                }
             },
         })
     });
@@ -261,8 +335,10 @@ function setTime()
         hoverDiv.addClass('hoverDiv');
         
     }
+    
+    var yScroll = $('weekViewWrapper').getSize().scroll.y;
 
-    var tmp = Math.round(((parseInt((hoverDiv.getTop() - currentColumn.getTop())/5))*5)*60);
+    var tmp = Math.round(((parseInt((hoverDiv.getTop() + yScroll - currentColumn.getTop())/5))*5)*60);
     
     var topTime = new Date();
     var bottomTime = new Date();

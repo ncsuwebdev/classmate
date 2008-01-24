@@ -39,6 +39,7 @@
            <medDateFormat>%b %e, %Y</medDateFormat>
     	   <longDateFormat>%A, %B %e, %Y</longDateFormat>
     	   <dateFormat>%m/%d/%Y</dateFormat>
+           <dayFormat>%d</dayFormat>
     	   <timeFormat>%I:%M %p</timeFormat>
     	</display>
     	<bugContactRole>administrator</bugContactRole>

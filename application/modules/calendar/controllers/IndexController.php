@@ -39,9 +39,17 @@ class Calendar_IndexController extends Internal_Controller_Action
     public function indexAction()
     {        
         
-        $this->view->title = "ClassMate Calendar";
+        //$this->view->title = "ClassMate Calendar";
         
         $cal = new Calendar();
+        
+        $zd = new Zend_Date();
+        
+        $this->view->workshopLength = mktime(1, 0, 0, 1, 1, 1970);
+        $this->view->baseTime = mktime(0, 0, 0, 1, 1, 1970);
+        $this->view->year = $zd->get(Zend_Date::YEAR);
+        $this->view->week = $zd->get(Zend_Date::WEEK); 
+        $this->view->month = $zd->get(Zend_Date::MONTH); 
         
         $c = $cal->getCalendar();
         
@@ -69,7 +77,7 @@ class Calendar_IndexController extends Internal_Controller_Action
      * AJAX function that allows the rendering of the next calendar
      *
      */
-    public function getCalAction()
+    public function getMonthAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
         
@@ -82,38 +90,99 @@ class Calendar_IndexController extends Internal_Controller_Action
         $cal = new Calendar();
         $c = $cal->getCalendar($month, $year);
         
+        $this->view->month = $c['month'];
+        $this->view->week  = $c['week'];
+        $this->view->year  = $c['year'];
+        
+        $this->view->nextMonth  = $c['nextMonth'];
+        $this->view->nextYear  = $c['nextYear'];
+        
+        $this->view->prevMonth = $c['prevMonth'];
+        $this->view->prevYear  = $c['prevYear'];
+        
         $this->view->calendar = $c;
         
-        $this->_response->setBody($this->view->render('index/getCal.tpl'));
+        $this->_response->setBody($this->view->render('index/getMonth.tpl'));
     }
     
     /**
-     * This is an AJAX function that gets the week view data.  If the
-     * newWindow flag is set in the query string, then it instructs it
-     * to render the entire week view window.  If it's not, it just
+     * This is an AJAX function that gets the week view data.  It
      * renders the table of the week data.
-     *
      */
-    public function weekViewAction()
+    public function getWeekAction()
     {
-        
         $this->_helper->viewRenderer->setNeverRender();
-        
+
         $get    = Zend_Registry::get('get');
         $filter = Zend_Registry::get('inputFilter');
         
-        $year  = $filter->filter($get['year']);
-        $week  = $filter->filter($get['week']);
-        
-        $newWindow = 0;
-        if (isset($get['newWindow'])) {
-            $newWindow = $filter->filter($get['newWindow']);
+        $cal = new Calendar();
+        $zd = new Zend_Date();
+
+        if (isset($get['locationId'])) {        
+            $locationId = $filter->filter($get['locationId']);
         }
+        
+        if (isset($get['startTime'])) {
+            
+            $startTime = $get['startTime'];
+            
+            if ($startTime['Time_Meridian'] == "pm") {
+                $startTime['Time_Hour'] += 12;
+            }
+        
+            if ($startTime['Time_Hour'] == 24) {
+                $startTime['Time_Hour'] = 0;
+            }
+            
+            $this->view->startTime = mktime($startTime['Time_Hour'], $startTime['Time_Minute'], 0, 1, 1, 1970);
+            
+        } else {
+            
+            $this->view->startTime = mktime(8, 0, 0, 1, 1, 1970);
+        }
+        
+        if (isset($get['endTime'])) {
+            
+            $endTime = $get['endTime'];
+        
+            if ($endTime['Time_Meridian'] == "pm") {
+                $endTime['Time_Hour'] += 12;
+            }
+        
+            if ($endTime['Time_Hour'] == 24) {
+                $endTime['Time_Hour'] = 0;
+            }
+    
+            $this->view->endTime = mktime($endTime['Time_Hour'], $endTime['Time_Minute'], 0, 1, 1, 1970);
+            
+        } else {
+            
+            $this->view->endTime = mktime(20, 0, 0, 1, 1, 1970);
+        }
+        
+        if (isset($get['year'])) {
+            $year = $filter->filter($get['year']);
+        } else {
+            $year = $zd->get(Zend_Date::YEAR);                       
+        }
+        
+        $zd->setYear($year);
+        
+        if (isset($get['week'])) {
+            $week = $filter->filter($get['week']);
+        } else {
+            $week = $zd->get(Zend_Date::WEEK);
+        }
+        
+        $zd->setWeek($week);
+        
+        $month = $zd->get(Zend_Date::MONTH);
         
         $this->view->year = $year;
         $this->view->week = $week;
+        $this->view->month = $month;
         
-        $cal = new Calendar();
         $c = $cal->getWeek($week, $year);
 
         $this->view->weekNum     = $c['weekNum'];
@@ -136,12 +205,7 @@ class Calendar_IndexController extends Internal_Controller_Action
         
         $this->view->calendar = $c;
         
-        if ($newWindow) {
-            $this->_response->setBody($this->view->render('index/weekView.tpl'));
-        } else {
-            $this->_response->setBody($this->view->render('index/getWeek.tpl'));
-        }
-        
+        $this->_response->setBody($this->view->render('index/getWeek.tpl'));
     }
 
     

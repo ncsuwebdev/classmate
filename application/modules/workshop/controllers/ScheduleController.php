@@ -41,15 +41,14 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     public function indexAction()
     {       
         $this->view->acl = array(
-           'add'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'add'),
-           'details' => $this->_acl->isAllowed($this->_role, $this->_resource, 'details'),
+           'add'    => $this->_acl->isAllowed($this->_role, $this->_resource, 'createEvent'),
         );
         
         $zd = new Zend_Date();
         
         $this->view->workshopLength = mktime(1, 0, 0, 1, 1, 1970);
-        $this->view->startTime = mktime(8, 0, 0, 1, 1, 1970);
-	    $this->view->endTime = mktime(20, 0, 0, 1, 1, 1970);
+        $this->view->startTime = mktime(0, 0, 0, 1, 1, 1970);
+	    $this->view->endTime = mktime(23, 30, 0, 1, 1, 1970);
         $this->view->baseTime = mktime(0, 0, 0, 1, 1, 1970);
         $this->view->year = $zd->get(Zend_Date::YEAR);
         $this->view->week = $zd->get(Zend_Date::WEEK);  
@@ -82,15 +81,17 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     {
         $this->_helper->viewRenderer->setNeverRender();
 
+        $this->view->acl = array(
+           'delete'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteEvent'),
+        );
+        
         $get    = Zend_Registry::get('get');
         $filter = Zend_Registry::get('inputFilter');
         
         $cal = new Calendar();
         $zd = new Zend_Date();
 
-        $locationId   = $filter->filter($get['locationId']);
-        $startTime    = $get['startTime'];
-        $endTime      = $get['endTime'];
+        $locationId = $filter->filter($get['locationId']);
         
         if (isset($get['year'])) {
             $year = $filter->filter($get['year']);            
@@ -104,30 +105,13 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $week = $zd->get(Zend_Date::WEEK);
         }
         
-
-    	if ($startTime['Time_Meridian'] == "pm") {
-    	    $startTime['Time_Hour'] += 12;
-    	}
-    
-    	if ($startTime['Time_Hour'] == 24) {
-    	    $startTime['Time_Hour'] = 0;
-    	}
-    
-    	if ($endTime['Time_Meridian'] == "pm") {
-    	    $endTime['Time_Hour'] += 12;
-    	}
-    
-    	if ($endTime['Time_Hour'] == 24) {
-    	    $endTime['Time_Hour'] = 0;
-    	}
-
-    	$this->view->startTime = mktime($startTime['Time_Hour'], $startTime['Time_Minute'], 0, 1, 1, 1970);
-    	$this->view->endTime   = mktime($endTime['Time_Hour'], $endTime['Time_Minute'], 0, 1, 1, 1970);
+        $this->view->startTime = mktime(0, 0, 0, 1, 1, 1970);
+        $this->view->endTime   = mktime(23, 30, 0, 1, 1, 1970);
         
         $this->view->year = $year;
         $this->view->week = $week;
         
-        $c = $cal->getWeek($week, $year);
+        $c = $cal->getWeek($week, $year, $locationId);
 
         $this->view->weekNum     = $c['weekNum'];
         $this->view->year        = $c['year'];
@@ -183,8 +167,23 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         
         $e = new Event();
 
-        echo $e->insert($data);       
+        echo $e->insert($data);
+    }
+    
+    
+    public function deleteEventAction()
+    {
+        $this->_helper->viewRenderer->setNeverRender();
+
+        $post   = Zend_Registry::get('post');
+        $filter = Zend_Registry::get('inputFilter');
+
+        $eventId = $filter->filter($post['eventId']);
+                
+        $e = new Event();
+
+        $where = $e->getAdapter()->quoteInto('eventId = ?', $eventId);
         
-        //$this->_response->setBody($this->view->render('schedule/createEvent.tpl'));
+        echo $e->delete($where);
     }
 }

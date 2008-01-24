@@ -1,27 +1,10 @@
+<input type="hidden" id="startTime" value="{$startTime}" />
+<input type="hidden" id="endTime" value="{$endTime}" />
+
 <div id="workshopSearchWrapper">
-    <div id="workshopSearchTitle">Select the options for the workshop you would like to schedule.</div>
-    <div id="workshopSearchForm">
-    <form id="wsForm" style="float: left; display: inline; width: 50%;">
+    <div id="workshopAddFormTitle"><p>New Workshop Options</p></div>
+    <div id="workshopAddForm">
     <table>
-    <tr>
-        <td><label for="locationId">Location:</label></td>
-        <td>{html_options id=locationId name=locationId options=$locations}</td>
-    </tr>
-    <tr>
-        <td>Display Start Time:</td>
-        <td>{html_select_time display_seconds=false minute_interval=15 use_24_hours=false time=$startTime field_array=startTime}</td>
-    </tr>
-    <tr>
-        <td>Display End Time:</td>
-        <td>{html_select_time display_seconds=false minute_interval=15 use_24_hours=false time=$endTime field_array=endTime}</td>
-    </tr>
-    <tr>
-        <td colspan="2"><input type="button" value="Search" id="searchButton" /></td>
-    </tr>
-    </table>
-    </form>
-    
-    <table style="display: inline; width=50%;">
         <tbody>
             <tr>
                 <td><label for="workshopId">Workshop:</label></td>
@@ -77,7 +60,6 @@
             </tr>
         </tbody>
     </table>
-    
     </div>
 </div>
 <br />
@@ -85,7 +67,13 @@
 <input type="hidden" id="basetime" value="{$baseTime}" />
 
 <div id="workshopSearchResults">
-    <div id="searchResultsTitle">Search Results</div>
+    <div id="searchResultsTitle">
+        <form id="wsForm" style="float: left; display: inline; width: 50%;">
+            <label for="locationId">Filter by Location:</label>
+            {html_options id=locationId name=locationId options=$locations}
+        </form>
+        <p style="float: right; margin-right: 10px;"><input id="modeButton" type="button" value="Switch to Add Mode" /></p>
+    </div>
     <div id="searchResultsContentWrapper">
         <div id="workshopSearchResultsLoading">
             <img width="32" height="32" src="{$sitePrefix}/public/images/loading_big.gif" />
