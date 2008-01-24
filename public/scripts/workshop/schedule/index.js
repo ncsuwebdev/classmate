@@ -112,7 +112,7 @@ window.addEvent('domready', function() {
                 $('workshopSearchResultsLoading').style.display = 'none';
                 if (txtStr != 0) {
                     alert('Workshop scheduled successfully!');
-                    hoverDiv.setStyle('display', 'none');
+                    modeButton.fireEvent('click');
                     search();
                 }
             }

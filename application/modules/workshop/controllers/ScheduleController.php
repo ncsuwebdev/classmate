@@ -183,7 +183,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $e = new Event();
 
         $where = $e->getAdapter()->quoteInto('eventId = ?', $eventId);
-        
-        echo $e->delete($where);
+        $data = array('status'=>'canceled');
+        echo $e->update($data, $where);
     }
 }
