@@ -38,7 +38,6 @@
 		            <b>You are not Logged in!</b> <a href="{$sitePrefix}/login/">Log in</a> here.
 		            {else}
 		            Logged in as {$loggedInUser} via {$loggedInRealm}  &nbsp;|&nbsp;
-		            <a href="{$sitePrefix}/profile/">My Profile</a>  &nbsp;|&nbsp;
 		            {if $authManageLocally}
 		            <a href="{$sitePrefix}/login/index/changePassword/">Change Password</a> &nbsp;|&nbsp;
 		            {/if}

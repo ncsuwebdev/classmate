@@ -1,0 +1,12 @@
+div.searchResult {
+    padding-bottom: 30px;
+}
+
+div.searchResult .title {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+div.searchResult .description {
+    font-size: normal;
+}

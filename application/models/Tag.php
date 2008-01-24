@@ -53,9 +53,17 @@ class Tag extends Ot_Db_Table
         $tagMap = new TagMap();
         
         $where = $tagMap->getAdapter()->quoteInto('attributeName = ?', $attributeName) . 
-           ' AND ' . 
-           $tagMap->getAdapter()->quoteInto('attributeId = ?', $attributeId);
-           
+           ' AND ';
+        
+        if (is_array($attributeId)) {
+        	if (count($attributeId) == 0) {
+        		return array();
+        	}
+        	$where .= $tagMap->getAdapter()->quoteInto('attributeId IN (?)', $attributeId);
+        } else {
+        	$where .= $tagMap->getAdapter()->quoteInto('attributeId = ?', $attributeId);
+        }           
+                   
         $tags = $tagMap->fetchAll($where);
         
         $tagIds = array();
@@ -72,25 +80,23 @@ class Tag extends Ot_Db_Table
         return $this->fetchAll($where, 'name')->toArray();    	
     }
     
-    public function getAttributeIdsWithTag($attributeName, $tag)
+    public function getAttributeIdsWithTag($attributeName, $tagId)
     {
     	$tagMap = new TagMap();
     	$ids = array();
     	
     	$dba = $this->getAdapter();
-    	$where = $dba->quoteInto('name = ?', $tag);
-    	
-    	$result = $this->fetchAll($where);
-    	if ($result->count() == 0) {
-    		return $ids;
-    	}
-    	
-    	$tag = $result->current();
-    	
-    	$where = $dba->quoteInto('attributeName = ?', $attributeName) . 
-    	   ' AND ' . 
-    	   $dba->quoteInto('tagId = ?', $tag->tagId);
-    	   
+
+    	$where = $dba->quoteInto('attributeName = ?', $attributeName) . ' AND '; 
+    	 
+        if (is_array($tagId) && count($tagId) != 0) {
+            $where .= $dba->quoteInto('tagId IN (?)', $tagId);
+        } elseif ($tagId != '') {
+            $where .= $dba->quoteInto('tagId = ?', $tagId);
+        } else {
+        	return array();   	
+        }
+        
     	$result = $tagMap->fetchAll($where, 'attributeId DESC');
     	
     	foreach ($result as $r) {
@@ -189,5 +195,28 @@ class Tag extends Ot_Db_Table
         }
         
         $dba->commit();        
+    }
+    
+    public function insert(array $data)
+    {
+    	$tagId = parent::insert($data);
+    	
+    	$config = Zend_Registry::get('config');
+    	
+    	try {
+            $index = Zend_Search_Lucene::open($config->search->tagIndexPath);
+        } catch (Exception $e) {
+            $index = Zend_Search_Lucene::create($config->search->tagIndexPath);
+        }
+        
+        $doc = new Zend_Search_Lucene_Document();
+        
+        $doc->addField(Zend_Search_Lucene_Field::Keyword('tagId', $tagId));
+        
+        $doc->addField(Zend_Search_Lucene_Field::Text('name', $data['name']));
+        
+        $index->addDocument($doc);
+        
+        return $tagId;
     }
 }

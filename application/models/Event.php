@@ -48,7 +48,7 @@ class Event extends Ot_Db_Table
      */
     protected $_primary = 'eventId';
     
-    public function getEvents($workshopId = null, $eventId = null, $startDt = null, $endDt = null, $status = null)
+    public function getEvents($workshopId = null, $eventId = null, $startDt = null, $endDt = null, $status = null, $count = null)
     {
     	$dba = $this->getAdapter();
     	
@@ -105,7 +105,7 @@ class Event extends Ot_Db_Table
                     '(' . 
                         $dba->quoteInto('date = ?', $startDate) . 
                         ' AND ' .
-                        $dba->quoteInto('startTime >= ?', $startTime) . 
+                        $dba->quoteInto('endTime >= ?', $startTime) . 
                     ')' . 
                     ' OR ' . 
                     '(' . 
@@ -128,7 +128,7 @@ class Event extends Ot_Db_Table
                     '(' . 
                         $dba->quoteInto('date = ?', $startDate) . 
                         ' AND ' .
-                        $dba->quoteInto('startTime >= ?', $startTime) . 
+                        $dba->quoteInto('endTime >= ?', $startTime) . 
                     ')' .    
                 ')';
                          		
@@ -151,7 +151,7 @@ class Event extends Ot_Db_Table
                 ')';    		
     	}
     	
-    	return $this->fetchAll($where, array('date', 'startTime'));
+    	return $this->fetchAll($where, array('date', 'startTime'), $count);
     }
     
     public function getStatusOfUserForEvent($userId, $eventId)

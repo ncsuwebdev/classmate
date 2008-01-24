@@ -264,7 +264,7 @@ class Attendees extends Ot_Db_Table
             'userId'  => $userId,
             'status'  => 'canceled',
         );
-        
+
         try {
             $this->update($data, null);
         } catch (Exception $e) {

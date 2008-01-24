@@ -47,4 +47,80 @@ class Workshop extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'workshopId';
+    
+    public function getRelatedWorkshops($workshopId, $limit = 'none')
+    {
+    	$tag = new Tag();
+    	$tags = $tag->getTagsForAttribute('workshopId', $workshopId);
+    	
+    	$tagNames = array();
+    	foreach ($tags as $t) {
+    		$tagNames[] = $t['name'];
+    	}
+    	
+    	return $this->search(implode(' ', $tagNames), $limit);
+    }
+    
+    public function search($query, $limit = 'none')
+    {
+        $config = Zend_Registry::get('config');
+        
+        try {
+            $index = Zend_Search_Lucene::open($config->search->workshopIndexPath);
+        } catch (Exception $e) {
+        	$index = Zend_Search_Lucene::create($config->search->workshopIndexPath);
+        }
+        
+        if ($limit != 'none') {
+            Zend_Search_Lucene::setResultSetLimit($limit);
+        }
+        
+        return $index->find($query);
+    }
+    
+    public function index($workshopId)
+    {
+    	$config = Zend_Registry::get('config');
+    	
+    	$thisWorkshop = $this->find($workshopId);
+    	if (is_null($thisWorkshop)) {
+    		return;
+    	}
+    	
+    	$tag = new Tag();
+    	$tags = $tag->getTagsForAttribute('workshopId', $workshopId);
+    	
+    	$tagNames = array();
+    	foreach ($tags as $t) {
+    		$tagNames[] = $t['name'];
+    	}
+    	
+        try {
+            $index = Zend_Search_Lucene::open($config->search->workshopIndexPath);
+        } catch (Exception $e) {
+            $index = Zend_Search_Lucene::create($config->search->workshopIndexPath);
+        }
+    	
+    	$term  = new Zend_Search_Lucene_Index_Term($workshopId, 'workshopId');
+        $query = new Zend_Search_Lucene_Search_Query_Term($term);
+    	
+    	$hits = $index->find($query);
+    	
+    	foreach ($hits as $hit) {
+    		$index->delete($hit->id);
+    	}
+    	
+    	$doc = new Zend_Search_Lucene_Document();
+    	
+    	$doc->addField(Zend_Search_Lucene_Field::Keyword('workshopId', $workshopId));
+    	
+    	$doc->addField(Zend_Search_Lucene_Field::Text('title', $thisWorkshop->title));
+    	
+    	$doc->addField(Zend_Search_Lucene_Field::Text('tags', implode(',', $tagNames)));
+    	
+    	$doc->addField(Zend_Search_Lucene_Field::UnIndexed('description', $thisWorkshop->description));
+    	
+    	$index->addDocument($doc);
+    	
+    }
 }

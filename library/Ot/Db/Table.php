@@ -22,7 +22,7 @@ class Ot_Db_Table extends Zend_Db_Table
                     throw new Internal_Exception_Input("Primary key $key not set");
                 }
                 
-                $where = $this->getAdapter()->quoteInto($key . ' = ?', $data[$key]);
+                $where .= $this->getAdapter()->quoteInto($key . ' = ?', $data[$key]);
             }
         }
 

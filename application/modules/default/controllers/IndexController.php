@@ -42,14 +42,19 @@ class IndexController extends Internal_Controller_Action
      */
     public function indexAction()
     {
-    	if (Zend_Auth::getInstance()->hasIdentity()) {
-    		$attendees = new Attendees();
-    		$this->view->attendeeEvents = $attendees->getEventsForAttendee(Zend_Auth::getInstance()->getIdentity(), time());
-    		
-    		$this->_helper->viewRenderer->setScriptAction('index-loggedin');
+    	$event = new Event();
+    	$upcoming = $event->getEvents(null, null, time(), null, 'open', 8)->toArray();
+    	
+    	$workshop = new Workshop();
+    	
+    	foreach ($upcoming as &$u) {
+    		$u['workshop'] = $workshop->find($u['workshopId'])->toArray();
     	}
+    	
+    	$this->view->upcoming = $upcoming;
+    	
         $this->view->title = 'Welcome to Classmate';
-        $this->view->showNews = true;
+        $this->view->javascript = array('mootabs1.2.js');
     }
     
     public function autoSuggestAction()
@@ -69,12 +74,17 @@ class IndexController extends Internal_Controller_Action
         
         $ret = array();
         if ($search != '') {
-	        $where = $tag->getAdapter()->quoteInto('name LIKE ?', $search . '%');
+        	$config = Zend_Registry::get('config');
+	        try {
+	            $index = Zend_Search_Lucene::open($config->search->tagIndexPath);
+	        } catch (Exception $e) {
+	            $index = Zend_Search_Lucene::create($config->search->tagIndexPath);
+	        }        
+
+	        $res = $index->find('+' . $search);
 	        
-	        $tags = $tag->fetchAll($where, 'name');
-	                
-	        foreach ($tags as $t) {
-	        	$ret[] = $t->name;
+	        foreach ($res as $r) {
+	        	$ret[] = $r->name;
 	        }
         }
                 
@@ -94,7 +104,7 @@ class IndexController extends Internal_Controller_Action
     	if ($search == '') {
     		throw new Internal_Exception_Input('No search term was set');
     	}
-    	
+    	/*
     	$tag = new Tag();
     	
     	$ids = $tag->getAttributeIdsWithTag('workshopId', $search);
@@ -107,6 +117,11 @@ class IndexController extends Internal_Controller_Action
     	} else {
     		$workshops = array();
     	}
+    	*/
+    	
+    	$workshop = new Workshop;
+    	
+    	$workshops = $workshop->search($search);
     	
     	$this->view->title = "Your search for &quot;" . $search . "&quot; returned " . count($workshops) . " workshop" . ((count($workshops) != 1) ? "s" : "") . ":";
     	$this->view->workshops = $workshops;
@@ -136,4 +151,5 @@ class IndexController extends Internal_Controller_Action
 	        echo $result['source'];
         }
     }   
+    
 }

@@ -120,7 +120,7 @@ class Workshop_SignupController extends Internal_Controller_Action
         $attendees = new Attendees();
         $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
         
-        $this->_redirect('/');        
+        $this->_redirect('profile/');       
     }
     
     public function cancelAction()
@@ -149,7 +149,7 @@ class Workshop_SignupController extends Internal_Controller_Action
             $attendees = new Attendees();
             $attendees->cancelReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
             
-            $this->_redirect('/');
+            $this->_redirect('/profile/');
             
     	} else {
 	        $get = Zend_Registry::get('get');	        
@@ -213,5 +213,59 @@ class Workshop_SignupController extends Internal_Controller_Action
         	        
 	        $this->view->hideTitle = true;
 	    }
+    }
+    
+    public function reservationAction()
+    {
+    	$this->view->title = 'Reservation Details';
+    	
+    	$get = Zend_Registry::get('get');
+    	$filter = Zend_Registry::get('inputFilter');
+    	
+        if (!isset($get['eventId'])) {
+            throw new Internal_Exception_Input('Event ID not set');
+        }
+            
+        $eventId = $filter->filter($get['eventId']);
+          
+        if ($eventId == '') {
+            throw new Internal_Exception_Input('Event ID has no value');
+        }
+        
+        $event = new Event();
+            
+        $status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $eventId);
+        if ($status != 'waitlist' && $status != 'attending') {
+            throw new Internal_Exception_Data('You are not atteding this class, so you cannot cancel it');
+        }
+        $this->view->status = $status;  
+            
+        $event = new Event();
+        $thisEvent = $event->find($eventId);
+            
+        if (is_null($thisEvent)) {
+            throw new Internal_Exception_Data('Event not found');
+        }
+            
+        $this->view->event = $thisEvent->toArray();
+            
+        $location = new Location();        
+        $thisLocation = $location->find($thisEvent->locationId);        
+        if (is_null($thisLocation)) {
+            throw new Internal_Exception_Data('Location not found');
+        }
+        $this->view->location = $thisLocation->toArray();
+                        
+        $workshop = new Workshop();
+        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+        if (is_null($thisWorkshop)) {
+            throw new Internal_Exception_Data('Workshop not found');
+        }
+        $this->view->workshop = $thisWorkshop->toArray();        
+            
+        $instructor = new Instructor();
+        $instructors = $instructor->getInstructorsForEvent($eventId);        
+                	
+    	$this->view->instructors = $instructors;
     }
 }

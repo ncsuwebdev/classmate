@@ -15,9 +15,9 @@
                 {if $e.status == 'instructor'}
                     <a href="{$sitePrefix}/workshop/signup/instructor/?eventId={$e.eventId}"></a>Instructor Options
                 {elseif $e.status == 'attending'}
-                    <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>You are attending. Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/reservation/?eventId={$e.eventId}"></a>You are attending. Cancel...
                 {elseif $e.status == 'waitlist'}
-                    <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>You're on the waitlist.  Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/reservation/?eventId={$e.eventId}"></a>You're on the waitlist.  Cancel...
                 {elseif $e.status == 'restricted'}
                     <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a><span class="restricted">Attendance Restricted</span>
                 {else}
@@ -68,7 +68,7 @@
 </div>
 <div id="detailsLeft">
 	<div id="response">&nbsp;</div> 
-	<input type="hidden" name="workshopId" id="workshopId" value="{$workshop.workshopId}" class="postArgs description wsTitle prerequisites" />   
+	<input type="hidden" name="workshopId" id="workshopId" value="{$workshop.workshopId}" class="postArgs taglist description wsTitle prerequisites" />   
 	<div id="workshopTitleContainer">
 	    {if $acl.edit}
 		<div id="editTitle" class="inlineEdit" target="wsTitle"></div>

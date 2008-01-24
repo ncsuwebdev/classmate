@@ -42,6 +42,10 @@
            <dayFormat>%d</dayFormat>
     	   <timeFormat>%I:%M %p</timeFormat>
     	</display>
+    	<search>
+    	   <workshopIndexPath>./search_index/workshops</workshopIndexPath>
+    	   <tagIndexPath>./search_index/tags</tagIndexPath>
+    	</search>
     	<bugContactRole>administrator</bugContactRole>
     	<navigation>
     	   <tab0>
@@ -74,6 +78,18 @@
     	           </tab4>
     	       </submenu>
     	   </tab0>
+           <tab4>
+               <module>profile</module>
+               <display>My ClassMate</display>   
+               <submenu>
+                   <tab2>
+                       <controller>index</controller>
+                       <display>My ClassMate</display>
+                       <select></select>
+                       <link></link>
+                   </tab2> 
+               </submenu>                 
+           </tab4>   	   
            <tab1>
                <module>workshop</module>
                <display>Our Workshops</display>

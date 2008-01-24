@@ -1,32 +1,133 @@
-h3 {
-    background: #FFF url(../../../images/dot.gif) repeat-x center;
+div#right {
+    width: 370px;
+    float: right;
 }
 
-h3 span {
-    background-color: #FFF;
-    padding-right: 10px;
+div#left {
+	width: 370px;
 }
+
 
 div.event {
     padding: 2px 2px 2px 25px;
-    margin-bottom: 10px;
     background-image: url(../../../images/date.png);
     background-repeat: no-repeat;  
     background-position: 3px 3px;
-    background-color: #F4F4F4;
 }
 
-div.event .workshopName {
-    display: block;
+div.event:hover {
+    background-color: #F4F4f4;
+}
+
+.workshopName {
+    display: inline;
     font-weight: bold;
-}
-
-div.event .status {
-    display: block;
-    color: #C3593C;
 }
 
 div.event .date {
     display: block;
     font-weight: bold;
+    width: 80px;
+    float: left;
+}
+
+div.workshop {
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
+div.workshop .name {
+	font-size: 110%;
+	font-weight: bold;
+}
+
+div.workshop .description {
+    
+}
+
+div.sectionTitle {
+    height: 22px;
+    background-color: #464548; 
+    margin: 0px;
+}
+
+div.sectionTitle a {
+    color: #FFF;
+}
+
+div.sectionTitle p {
+	margin: 0px;
+	padding: 0px;
+}
+
+div.sectionTitle p.right {
+    background-image: url(../../../images/darkgrey_header_right.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px; 
+    float: right;   
+    height: 22px;
+    width: 10px;
+}
+
+div.sectionTitle p.left {
+    background-image: url(../../../images/darkgrey_header_left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 10px;
+}
+
+div.sectionTitle p.content {
+    color: #FFF;
+    font-weight: bold;
+    line-height: 22px;
+    width: 100%;
+}
+
+.mootabs_title {
+    list-style-image: none;
+    list-style-type: none;
+    padding: 0px;
+    height: 22px;
+    width: 369px;
+    text-align: center;
+    position: relative;
+    top: -11px;
+    background-color: #464548;
+    padding-left: 1px;
+}
+
+.mootabs_title li {
+    float: left;
+    background-color: #ddd;
+    padding: 0px 8px 0px 8px;
+    cursor: pointer;
+    line-height: 22px;
+    background-color: #6e6e6e;
+    color: #FFF;
+    width: 106px;
+    margin: 0px;
+    text-align: center;
+    margin-right: 1px;
+}
+
+.mootabs_title li.active {    
+    background-color: #C3593C;
+}
+
+.mootabs_panel {
+    display: none;
+    background-color: #FFF;
+    position: relative;
+    top: -23px;
+    overflow: auto;
+    padding: 6px;
+    width: 356px;
+    border: 1px solid #464548;
+}
+
+.mootabs_panel.active {
+    background-color: #fff;
+    display: block;
 }

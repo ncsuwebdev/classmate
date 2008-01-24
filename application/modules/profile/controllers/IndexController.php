@@ -88,11 +88,47 @@ class Profile_IndexController extends Internal_Controller_Action
         
         $this->view->profile       = $up->toArray();
         $this->view->displayUserId = $displayUserId;
-        $this->view->title         = "Details for " . $displayUserId;
+        $this->view->title         = "My ClassMate for " . $displayUserId;
         $this->view->types         = $config->profileTypes->toArray();
         		
 		$ca = new CustomAttribute();
 		$this->view->custom = $ca->getData('User_Profile', $userId, 'display');
+
+        $attendees = new Attendees();
+        $events = $attendees->getEventsForAttendee($userId, time());
+            
+        $workshopIds = array();
+        foreach ($events as $e) {
+            $workshopIds[] = $e['workshopId'];
+        }
+            
+        $this->view->attendeeEvents = $events;      
+
+        $this->view->pastEvents = $attendees->getEventsForAttendee($userId, 0, time());
+
+        $workshop = new Workshop();
+            
+        $related = $workshop->getRelatedWorkshops($workshopIds, 4);
+            
+        $newRelated = array();
+           
+        foreach ($related as $r) {
+            if (!in_array($r->workshopId, $workshopIds)) {
+               $newRelated[] = array(
+                 'title' => $r->title,
+                 'workshopId' => $r->workshopId,
+                 'description' => $r->description,
+                 'tags' => explode(',', $r->tags),
+               );
+            }
+        }
+            
+        $this->view->relatedWorkshops = $newRelated;
+                    
+        $this->view->javascript = array(
+            'mootabs1.2.js',
+        );
+            		
 	}
 	
 	/**
