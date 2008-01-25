@@ -62,7 +62,6 @@
     </table>
     </div>
 </div>
-<br />
 &nbsp;
 <input type="hidden" id="basetime" value="{$baseTime}" />
 

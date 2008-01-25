@@ -30,20 +30,19 @@ window.addEvent('domready', function() {
                 var documentId = item.getParent().id.replace(/^[^_]*\_/i, '');
                 var updateEl = $('response');                        
                         
-				new Ajax( sitePrefix + '/workshop/index/deleteDocument/', {
+				new Ajax(sitePrefix + '/workshop/index/deleteDocument/', {
 				    method: 'post',
 				    postBody: 'documentId=' + documentId,
 				    update: updateEl,
 				    onComplete: function(){
 				        var responseFade = new Fx.Style(updateEl.getProperty('id'), 'opacity', {
-				            duration:2000,
+				            duration:2000
 				        });
 				        responseFade.start.pass([1,0],responseFade).delay(1000);
 				    }
 		       }).request();
 				        
                item.getParent().remove(); 
-				                       
            }       
 	    });
 	});
@@ -68,7 +67,7 @@ window.addEvent('domready', function() {
                     update: updateEl,
                     onComplete: function(){
                         var responseFade = new Fx.Style(updateEl.getProperty('id'), 'opacity', {
-                            duration:2000,
+                            duration:2000
                         });
                         responseFade.start.pass([1,0],responseFade).delay(1000);
                     }
@@ -108,10 +107,9 @@ window.addEvent('domready', function() {
             }
         });
     });
-}); 
+});
 
 
-    
 var myIEdit = iEdit.extend({
     editClass: '',
     
@@ -168,6 +166,5 @@ var myIEdit = iEdit.extend({
         $$('.delete').each(function (del) {
             del.style.display = '';
         });        
-    },
+    }
 });
-

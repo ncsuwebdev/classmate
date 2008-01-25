@@ -65,14 +65,15 @@
             <p>Do it to it...</p>
         </div>
         
-        <div class="search_field">
-            <form method="get" action="{$sitePrefix}/index/search/">
-                <p><span class="grey">Search Example:</span> <span class="search">Excel</span>&nbsp;&nbsp; <input type="text" id="searchBox" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
-            </form>
-        </div>
-        
-        <div class="newsletter">
-            <p>Subscribe for Newsletter!</p>
+        <div class="searchBar">           
+            <div class="search_field">
+                <form method="get" action="{$sitePrefix}/index/search/">
+                    <p><span class="grey">Search Example:</span> <span class="search">Excel</span>&nbsp;&nbsp; <input type="text" id="searchBox" name="search" class="search" /> <input type="submit" value="Search" class="button" /></p>
+                </form>
+            </div>
+            <div class="newsletter">
+                <p>Subscribe for Newsletter!</p>
+            </div>
         </div>
         
         <div class="subheader">

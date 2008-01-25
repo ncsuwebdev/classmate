@@ -109,7 +109,7 @@ class Workshop_IndexController extends Internal_Controller_Action
     	$this->view->locations = $locs;
     	
     	$this->view->javascript = array(
-    	    'Stickman.MultiUpload.js',	
+    	    'Stickman.MultiUpload.js'
     	);
     	
     	$this->view->useInlineEditor = true;

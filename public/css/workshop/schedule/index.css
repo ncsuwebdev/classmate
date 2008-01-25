@@ -1,5 +1,9 @@
-div#workshopSearchResults, div#workshopSearchWrapper {
+div#workshopSearchResults {
     width: 750px;
+}
+
+div#workshopSearchWrapper {
+    display: none;	
 }
 
 div#searchResultsTitle {

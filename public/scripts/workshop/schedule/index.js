@@ -33,6 +33,7 @@ window.addEvent('domready', function() {
     modeButton.addEvent('click', function(e) {
         if (modeButton.value == "Switch to Edit Mode") {
             hideHoverDiv();
+            $('workshopSearchWrapper').setStyle('display', 'none');
             $$('.delete').each (function(el){
                 el.setStyle('visibility', 'visible');
             });
@@ -40,6 +41,7 @@ window.addEvent('domready', function() {
             modeButton.value = "Switch to Add Mode";
         } else {
             currentMode = "add";
+            $('workshopSearchWrapper').setStyle('display', 'block');
             $$('.delete').each (function(el){
                 el.setStyle('visibility', 'hidden');
             });
@@ -262,8 +264,8 @@ function processSearchResults()
 
     $$('.event').each(function (el) {
     
-        el.addEvent('click', function (e) {
-            //alert(el.id);
+        el.addEvent('dblclick', function (e) {
+            alert(el.id);
         });
     
     });
@@ -318,8 +320,8 @@ function processSearchResults()
     
     	            setTime();
                 }
-            },
-        })
+            }
+        });
     });
 }
 
