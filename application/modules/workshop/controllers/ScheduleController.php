@@ -123,6 +123,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         }
         
         $this->view->startTime = mktime(0, 0, 0, 1, 1, 1970);
+        $this->view->displayStartTime = $this->view->startTime + 1800;
         $this->view->endTime   = mktime(23, 30, 0, 1, 1, 1970);
         
         $this->view->year = $year;

@@ -11,7 +11,7 @@
 <input style="float: right;" id="nextWeekButton" type="button" value="Next Week &rsaquo;">
 <p class="weekViewTitle">{$calendar.0.date|date_format:$config.longDateFormat} - {$calendar.6.date|date_format:$config.longDateFormat}</p>
 <div style="clear: both; height: 7px;"></div>
-<table class="weekViewDayHeader" cellpadding="3" cellspacing="0" border="1">
+<table class="weekViewDayHeader">
     <tbody>
         <tr class="weekDays">
             <th class="time"></th>
@@ -26,11 +26,12 @@
     </tbody>
 </table>
 <div id="weekViewWrapper">
-<table class="weekViewTable" cellpadding="3" cellspacing="0" border="1">
+<table class="weekViewTable">
     <tbody>
         <tr>
             <td class="time">
-                {section name=times start=$startTime loop=$endTime step=1800}
+                <div class="timeSlotPad"></div>
+                {section name=times start=$displayStartTime loop=$endTime step=1800}
                     <div class="timeSlot">{$smarty.section.times.index|date_format:$config.timeFormat}</div>
                 {/section}
                 <div class="timeSlot">{$endTime|date_format:$config.timeFormat}</div>

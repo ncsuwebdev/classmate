@@ -5,7 +5,7 @@
 
     <div class="rightContent">
         {if $acl.addEvent}
-        <span id="addEvent" class="add">Add New Event</span>
+        <span id="addEvent" class="add"><a href="{$sitePrefix}/workshop/schedule/?workshopId={$workshop.workshopId}"></a>Add New Event</span>
         {/if}      
 	    {foreach from=$events item=e name=events}
 	        <div class="event" id="event_{$e.eventId}">

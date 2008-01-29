@@ -96,7 +96,8 @@ window.addEvent('domready', function() {
     
     if ($('addEvent')) {
         $('addEvent').addEvent('click', function(e) {
-            location.href=sitePrefix + '/workshop/schedule/';
+            
+            location.href=$E('a', $('addEvent')).href;
         });
     }
     

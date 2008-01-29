@@ -59,15 +59,19 @@ div#workshopSearchResultsLoading {
 .timeSlot {
     width: 50px;
     height: 30px;
-    padding: 0 4px 0 4px;
+    padding: 0px 4px 0 4px;
     text-align: center; 
     font-size: 0.9em;
     whitespace: no-wrap;
 }
 
+.timeSlotPad {
+	height: 14px;
+}
+
 div.event {
     background-color: #DFF1FF;
-    margin: 2px 0 0 0;
+    margin: 0 0 0 0;
     padding: 0;
     line-height: 11px;
     color: #FFFFFF;
@@ -122,18 +126,27 @@ div.event p.eventHeader a.delete img {
 
 #hoverDivTable tbody tr td.middle {
     line-height: 12px;
+    font-size: 90%;
 }
 
 .hoverDiv {
     background-image: url(../../../images/hoverDiv.gif);
-    border: 1px solid #2ba115;
+    border: 0px;
     overflow: hidden;
+    filter:alpha(opacity=75);
+    -moz-opacity:.75;
+    opacity:.75;
+    width: 94px;
 }
 
 .hoverDivOverlap {
     background-image: url(../../../images/hoverDivOverlap.gif);
-    border: 1px solid #e3171e;
+    border: 0px;
     overflow: hidden;
+    filter:alpha(opacity=75);
+    -moz-opacity:.75;
+    opacity:.75;
+    width: 94px;    
 }
 
 #workshopId {
@@ -147,6 +160,7 @@ div.emptyTime {
 #weekViewWrapper {
 	height: 600px;
     overflow: auto;
+    padding-left: 1px;
 }
 
 .weekViewTitle {
@@ -158,25 +172,28 @@ div.emptyTime {
 .weekDays {
     background-color: #C3593C;
     color: #FFFFFF;
+    border: 1px solid #000;
 }
 
 .weekDays th.day {
-	width: 95px;
+	width: 94px;
 }
 
 .weekDays th.time {
-    width: 59px;	
+    width: 55px;	
 }
 
 table.weekViewTable {
     background-color: #F4F4F4;
     border-collapse: collapse;
-    width: 720px;
+    border: 1px solid #000;
+    padding: 3px;
 }
 
 table.weekViewDayHeader {
     border-collapse: collapse;
-    width: 720px;
+    width: 719px;
+    margin-left: 1px;
 }
 
 table.weekViewDayHeader thead tr th span {
@@ -184,13 +201,17 @@ table.weekViewDayHeader thead tr th span {
 }
 
 table.weekViewTable tbody tr td.eventColumn {
+	background-image: url(../../../images/grid_back.png);
     padding: 0; 
-    width: 95px;
+    width: 93px;
+    border-right: 1px solid #000;
 }
 
 table.weekViewTable tbody tr td.time {
     padding: 0; 
-    width: 55px;
+    width: 60px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
 }
 
 div.weekViewWrapper {
