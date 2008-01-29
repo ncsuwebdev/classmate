@@ -21,7 +21,7 @@ in mind that you want to teach?  If so, tell us about it.
         <td colspan="2"><textarea name="description" id="description" rows="15" cols="110" class="required" /></textarea></td>
     </tr>    
     <tr>
-        <td colspan="2"><label for="prerequisites">What pre-requisites woudl the students of this class need?</label></td>
+        <td colspan="2"><label for="prerequisites">What pre-requisites would the students of this class need?</label></td>
     </tr>    
     <tr>        
         <td colspan="2"><textarea name="prerequisites" id="prerequisites" rows="15" cols="110" class="required" /></textarea></td>

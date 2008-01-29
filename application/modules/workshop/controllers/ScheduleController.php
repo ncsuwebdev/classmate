@@ -44,6 +44,16 @@ class Workshop_ScheduleController extends Internal_Controller_Action
            'add'    => $this->_acl->isAllowed($this->_role, $this->_resource, 'createEvent'),
         );
         
+        $filter = Zend_Registry::get('inputFilter');
+        $get    = Zend_Registry::get('get');
+        
+        if (isset($get['workshopId'])) {
+            $workshopId = $filter->filter($get['workshopId']);
+            
+            $this->view->workshopId = $workshopId;
+            $this->view->startInAddMode = 1;
+        }
+        
         $zd = new Zend_Date();
         
         $this->view->workshopLength = mktime(1, 0, 0, 1, 1, 1970);
@@ -69,6 +79,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $location = new Location();
         $locations = $location->fetchAll(null, 'name');
         
+        if (count($locations) == 0) {
+            $this->_redirect('/workshop/schedule/noLocationsFound');
+        }
+        
         foreach ($locations as $l) {
             $locationList[$l->locationId] = $l->name;
         }
@@ -76,6 +90,9 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->locations = $locationList;
     }
     
+    public function noLocationsFoundAction() {
+        
+    }
     
     public function searchAction()
     {

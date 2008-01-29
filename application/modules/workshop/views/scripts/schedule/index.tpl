@@ -1,5 +1,6 @@
 <input type="hidden" id="startTime" value="{$startTime}" />
 <input type="hidden" id="endTime" value="{$endTime}" />
+<input type="hidden" id="startInAddMode" value="{$startInAddMode}" />
 
 <div id="workshopSearchWrapper">
     <div id="workshopAddFormTitle"><p>New Workshop Options</p></div>
@@ -8,7 +9,7 @@
         <tbody>
             <tr>
                 <td><label for="workshopId">Workshop:</label></td>
-                <td>{html_options id=workshopId name=workshopId options=$workshops}</td>
+                <td>{html_options id=workshopId name=workshopId options=$workshops selected=$workshopId}</td>
             </tr>
             <tr>
                 <td>Workshop Length:</td>
