@@ -210,11 +210,15 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $view->tabs   = $viewTabs;
         $view->subnav = $subTabs;
         
+        $req = new Zend_Session_Namespace('request');
+        
         if (!$this->_acl->isAllowed($role, $resource, $action)) {
             if (!$this->_auth->hasIdentity()) {
                 $module     = $this->_noAuth['module'];
                 $controller = $this->_noAuth['controller'];
                 $action     = $this->_noAuth['action'];
+                
+                $req->uri = str_replace($view->sitePrefix, '', $_SERVER['REQUEST_URI']);
             } else {
                 throw new Internal_Exception_Access('You do not have the proper credentials to access this page.');
             }

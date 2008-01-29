@@ -130,5 +130,10 @@ $front->setBaseUrl($baseUrl)
       ->setDispatcher(new Zend_Controller_Dispatcher_Standard())
       ;
 
-$front->dispatch();
+try {
+    $front->dispatch();
+} catch (Exception $e) {
+	$req = new Zend_Session_Namespace('request');
+	$req->uri = '';
+}
 

@@ -116,7 +116,13 @@ class Login_IndexController extends Internal_Controller_Action
             if ($user['role'] == 'activation_pending') {
             	$this->_redirect('/login/index/changePassword/');
             } else {
-            	$this->_redirect('/');
+            	$req = new Zend_Session_Namespace('request');
+            	
+            	if (isset($req->uri) && $req->uri != '') {
+            		$this->_redirect($req->uri);
+            	} else {
+            	   $this->_redirect('/');
+            	}
             }
 
         }
