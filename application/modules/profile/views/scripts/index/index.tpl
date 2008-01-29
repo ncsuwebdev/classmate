@@ -48,7 +48,7 @@
     with.  Make sure to keep your user information up-to-date so that you get all
     the benefits of being a ClassMate member.
     <div id="toggler">
-	    <div class="sectionTitle toggler">
+	    <div class="sectionTitle active toggler">
 	        <p class="left"></p>
 	        <p class="right"></p>
 	        <p class="content">Current Reservations</p>
@@ -73,7 +73,7 @@
 		    You are not signed up for any classes right now.
 		    {/foreach}
 		</div>
-	    <div class="sectionTitle toggler">
+	    <div class="sectionTitle inactive toggler">
 	        <p class="left"></p>
 	        <p class="right"></p>
 	        <p class="content">Other Workshops You May Be Interested In</p>
@@ -89,7 +89,7 @@
 		    {/foreach}
 		</div>
 	 
-	    <div class="sectionTitle toggler">
+	    <div class="sectionTitle inactive toggler">
 	        <p class="left"></p>
 	        <p class="right"></p>
 	        <p class="content">Reservation History</p>

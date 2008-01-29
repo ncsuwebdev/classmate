@@ -57,6 +57,7 @@
                             {/if}
                             {$e.startTime|date_format:$config.timeFormat}
                         </p>
+                        <p class="eventDetails">
                         {if $e.workshop}
                             {if $acl.details}
                             <a href="{$sitePrefix}/schedule/index/details?eventId={$e.eventId}">
@@ -71,6 +72,7 @@
                         <br />
                         {* {$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat} *}
                         {assign var='currTime' value=$e.endTime|timestamp}
+                        </p>
                         </div>
                     </div>
                 {/foreach}

@@ -178,8 +178,31 @@ div.inlineEdit:hover {
 
 div.sectionTitle {
     height: 22px;
-    background-color: #6e6e6e; 
     margin: 2px 0px 2px 0px;
+}
+
+div.active {
+    background-color: #C85E35;
+}
+
+div.inactive {
+	background-color: #6e6e6e; 
+}
+
+div.active p.right {
+	background-image: url(../../../images/h2-orange-right.png);
+}
+
+div.active p.left {
+	background-image: url(../../../images/h2-orange-left.png);
+}
+
+div.inactive p.right {
+	background-image: url(../../../images/h2-right.png);
+}
+
+div.inactive p.left {
+	background-image: url(../../../images/h2-left.png);
 }
 
 div.sectionTitle a {
@@ -190,8 +213,7 @@ div.sectionTitle a {
 	cursor: pointer;
 }
 
-div.sectionTitle p.right {
-    background-image: url(../../../images/h2-right.png);
+div.sectionTitle p.right {    
     background-repeat: no-repeat;  
     background-position: 0px 0px; 
     float: right;	
@@ -199,8 +221,7 @@ div.sectionTitle p.right {
     width: 11px;
 }
 
-div.sectionTitle p.left {
-    background-image: url(../../../images/h2-left.png);
+div.sectionTitle p.left {    
     background-repeat: no-repeat;  
     background-position: 0px 0px; 	
     float: left;
