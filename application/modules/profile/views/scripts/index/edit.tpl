@@ -1,4 +1,17 @@
 <div>
+    {if $notice}
+    <table class="highlight form">
+        <tbody>
+            <tr>
+                <td>        
+			    Before you can signup for classes or use any of the other new features of ClassMate,
+			    we need to get some information from you!  
+			    Please fill out this form and you will gain access to signup for classes.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    {/if}
     Enter in the information below to change your profile.<br /><br />
     <form method="post" action="" enctype="multipart/form-data" id="edit" class="checkRequiredFields">
         <input type="hidden" name="userId" value="{$profile.userId}" />

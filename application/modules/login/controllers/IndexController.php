@@ -103,8 +103,16 @@ class Login_IndexController extends Internal_Controller_Action
             }
             
             $authz = new $config->authorization($userId);
-            $user = $authz->getUser($userId);
-                        
+            
+            try {
+                $user = $authz->getUser($userId);
+            } catch (Exception $e) {
+            	
+            	$authz->addUser($userId, 'activation_pending');
+            	
+            	$user = $authz->getUser($userId);
+            }
+
             $profile = new Profile();
 
             $profile->addProfile($userId);
@@ -114,7 +122,7 @@ class Login_IndexController extends Internal_Controller_Action
             $this->_logger->info('User Logged In');  
                         
             if ($user['role'] == 'activation_pending') {
-            	$this->_redirect('/login/index/changePassword/');
+            	$this->_redirect('/profile/index/edit/');
             } else {
             	$req = new Zend_Session_Namespace('request');
             	

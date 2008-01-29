@@ -44,18 +44,26 @@ class Profile_IndexController extends Internal_Controller_Action
 		$filter = Zend_Registry::get('inputFilter');
 		$config = Zend_Registry::get('config');
 		
-		$editable = false;
+		$editable = true;
 		if (isset($get['userId'])) {
-			$userId = $filter->filter($get['userId']);
+		    if ($this->_acl->isAllowed($this->_role, $this->_resource, 'editAllProfiles')) {
+                $userId = $filter->filter($get['userId']);		
+            } else {
+            	$userId = Zend_Auth::getInstance()->getIdentity();
+            }
 		} else {
 			$userId = Zend_Auth::getInstance()->getIdentity();
-			$editable = true;
+		}
+
+
+		if ($userId == Zend_Auth::getInstance()->getIdentity()) {
+			$role = Ot_Authz::getInstance()->getRole();
+			
+			if ($role == 'activation_pending') {
+				$this->_redirect('/profile/index/edit/');
+			}
 		}
 		
-		if ($this->_acl->isAllowed($this->_role, $this->_resource, 'editAllProfiles')) {
-			$editable = true;
-		}
-        		
 		$this->view->acl = array(
 		    'edit' => $editable
 	    );
@@ -203,6 +211,11 @@ class Profile_IndexController extends Internal_Controller_Action
             
             $ca->saveData('User_Profile', $userId, $custom);
             
+            if ($userId == Zend_Auth::getInstance()->getIdentity()) {
+                $authz = new $config->authorization($userId);
+                $authz->editUser($userId, 'authUser');
+            }
+            
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $data['userId']);
             $this->_logger->info('User changed profile');             
@@ -224,6 +237,15 @@ class Profile_IndexController extends Internal_Controller_Action
 	            $userId = Zend_Auth::getInstance()->getIdentity();
 	        }
 	        
+	        
+            if ($userId == Zend_Auth::getInstance()->getIdentity()) {
+	            $role = Ot_Authz::getInstance()->getRole();
+	            
+	            if ($role == 'activation_pending') {
+	                $this->view->notice = true;
+	            }
+	        }	  
+	              
 	        $this->view->acl = array('editable' => true);
 	        
 	        $displayUserId = preg_replace('/@.*$/', '', $userId);

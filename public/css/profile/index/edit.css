@@ -1,0 +1,5 @@
+div.warning {
+    border: 1px solid #C00;
+    background-color: #F55;
+    padding: 3px;
+}
