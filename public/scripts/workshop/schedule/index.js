@@ -57,7 +57,7 @@ window.addEvent('domready', function() {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
     
-    workshopWidth = 94;
+    workshopWidth = 93;
     
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');
@@ -171,7 +171,7 @@ function detectCollision()
         
         if (hTop == elTop) { // hover div starts at the same time as an event
             retVal = true;
-        } else if ((hTop < elTop) && (hBottom >= elTop)) { // hover div ends inside an event
+        } else if ((hTop < elTop) && (hBottom > elTop)) { // hover div ends inside an event
             retVal = true;
         } else if ((hTop >= elTop) && (hBottom <= elBottom)) { // hover div is inside an event 
             retVal = true;

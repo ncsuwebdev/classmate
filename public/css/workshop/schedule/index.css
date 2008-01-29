@@ -67,20 +67,22 @@ div#workshopSearchResultsLoading {
 
 div.event {
     background-color: #DFF1FF;
-    margin: 0;
+    margin: 2px 0 0 0;
+    padding: 0;
     line-height: 11px;
     color: #FFFFFF;
 }
 
 div.event div {
-    padding: 1px 1px 0 3px;
+    padding: 0px 1px 0 3px;
     overflow: hidden;
+    margin: 0;
     background-image: url(../../../images/event.gif);
 }
 
 div.event p.eventHeader {
     background-color: #6E6E6E;
-    margin: -1px -1px 0 -3px;
+    margin: 0px -1px 0 -3px;
     padding-left: 5px;
     line-height: 18px;
     background-image: url(../../../images/eventBg.gif);

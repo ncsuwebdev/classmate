@@ -44,7 +44,7 @@ var iEdit = new Class({
             update: updateEl,
             onComplete: function(){   
                 var responseFade = new Fx.Style(updateEl.getProperty('id'), 'opacity', {
-                    duration:2000,
+                    duration:2000
                 });
                 responseFade.start.pass([1,0],responseFade).delay(1000);
             }
@@ -59,7 +59,8 @@ var iEdit = new Class({
 	                            
 	        el.style.display = 'none';
 	        var content = el.innerHTML;
-	        var container = new Element('div').injectAfter(el);
+	        var container = new Element('div');
+            container.injectAfter(el);
 	
 	        //check params are suitable or set base attributes
 	        if (this.params['rows'] == undefined) {
@@ -73,7 +74,7 @@ var iEdit = new Class({
 	        var txtID = 'mce_' + el.getProperty('id');
 	                                    
 	        //textarea
-	        var textarea = new Element('textarea').injectInside(container);
+	        var textarea = new Element('textarea');
 	        textarea.value = content;
 	        textarea.setProperty('class', 'mceEditor');
 	        textarea.setProperty('id', txtID);
@@ -83,26 +84,34 @@ var iEdit = new Class({
 	            rows: this.params['rows'],
 	            cols: this.params['cols']
 	        });
+            
+            textarea.injectInside(container);
 	                                              
 	        this.setTextareaToTinyMCE(txtID);
 	                                                
 	        //save + cancel div
-	        var saveDiv = new Element('div').injectInside(container);
+	        var saveDiv = new Element('div');
 	        saveDiv.setProperty('class', 'txtAreaSave');
+            saveDiv.injectInside(container);
 	                                                                       
             //cancel
-            var cancel = new Element('input').injectInside(saveDiv);
+            var cancel = new Element('input');
             cancel.setProperty('type', 'button');
             cancel.setProperty('value', 'Cancel');
+            cancel.injectInside(saveDiv);
             
-            new Element('br').injectBefore(cancel);             
-            var span = new Element('span').injectBefore(cancel);
+            var br = new Element('br');
+            br.injectBefore(cancel);
+                         
+            var span = new Element('span');
             span.innerHTML = '  ';
+            span.injectBefore(cancel);
             
             //save
-            var save = new Element('input').injectInside(saveDiv);
+            var save = new Element('input');
             save.setProperty('type', 'button');
             save.setProperty('value', 'Save');
+            save.injectInside(saveDiv);
 	                  
 	        obj = this;
 	                      
@@ -136,7 +145,7 @@ var iEdit = new Class({
             var container = el.parentNode;
                                         
             //input
-            var textarea = new Element('input').injectInside(container);
+            var textarea = new Element('input');
             textarea.value = content;
             textarea.setProperty('name', el.getProperty('id'));
             
@@ -145,23 +154,29 @@ var iEdit = new Class({
             } else {
                 textarea.setProperty('size', this.params['size']);
             }
+            
+            textarea.injectInside(container);
     
             //save + cancel div
-            var saveDiv = new Element('span').injectInside(container);
+            var saveDiv = new Element('span');
             saveDiv.setProperty('class', 'txtAreaSave');
+            saveDiv.injectInside(container);
             
             //cancel
-            var cancel = new Element('input').injectInside(saveDiv);
+            var cancel = new Element('input');
             cancel.setProperty('type', 'button');
             cancel.setProperty('value', 'Cancel');
+            cancel.injectInside(saveDiv);
             
-            var span = new Element('span').injectBefore(cancel);
+            var span = new Element('span');
             span.innerHTML = '  ';
+            span.injectBefore(cancel);
             
             //save
-            var save = new Element('input').injectInside(saveDiv);
+            var save = new Element('input');
             save.setProperty('type', 'button');
             save.setProperty('value', 'Save');
+            save.injectInside(saveDiv);
             
             obj = this;
             
@@ -204,7 +219,7 @@ var iEdit = new Class({
             var container = el.parentNode;
                                         
             //input
-            var textarea = new Element('input').injectInside(container);
+            var textarea = new Element('input');
             textarea.value = content;
             textarea.setProperty('name', el.getProperty('id'));
             
@@ -213,23 +228,29 @@ var iEdit = new Class({
             } else {
                 textarea.setProperty('size', this.params['size']);
             }
+            
+            textarea.injectInside(container);
     
             //save + cancel div
-            var saveDiv = new Element('span').injectInside(container);
+            var saveDiv = new Element('span');
             saveDiv.setProperty('class', 'txtAreaSave');
+            saveDiv.injectInside(container);
             
             //cancel
-            var cancel = new Element('input').injectInside(saveDiv);
+            var cancel = new Element('input');
             cancel.setProperty('type', 'button');
             cancel.setProperty('value', 'Cancel');
+            cancel.injectInside(saveDiv);
             
-            var span = new Element('span').injectBefore(cancel);
+            var span = new Element('span');
             span.innerHTML = '  ';
+            span.injectBefore(cancel);
             
             //save
-            var save = new Element('input').injectInside(saveDiv);
+            var save = new Element('input');
             save.setProperty('type', 'button');
             save.setProperty('value', 'Save');
+            save.injectInside(saveDiv);
             
             obj = this;
             
@@ -237,7 +258,7 @@ var iEdit = new Class({
 		    
 		    var myCompleter = new Autocompleter.Ajax.Json(textarea, sitePrefix + '/index/autoSuggest/', {
 		        'postVar' : 'search',		    
-		        'multi' : true,
+		        'multi' : true
 		    });            
             
             save.addEvent('click', function() {
@@ -255,9 +276,10 @@ var iEdit = new Class({
                 obj.target.innerHTML = '';
                 for (var i = 0; i < tags.length; i++) {
                     if (tags[i].replace(/^\s+|\s+$/g, '') != '') {
-	                    var a = new Element('a').injectInside(obj.target);
+	                    var a = new Element('a');
 	                    a.setProperty('href', sitePrefix + '/index/search/?search=' + tags[i].replace(/^\s+|\s+$/g, ''));
 	                    a.innerHTML = tags[i].replace(/^\s+|\s+$/g, '');
+                        a.injectInside(obj.target);
 	                }
                 }
                 
@@ -282,45 +304,54 @@ var iEdit = new Class({
             var link = a.getAttribute('href');
             var name = a.innerHTML;
             
-            var container = new Element('div').injectAfter(el);
+            var container = new Element('div');
             container.addClass('linkForm');
+            container.injectAfter(el);
             
-            var form = new Element('form').injectInside(container);
+            var form = new Element('form');
             form.method = 'POST';
             form.action = this.params['url'];
             form.id = 'newLinkForm';
+            form.injectInside(container);
                                         
-            var hidden = new Element('input').injectInside(form);
+            var hidden = new Element('input');
             hidden.addClass('postArgs');
             hidden.addClass(el.id);
             hidden.type = 'hidden';
             hidden.name = 'workshopLinkId';
             hidden.value = el.id.replace(/^[^_]*\_/, '');
+            hidden.injectInside(form);
             
             //input
-            var label1 = new Element('label').injectInside(form);
+            var label1 = new Element('label');
             label1.innerHTML = 'URL: ';
+            label1.injectInside(form);
             
-            var textarea1 = new Element('input').injectInside(form);
+            var textarea1 = new Element('input');
             textarea1.value = link;
             textarea1.addClass('postArgs');
             textarea1.addClass(el.id);
             textarea1.setProperty('name', 'url');
             textarea1.id = 'linkUrl';
+            textarea1.injectInside(form);
             
-            new Element('br').injectInside(form);
+            var br = new Element('br');
+            br.injectInside(form);
             
-            var label2 = new Element('label').injectInside(form);
+            var label2 = new Element('label');
             label2.innerHTML = 'Name: ';
+            label2.injectInside(form);
             
-            var textarea2 = new Element('input').injectInside(form);
+            var textarea2 = new Element('input');
             textarea2.value = name;
             textarea2.addClass('postArgs');
             textarea2.addClass(el.id);
             textarea2.setProperty('name', 'name');
             textarea2.id = 'linkName';
+            textarea2.injectInside(form);
             
-            new Element('br').injectInside(form);
+            var br = new Element('br');
+            br.injectInside(form);
             
             if (this.params['size'] == undefined) {
                 textarea1.setProperty('size', 20);
@@ -331,21 +362,25 @@ var iEdit = new Class({
             }
     
             //save + cancel div
-            var saveDiv = new Element('span').injectInside(form);
+            var saveDiv = new Element('span');
             saveDiv.setProperty('class', 'txtAreaSave');
+            saveDiv.injectInside(form);
             
             //cancel
-            var cancel = new Element('input').injectInside(saveDiv);
+            var cancel = new Element('input');
             cancel.setProperty('type', 'button');
             cancel.setProperty('value', 'Cancel');
+            cancel.injectInside(saveDiv);
             
-            var span = new Element('span').injectBefore(cancel);
+            var span = new Element('span');
             span.innerHTML = '  ';
+            span.injectBefore(cancel);
             
             //save
-            var save = new Element('input').injectInside(saveDiv);
+            var save = new Element('input');
             save.setProperty('type', 'button');
             save.setProperty('value', 'Save');
+            save.injectInside(saveDiv);
             
             obj = this;
             

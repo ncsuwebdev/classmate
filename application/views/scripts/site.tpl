@@ -62,7 +62,7 @@
             
         <div class="logo">
             <h1><a href="{$sitePrefix}/">Class<span class="red">Mate</span></a></h1>
-            <p>Do it to it...</p>
+            <p>It's that simple...</p>
         </div>
         
         <div class="searchBar">           
@@ -72,7 +72,7 @@
                 </form>
             </div>
             <div class="newsletter">
-                <p>Subscribe for Newsletter!</p>
+                <p>Subscribe to our newsletter!</p>
             </div>
         </div>
         

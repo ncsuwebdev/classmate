@@ -72,7 +72,7 @@ class Login_IndexController extends Internal_Controller_Action
         
         if ((isset($authRealm->realm) && $authRealm->autoLogin) || strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
 
-            $post   = Zend_Registry::get('post');
+            $post = Zend_Registry::get('post');
             
             if (isset($authRealm->realm)) {
             	$realm = $authRealm->realm;

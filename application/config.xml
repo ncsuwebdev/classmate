@@ -120,11 +120,7 @@
                    </tab4>                     
                </submenu>
            </tab1>    	   
-           <tab2>
-               <module>calendar</module>
-               <display>Calendar</display>
-           </tab2>
-    	   <tab3>
+    	   <tab2>
     	       <module>admin</module>
     	       <display>Admin</display>
     	       <submenu>
@@ -189,7 +185,7 @@
                        <link></link>
                    </tab11>                       	           
     	       </submenu>
-    	   </tab3>
+    	   </tab2>
     	</navigation>
    	</production>
 </configdata>
