@@ -56,7 +56,7 @@ window.addEvent('domready', function() {
     workshopLengthMinutes.addEvent('change', function(e) {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
-    
+        
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');
     hoverDiv.id = 'hoverDiv';
@@ -244,10 +244,8 @@ function processSearchResults()
             var e = new Event(e);            
 
             var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;            
-
-            var tmp = Math.round(parseInt(e.client.y/5)*5);
-            
-            hoverDiv.setStyle('top', tmp + window.getScrollTop() - parseInt(workshopLength/2));
+                                                     
+            hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
             
             if (hoverDiv.getTop() <= currentColumn.getTop()) {
                 hoverDiv.setStyle('top', currentColumn.getTop());
@@ -262,7 +260,6 @@ function processSearchResults()
     });
     
     $('weekViewWrapper').scrollTo(0, 480); // scroll to 8:00 AM
-
 
     $$('.event').each(function (el) {
     
@@ -287,10 +284,9 @@ function processSearchResults()
                     var e = new Event(e);
                     
                     var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;
+                                        
+                    hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
                     
-                    var tmp = Math.round(parseInt(e.client.y/5)*5);
-                    
-                    hoverDiv.setStyle('top', tmp + window.getScrollTop() - parseInt(workshopLength/2));
                     hoverDiv.setStyle('left', this.getLeft());
                     
                     if (hoverDiv.getTop() <= this.getTop()) {
@@ -310,10 +306,8 @@ function processSearchResults()
                     var e = new Event(e);
                     
                     var weekViewWrapperBottom = $('weekViewWrapper').getCoordinates().bottom;
-                                       
-                    var tmp = Math.round(parseInt(e.client.y/5)*5);
-                    
-                    hoverDiv.setStyle('top', tmp + window.getScrollTop() - parseInt(workshopLength/2));
+                                                                             
+                    hoverDiv.setStyle('top', e.client.y + window.getScrollTop() - parseInt(workshopLength/2));
                     hoverDiv.setStyle('left', this.getLeft());
                                    
                     if (hoverDiv.getTop() <= this.getTop()) {
@@ -345,7 +339,7 @@ function setTime()
     }
     
     var yScroll = $('weekViewWrapper').getSize().scroll.y;
-
+    
     var tmp = Math.round(((parseInt((hoverDiv.getTop() + yScroll - currentColumn.getTop())/5))*5)*60);
     
     var topTime = new Date();
