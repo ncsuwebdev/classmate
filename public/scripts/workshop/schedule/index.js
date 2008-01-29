@@ -119,14 +119,13 @@ window.addEvent('domready', function() {
                 }
             }
         }).request();
-        
     });
     
     $('workshopSearchResults').adopt(hoverDiv);
 
     search();
     
-    if ($('startInAddMode').value == 1)) {
+    if ($('startInAddMode').value == 1) {
         modeButton.fireEvent('click');   
     }
 });
