@@ -14,12 +14,11 @@
             </tr>
             {foreach from=$config item=c}
             <tr>
-                <td>{$c.key}</td>
-                {if $c.key eq "activeConference"}
-                    <td>{$conference.name|empty_alt:"No Conference Selected"}</td>
-                {else}
+                <td class="description" title="{$c.description}">
+                    <img src="{$sitePrefix}/public/images/help.png" class="floatRight" width="16" height="16" />
+                    {$c.key}
+                </td>
                 <td>{$c.value}</td>
-                {/if}
             </tr>
             {/foreach}
         </tbody>

@@ -44,11 +44,14 @@ class Admin_ConfigController extends Internal_Controller_Action
             'edit'   => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
         );
         
+        $userConfigFile = Zend_Registry::get('userConfigFile');
         $userConfig = Zend_Registry::get('userConfig');
-
+                
+        $uc = new Zend_Config_Xml($userConfigFile, 'production');
+        
         $config = array();
-        foreach ($userConfig as $key=>$value) {
-            $tmp = array('key'=>$key, 'value'=>$value);
+        foreach ($uc as $key=>$data) {
+            $tmp = array('key'=>$key, 'value'=>$data->value, 'description'=>$data->description);
             $config[] = $tmp;
         }
         
@@ -66,9 +69,10 @@ class Admin_ConfigController extends Internal_Controller_Action
         
         $userConfig = Zend_Registry::get('userConfig');
         $userConfigFile = Zend_Registry::get('userConfigFile');
+        $uc = new Zend_Config_Xml($userConfigFile, 'production');
         
         if (!is_writable($userConfigFile)) {
-        	throw new Internal_Exception_Data('User Config File is not writable, therefore can not be edited');
+            throw new Internal_Exception_Data('User Config File is not writable, therefore it cannot be edited');
         }
         
         if ($this->_request->isPost()) {
@@ -91,7 +95,7 @@ class Admin_ConfigController extends Internal_Controller_Action
             
             
             foreach ($data as $key=>$value) {
-                $xml->production->$key = $data[$key];
+                $xml->production->$key->value = $data[$key];
             }
             
             $xmlStr = $xml->asXml();
@@ -108,8 +112,8 @@ class Admin_ConfigController extends Internal_Controller_Action
             
         } else {
             $config = array();
-            foreach ($userConfig as $key=>$value) {
-                $tmp = array('key'=>$key, 'value'=>$value);
+            foreach ($uc as $key=>$data) {
+                $tmp = array('key'=>$key, 'value'=>$data->value, 'description'=>$data->description);
                 $config[] = $tmp;
             }
                        

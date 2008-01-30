@@ -49,15 +49,15 @@
             </tr>
             <tr>
                 <td><label for="workshopMinSize">Min Size:</label></td>
-                <td><input type="text" name="workshopMinSize" value="{$userConfig.defaultMinWorkshopSize}" id="workshopMinSize" /></td>
+                <td><input type="text" name="workshopMinSize" value="{$userConfig.defaultMinWorkshopSize.value}" id="workshopMinSize" /></td>
             </tr>
             <tr>
                 <td><label for="workshopMaxSize">Max Size:</label></td>
-                <td><input type="text" name="workshopMaxSize" value="{$userConfig.defaultMaxWorkshopSize}" id="workshopMaxSize" /></td>
+                <td><input type="text" name="workshopMaxSize" value="{$userConfig.defaultMaxWorkshopSize.value}" id="workshopMaxSize" /></td>
             </tr>
             <tr>
                 <td><label for="workshopWaitListSize">Waitlist Size:</label></td>
-                <td><input type="text" name="workshopWaitListSize" value="{$userConfig.defaultWorkshopWaitListSize}" id="workshopWaitListSize" /></td>
+                <td><input type="text" name="workshopWaitListSize" value="{$userConfig.defaultWorkshopWaitListSize.value}" id="workshopWaitListSize" /></td>
             </tr>
         </tbody>
     </table>

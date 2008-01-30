@@ -1,18 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configdata>
     <production>
-        <timezone>America/New_York</timezone>
-        <appTitle>ClassMate</appTitle>
-        <appDescription>Where all your classmate classness comes true.</appDescription>
-        <fromEmailAddress>admin@classmate.ncsu.edu</fromEmailAddress>
-        <fromEmailName>Steve Dave</fromEmailName>
-        <numHoursEvaluationAvailability>24</numHoursEvaluationAvailability>
-        <fileUploadPathProposal>./public/files/proposal</fileUploadPathProposal>
-        <fileUploadAllowableExtensions>pdf,doc,ppt,html</fileUploadAllowableExtensions>
-        <homeNumberNewsPosts>5</homeNumberNewsPosts>
-        <profileInitialVotes>5</profileInitialVotes>
-        <defaultMinWorkshopSize>0</defaultMinWorkshopSize>
-        <defaultMaxWorkshopSize>25</defaultMaxWorkshopSize>
-        <defaultWorkshopWaitListSize>10</defaultWorkshopWaitListSize>
+        <timezone>
+            <description>The current timezone for the application.</description>
+            <value>America/New_York</value>
+        </timezone>
+        <appTitle>
+            <description>The title of the application.</description>
+            <value>ClassMate</value>
+        </appTitle>
+        <appDescription>
+            <description>The applcation description.</description>
+            <value>Where all your classmate classness comes true.</value>
+        </appDescription>
+        <fromEmailAddress>
+            <description>The global from email address.  All email from the system will come from this address.</description>
+            <value>admin@classmate.ncsu.edu</value>
+        </fromEmailAddress>
+        <fromEmailName>
+            <description>The global from email name.  This is the name that will be shown with the fromEmailAddress.</description>
+            <value>Admin</value>
+        </fromEmailName>
+        <numHoursEvaluationAvailability>
+            <description>The number of hours an evaluation is available after an event has finished.</description>
+            <value>24</value>
+        </numHoursEvaluationAvailability>
+        <fileUploadPathProposal>
+            <description>The absolute file upload path for proposals.</description>
+            <value>./public/files/proposal</value>
+        </fileUploadPathProposal>
+        <fileUploadAllowableExtensions>
+            <description>The allowable extensions for files.  I would not suggest putting executable files in here...</description>
+            <value>pdf,doc,ppt,html,txt</value>
+        </fileUploadAllowableExtensions>
+        <homeNumberBlogPosts>
+            <description>The number of blog posts that will show on the home page.</description>
+            <value>10</value>
+        </homeNumberBlogPosts>    
+        <profileInitialVotes>
+            <description>Number of votes a user gets initially</description>
+            <value>5</value>
+        </profileInitialVotes>
+        <defaultMinWorkshopSize>
+            <description>Default minimum number of attendees for a workshop</description>
+            <value>0</value>        
+        </defaultMinWorkshopSize>
+        <defaultMaxWorkshopSize>
+            <description>Default maximum number of attendees for a workshop</description>
+            <value>25</value>        
+        </defaultMaxWorkshopSize>
+        <defaultWorkshopWaitListSize>
+            <description>Default waitlist size for a workshop</description>
+            <value>10</value>        
+        </defaultWorkshopWaitListSize>
     </production>
 </configdata>

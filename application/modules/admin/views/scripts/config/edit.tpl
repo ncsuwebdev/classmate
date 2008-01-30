@@ -9,16 +9,15 @@
             </tr>
             {foreach from=$config item=c}
             <tr>
-                <td>{$c.key}</td>
+                <td class="description" title="{$c.description}">
+                    <img src="{$sitePrefix}/public/images/help.png" class="floatRight" width="16" height="16" />
+                    {$c.key}
+                </td>
                 <td>
                 {if $c.key eq "timezone"}
                     
                     {html_options name=$c.key options=$timezoneList selected=$c.value}   
-                    
-                {elseif $c.key eq "activeConference"}
-                
-                    {html_options name=$c.key options=$conferences selected=$c.value}
-                
+
                 {else}
                     <input type="text" name="{$c.key}" size="40" value="{$c.value}" />
                 {/if}

@@ -56,11 +56,15 @@ window.addEvent('domready', function() {
                     bx.checked = true;
                 }
                 
+                bx.style.display = 'none';
+                
             });
             
             if (el.value == 'some') {
                 el.value = 'deny';
             }
+            
+            el.style.display = 'none';
             
         });
     });

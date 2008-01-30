@@ -52,6 +52,42 @@ class Workshop_IndexController extends Internal_Controller_Action
         $this->view->workshops = $workshop->fetchAll(null, 'title')->toArray();
     }
     
+    public function addAction()
+    {
+        if ($this->_request->isPost()) {
+            $post       = Zend_Registry::get('post');
+            $filter     = Zend_Registry::get('inputFilter');
+            $htmlFilter = Zend_Registry::get('htmlFilter');
+            
+            $data = array(
+                'title'              => $filter->filter($post['title']),
+                'description'        => $htmlFilter->filter($post['description']),
+                'prerequisites'      => $htmlFilter->filter($post['prerequisites']),
+                'softwareDependency' => $filter->filter($post['softwareDependency']), 
+            );
+            
+            $tags = explode(',', $filter->filter($post['tags']));
+            
+            foreach ($tags as &$t) {
+                $t = $filter->filter($t);
+            }
+
+            $workshop = new Workshop();
+            $data['workshopId'] = $workshop->insert($data);         
+            
+            $tag = new Tag();
+            $tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);
+            
+            $this->_redirect('/workshop/');
+        }
+        $this->view->title = 'Add a Workshop';
+        
+        $this->view->javascript = array(
+            'tiny_mce/tiny_mce.js',
+            'workshop/proposal/index.js'
+        );    	
+    }
+    
     public function detailsAction()
     {
     	$get = Zend_Registry::get('get');

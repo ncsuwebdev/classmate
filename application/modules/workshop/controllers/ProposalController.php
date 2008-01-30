@@ -57,10 +57,12 @@ class Workshop_ProposalController extends Internal_Controller_Action
             $workshop = new Workshop();
             $data['workshopId'] = $workshop->insert($data);			
 			
+            $workshop->index($data['workshopId']);
+            
 			$tag = new Tag();
 			$tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);
 			
-			$this->_redirect('/workshop/');
+			$this->_redirect('/workshop/index/details/?workshopId=' . $data['workshopId']);
 		}
 		$this->view->title = 'Teach a New Workshop!';
 		

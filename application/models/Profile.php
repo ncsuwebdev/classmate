@@ -63,7 +63,7 @@ class Profile extends Ot_Db_Table
     	    
             $data = array(
                 'userId'         => $userId,
-                'availableVotes' => $uc['profileInitialVotes'],
+                'availableVotes' => $uc['profileInitialVotes']['value'],
             );
 
             parent::insert($data);
