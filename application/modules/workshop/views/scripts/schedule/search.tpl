@@ -15,13 +15,10 @@
     <tbody>
         <tr class="weekDays">
             <th class="time"></th>
-            <th class="day">Sun {$calendar.0.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Mon {$calendar.1.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Tue {$calendar.2.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Wed {$calendar.3.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Thu {$calendar.4.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Fri {$calendar.5.date|date_format:$config.dayFormat|ordinal}</th>
-            <th class="day">Sat {$calendar.6.date|date_format:$config.dayFormat|ordinal}</th>
+            {foreach from=$calendar item=c}
+                {assign var=df value=$c.date|date_format:'%D'}
+                <th class="day{if $df == $today} today{/if}">{$c.date|date_format:'%a'} {$c.date|date_format:$config.dayFormat|ordinal}</th>
+            {/foreach}
         </tr>
     </tbody>
 </table>
@@ -38,7 +35,8 @@
             </td>
             {foreach from=$calendar item=d}
                 {assign var='currTime' value=$startTime}
-                <td title="{$d.date|date_format:$config.dateFormat}" class="eventColumn" width="100px;">
+                {assign var=df value=$d.date|date_format:'%D'}
+                <td title="{$d.date|date_format:$config.dateFormat}" class="eventColumn{if $df == $today} today{/if}" width="100px;">
                 {foreach name=events from=$d.events item=e}
                     {if $currTime < $e.startTime|timestamp}
                         <div class="emptyTime" style="height: {math equation="((x - y) / z)" x=$e.startTime|timestamp y=$currTime z=60}px">&nbsp;</div>

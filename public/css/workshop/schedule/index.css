@@ -179,8 +179,17 @@ div.emptyTime {
 	width: 94px;
 }
 
+th.today {
+	background-color: #fff;
+    color: #000;	
+}
+
+td.today {
+	background-color: #fff;
+}
+
 .weekDays th.time {
-    width: 55px;	
+    width: 61px;	
 }
 
 table.weekViewTable {

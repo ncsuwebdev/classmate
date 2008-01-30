@@ -150,6 +150,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         unset($c['prevYear']);
         
         $this->view->calendar = $c;
+        $this->view->today    = date('m/d/y');
         
         $this->_response->setBody($this->view->render('schedule/search.tpl'));
     }
