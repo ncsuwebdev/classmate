@@ -211,7 +211,7 @@ class Profile_IndexController extends Internal_Controller_Action
             
             $ca->saveData('User_Profile', $userId, $custom);
             
-            if ($userId == Zend_Auth::getInstance()->getIdentity()) {
+            if ($userId == Zend_Auth::getInstance()->getIdentity() && Ot_Authz::getInstance()->getRole() == 'activation_pending') {
                 $authz = new $config->authorization($userId);
                 $authz->editUser($userId, 'authUser');
             }
