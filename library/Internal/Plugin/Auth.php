@@ -173,7 +173,7 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 
         $viewTabs = array();
         $subTabs  = array();
-
+ 
         foreach ($config->navigation as $tabs) {
         	$tab = array();
         	

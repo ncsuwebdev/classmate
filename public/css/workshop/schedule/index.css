@@ -170,7 +170,7 @@ div.emptyTime {
 }
 
 .weekDays {
-    background-color: #C3593C;
+    background: #C3593C url(../../../images/cal_head_bg.png) repeat-x bottom;
     color: #FFFFFF;
     border: 1px solid #000;
 }
@@ -180,7 +180,7 @@ div.emptyTime {
 }
 
 th.today {
-	background-color: #fff;
+	background: #fff url(../../../images/cal_head_bg_today.png) repeat-x bottom;
     color: #000;	
 }
 

@@ -50,16 +50,24 @@
     	<navigation>
     	   <tab0>
     	       <module>default</module>
+    	       <controller>index</controller>
+    	       <action>index</action>
     	       <display>Home</display>
+    	       <link></link>
     	       <submenu></submenu>
     	   </tab0>
            <tab4>
                <module>profile</module>
+               <controller>index</controller>
+               <action>index</action>               
                <display>My ClassMate</display>   
+               <link></link>
                <submenu></submenu>                 
            </tab4>   	   
            <tab1>
                <module>workshop</module>
+               <controller>index</controller>
+               <action>index</action>
                <display>Our Workshops</display>
                <submenu>
                    <tab2>
@@ -84,7 +92,10 @@
            </tab1>    	   
     	   <tab2>
     	       <module>admin</module>
+               <controller>index</controller>
+               <action>index</action>    	       
     	       <display>Admin</display>
+    	       <link></link>
     	       <submenu>
     	           <tab1>
     	               <controller>user</controller>
