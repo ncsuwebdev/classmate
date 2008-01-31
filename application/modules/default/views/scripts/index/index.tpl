@@ -8,9 +8,10 @@
         <ul class="mootabs_title">
             <li title="events">Coming Soon</li>
             <li title="popular">Most Popular</li>
-            <li title="searches">Recent Searches</li>
+            <li title="searches">Top Searches</li>
         </ul>
 	    <div id="events" class="mootabs_panel">
+	       <div class="tabDesc">These are the upcoming classes we are offering:</div>
 	        {foreach from=$upcoming item=e}
 	        <div class="event">
 	           <span class="date">{$e.date|date_format:$config.medDateFormat}</span>
@@ -24,7 +25,14 @@
         Coming Soon
         </div>
         <div id="searches" class="mootabs_panel">
-        This, too, is Coming Soon.
+            <div class="tabDesc">These are the most popular search terms.</div>
+        {foreach from=$popularSearchTerms item=t name=terms}
+            <div class="searchTerm">
+                <div class="count">({$t.count} time{if $t.count != 1}s{/if})</div>            
+                <div class="rank">{$smarty.foreach.terms.iteration}</div>
+                <div class="term"><a href="{$sitePrefix}/index/search/?search={$t.term}">{$t.term|truncate:50}</a></div>
+            </div>
+        {/foreach}
         </div>
     </div>    
 </div>

@@ -51,55 +51,17 @@
     	   <tab0>
     	       <module>default</module>
     	       <display>Home</display>
-    	       <submenu>
-    	           <tab1>
-    	               <controller>index</controller>
-    	               <display>Home</display>
-    	               <select>home</select>
-    	               <link></link>
-    	           </tab1>
-    	           <tab2>
-    	               <controller>documentation</controller>
-    	               <display>Documentation</display>
-    	               <select>documentation</select>
-    	               <link></link>
-    	           </tab2>
-    	           <tab3>
-    	               <controller>faq</controller>
-    	               <display>F.A.Q.</display>
-    	               <select>faq</select>
-    	               <link></link>
-    	           </tab3>
-    	           <tab4>
-    	               <controller>bug</controller>
-    	               <display>Bug Reports</display>
-    	               <select>bug</select>
-    	               <link></link>
-    	           </tab4>
-    	       </submenu>
+    	       <submenu></submenu>
     	   </tab0>
            <tab4>
                <module>profile</module>
                <display>My ClassMate</display>   
-               <submenu>
-                   <tab2>
-                       <controller>index</controller>
-                       <display>My ClassMate</display>
-                       <select></select>
-                       <link></link>
-                   </tab2> 
-               </submenu>                 
+               <submenu></submenu>                 
            </tab4>   	   
            <tab1>
                <module>workshop</module>
                <display>Our Workshops</display>
                <submenu>
-                   <tab1>
-                       <controller>index</controller>
-                       <display>Our Workshops</display>
-                       <select>home</select>
-                       <link></link>
-                   </tab1>
                    <tab2>
                        <controller>proposal</controller>
                        <display>Teach a New Workshop!</display>

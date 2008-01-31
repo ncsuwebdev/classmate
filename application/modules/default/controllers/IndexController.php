@@ -53,6 +53,10 @@ class IndexController extends Internal_Controller_Action
     	
     	$this->view->upcoming = $upcoming;
     	
+    	$searchTerm = new SearchTerm;
+    	
+    	$this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(10)->toArray();
+    	
         $this->view->title = 'Welcome to Classmate';
         $this->view->javascript = array('mootabs1.2.js');
     }
@@ -104,24 +108,13 @@ class IndexController extends Internal_Controller_Action
     	if ($search == '') {
     		throw new Internal_Exception_Input('No search term was set');
     	}
-    	/*
-    	$tag = new Tag();
-    	
-    	$ids = $tag->getAttributeIdsWithTag('workshopId', $search);
-    	
-    	if (count($ids) != 0) {
-	    	$workshop = new Workshop;
-	    	$where = $workshop->getAdapter()->quoteInto('workshopId IN (?)', $ids);
-	    	
-	    	$workshops = $workshop->fetchAll($where, 'workshopId DESC')->toArray();
-    	} else {
-    		$workshops = array();
-    	}
-    	*/
     	
     	$workshop = new Workshop;
     	
     	$workshops = $workshop->search($search);
+    	
+    	$searchTerm = new SearchTerm();
+    	$searchTerm->increment($search);
     	
     	$this->view->title = "Your search for &quot;" . $search . "&quot; returned " . count($workshops) . " workshop" . ((count($workshops) != 1) ? "s" : "") . ":";
     	$this->view->workshops = $workshops;

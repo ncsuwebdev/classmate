@@ -9,6 +9,8 @@
 <link rel="stylesheet" type="text/css" media="all" href="{$sitePrefix}/public/css/{$c}" />
 {/foreach}
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/mootools.v1.11.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/cnet/mootools.extended/Native/element.dimensions.js"></script>
+<script type="text/javascript" src="{$sitePrefix}/public/scripts/cnet/mootools.extended/Native/element.position.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Autocompleter.Remote.js"></script>
 <script type="text/javascript" src="{$sitePrefix}/public/scripts/Observer.js"></script>
@@ -48,15 +50,23 @@
             </div>
                     
             <div class="bar">
-                <ul>
-                    <li class="slogan">Navigation:</li>
-                    {foreach from=$tabs item=t name=tabs}
-                    {if $branch eq $t.module}
-                    {assign var=sectionTitle value=$t.display}
-                    {/if}
-                    <li{if $branch eq $t.module} class="active">{$t.display}{else}><a href="{$sitePrefix}/{if $t.module eq 'default'}index{else}{$t.module}{/if}/">{$t.display}</a>{/if}</li>
-                    {/foreach}
-                </ul>
+				<ul>
+				    <li class="title">Navigation:</li>
+				    {foreach from=$tabs item=t name=tabs}
+					<li class="menu">
+					   
+					   <a href="{$sitePrefix}/{if $t.module eq 'default'}index{else}{$t.module}{/if}/">{$t.display}</a>
+					   {if count($t.sub) != 0}	  
+					   <span class="arrow" id="tab_{$smarty.foreach.tabs.index}">&nbsp;</span>
+					   <div class="sub_menu" id="menu_{$smarty.foreach.tabs.index}">
+					       {foreach from=$t.sub item=s}
+					       <a href="{$s.link}" target="{$s.target|empty_alt:'_self'}">{$s.display}</a>
+					       {/foreach}
+					   </div>
+					   {/if}
+					</li>
+					{/foreach}
+				</ul>
             </div>
         </div>
             
@@ -76,19 +86,7 @@
             </div>
         </div>
         
-        <div class="subheader">
-            <p>        
-            {foreach from=$subnav item=s name=subnav}
-            {if $smarty.foreach.subnav.index != 0}
-            &nbsp;|&nbsp;
-            {/if}
-            <a{if $subNavSelect eq $s.select} class="active"{/if} href="{$s.link}" target="{$s.target|empty_alt:'_self'}">{$s.display}</a> 
-            {foreachelse}
-            Welcome to {$appTitle}!
-            {/foreach}
-            </p>
-            
-        </div>
+        <div class="subheader"></div>
         
         {if $showNews}
         <div class="left">
@@ -129,13 +127,17 @@
 
 		<div id="oitocfooter">
 		    <div class="left">
-		        <a href="http://framework.zend.com" target="_blank"><img align="left" src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" width="127" height="25" alt="Powered By Zend Framework" /></a>
+		        <a href="http://framework.zend.com" target="_blank"><img align="left" src="{$sitePrefix}/public/images/PoweredBy_ZF_4LightBG.png" width="127" height="25" alt="Powered By Zend Framework" /></a>
 			
 		    </div>
 		    <div class="right">
 		        <a href="http://itdapps.ncsu.edu/"><img src="http://itdapps5.ncsu.edu/htdocs/public/images/minilogo.png" width="128" height="21" alt="OIT - Outreach Technologies" /></a>
 		    </div>
-            <a href="#">RSS Feed</a> | <a href="#">Contact</a> | <a href="{$sitePrefix}/bug/add/">File Bug Report</a><br />
+		    <a href="{$sitePrefix}/documentation/">Documentation</a> | 
+		    <a href="{$sitePrefix}/faq/">F.A.Q.</a> | 
+            <a href="#">RSS Feed</a> | 
+            <a href="#">Contact</a> | 
+            <a href="{$sitePrefix}/bug/add/">File Bug Report</a><br />
             &copy; {$copyrightDate} North Carolina State University
 		</div>        
 

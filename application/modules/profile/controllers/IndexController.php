@@ -182,7 +182,7 @@ class Profile_IndexController extends Internal_Controller_Action
 
                  $image = new Image;
 
-                 $image->resizeImage($filter->filter($_FILES['pic']['tmp_name']), 110, 110);
+                 $image->resizeImage($filter->filter($_FILES['pic']['tmp_name']), 60, 60);
 
                  $iData = array(
                     'source' => file_get_contents($filter->filter($_FILES['pic']['tmp_name'])),

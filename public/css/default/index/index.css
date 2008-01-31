@@ -1,6 +1,7 @@
 div#right {
     width: 370px;
     float: right;
+    padding-bottom: 20px;
 }
 
 div#left {
@@ -9,10 +10,12 @@ div#left {
 
 
 div.event {
-    padding: 2px 2px 2px 25px;
+    padding: 3px 3px 3px 25px;
     background-image: url(../../../images/date.png);
     background-repeat: no-repeat;  
     background-position: 3px 3px;
+    border: 1px solid #DFDFDF;
+    border-top: 0px;
 }
 
 div.event:hover {
@@ -21,7 +24,6 @@ div.event:hover {
 
 .workshopName {
     display: inline;
-    font-weight: bold;
 }
 
 div.event .date {
@@ -89,17 +91,17 @@ div.sectionTitle p.content {
     list-style-image: none;
     list-style-type: none;
     padding: 0px;
-    height: 22px;
+    height: 45px;
     width: 369px;
     text-align: center;
-    position: relative;
-    top: -11px;
+    position: relative;;
     background-color: #464548;
     padding-left: 1px;
+    margin: 0px;
 }
 
 .mootabs_title li {
-    float: left;
+	float:left;
     background-color: #ddd;
     padding: 0px 8px 0px 8px;
     cursor: pointer;
@@ -130,4 +132,35 @@ div.sectionTitle p.content {
 .mootabs_panel.active {
     background-color: #fff;
     display: block;
+}
+
+div.tabDesc {
+	padding-bottom: 15px;
+	border-bottom: 1px solid #DFDFDF;
+}
+
+div.searchTerm {
+	border: 1px solid #DFDFDF;
+	border-top: 0px;
+	padding: 3px;
+}
+
+div.searchTerm:hover {
+    background-color: #F4F4f4;
+}
+
+div.searchTerm div.rank {
+	display:inline;
+	font-size: 130%;
+	color: #C0C0C0;
+	padding: 0 15px 0 10px;
+	font-weight: bold;
+}
+
+div.searchTerm div.term {
+	display: inline;
+}
+
+div.searchTerm div.count {
+	float: right;
 }

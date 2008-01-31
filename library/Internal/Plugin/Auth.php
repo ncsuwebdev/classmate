@@ -175,35 +175,37 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $subTabs  = array();
 
         foreach ($config->navigation as $tabs) {
+        	$tab = array();
+        	
             if ($resources == '*') {
-                $viewTabs[] = $tabs->toArray();
+                $tab = $tabs->toArray();
             } else {
                 foreach ($resources as $r) {
                     if (preg_match('/^' . strtolower($tabs->module) . '\_/', $r)) {
-                        $viewTabs[] = $tabs->toArray();
+                        $tab = $tabs->toArray();
                         break;
                     }
                 }
             }
 
-            if ($tabs->module == $request->module) {
-                if ($tabs->submenu instanceof Zend_Config) {
-                    foreach ($tabs->submenu as $s) {
-                        if ($this->_acl->hasSomeAccess($role, strtolower($tabs->module . '_' . $s->controller))) {
-                            $temp = $s->toArray();
+            if ($tabs->submenu instanceof Zend_Config) {
+                foreach ($tabs->submenu as $s) {
+                    if ($this->_acl->hasSomeAccess($role, strtolower($tabs->module . '_' . $s->controller))) {
+                        $temp = $s->toArray();
                             
-                            if (preg_match('/^\//', $temp['link'])) {
-                            	$temp['link'] = $view->sitePrefix . $temp['link'];
-                            } else if (!preg_match('/^http/', $temp['link'])) {
-                            	$temp['link'] = $view->sitePrefix . '/' . (($tabs->module == 'default') ? '' : $tabs->module . '/') . $s->controller . '/' . $temp['link'];
-                            }
-                            
-                            $temp['target'] = (preg_match('/^http/', $temp['link'])) ? '_blank' : '';
-                            $subTabs[] = $temp;
+                        if (preg_match('/^\//', $temp['link'])) {
+                        	$temp['link'] = $view->sitePrefix . $temp['link'];
+                        } else if (!preg_match('/^http/', $temp['link'])) {
+                         	$temp['link'] = $view->sitePrefix . '/' . (($tabs->module == 'default') ? '' : $tabs->module . '/') . $s->controller . '/' . $temp['link'];
                         }
+                            
+                        $temp['target'] = (preg_match('/^http/', $temp['link'])) ? '_blank' : '';
+                        $tab['sub'][] = $temp;
                     }
                 }
             }
+            
+            $viewTabs[] = $tab;
         }
 
         $view->branch = $request->module;

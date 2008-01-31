@@ -178,7 +178,7 @@ div.inlineEdit:hover {
 
 div.sectionTitle {
     height: 22px;
-    margin: 2px 0px 2px 0px;
+    margin: 7px 0px 2px 0px;
 }
 
 div.active {
@@ -219,6 +219,7 @@ div.sectionTitle p.right {
     float: right;	
     height: 22px;
     width: 11px;
+    margin: 0px;
 }
 
 div.sectionTitle p.left {    
@@ -227,10 +228,12 @@ div.sectionTitle p.left {
     float: left;
     height: 22px;
     width: 11px;
+    margin: 0px;
 }
 
 div.sectionTitle p.content {
 	color: #FFF;
 	font-weight: bold;
 	line-height: 22px;
+	margin: 0px;
 }

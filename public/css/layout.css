@@ -77,12 +77,6 @@ h2 .yellow{
 
 p { margin: 0 0 5px 0; }
 
-div.bar ul { 
-    margin: 0; 
-    padding : 0; 
-    list-style : none; 
-}
-
 form { 
     margin: 0; 
 }
@@ -144,7 +138,7 @@ img {
    ------ */
 
 .content { 
-    margin: 10px auto;
+    margin: 0px auto;
     width: 760px; 
 }
 
@@ -157,7 +151,7 @@ img {
 .header_right {
     float: right;
     width: 550px;
-    height: 72px;
+    height: 70px;
 }
 
 .logo p {
@@ -182,34 +176,6 @@ img {
     text-align: right;
     width: 160px;
 }
-
-
-.bar { 
-    text-align: right;
-    font-size: 1.1em;
-    height: 30px; 
-}
-
-.bar li { 
-    
-    padding: 0px 10px 8px 10px;
-    color: #808080;
-    background: #FFF;
-    display: inline;
-}
-
-.bar li.active { 
-    background: #FFF url(../images/bar.gif) no-repeat center bottom; 
-    color: #464548;
-    font-weight: bold; 
-    padding-bottom: 8px; 
-}
-
-.bar a { 
-    font-weight: bold;
-    color: #C3593C;; 
-    background: inherit;    
-} 
 
 .search_field { 
     text-align: right;
@@ -250,11 +216,12 @@ img {
 
 .subheader {
     clear: both;
-    margin: 3px 0 10px 0;
-    padding: 8px;
+    height: 5px;
+    /*padding: 8px;
     background: #f4f4f4;
     color: #808080;
     border-bottom: 1px solid #ccc;
+    */
 }
 
 .subheader a {
@@ -280,7 +247,7 @@ img {
 }
 
 .left_articles h2 {
-    color: #6e6e6e;
+    color: #464548;
     padding: 10px 0 15px 0;
 }
 
@@ -500,4 +467,85 @@ ul.autocompleter-choices span.autocompleter-queried
 ul.autocompleter-choices li.autocompleter-selected span.autocompleter-queried
 {
     color: #9FCFFF;
+}
+
+
+/* Flickr-style Menus */
+.bar { 
+    text-align: right;
+    font-size: 1.1em;
+    height: 30px; 
+}
+
+div.bar ul { 
+    margin: 0; 
+    padding : 0; 
+    list-style : none; 
+}
+
+.bar li {     
+    padding: 0px 10px 8px 10px;
+    color: #808080;
+    background: #FFF;
+    display: inline;
+}
+
+.bar a { 
+    font-weight: bold;
+    color: #C3593C;; 
+    background: inherit;    
+}
+
+.bar li.title {
+    font-weight: bold;	
+}
+
+.arrow {
+	margin-left: 4px; 
+	cursor: pointer; 
+	background: url(../images/arrow.png) no-repeat left;
+	display: inline;
+	padding: 0px 5px 0px 9px;
+}
+
+.arrow div {
+    width: 18px;
+    display: block;
+    background-color: #C00; 
+}
+
+.arrowSelect {
+    background-image: url(../images/arrow_select.png);
+}
+
+.arrow:hover {
+    background-image: url(../images/arrow_hover.png);	
+}
+
+.sub_menu {
+	display: none; 
+	position: relative; 
+	border: solid 1px #ccc;
+	padding: 1px;
+	background: #ccc;
+	z-index: 5000000;
+}
+
+.sub_menu a {
+	display: block; 
+	margin: 0px;
+	font-weight: normal;
+	font-size: 11px;
+	background-color: #FFF;
+	border-bottom: 1px dotted #ccc;
+	padding: 2px 6px 2px 6px;
+}
+
+.sub_menu a:hover {
+    text-decoration: none;
+    background-color: #F4F4F4;	
+}
+
+.item_line {
+	border-top:solid 1px #DEDEDE;
 }
