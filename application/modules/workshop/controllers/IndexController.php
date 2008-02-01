@@ -116,6 +116,9 @@ class Workshop_IndexController extends Internal_Controller_Action
     		throw new Internal_Exception_Data('Workshop not found');
     	}
     	
+    	$wc = new WorkshopCategory();
+    	$this->view->category = $wc->find($thisWorkshop->workshopCategoryId)->toArray();
+    	    	
     	$document = new Document();
     	$this->view->documents = $document->getDocumentsForAttribute('workshopId', $thisWorkshop->workshopId);
     	

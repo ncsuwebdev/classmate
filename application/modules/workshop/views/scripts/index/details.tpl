@@ -73,12 +73,14 @@
 	    {if $acl.edit}
 		<div id="editTitle" class="inlineEdit" target="wsTitle"></div>
 		{/if}
+		<img src="{$sitePrefix}/index/image/?imageId={$category.largeIconImageId}" alt="{$category.name}" />
 		<div id="wsTitle" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.title}</div>
 	</div>
     {if $acl.edit}
     <div id="editTags" class="inlineEdit" target="taglist"></div>
     {/if}
     <div id="tags">
+        <b>Tags:</b>
         <div id="taglist" rel="type=tags&size=40&url={$sitePrefix}/workshop/index/edit/&response=response">
         {foreach from=$tags item=t}
         <a href="{$sitePrefix}/index/search/?search={$t.name}">{$t.name}</a>
@@ -89,25 +91,34 @@
     </div>  	
 	{if $acl.edit}
 	<div id="editDescription" class="inlineEdit" target="description"></div>
-	<div id="description" rel="type=textarea&cols=80&rows=30&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.description}</div>
+	<div id="description" rel="type=textarea&cols=80&rows=20&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.description}</div>
 	{else}
 	<div id="description">{$workshop.description|empty_alt:"No Description Provided"}</div>
 	{/if}
-	
+    
+    <div id="prereqs" class="sectionBar">
+        <p class="left"></p>
+        <p class="content">Workshop Pre-Requisites</p>
+    </div>
+    
     {if $acl.edit}
     <div id="editPrerequisites" class="inlineEdit" target="prerequisites"></div>
     {/if}
-    <div id="prereqs">
-        <b class="sectionTitle">Pre-Requisites:</b>
-        <span id="prerequisites" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit/&response=prerequisitesResponse">{$workshop.prerequisites}</span>
-    </div>	
+    <div id="prerequisites" rel="type=textarea&cols=80&rows=10&url={$sitePrefix}/workshop/index/edit/&response=prerequisitesResponse">{$workshop.prerequisites|empty_alt:"There are no pre-requisites for this workshop"}</div>
+
+    
     {if $acl.addDocuments || count($documents) != 0}
-    <div id="tabDocuments">   
-        {if $acl.addDocuments}
-        <div id="addDocument" class="add">Add Documents</div>
-        {/if}   
-        <b class="sectionTitle">Handouts:</b>   
-        Click the icon to download the file.<br />
+    <div id="tabDocumentsHeader" class="sectionBar">   
+        <p class="left"></p>
+        <p class="content"> 
+	        Workshop Handouts
+        </p>
+    </div>
+    <div id="tabDocuments">
+	    {if $acl.addDocuments}
+	        <div id="addDocument" class="add">Add Documents</div>
+	    {/if} 
+	    Click the icon to download the file.    
         {if $acl.addDocuments}
         <div id="addDocumentForm">
             Click "Browse" to upload new handouts.  Mutliple files can be uploaded at one time

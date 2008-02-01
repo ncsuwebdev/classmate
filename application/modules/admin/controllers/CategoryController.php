@@ -59,6 +59,32 @@ class Admin_CategoryController extends Internal_Controller_Action
             
             $wc = new WorkshopCategory();
             
+            $files = array('largeIcon', 'smallIcon');
+            
+            foreach ($files as $f) {
+                if ($_FILES[$f]['name'] != '') {
+    
+                     $image = new Image;
+    
+                     if ($f == 'largeIcon') {
+                         $image->resizeImage($filter->filter($_FILES[$f]['tmp_name']), 32, 32);
+                     } else {
+                         $image->resizeImage($filter->filter($_FILES[$f]['tmp_name']), 16, 16);
+                     }
+    
+                     $iData = array(
+                        'source'      => file_get_contents($filter->filter($_FILES[$f]['tmp_name'])),
+                        'alt'         => $f,
+                        'contentType' => $filter->filter($_FILES[$f]['type']),
+                        'name'        => $filter->filter($_FILES[$f]['name']),
+                        );
+    
+                     $image->insert($iData);
+    
+                     $data[$f . 'ImageId'] = $image->getAdapter()->lastInsertId();
+                }   
+            }               
+            
             $wc->insert($data);
             
             $this->_redirect('/admin/category/index');
@@ -74,13 +100,46 @@ class Admin_CategoryController extends Internal_Controller_Action
             $post   = Zend_Registry::get('post');
             $filter = Zend_Registry::get('inputFilter');
             
+            $wc = new WorkshopCategory();
+            
+            $thisCategory = $wc->find($filter->filter($post['workshopCategoryId']))->toArray();
+            
             $data = array(
                         'workshopCategoryId'  => $filter->filter($post['workshopCategoryId']),
                         'name'        => $filter->filter($post['name']),
                         'description' => $filter->filter($post['description'])
                     );
+
+            $files = array('largeIcon', 'smallIcon');
             
-            $wc = new WorkshopCategory();
+            foreach ($files as $f) {
+	            if ($_FILES[$f]['name'] != '') {
+	
+	                 $image = new Image;
+	
+	                 if ($f == 'largeIcon') {
+	                     $image->resizeImage($filter->filter($_FILES[$f]['tmp_name']), 32, 32);
+	                 } else {
+	                 	 $image->resizeImage($filter->filter($_FILES[$f]['tmp_name']), 16, 16);
+	                 }
+	
+	                 $iData = array(
+	                    'source'      => file_get_contents($filter->filter($_FILES[$f]['tmp_name'])),
+	                    'alt'         => $f,
+	                    'contentType' => $filter->filter($_FILES[$f]['type']),
+	                    'name'        => $filter->filter($_FILES[$f]['name']),
+	                    );
+	
+	
+	                 if (isset($thisCategory[$f . 'ImageId']) && $thisCategory[$f . 'ImageId'] != 0) {
+	                     $image->deleteImage($thisCategory[$f . 'ImageId']);
+	                 }
+	
+	                 $image->insert($iData);
+	
+	                 $data[$f . 'ImageId'] = $image->getAdapter()->lastInsertId();
+	            }   
+            }              
             
             $wc->update($data, null);
             

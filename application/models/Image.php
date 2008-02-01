@@ -81,6 +81,9 @@ class Image extends Ot_Db_Table
     		$tnHeight = $maxHeight;
     	}
 
+    	// set up canvas
+        $dst = imagecreatetruecolor($tnWidth, $tnHeight);
+        
     	// read image
     	switch ($size['mime']) {
     		case 'image/jpeg':     // jpg
@@ -88,6 +91,20 @@ class Image extends Ot_Db_Table
     			break;
     		case 'image/png':     // png
     			$src = imagecreatefrompng($image);
+    			
+    	        $transparency = imagecolortransparent($dst);
+    	        
+                if ($transparency >= 0) {
+                    $t_color = imagecolorsforindex($dst, $transparency);
+                    $transparency = imagecolorallocate($dst, $t_color['red'], $t_color['green'], $t_color['blue']);
+                    image_fill($dst, 0, 0, $transparency);
+                    imagecolortransparent($dst, $transparency);
+                } else {
+	                imagealphablending($dst, false);
+	                $color = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+	                imagefill($dst, 0, 0, $color);
+	                imagesavealpha($dst, true);
+	            }                			
     			break;
     		/*case 'image/gif':
     		    $src = imagecreatefromgif($image);
@@ -97,16 +114,25 @@ class Image extends Ot_Db_Table
     			return;
         	}
 
-    	// set up canvas
-    	$dst = imagecreatetruecolor($tnWidth, $tnHeight);
-
+    	
+            	
     	// copy resized image to new canvas
     	imagecopyresampled ($dst, $src, 0, 0, 0, 0, $tnWidth, $tnHeight, $width, $height);
 
-    	if (!imagejpeg($dst, $image, 100)) {
-    	   throw new Exception('Image not created');
+    	switch ($size['mime']) {
+            case 'image/jpeg':     // jpg
+    	        if (!imagejpeg($dst, $image, 100)) {
+		           throw new Exception('Image not created');
+		        }
+                break;
+            case 'image/png':     // png
+            	
+    	        if (!imagepng($dst, $image)) {
+                    throw new Exception('Image not created');
+                }
+                break;    		
     	}
-
+    	
     	// clear out the resources
     	imagedestroy($src);
     	imagedestroy($dst);

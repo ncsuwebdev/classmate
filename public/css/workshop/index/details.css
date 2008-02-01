@@ -81,29 +81,12 @@ div#detailsRight div.notify {
     background-position: 1px 1px;
 }
 
-div#tags {
-    background-image: url(../../../images/tag.png);
-    background-repeat: no-repeat;  
-    background-position: 3px 3px;	
-    margin-bottom: 20px;
-    padding-left: 25px;
-}
-
-div#tags b {
-    padding-right: 10px;
-}
-
-div#tags div#taglist {
-    display: inline;    
-}
-
-div#tags div#taglist a {
-    margin: 0 3px 0 3px;    
-}
-
-
 div#documents {
     padding-top: 10px;
+}
+
+div#tabDocuments {
+    margin: 0 0px 0 12px;	
 }
 
 div#addDocumentForm {
@@ -164,7 +147,7 @@ div.rightContent .add {
 
 div.document {
     padding-top: 3px;
-    margin: 0px 5px 10px 5px;
+    margin: 0px 0px 10px 0px;
     background-color: #F4F4F4;
     min-height: 45px;
 }
@@ -346,7 +329,22 @@ div.inlineEdit:hover {
 
 div#workshopTitleContainer {
     padding-bottom: 5px;
+    height: 32px;
+    margin-bottom: 0px;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
 }
+
+div#workshopTitleContainer img {
+	float: left;
+	padding-right: 10px;
+}
+
+div#workshopTitleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
 
 div#workshopTitleContainer div#wsTitle {
 	color: #3F3F3F;
@@ -354,12 +352,34 @@ div#workshopTitleContainer div#wsTitle {
     font-weight: bold;
 }
 
+div#tags {
+    margin: 0px 0px 20px 0px;
+    padding-left: 42px;
+    height: 22px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#tags b {
+    padding-right: 5px;
+    color: #808080;
+    font-size: 90%;
+}
+
+div#tags div#taglist {
+    display: inline;    
+}
+
+div#tags div#taglist a {
+    margin: 0 3px 0 3px;    
+}
+
 div#description {
-    margin-bottom: 20px;
+    margin: 0px 0px 20px 12px;
 }
 
 div#prerequisites {
-    display: inline;
+    display: block;
+    margin: 0 0px 0 12px;
 }
 
 div#detailsLeft .sectionTitle {
@@ -367,9 +387,38 @@ div#detailsLeft .sectionTitle {
     margin-right: 10px;
 }
 
-div#prereqs {
-    margin-bottom: 20px;
+div.sectionBar {
+	background-color: #6e6e6e;
+	margin: 20px 0 10px 0;
 }
+
+div.sectionBar p.right {    
+	background-image: url(../../../images/h2-right.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px; 
+    float: right;   
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar p.left {    
+	background-image: url(../../../images/h2-left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar p.content {
+    color: #FFF;
+    font-weight: bold;
+    line-height: 22px;
+    margin: 0px;
+}
+
 
 div.event span.restricted {
     display: block;

@@ -43,7 +43,7 @@ class IndexController extends Internal_Controller_Action
     public function indexAction()
     {
     	$event = new Event();
-    	$upcoming = $event->getEvents(null, null, time(), null, 'open', 8)->toArray();
+    	$upcoming = $event->getEvents(null, null, time(), null, 'open', 5)->toArray();
     	
     	$workshop = new Workshop();
     	
@@ -55,7 +55,7 @@ class IndexController extends Internal_Controller_Action
     	
     	$searchTerm = new SearchTerm;
     	
-    	$this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(10)->toArray();
+    	$this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(5)->toArray();
     	
         $this->view->title = 'Welcome to Classmate';
         $this->view->javascript = array('mootabs1.2.js');

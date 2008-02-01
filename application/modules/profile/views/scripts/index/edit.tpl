@@ -34,7 +34,6 @@
 		        <img src="{$sitePrefix}/index/image/?imageId={$profile.picImageId}" alt="{$userId}" /><br /><br />
 		        <input type="file" name="pic" id="pic" size="20" />
 		        </td>
-		
 		    </tr>            
         </table><br />
         <table class="form">
