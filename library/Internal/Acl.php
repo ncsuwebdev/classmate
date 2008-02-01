@@ -57,32 +57,17 @@ class Internal_Acl extends Zend_Acl
             die ($e->getMessage());
         }
 
+        $controllers = Zend_Controller_Front::getInstance()->getControllerDirectory();
 
-        $this->add(new Zend_Acl_Resource('default_index'));
-        $this->add(new Zend_Acl_Resource('default_documentation'));
-        $this->add(new Zend_Acl_Resource('default_faq'));
-        $this->add(new Zend_Acl_Resource('default_bug'));
-        $this->add(new Zend_Acl_Resource('default_error'));
-        $this->add(new Zend_Acl_Resource('default_soap'));
-        $this->add(new Zend_Acl_Resource('admin_index'));
-        $this->add(new Zend_Acl_Resource('admin_user'));
-        $this->add(new Zend_Acl_Resource('admin_acl'));
-        $this->add(new Zend_Acl_Resource('admin_emailqueue'));
-        $this->add(new Zend_Acl_Resource('admin_log'));
-        $this->add(new Zend_Acl_Resource('admin_location'));
-        $this->add(new Zend_Acl_Resource('admin_cron'));
-        $this->add(new Zend_Acl_Resource('admin_api'));
-        $this->add(new Zend_Acl_Resource('admin_custom'));
-        $this->add(new Zend_Acl_Resource('admin_config'));
-        $this->add(new Zend_Acl_Resource('admin_email'));
-        $this->add(new Zend_Acl_Resource('login_index'));
-        $this->add(new Zend_Acl_Resource('profile_index'));
-        $this->add(new Zend_Acl_Resource('workshop_index'));
-        $this->add(new Zend_Acl_Resource('workshop_proposal'));
-        $this->add(new Zend_Acl_Resource('workshop_request'));
-        $this->add(new Zend_Acl_Resource('workshop_schedule'));
-        $this->add(new Zend_Acl_Resource('workshop_signup'));
-        
+        // gets all controllers to get the actions in them
+        foreach ($controllers as $key => $value) {
+            foreach (new DirectoryIterator($value) as $file) {
+                if (preg_match('/controller\.php/i', $file)) {
+                    $this->add(new Zend_Acl_Resource($key . '_' . strtolower(preg_replace('/controller\.php/i', '', $file))));  
+                }
+            }
+        }
+
         foreach ($xml->role as $x) {
 
             $this->addRole(new Zend_Acl_Role(trim($x->name)), (trim($x->inherit) != '') ? trim($x->inherit) : null);

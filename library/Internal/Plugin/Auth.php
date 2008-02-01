@@ -162,18 +162,20 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             $role = $this->_acl->getDefaultRole();
         }
         
+        /*
         try {
             $resources = $this->_acl->getResourcesWithSomeAccess($role);
         } catch (Exception $e) {
             die($e->getMessage());
         }
-
+        */
+        
         $vr = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
         $view = $vr->view;
 
         $viewTabs = array();
-        $subTabs  = array();
  
+        /*
         foreach ($config->navigation as $tabs) {
         	$tab = array();
         	
@@ -207,10 +209,51 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
             
             $viewTabs[] = $tab;
         }
+        */
 
+        $viewTabs = array();
+        
+        foreach ($config->navigation as $main) {
+        	$tab = array();
+        	
+        	$tabRes = $main->module . '_' . (($main->controller == '') ? 'index' : $main->controller);
+
+        	$tab['display'] = $main->display;
+        	$tab['link']    = $this->_makeLink($view->sitePrefix, $main->module, $main->controller, $main->action, $main->link);
+        	$tab['target']  = (preg_match('/^http/i', $tab['link'])) ? '_blank' : '_self';
+        	$tab['sub']     = array();
+        	    
+        	if ($main->submenu instanceof Zend_Config) {
+	        	foreach ($main->submenu as $sub) {
+	        	   	$subTab = array();
+	        	    	
+	             	$subTabRes = $sub->module . '_' . (($sub->controller == '') ? 'index' : $sub->controller);
+	        	    	
+	                if ($this->_acl->isAllowed($role, $subTabRes, ($sub->action == '') ? 'index' : $sub->action)) {
+	                    $subTab['display'] = $sub->display;
+	                    $subTab['link' ]   = $this->_makeLink($view->sitePrefix, $sub->module, $sub->controller, $sub->action, $sub->link);
+	                    $subTab['target'] = (preg_match('/^http/', $subTab['link'])) ? '_blank' : '_self';
+	                        
+	                    $tab['sub'][] = $subTab;
+	                }
+	            }  
+        	}
+
+        	if (!$this->_acl->isAllowed($role, $tabRes, ($main->action == '') ? 'index' : $main->action)) {
+        	   	if (count($tab['sub']) != 0) {
+        	   		$tab['link'] = '';
+        	   	} else {
+        	 		$tab = null;
+        		}
+        	}
+        	  
+        	if (!is_null($tab)) {
+        	    $viewTabs[] = $tab;
+        	}    
+        }        
+        
         $view->branch = $request->module;
         $view->tabs   = $viewTabs;
-        $view->subnav = $subTabs;
         
         $req = new Zend_Session_Namespace('request');
         
@@ -229,5 +272,18 @@ class Internal_Plugin_Auth extends Zend_Controller_Plugin_Abstract
         $request->setModuleName($module);
         $request->setControllerName($controller);
         $request->setActionName($action);        
+    }
+    
+    protected function _makeLink($sitePrefix, $module, $controller, $action, $link)
+    {   	
+        if ($link == '') {
+            return $sitePrefix . '/' . 
+                (($module != 'default') ? $module . '/' : '') . 
+                (($controller != '') ? $controller . '/' : 'index/') . 
+                (($action != '') ? $action . '/' : 'index/');
+        }
+        
+        return (preg_match('/^http/', $link)) ? $link : $sitePrefix . ((preg_match('/^\//', $link)) ? '/' : '') . $link; 
+    	
     }
 }

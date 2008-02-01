@@ -488,16 +488,13 @@ div.bar ul {
     color: #808080;
     background: #FFF;
     display: inline;
+    font-weight: bold;
 }
 
 .bar a { 
     font-weight: bold;
     color: #C3593C;; 
     background: inherit;    
-}
-
-.bar li.title {
-    font-weight: bold;	
 }
 
 .arrow {

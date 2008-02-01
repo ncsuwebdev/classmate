@@ -82,9 +82,6 @@ Zend_Registry::set('dbAdapter', $db);
 $auth = Zend_Auth::getInstance();
 $auth->setStorage(new Ot_Auth_Storage_Session($_SERVER['SERVER_NAME'] . $baseUrl . 'auth'));
 
-// Create new instance of the ACL
-$acl = new Internal_Acl();
-
 // Setup gcLogger
 $writer = new Zend_Log_Writer_Db($db, 'tbl_log');
 
@@ -120,16 +117,21 @@ $vr->setViewSuffix('tpl');
 Zend_Controller_Action_HelperBroker::addHelper($vr);
 
 $front->setBaseUrl($baseUrl)
-      ->setParam('acl', $acl)
-      ->registerPlugin(new Internal_Plugin_Auth($auth, $acl))
-      ->registerPlugin(new Internal_Plugin_View())
-      ->registerPlugin(new Internal_Plugin_Htmlheader())
-      ->registerPlugin(new Zend_Controller_Plugin_ErrorHandler())
       ->addModuleDirectory('./application/modules')
       ->setRouter(new Zend_Controller_Router_Rewrite())
       ->setDispatcher(new Zend_Controller_Dispatcher_Standard())
       ;
 
+// Create new instance of the ACL
+$acl = new Internal_Acl();
+      
+$front->setParam('acl', $acl)
+      ->registerPlugin(new Internal_Plugin_Auth($auth, $acl))
+      ->registerPlugin(new Internal_Plugin_View())
+      ->registerPlugin(new Internal_Plugin_Htmlheader())
+      ->registerPlugin(new Zend_Controller_Plugin_ErrorHandler())
+      ;
+      
 try {
     $front->dispatch();
 } catch (Exception $e) {

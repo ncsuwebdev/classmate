@@ -50,8 +50,8 @@
     	<navigation>
     	   <tab0>
     	       <module>default</module>
-    	       <controller>index</controller>
-    	       <action>index</action>
+    	       <controller></controller>
+    	       <action></action>
     	       <display>Home</display>
     	       <link></link>
     	       <submenu></submenu>
@@ -71,21 +71,24 @@
                <display>Our Workshops</display>
                <submenu>
                    <tab2>
+                       <module>workshop</module>
                        <controller>proposal</controller>
+                       <action></action>
                        <display>Teach a New Workshop!</display>
-                       <select></select>
                        <link></link>
                    </tab2>  
                    <tab3>
+                       <module>workshop</module>
                        <controller>request</controller>
+                       <action></action>
                        <display>Request a Custom Workshop</display>
-                       <select></select>
                        <link></link>
                    </tab3>
                    <tab4>
+                       <module>workshop</module>
                        <controller>schedule</controller>
+                       <action></action>
                        <display>Schedule Workshops</display>
-                       <select></select>
                        <link></link>
                    </tab4>                     
                </submenu>
@@ -98,65 +101,82 @@
     	       <link></link>
     	       <submenu>
     	           <tab1>
+    	               <module>admin</module>
     	               <controller>user</controller>
+    	               <action></action>
     	               <display>Users</display>
-    	               <select>user</select>
     	               <link></link>
     	           </tab1>
     	           <tab2>
+    	               <module>admin</module>
     	               <controller>acl</controller>
+    	               <action></action>
     	               <display>Access Roles</display>
-    	               <select>acl</select>
     	               <link></link>
     	           </tab2>
     	           <tab3>
+    	               <module>admin</module>
     	               <controller>emailqueue</controller>
+    	               <action></action>
     	               <display>Email Queue</display>
-    	               <select>emailqueue</select>
     	               <link></link>
     	           </tab3>
     	           <tab4>
+    	               <module>admin</module>
     	               <controller>log</controller>
+    	               <action></action>
     	               <display>Logs</display>
-    	               <select>log</select>
     	               <link></link>
     	           </tab4>
     	           <tab6>
+    	               <module>admin</module>
     	               <controller>cron</controller>
+    	               <action></action>
     	               <display>Cron Status</display>
-    	               <select>cron</select>
     	               <link></link>
     	           </tab6>
-                   <tab7>
+                   <tab7> 
+                       <module>admin</module>
                        <controller>api</controller>
+                       <action></action>
                        <display>Api Access</display>
-                       <select>api</select>
                        <link></link>
                    </tab7>  
                    <tab8>
+                       <module>admin</module>
                        <controller>custom</controller>
+                       <action></action>
                        <display>Custom Attributes</display>
-                       <select>custom</select>
                        <link></link>
                    </tab8>
                    <tab9>
+                       <module>admin</module>
                        <controller>email</controller>
+                       <action></action>
                        <display>Email Triggers</display>
-                       <select>email</select>
                        <link></link>
                    </tab9>
                    <tab10>
+                       <module>admin</module>
                        <controller>config</controller>
+                       <action></action>
                        <display>App Config</display>
-                       <select></select>
                        <link></link>
                    </tab10>
                    <tab11>
+                       <module>admin</module>
                        <controller>location</controller>
+                       <action></action>
                        <display>Locations</display>
-                       <select></select>
                        <link></link>
-                   </tab11>                       	           
+                   </tab11>    
+                   <tab12>
+                       <module>admin</module>
+                       <controller>category</controller>
+                       <action></action>
+                       <display>Workshop Categories</display>
+                       <link></link>
+                   </tab12>                                       	           
     	       </submenu>
     	   </tab2>
     	</navigation>

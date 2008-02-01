@@ -51,16 +51,19 @@
                     
             <div class="bar">
 				<ul>
-				    <li class="title">Navigation:</li>
+				    <li>Navigation:</li>
 				    {foreach from=$tabs item=t name=tabs}
-					<li class="menu">
-					   
-					   <a href="{$sitePrefix}/{if $t.module eq 'default'}index{else}{$t.module}{/if}/">{$t.display}</a>
+					<li>
+					   {if $t.link != ''}
+					   <a href="{$t.link}" target="{$t.target}">{$t.display}</a>
+					   {else}
+					   {$t.display}
+					   {/if}
 					   {if count($t.sub) != 0}	  
 					   <span class="arrow" id="tab_{$smarty.foreach.tabs.index}">&nbsp;</span>
 					   <div class="sub_menu" id="menu_{$smarty.foreach.tabs.index}">
 					       {foreach from=$t.sub item=s}
-					       <a href="{$s.link}" target="{$s.target|empty_alt:'_self'}">{$s.display}</a>
+					       <a href="{$s.link}" target="{$s.target}">{$s.display}</a>
 					       {/foreach}
 					   </div>
 					   {/if}
