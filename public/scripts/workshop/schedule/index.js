@@ -1,10 +1,10 @@
 var sitePrefix;
 var workshopBox, instructorListBox, instructorAddButton, locationBox;
 var workshopLengthHours, workshopLengthMinutes, workshopLength;
-var eventPopupHtml;
-var searchUrl;
+var searchUrl, createEventUrl, deleteEventUrl, eventPopupUrl, updateEventUrl;
 var searchResultsContentBox;
 var hoverDiv;
+var currentColumn;
 var baseTime;
 var startTime, endTime;
 var newEventStartTime, newEventEndTime;
@@ -16,6 +16,9 @@ window.addEvent('domready', function() {
     searchUrl = sitePrefix + "/workshop/schedule/search";
     createEventUrl = sitePrefix + "/workshop/schedule/createEvent";
     deleteEventUrl = sitePrefix + "/workshop/schedule/deleteEvent";
+    eventPopupUrl = sitePrefix + "/workshop/schedule/eventPopup";
+    updateEventUrl = sitePrefix + "/workshop/schedule/updateEvent";
+    editEventUrl = sitePrefix + "/workshop/schedule/editEvent";
     
     searchResultsContentBox = $('workshopSearchResultsContent');
     
@@ -62,10 +65,6 @@ window.addEvent('domready', function() {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
     
-    // we need to store the html in a variable and then remove the whole thing from the
-    // dom so that it doesn't interfere when we make it the content in the modal popup
-    eventPopupHtml = $('createEventPopup').innerHTML;
-    $('createEventPopup').remove();
         
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');
@@ -80,67 +79,12 @@ window.addEvent('domready', function() {
             return false;
         }
                
-        new StickyWinModal({
-            onDisplay: function() {
-                $('workshopId').setStyle('visibility', 'visible');
-                $('workshopId').setStyle('opacity', '100');
-                $('workshopId').setStyle('width', '225');
-                
-                $('instructorList').setStyle('visibility', 'visible');
-                $('instructorList').setStyle('opacity', '100');
-                $('instructorList').setStyle('width', '200'); 
-                
-                $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
-                
-                $('instructorAddButton').addEvent('click', function(e) {
-                    var tmpListBox = $('instructorList');
-                    
-                    if (tmpListBox.options.selectedIndex >= 0) {
-                        var tmpBox = new Element('div');
-                        tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-                        tmpBox.addClass('instructorName');
-                        
-                        var tmpLeft = new Element('p');
-                        tmpLeft.addClass('left');
-                                                
-                        var tmpRight = new Element('p');
-                        tmpRight.addClass('right');
-                        
-                        var tmpCloseBtn = new Element('p');
-                        tmpCloseBtn.innerHTML = "&nbsp;";
-                        tmpCloseBtn.title = tmpListBox.options.selectedIndex;
-                        tmpCloseBtn.addClass('closeBtn');
-                        
-                        tmpCloseBtn.addEvent('click', function(e) {
-                            $('instructorList').options[this.title].setStyle('display', '');
-                            this.parentNode.remove();
-                            
-                            if ($('instructors').innerHTML == "") {
-                                $('instructors').innerHTML = "None Added";
-                            }
-                        });
-                        
-                        
-                        var tmpP = new Element('a');
-                        tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
-                        tmpP.addClass('content');
-                        
-                        tmpBox.adopt(tmpLeft);
-                        tmpBox.adopt(tmpRight);
-                        tmpBox.adopt(tmpCloseBtn);
-                        tmpBox.adopt(tmpP);
-                        
-                        if($('instructors').innerHTML == "None Added") {
-                            $('instructors').empty();
-                        }
-                        
-                        $('instructors').adopt(tmpBox);                       
-                        
-                        tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
-                    }
-                });     
-            },
-            content: stickyWinHTML('Create Event', eventPopupHtml, {
+        new StickyWinModal.Ajax({
+            url: eventPopupUrl,
+            onDisplay: initEventPopup,
+            wrapWithStickyWinDefaultHTML: true,
+            caption: 'Create Event',
+            stickyWinHTMLOptions: {
                 width: '600px',
                 buttons: [
                     {
@@ -152,7 +96,7 @@ window.addEvent('domready', function() {
                         text: 'Create This Event', 
                         onClick: function(e) {
                         
-                            if (workshopBox.value == 0) {
+                            if ($('workshopId').value == 0) {
                                 alert("You must select a workshop");
                                 return false;
                             }
@@ -217,8 +161,8 @@ window.addEvent('domready', function() {
                         }
                     }
                  ]
-            })
-        });
+            }
+        }).update();
     });
     
     $('workshopSearchResults').adopt(hoverDiv);
@@ -306,7 +250,117 @@ function search()
 }
 
 
-var currentColumn;
+function initEventPopup()
+{
+    $('workshopId').setStyle('visibility', 'visible');
+    $('workshopId').setStyle('opacity', '100');
+    $('workshopId').setStyle('width', '225');
+    
+    $('instructorList').setStyle('visibility', 'visible');
+    $('instructorList').setStyle('opacity', '100');
+    $('instructorList').setStyle('width', '200'); 
+    
+    $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
+    
+    var tmpListBox = $('instructorList');
+    for (var i=0; i < tmpListBox.options.length; i++) {
+        if (tmpListBox[i].selected) {
+            
+            var tmpBox = new Element('div');
+            tmpBox.title = tmpListBox.options[i].value;
+            tmpBox.addClass('instructorName');
+            
+            var tmpLeft = new Element('p');
+            tmpLeft.addClass('left');
+                                    
+            var tmpRight = new Element('p');
+            tmpRight.addClass('right');
+            
+            var tmpCloseBtn = new Element('p');
+            tmpCloseBtn.innerHTML = "&nbsp;";
+            tmpCloseBtn.title = i;
+            tmpCloseBtn.addClass('closeBtn');
+            
+            tmpCloseBtn.addEvent('click', function(e) {
+                $('instructorList').options[this.title].setStyle('display', '');
+                this.parentNode.remove();
+                
+                if ($('instructors').innerHTML == "") {
+                    $('instructors').innerHTML = "None Added";
+                }
+            });
+            
+            var tmpP = new Element('a');
+            tmpP.innerHTML = tmpListBox.options[i].label;
+            tmpP.addClass('content');
+            
+            tmpBox.adopt(tmpLeft);
+            tmpBox.adopt(tmpRight);
+            tmpBox.adopt(tmpCloseBtn);
+            tmpBox.adopt(tmpP);
+            
+            if($('instructors').innerHTML == "None Added") {
+                $('instructors').empty();
+            }
+            
+            $('instructors').adopt(tmpBox);                       
+            
+            tmpListBox.options[i].selected = false;
+            tmpListBox.options[i].setStyle('display', 'none');
+        }
+    }
+    
+    tmpListBox.multiple = false;
+    
+    $('instructorAddButton').addEvent('click', function(e) {
+        var tmpListBox = $('instructorList');
+        
+        if (tmpListBox.options.selectedIndex >= 0) {
+            var tmpBox = new Element('div');
+            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+            tmpBox.addClass('instructorName');
+            
+            var tmpLeft = new Element('p');
+            tmpLeft.addClass('left');
+                                    
+            var tmpRight = new Element('p');
+            tmpRight.addClass('right');
+            
+            var tmpCloseBtn = new Element('p');
+            tmpCloseBtn.innerHTML = "&nbsp;";
+            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+            tmpCloseBtn.addClass('closeBtn');
+            
+            tmpCloseBtn.addEvent('click', function(e) {
+                $('instructorList').options[this.title].setStyle('display', '');
+                this.parentNode.remove();
+                
+                if ($('instructors').innerHTML == "") {
+                    $('instructors').innerHTML = "None Added";
+                }
+            });
+            
+            
+            var tmpP = new Element('a');
+            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+            tmpP.addClass('content');
+            
+            tmpBox.adopt(tmpLeft);
+            tmpBox.adopt(tmpRight);
+            tmpBox.adopt(tmpCloseBtn);
+            tmpBox.adopt(tmpP);
+            
+            if($('instructors').innerHTML == "None Added") {
+                $('instructors').empty();
+            }
+            
+            $('instructors').adopt(tmpBox);                       
+            
+            tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+        }
+    });
+}
+
 
 function processSearchResults()
 {
@@ -363,7 +417,87 @@ function processSearchResults()
     $$('.event').each(function (el) {
     
         el.addEvent('dblclick', function (e) {
-            alert(el.id);
+            
+            new StickyWinModal.Ajax({
+            url: editEventUrl + "?eventId=" + el.id,
+            onDisplay: initEventPopup,
+            wrapWithStickyWinDefaultHTML: true,
+            caption: 'Edit Event',
+            stickyWinHTMLOptions: {
+                width: '600px',
+                buttons: [
+                    {
+                        text: 'Cancel', 
+                        onClick: function() {
+                        }
+                    },
+                    {
+                        text: 'Save Event', 
+                        onClick: function(e) {
+                        
+                            if ($('workshopId').value == 0) {
+                                alert("You must select a workshop");
+                                return false;
+                            }
+                            
+                            if ($('workshopMinSize').value == "") {
+                                alert("You must enter a minimum class size");
+                                return false;
+                            }
+                           
+                            if ($('workshopMaxSize').value == "") {
+                                alert("You must enter a maximum class size");
+                                return false;
+                            }
+                            
+                            if ($('workshopWaitListSize').value == "") {
+                                alert("You must enter a wait list size");
+                                return false;
+                            }
+                                
+                            var instructorStr = "";         
+                            var tmpIList = $('instructors').childNodes; 
+                            for (i=0; i < tmpIList.length; i++) {
+                                if (instructorStr != "") {
+                                    instructorStr += ":";
+                                }
+                                
+                                instructorStr += tmpIList[i].title;
+                            }
+                            
+                            if (instructorStr == "") {
+                                instructorStr = "none";
+                            }
+                                                        
+                            var varStr = Object.toQueryString({
+                                eventId: $('eventId').value,
+                                workshopId: $('workshopId').value,
+                                instructors: instructorStr,
+                                workshopMinSize: $('workshopMinSize').value,
+                                workshopMaxSize: $('workshopMaxSize').value,
+                                workshopWaitListSize: $('workshopWaitListSize').value
+                            });
+    
+                            new Ajax(editEventUrl, {
+                                method: 'post',
+                                data: varStr,
+                                onRequest: function() {
+                                    $('workshopSearchResultsLoading').style.display = 'block';
+                                },
+                                onComplete: function(txtStr, xmlStr) {
+                                    $('workshopSearchResultsLoading').style.display = 'none';
+                                    if (txtStr != 0) {
+                                        search();
+                                    } else {
+                                        alert('Updating event failed');
+                                    }
+                                }
+                            }).request();
+                        }
+                    }
+                 ]
+              }
+            }).update();
         });
     
     });
@@ -458,11 +592,12 @@ function setTime()
     
     var tmpTop = formatTime(topTime.getHours(), topTime.getMinutes());
     var tmpBottom = formatTime(bottomTime.getHours(), bottomTime.getMinutes());
-       
-    var tmpLabel = workshopBox.options[workshopBox.options.selectedIndex].label.substring(0,25);
-    if (tmpLabel != "") {
-        tmpLabel += "...";    
-    }
+      
+    var tmpLabel = "";
+    //var tmpLabel = workshopBox.options[workshopBox.options.selectedIndex].label.substring(0,25);
+    //if (tmpLabel != "") {
+    //    tmpLabel += "...";    
+    //}
     
     hoverDiv.setHTML('<table height="100%" id="hoverDivTable" align="center"><tbody><tr><td class="top" valign="top">'
                      + tmpTop + '</td></tr><tr><td class="middle" valign="top">' 

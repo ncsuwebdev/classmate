@@ -65,9 +65,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                                 "cnet/common/js.widgets/stickyWin.default.layout.js",
                                 "cnet/common/js.widgets/stickyWin.js",
                                 "cnet/common/js.widgets/stickyWin.Modal.js",
-                                "cnet/common/js.widgets/stickyWinFx.js",
-                                "cnet/common/js.widgets/stickyWinFx.Drag.js",
-                                "cnet/common/layout.widgets/MooScroller.js"
+                                "cnet/common/js.widgets/stickyWin.Ajax.js"
                             );
         
         $zd = new Zend_Date();
@@ -119,9 +117,142 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                
     }
     
-    public function noLocationsFoundAction() {
+    public function eventPopupAction()
+    {
+    	$this->_helper->viewRenderer->setNeverRender();
+    	
+    	$workshop = new Workshop();
+        $workshops = $workshop->fetchAll(null, 'title');
         
+        $workshopList = array();
+        $workshopList[0] = "";
+        foreach ($workshops as $w) {
+            $workshopList[$w->workshopId] = $w->title;
+        }
+        
+        $this->view->workshops = $workshopList;
+        
+        //get all the users available for the instructor list
+        $profile = new Profile();
+        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
+        
+        $instructors = array();
+        
+        foreach ($profiles as $p) {
+            $instructors[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+        }
+        
+        $this->view->instructors = $instructors;
+        
+        $this->_response->setBody($this->view->render('schedule/eventpopup.tpl'));
     }
+    
+    public function editEventAction()
+    {
+    	$this->_helper->viewRenderer->setNeverRender();
+    	
+        $filter = Zend_Registry::get('inputFilter');
+    	
+    	if (!$this->_request->isPost()) {    		
+	        
+    	    $get = Zend_Registry::get('get');
+        
+	        $eventId = $filter->filter($get['eventId']);
+	        
+	        $this->view->eventId = $eventId;
+    		
+	        $workshop = new Workshop();
+	        $workshops = $workshop->fetchAll(null, 'title');
+	        
+	        $workshopList = array();
+	        $workshopList[0] = "";
+	        foreach ($workshops as $w) {
+	            $workshopList[$w->workshopId] = $w->title;
+	        }
+	        
+	        $this->view->workshops = $workshopList;
+	        
+	        //get all the users available for the instructor list
+	        $profile = new Profile();
+	        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
+	        
+	        $instructors = array();
+	        
+	        foreach ($profiles as $p) {
+	            $instructors[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+	        }
+	        
+	        $this->view->instructors = $instructors;
+	        
+	        $i = new Instructor();
+	        $where = $i->getAdapter()->quoteInto('eventId = ?', $eventId);
+	        $results = $i->fetchAll($where);
+	        
+	        $currentInstructors = array();
+	        foreach ($results as $r) {
+	        	$currentInstructors[] = $r->userId;
+	        }
+	        
+	        $this->view->currentInstructors = $currentInstructors;
+	        
+	        $event = new Event();
+	        $where = $event->getAdapter()->quoteInto('eventId = ?', $eventId);
+	        $e = $event->fetchAll($where)->current()->toArray();
+	        
+	        $this->view->event = $e;
+	        
+	        $location = new Location();
+	        $where = $location->getAdapter()->quoteInto('locationId = ?', $e['locationId']);
+            $locations = $location->fetchAll($where)->current();
+            
+            $this->view->location = $locations->name;
+	        
+	        $this->_response->setBody($this->view->render('schedule/editevent.tpl'));
+    	} else {
+    		
+    		$post = Zend_Registry::get('post');
+
+    		$eventId      = $filter->filter($post['eventId']);
+	        $workshopId   = $filter->filter($post['workshopId']);
+	        $minSize      = $filter->filter($post['workshopMinSize']);
+	        $maxSize      = $filter->filter($post['workshopMaxSize']);
+	        $waitListSize = $filter->filter($post['workshopWaitListSize']);
+	        $instructors  = $filter->filter($post['instructors']);
+	        
+	        if ($instructors == "none") {
+	            $instructors = "";
+	        }
+	
+	        $instructorList = explode(":", $instructors);
+	        
+	        $date = explode("/", $date);
+	        $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
+	        
+	        $data = array('eventId'      => $eventId,
+	                      'workshopId'   => $workshopId,
+	                      'maxSize'      => $maxSize,
+	                      'minSize'      => $minSize,
+	                      'waitlistSize' => $waitListSize
+	                     );
+	        
+	        $e = new Event();
+	        $e->update($data, null);
+	        
+	        $instructor = new Instructor();
+	        
+	        $where = $instructor->getAdapter()->quoteInto('eventId = ?', $eventId);
+	        $instructor->delete($where);
+	        
+	        foreach ($instructorList as $i) {
+	            $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
+	        }
+	        
+	        echo $eventId;
+    	}
+    }
+    
+    public function noLocationsFoundAction()
+    {}
     
     public function searchAction()
     {
@@ -227,7 +358,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $instructor = new Instructor();
         
         foreach ($instructorList as $i) {
-            $instructor->insert(array("userId"=>$i, "eventId"=>$eventId));            
+            $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
         }
         
         echo $eventId;
