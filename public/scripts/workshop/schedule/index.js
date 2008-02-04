@@ -252,6 +252,11 @@ function search()
 
 function initEventPopup()
 {
+
+    $('editLocationId').setStyle('visibility', 'visible');
+    $('editLocationId').setStyle('opacity', '100');
+    $('editLocationId').setStyle('width', '225');
+
     $('workshopId').setStyle('visibility', 'visible');
     $('workshopId').setStyle('opacity', '100');
     $('workshopId').setStyle('width', '225');
@@ -260,7 +265,9 @@ function initEventPopup()
     $('instructorList').setStyle('opacity', '100');
     $('instructorList').setStyle('width', '200'); 
     
-    $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
+    if ($('locationDisplay')) {
+        $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
+    }
     
     var tmpListBox = $('instructorList');
     for (var i=0; i < tmpListBox.options.length; i++) {
@@ -472,6 +479,7 @@ function processSearchResults()
                             var varStr = Object.toQueryString({
                                 eventId: $('eventId').value,
                                 workshopId: $('workshopId').value,
+                                locationId: $('editLocationId').value,
                                 instructors: instructorStr,
                                 workshopMinSize: $('workshopMinSize').value,
                                 workshopMaxSize: $('workshopMaxSize').value,

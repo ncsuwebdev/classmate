@@ -202,10 +202,14 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $this->view->event = $e;
 	        
 	        $location = new Location();
-	        $where = $location->getAdapter()->quoteInto('locationId = ?', $e['locationId']);
-            $locations = $location->fetchAll($where)->current();
+            $locations = $location->fetchAll();
             
-            $this->view->location = $locations->name;
+            $locationList = array();
+            foreach($locations as $l) {
+            	$locationList[$l->locationId] = $l->name;
+            }
+            
+            $this->view->locations = $locationList;
 	        
 	        $this->_response->setBody($this->view->render('schedule/editevent.tpl'));
     	} else {

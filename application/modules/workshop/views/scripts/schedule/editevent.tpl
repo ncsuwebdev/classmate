@@ -8,7 +8,7 @@
                     <tbody>
                         <tr>
                             <td>Location:</td>
-                            <td id="locationDisplay">{$location}</td>
+                            <td>{html_options id=editLocationId name=editLocationId options=$locations selected=$event.locationId}</td>
                         </tr>
                         <tr>
                             <td><label for="workshopId">Workshop:</label></td>
