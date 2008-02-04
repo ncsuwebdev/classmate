@@ -54,6 +54,22 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $this->view->startInAddMode = 1;
         }
         
+        $this->view->javascript = array(
+                                "cnet/common/utilities/dbug.js",
+                                "cnet/mootools.extended/Native/element.shortcuts.js",
+                                "cnet/mootools.extended/Native/element.dimensions.js",
+                                "cnet/mootools.extended/Native/element.position.js",
+                                "cnet/mootools.extended/Native/element.pin.js", 
+                                "cnet/common/browser.fixes/IframeShim.js",
+                                "cnet/common/js.widgets/modalizer.js",
+                                "cnet/common/js.widgets/stickyWin.default.layout.js",
+                                "cnet/common/js.widgets/stickyWin.js",
+                                "cnet/common/js.widgets/stickyWin.Modal.js",
+                                "cnet/common/js.widgets/stickyWinFx.js",
+                                "cnet/common/js.widgets/stickyWinFx.Drag.js",
+                                "cnet/common/layout.widgets/MooScroller.js"
+                            );
+        
         $zd = new Zend_Date();
         
         $this->view->workshopLength = mktime(1, 0, 0, 1, 1, 1970);
@@ -88,6 +104,19 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         }
         
         $this->view->locations = $locationList;
+        
+        //get all the users available for the instructor list
+        $profile = new Profile();
+        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
+        
+        $instructors = array();
+        
+        foreach ($profiles as $p) {
+            $instructors[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+        }
+        
+        $this->view->instructors = $instructors;
+               
     }
     
     public function noLocationsFoundAction() {
@@ -170,6 +199,13 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $minSize      = $filter->filter($post['workshopMinSize']);
         $maxSize      = $filter->filter($post['workshopMaxSize']);
         $waitListSize = $filter->filter($post['workshopWaitListSize']);
+        $instructors  = $filter->filter($post['instructors']);
+        
+        if ($instructors == "none") {
+            $instructors = "";
+        }
+
+        $instructorList = explode(":", $instructors);
         
         $date = explode("/", $date);
         $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
@@ -186,7 +222,15 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         
         $e = new Event();
 
-        echo $e->insert($data);
+        $eventId = $e->insert($data);
+        
+        $instructor = new Instructor();
+        
+        foreach ($instructorList as $i) {
+            $instructor->insert(array("userId"=>$i, "eventId"=>$eventId));            
+        }
+        
+        echo $eventId;
     }
     
     

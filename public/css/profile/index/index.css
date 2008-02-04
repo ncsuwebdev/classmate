@@ -233,6 +233,7 @@ div.sectionTitle p.left {
 
 div.sectionTitle p.content {
 	color: #FFF;
+	min-width: 50px;
 	font-weight: bold;
 	line-height: 22px;
 	margin: 0px;

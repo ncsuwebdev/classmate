@@ -1,5 +1,7 @@
 var sitePrefix;
-var workshopBox, locationBox, workshopLengthHours, workshopLengthMinutes, workshopLength;
+var workshopBox, instructorListBox, instructorAddButton, locationBox;
+var workshopLengthHours, workshopLengthMinutes, workshopLength;
+var eventPopupHtml;
 var searchUrl;
 var searchResultsContentBox;
 var hoverDiv;
@@ -20,6 +22,8 @@ window.addEvent('domready', function() {
     baseTime = parseInt($('basetime').value);
     
     workshopBox = $('workshopId');
+    instructorListBox = $('instructorList');
+    instructorAddButton = $('instructorAddButton');
     locationBox = $('locationId');
     workshopLengthHours = $('workshopLengthHours');
     workshopLengthMinutes = $('workshopLengthMinutes');
@@ -30,10 +34,11 @@ window.addEvent('domready', function() {
     });
     
     modeButton = $('modeButton');
+
     modeButton.addEvent('click', function(e) {
         if (modeButton.value == "Switch to Edit Mode") {
             hideHoverDiv();
-            $('workshopSearchWrapper').setStyle('display', 'none');
+            $('workshopAddForm').setStyle('display', 'none');
             $$('.delete').each (function(el){
                 el.setStyle('visibility', 'visible');
             });
@@ -41,7 +46,7 @@ window.addEvent('domready', function() {
             modeButton.value = "Switch to Add Mode";
         } else {
             currentMode = "add";
-            $('workshopSearchWrapper').setStyle('display', 'block');
+            $('workshopAddForm').setStyle('display', 'block');
             $$('.delete').each (function(el){
                 el.setStyle('visibility', 'hidden');
             });
@@ -56,6 +61,11 @@ window.addEvent('domready', function() {
     workshopLengthMinutes.addEvent('change', function(e) {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
+    
+    // we need to store the html in a variable and then remove the whole thing from the
+    // dom so that it doesn't interfere when we make it the content in the modal popup
+    eventPopupHtml = $('createEventPopup').innerHTML;
+    $('createEventPopup').remove();
         
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');
@@ -65,66 +75,155 @@ window.addEvent('domready', function() {
     
     hoverDiv.addEvent('click', function(e) {
         
-        if (workshopBox.value == 0) {
-            alert("You must select a workshop");
-            return false;
-        }
-        
-        if ($('workshopMinSize').value == "") {
-            alert("You must enter a minimum class size");
-            return false;
-        }
-       
-        if ($('workshopMaxSize').value == "") {
-            alert("You must enter a maximum class size");
-            return false;
-        }
-        
-        if ($('workshopWaitListSize').value == "") {
-            alert("You must enter a wait list size");
-            return false;
-        }
-        
         if (detectCollision()) {
             alert("You cannot have the new event overlap with an existing event");
             return false;
         }
-        
-        var varStr = Object.toQueryString({
-                        startTime: newEventStartTime, 
-                        endTime: newEventEndTime, 
-                        date: currentColumn.title,
-                        workshopId: workshopBox.value,
-                        locationId: locationBox.value,
-                        workshopMinSize: $('workshopMinSize').value,
-                        workshopMaxSize: $('workshopMaxSize').value,
-                        workshopWaitListSize: $('workshopWaitListSize').value
-                     });
-
-        new Ajax(createEventUrl, {
-            method: 'post',
-            data: varStr,
-            onRequest: function() {
-                $('workshopSearchResultsLoading').style.display = 'block';
+               
+        new StickyWinModal({
+            onDisplay: function() {
+                $('workshopId').setStyle('visibility', 'visible');
+                $('workshopId').setStyle('opacity', '100');
+                $('workshopId').setStyle('width', '225');
+                
+                $('instructorList').setStyle('visibility', 'visible');
+                $('instructorList').setStyle('opacity', '100');
+                $('instructorList').setStyle('width', '200'); 
+                
+                $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
+                
+                $('instructorAddButton').addEvent('click', function(e) {
+                    var tmpListBox = $('instructorList');
+                    
+                    if (tmpListBox.options.selectedIndex >= 0) {
+                        var tmpBox = new Element('div');
+                        tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+                        tmpBox.addClass('instructorName');
+                        
+                        var tmpLeft = new Element('p');
+                        tmpLeft.addClass('left');
+                                                
+                        var tmpRight = new Element('p');
+                        tmpRight.addClass('right');
+                        
+                        var tmpCloseBtn = new Element('p');
+                        tmpCloseBtn.innerHTML = "&nbsp;";
+                        tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+                        tmpCloseBtn.addClass('closeBtn');
+                        
+                        tmpCloseBtn.addEvent('click', function(e) {
+                            $('instructorList').options[this.title].setStyle('display', '');
+                            this.parentNode.remove();
+                            
+                            if ($('instructors').innerHTML == "") {
+                                $('instructors').innerHTML = "None Added";
+                            }
+                        });
+                        
+                        
+                        var tmpP = new Element('a');
+                        tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+                        tmpP.addClass('content');
+                        
+                        tmpBox.adopt(tmpLeft);
+                        tmpBox.adopt(tmpRight);
+                        tmpBox.adopt(tmpCloseBtn);
+                        tmpBox.adopt(tmpP);
+                        
+                        if($('instructors').innerHTML == "None Added") {
+                            $('instructors').empty();
+                        }
+                        
+                        $('instructors').adopt(tmpBox);                       
+                        
+                        tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+                    }
+                });     
             },
-            onComplete: function(txtStr, xmlStr) {
-                $('workshopSearchResultsLoading').style.display = 'none';
-                if (txtStr != 0) {
-                    alert('Workshop scheduled successfully!');
-                    modeButton.fireEvent('click');
-                    search();
-                }
-            }
-        }).request();
+            content: stickyWinHTML('Create Event', eventPopupHtml, {
+                width: '600px',
+                buttons: [
+                    {
+                        text: 'Cancel', 
+                        onClick: function() {
+                        }
+                    },
+                    {
+                        text: 'Create This Event', 
+                        onClick: function(e) {
+                        
+                            if (workshopBox.value == 0) {
+                                alert("You must select a workshop");
+                                return false;
+                            }
+                            
+                            if ($('workshopMinSize').value == "") {
+                                alert("You must enter a minimum class size");
+                                return false;
+                            }
+                           
+                            if ($('workshopMaxSize').value == "") {
+                                alert("You must enter a maximum class size");
+                                return false;
+                            }
+                            
+                            if ($('workshopWaitListSize').value == "") {
+                                alert("You must enter a wait list size");
+                                return false;
+                            }
+                                
+                            var instructorStr = "";         
+                            var tmpIList = $('instructors').childNodes; 
+                            for (i=0; i < tmpIList.length; i++) {
+                                if (instructorStr != "") {
+                                    instructorStr += ": ";
+                                }
+                                
+                                instructorStr += tmpIList[i].title;
+                            }
+                            
+                            if (instructorStr == "") {
+                                instructorStr = "none";
+                            }
+                                                        
+                            var varStr = Object.toQueryString({
+                                startTime: newEventStartTime, 
+                                endTime: newEventEndTime, 
+                                date: currentColumn.title,
+                                workshopId: $('workshopId').value,
+                                instructors: instructorStr,
+                                locationId: $('locationId').value,
+                                workshopMinSize: $('workshopMinSize').value,
+                                workshopMaxSize: $('workshopMaxSize').value,
+                                workshopWaitListSize: $('workshopWaitListSize').value
+                            });
+    
+                            new Ajax(createEventUrl, {
+                                method: 'post',
+                                data: varStr,
+                                onRequest: function() {
+                                    $('workshopSearchResultsLoading').style.display = 'block';
+                                },
+                                onComplete: function(txtStr, xmlStr) {
+                                    $('workshopSearchResultsLoading').style.display = 'none';
+                                    if (txtStr != 0) {
+                                        modeButton.fireEvent('click');
+                                        search();
+                                    } else {
+                                        alert('Scheduling event failed');
+                                    }
+                                }
+                            }).request();
+                        }
+                    }
+                 ]
+            })
+        });
     });
     
     $('workshopSearchResults').adopt(hoverDiv);
 
     search();
-    
-    if ($('startInAddMode').value == 1) {
-        modeButton.fireEvent('click');   
-    }
 });
 
 function deleteEvent(eventId)
@@ -323,6 +422,12 @@ function processSearchResults()
             }
         });
     });
+    
+    if ($('startInAddMode').value == 1) {
+        modeButton.fireEvent('click');   
+    }
+    
+    $('startInAddMode').value = 0;
 }
 
 
@@ -366,7 +471,6 @@ function setTime()
                      + tmpBottom + '</td></tr></tbody></table>'
                     );
 }
-
 
 function formatTime(hours, minutes)
 {
