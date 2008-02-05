@@ -92,21 +92,11 @@ class Workshop_IndexController extends Internal_Controller_Action
     {
     	$get = Zend_Registry::get('get');
     	$filter = Zend_Registry::get('inputFilter');
+    	$config = Zend_Registry::get('config');
     	
     	if (!isset($get['workshopId'])) {
     		throw new Internal_Exception_Input('Workshop ID not set in query string.');
     	}
-    	
-    	$this->view->acl = array(
-    	   'edit' => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
-    	   'addDocuments' => $this->_acl->isAllowed($this->_role, $this->_resource, 'addDocuments'),
-    	   'editDocument' => $this->_acl->isAllowed($this->_role, $this->_resource, 'editDocument'),
-    	   'deleteDocument' => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteDocument'),
-    	   'addLink'       => $this->_acl->isAllowed($this->_role, $this->_resource, 'addLinks'),
-    	   'deleteLink'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteLink'),
-    	   'editLink'       => $this->_acl->isAllowed($this->_role, $this->_resource, 'editLink'),
-    	   'addEvent'       => $this->_acl->isAllowed($this->_role, 'workshop_schedule', 'index'),
-    	);
     	
     	$workshop = new Workshop();
     	
@@ -147,9 +137,70 @@ class Workshop_IndexController extends Internal_Controller_Action
     	
     	$this->view->locations = $locs;
     	
-    	$this->view->javascript = array(
-    	    'Stickman.MultiUpload.js'
-    	);
+        $we = new WorkshopEditor();        
+        
+        $isEditor = false;        
+        if ($this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops')) {
+        	$isEditor = true;
+        } else {
+            $isEditor = $we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity());
+        }
+        
+        $this->view->acl = array(
+           'edit'           => $isEditor,
+           'addDocuments'   => $isEditor,
+           'editDocument'   => $isEditor,
+           'deleteDocument' => $isEditor,
+           'addLink'        => $isEditor,
+           'deleteLink'     => $isEditor,
+           'editLink'       => $isEditor,
+           'addEvent'       => $this->_acl->isAllowed($this->_role, 'workshop_schedule', 'index'),
+           'options'        => $this->_acl->isAllowed($this->_role, $this->_resource, 'options'),
+        );
+        
+    	if ($this->view->acl['edit']) {
+	    	$this->view->javascript = array(
+	    	    'Stickman.MultiUpload.js',
+	    	    "cnet/common/utilities/dbug.js",
+	            "cnet/mootools.extended/Native/element.shortcuts.js",
+	            "cnet/mootools.extended/Native/element.dimensions.js",
+	            "cnet/mootools.extended/Native/element.position.js",
+	            "cnet/mootools.extended/Native/element.pin.js", 
+	            "cnet/common/browser.fixes/IframeShim.js",
+	            "cnet/common/js.widgets/modalizer.js",
+	            "cnet/common/js.widgets/stickyWin.default.layout.js",
+	            "cnet/common/js.widgets/stickyWin.js",
+	            "cnet/common/js.widgets/stickyWin.Modal.js",
+	            "cnet/common/js.widgets/stickyWinFx.js",
+	            "cnet/common/js.widgets/stickyWinFx.Drag.js", 	
+	    	);
+	    	
+	    	$wc = new WorkshopCategory();
+	    	$this->view->categories = $wc->fetchAll(null, 'name')->toArray();
+	    	
+	        //get all the users available for the instructor list
+	        $profile = new Profile();
+	        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
+	        
+	        $users = array('instructors' => 'All Upcoming Instructors');
+	        
+	        foreach ($profiles as $p) {
+	            $users[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+	        }
+	        
+	        $this->view->users = $users;	 
+
+	        $we = new WorkshopEditor();
+            $where = $we->getAdapter()->quoteInto('workshopId = ?', $thisWorkshop->workshopId);
+            $results = $we->fetchAll($where);
+            
+            $currentEditors = array();
+            foreach ($results as $r) {
+                $currentEditors[] = $r->userId;
+            }
+            
+            $this->view->currentEditors = $currentEditors;	        
+    	}
     	
     	$this->view->useInlineEditor = true;
     	$this->view->title    = $thisWorkshop->title;
@@ -179,6 +230,13 @@ class Workshop_IndexController extends Internal_Controller_Action
     	    	echo 'workshop ID can not be blank';
     	    	return;
     	    }
+    	    
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($workshopId, Zend_Auth::getInstance()->getIdentity())) {
+            	echo 'You do not have access to edit this';
+            	return;    	    
+            }
     	    
     	    $data = array(
     	        'workshopId' => $workshopId,
@@ -210,11 +268,83 @@ class Workshop_IndexController extends Internal_Controller_Action
 	            $tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);   
     	    }
     	    
-    	    $workshop->index($workshopId);
+    	    //$workshop->index($workshopId);
     	    
     	    echo 'Workshop saved successfully';
     	    return;    	    
     	}
+    }
+    
+    public function optionsAction()
+    {
+    	if ($this->_request->isPost()) {
+            $post = Zend_Registry::get('post');
+            $filter = Zend_Registry::get('inputFilter');
+            
+            if (!isset($post['workshopId'])) {
+                echo 'workshop ID not set';
+                return;
+            }
+            
+            $workshopId = $filter->filter($post['workshopId']);
+            
+            if ($workshopId == '') {
+                echo 'workshop ID can not be blank';
+                return;
+            }
+            
+            $we = new WorkshopEditor();
+            $where = $we->getAdapter()->quoteInto('workshopId = ?', $workshopId);
+            $results = $we->fetchAll($where);
+            
+            $currentEditors = array();
+            foreach ($results as $r) {
+                $currentEditors[] = $r->userId;
+            }
+
+            $newEditors = array();
+            
+            if (isset($post['editor']) && is_array($post['editor'])) {
+	            foreach ($post['editor'] as $e) {
+	            	$e = $filter->filter($e);
+	            	
+	            	if ($e != '') {
+	            	    if (!in_array($e, $currentEditors)) {
+				            $data = array(
+				                'workshopId' => $workshopId,
+				                'userId'     => $e,
+				            );             		
+				            
+				            $we->insert($data);
+		            	}
+		            	
+		            	$newEditors[] = $e;
+	            	}
+	            } 
+            }  
+            
+            $deletable = array_diff($currentEditors, $newEditors);
+            
+            $dba = $we->getAdapter();
+            
+            foreach ($deletable as $userId) {
+            	$where = $dba->quoteInto('workshopId = ?', $workshopId) . 
+            	   ' AND ' . 
+            	   $dba->quoteInto('userId = ?', $userId);
+            	   
+            	$we->delete($where);
+            }
+            
+            $data = array(
+                'workshopId' => $workshopId,
+                'workshopCategoryId' => $filter->filter($post['workshopCategoryId']),
+            );
+            
+            $workshop = new Workshop();
+            $workshop->update($data, null);
+        }
+        
+        $this->_redirect('/workshop/index/details?workshopId=' . $workshopId);
     }
     
     public function deleteDocumentAction()
@@ -238,6 +368,15 @@ class Workshop_IndexController extends Internal_Controller_Action
             }  
             
             $document = new Document();
+            
+            $d = $document->find($documentId);
+            
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($d->workshopId, Zend_Auth::getInstance()->getIdentity())) {
+                echo 'You do not have access to edit this';
+                return;         
+            }            
             
             $document->deleteDocument($documentId);
             
@@ -264,6 +403,12 @@ class Workshop_IndexController extends Internal_Controller_Action
                 throw new Internal_Exception_Input('attribute name or ID can not be blank');
             }  
             
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($attributeId, Zend_Auth::getInstance()->getIdentity())) {
+                throw new Internal_Exception_Access('You do not have access to add this');     
+            }  
+                        
             $document = new Document();
             
             foreach ($_FILES['uploadDocuments']['error'] as $key => $value) {
@@ -335,6 +480,16 @@ class Workshop_IndexController extends Internal_Controller_Action
             $htmlFilter = Zend_Registry::get('htmlFilter');
             
             $document = new Document();
+            
+            $d = $document->find($documentId);
+            
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($d->workshopId, Zend_Auth::getInstance()->getIdentity())) {
+                echo 'You do not have access to edit this';
+                return;         
+            }
+                        
             $document->update($data, null);
             
             echo 'Document saved successfully';
@@ -364,6 +519,15 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             $wsl = new WorkshopLink();
             
+            $l = $wsl->find($workshopLinkId);
+            
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($l->workshopId, Zend_Auth::getInstance()->getIdentity())) {
+                echo 'You do not have access to edit this';
+                return;         
+            }            
+            
             $wsl->deleteWorkshopLink($workshopLinkId);
             
             echo "Link successfully deleted.";
@@ -391,6 +555,13 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             if ($data['name'] == '') {
                 $data['name'] = $data['url'];
+            }            
+            
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($data['workshopId'], Zend_Auth::getInstance()->getIdentity())) {
+                echo 'You do not have access to edit this';
+                return;         
             }            
             
             $wsl->insert($data);
@@ -434,6 +605,16 @@ class Workshop_IndexController extends Internal_Controller_Action
             }
             
             $wsl = new WorkshopLink();
+            
+            $l = $wsl->find($workshopLinkId);
+            
+            $we = new WorkshopEditor();        
+            if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
+                !$we->isEditor($l->workshopId, Zend_Auth::getInstance()->getIdentity())) {
+                echo 'You do not have access to edit this';
+                return;         
+            } 
+                        
             $wsl->update($data, null);
             
             echo 'Link saved successfully';
@@ -441,51 +622,9 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }    
     
-    /**
-     * AJAX function that returns the events for the day the user has
-     * hovered over
-     */
-    public function getEventDetailsAction()
-    {
-    	
-        $this->_helper->viewRenderer->setNeverRender();
-        
-        $ret = array();
-        
-        $get    = Zend_Registry::get('get');
-        $filter = Zend_Registry::get('inputFilter');
-        
-        $eventId = $filter->filter($get['eventId']);
-        
-        $event = new Event();               
-        $thisEvent = $event->find($eventId);
-        
-        if (is_null($thisEvent)) {
-        	echo "No Event Found";
-        	return;
-        }
-        
-        $this->view->status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $eventId);
-        
-        $this->view->event = $thisEvent->toArray();
-        
-        $location = new Location();        
-        $thisLocation = $location->find($thisEvent->locationId);
-        
-        if (is_null($thisLocation)) {
-        	echo "No Location Found";
-        	return;
-        }
-        
-        $this->view->location = $thisLocation->toArray();
-        
-        $instructor = new Instructor();
-        //$instructors = $instructor->getInstructorsForEvent($eventId);
-
-        $this->_response->setBody($this->view->render('index/getEventDetails.tpl'));
-
-    }    
-
+    public function editAllWorkshopsAction()
+    {}
+    
     protected function _getDocumentType($mime)
     {
         if (preg_match('/word$/i', $mime)) {

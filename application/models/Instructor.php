@@ -68,4 +68,5 @@ class Instructor extends Ot_Db_Table
     	
     	return $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();    	
     }
+    
 }

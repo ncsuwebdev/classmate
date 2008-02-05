@@ -108,6 +108,36 @@ window.addEvent('domready', function() {
             }
         });
     });
+    
+    if ($('manageWorkshop')) {
+	    // we need to store the html in a variable and then remove the whole thing from the
+	    // dom so that it doesn't interfere when we make it the content in the modal popup
+	    eventPopupHtml = $('createEventPopup').innerHTML;
+	    $('createEventPopup').remove();
+	        
+	    $('manageWorkshop').addEvent('click', function(e) {
+	    
+	        new StickyWinModal({
+	            onDisplay: initEventPopup,
+	            content: stickyWinHTML('Manage Workshop Options', eventPopupHtml, {
+	                width: '500px',
+	                buttons: [
+	                    {
+	                        text: 'Cancel', 
+	                        onClick: function() {
+	                        }
+	                    },
+	                    {
+	                        text: 'Save', 
+	                        onClick: function(e) {
+	                            $('workshopOptionForm').submit();
+	                        }
+	                    }
+	                 ]
+	            })
+	        });
+	    });  
+	}  
 });
 
 
@@ -169,3 +199,124 @@ var myIEdit = iEdit.extend({
         });        
     }
 });
+
+function initEventPopup()
+{
+    $('workshopCategoryId').setStyle('visibility', 'visible');
+    $('workshopCategoryId').setStyle('opacity', '100');
+    $('workshopCategoryId').setStyle('width', '225');
+    
+    $('editorList').setStyle('visibility', 'visible');
+    $('editorList').setStyle('opacity', '100');
+    $('editorList').setStyle('width', '200'); 
+    
+    var tmpListBox = $('editorList');
+    for (var i=0; i < tmpListBox.options.length; i++) {
+        if (tmpListBox[i].selected) {
+            
+            var tmpBox = new Element('div');
+            tmpBox.title = tmpListBox.options[i].value;
+            tmpBox.addClass('editorName');
+            
+            var hidden = new Element('input');
+            hidden.type = 'hidden';
+            hidden.name = 'editor[]';
+            hidden.value = tmpListBox.options[i].value;
+            
+            var tmpLeft = new Element('p');
+            tmpLeft.addClass('left');
+                                    
+            var tmpRight = new Element('p');
+            tmpRight.addClass('right');
+            
+            var tmpCloseBtn = new Element('p');
+            tmpCloseBtn.innerHTML = "&nbsp;";
+            tmpCloseBtn.title = i;
+            tmpCloseBtn.addClass('closeBtn');
+            
+            tmpCloseBtn.addEvent('click', function(e) {
+                $('editorList').options[this.title].setStyle('display', '');
+                this.parentNode.remove();
+                
+                if ($('editors').innerHTML == "") {
+                    $('editors').innerHTML = "None Added";
+                }
+            });
+            
+            var tmpP = new Element('a');
+            tmpP.innerHTML = tmpListBox.options[i].label;
+            tmpP.addClass('content');
+            
+            tmpBox.adopt(hidden);
+            tmpBox.adopt(tmpLeft);
+            tmpBox.adopt(tmpRight);
+            tmpBox.adopt(tmpCloseBtn);
+            tmpBox.adopt(tmpP);
+            
+            if($('editors').innerHTML == "None Added") {
+                $('editors').empty();
+            }
+            
+            $('editors').adopt(tmpBox);                       
+            
+            tmpListBox.options[i].selected = false;
+            tmpListBox.options[i].setStyle('display', 'none');
+        }
+    }
+    
+    tmpListBox.multiple = false;
+    
+    $('editorAddButton').addEvent('click', function(e) {
+        var tmpListBox = $('editorList');
+        
+        if (tmpListBox.options.selectedIndex >= 0) {
+            var tmpBox = new Element('div');
+            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+            tmpBox.addClass('editorName');
+            
+            var hidden = new Element('input');
+            hidden.type = 'hidden';
+            hidden.name = 'editor[]';
+            hidden.value = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+                        
+            var tmpLeft = new Element('p');
+            tmpLeft.addClass('left');
+                                    
+            var tmpRight = new Element('p');
+            tmpRight.addClass('right');
+            
+            var tmpCloseBtn = new Element('p');
+            tmpCloseBtn.innerHTML = "&nbsp;";
+            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+            tmpCloseBtn.addClass('closeBtn');
+            
+            tmpCloseBtn.addEvent('click', function(e) {
+                $('editorList').options[this.title].setStyle('display', '');
+                this.parentNode.remove();
+                
+                if ($('editors').innerHTML == "") {
+                    $('editors').innerHTML = "None Added";
+                }
+            });
+            
+            
+            var tmpP = new Element('a');
+            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+            tmpP.addClass('content');
+            
+            tmpBox.adopt(hidden);
+            tmpBox.adopt(tmpLeft);
+            tmpBox.adopt(tmpRight);
+            tmpBox.adopt(tmpCloseBtn);
+            tmpBox.adopt(tmpP);
+            
+            if($('editors').innerHTML == "None Added") {
+                $('editors').empty();
+            }
+            
+            $('editors').adopt(tmpBox);                       
+            
+            tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+        }
+    });
+}

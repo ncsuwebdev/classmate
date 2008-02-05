@@ -1,3 +1,41 @@
+{if $acl.options}
+<div id="createEventPopup" style="position: absolute; left: -10000px;">
+<form method="POST" action="{$sitePrefix}/workshop/index/options" id="workshopOptionForm">
+<input type="hidden" name="workshopId" value="{$workshop.workshopId}">
+<table width="100%" class="form">
+    <tbody>
+        <tr>
+            <td>
+                <label for="workshopCategoryId">Category:</label>
+            </td>
+            <td>
+	            <select size="1" name="workshopCategoryId" id="workshopCategoryId">
+	                 {foreach from=$categories item=c}
+	                 <option value="{$c.workshopCategoryId}" style="background-image:url({$sitePrefix}/index/image/?imageId={$c.smallIconImageId})"{if $c.workshopCategoryId == $workshop.workshopCategoryId} selected="selected"{/if}>{$c.name}</option>
+	                 {/foreach}
+	            </select>
+            </td>
+            <td>
+            </td>
+         </tr>
+         <tr>
+            <td colspan="3">
+                <label for="instructors">Workshop Editors:</label>
+            </td>
+         </tr>
+         <tr>
+            <td colspan="2" id="editors">None Added</td>
+            <td align="center">
+                {html_options size=10 multiple=true id=editorList name=editorList options=$users selected=$currentEditors}
+                <br />
+                <input type="button" id="editorAddButton" value="&lsaquo; Add Selected User" />              
+            </td>
+         </tr>
+     </tbody>
+</table>
+</form>
+</div>
+{/if}
 <div id="detailsRight">
     <div class="rightTitle">
         Upcoming Schedule
@@ -65,6 +103,9 @@
 	        {/foreach}
         </div>
     </div>
+    {if $acl.options}
+    <div id='manageWorkshop'>Manage Workshop Options</div>
+    {/if}
 </div>
 <div id="detailsLeft">
 	<div id="response">&nbsp;</div> 
