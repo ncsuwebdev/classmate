@@ -1,5 +1,9 @@
 <div id="createEventPopup">
 <input type="hidden" name="eventId" id="eventId" value="{$eventId}" />
+<input type="hidden" name="originalLocationId" id="originalLocationId" value="{$event.locationId}" />
+<input type="hidden" name="eventStartTime" id="eventStartTime" value="{$event.startTime}" />
+<input type="hidden" name="eventEndTime" id="eventEndTime" value="{$event.endTime}" />
+<input type="hidden" name="eventDate" id="eventDate" value="{$event.date}" />
 <table width="100%">
     <tbody>
         <tr>

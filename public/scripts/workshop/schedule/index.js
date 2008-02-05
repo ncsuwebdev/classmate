@@ -253,9 +253,11 @@ function search()
 function initEventPopup()
 {
 
-    $('editLocationId').setStyle('visibility', 'visible');
-    $('editLocationId').setStyle('opacity', '100');
-    $('editLocationId').setStyle('width', '225');
+    if ($('editLocationId')) {
+        $('editLocationId').setStyle('visibility', 'visible');
+        $('editLocationId').setStyle('opacity', '100');
+        $('editLocationId').setStyle('width', '225');
+    }
 
     $('workshopId').setStyle('visibility', 'visible');
     $('workshopId').setStyle('opacity', '100');
@@ -480,6 +482,10 @@ function processSearchResults()
                                 eventId: $('eventId').value,
                                 workshopId: $('workshopId').value,
                                 locationId: $('editLocationId').value,
+                                originalLocationId: $('originalLocationId').value,
+                                startTime: $('eventStartTime').value,
+                                endTime: $('eventEndTime').value,
+                                date: $('eventDate').value,
                                 instructors: instructorStr,
                                 workshopMinSize: $('workshopMinSize').value,
                                 workshopMaxSize: $('workshopMaxSize').value,

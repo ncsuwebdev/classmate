@@ -216,12 +216,24 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     		
     		$post = Zend_Registry::get('post');
 
-    		$eventId      = $filter->filter($post['eventId']);
-	        $workshopId   = $filter->filter($post['workshopId']);
-	        $minSize      = $filter->filter($post['workshopMinSize']);
-	        $maxSize      = $filter->filter($post['workshopMaxSize']);
-	        $waitListSize = $filter->filter($post['workshopWaitListSize']);
-	        $instructors  = $filter->filter($post['instructors']);
+    		$eventId            = $filter->filter($post['eventId']);
+	        $workshopId         = $filter->filter($post['workshopId']);
+	        $originalLocationId = $filter->filter($post['originalLocationId']);
+	        $locationId         = $filter->filter($post['locationId']);
+	        $startTime          = $filter->filter($post['startTime']);
+	        $endTime            = $filter->filter($post['endTime']);
+	        $date               = $filter->filter($post['date']);
+	        $minSize            = $filter->filter($post['workshopMinSize']);
+	        $maxSize            = $filter->filter($post['workshopMaxSize']);
+	        $waitListSize       = $filter->filter($post['workshopWaitListSize']);
+	        $instructors        = $filter->filter($post['instructors']);
+	        
+	        // the location is changing, so we need to make sure nothing else
+	        // is in the way in that time slot for that location already
+	        if ($locationId != $originalLocationId) {
+	            
+
+	        }
 	        
 	        if ($instructors == "none") {
 	            $instructors = "";
