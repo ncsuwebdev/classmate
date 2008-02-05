@@ -268,7 +268,7 @@ class Workshop_IndexController extends Internal_Controller_Action
 	            $tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);   
     	    }
     	    
-    	    //$workshop->index($workshopId);
+    	    $workshop->index($workshopId);
     	    
     	    echo 'Workshop saved successfully';
     	    return;    	    

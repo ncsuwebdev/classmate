@@ -81,6 +81,38 @@
         <resource>profile_index</resource>
         <privilege>index</privilege>
       </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>addDocuments</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>addLink</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>deleteDocument</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>deleteLink</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>edit</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>editDocument</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>editLink</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_index</resource>
+        <privilege>getEventDetails</privilege>
+      </allow>
     </allows>
     <denys/>
   </role>
