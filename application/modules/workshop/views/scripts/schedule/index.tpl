@@ -1,6 +1,7 @@
 <input type="hidden" id="startTime" value="{$startTime}" />
 <input type="hidden" id="endTime" value="{$endTime}" />
 <input type="hidden" id="startInAddMode" value="{$startInAddMode}" />
+<input type="hidden" id="addModeWorkshopId" value="{$workshopId}" />
 <input type="hidden" id="basetime" value="{$baseTime}" />
 
 <div id="workshopSearchResults">

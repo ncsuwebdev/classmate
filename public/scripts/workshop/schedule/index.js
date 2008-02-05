@@ -78,9 +78,14 @@ window.addEvent('domready', function() {
             alert("You cannot have the new event overlap with an existing event");
             return false;
         }
+        
+        var extraData = "";
+        if ($('addModeWorkshopId').value > 0) {
+            extraData = '?workshopId=' + $('addModeWorkshopId').value; 
+        }
                
         new StickyWinModal.Ajax({
-            url: eventPopupUrl,
+            url: eventPopupUrl + extraData,
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
             caption: 'Create Event',
@@ -150,11 +155,14 @@ window.addEvent('domready', function() {
                                 },
                                 onComplete: function(txtStr, xmlStr) {
                                     $('workshopSearchResultsLoading').style.display = 'none';
-                                    if (txtStr != 0) {
+                                    
+                                    var results = Json.evaluate(txtStr);
+                                    
+                                    if (results.rc != 0) {
                                         modeButton.fireEvent('click');
                                         search();
                                     } else {
-                                        alert('Scheduling event failed');
+                                        alert(results.msg);
                                     }
                                 }
                             }).request();
@@ -500,10 +508,15 @@ function processSearchResults()
                                 },
                                 onComplete: function(txtStr, xmlStr) {
                                     $('workshopSearchResultsLoading').style.display = 'none';
-                                    if (txtStr != 0) {
+                                    
+                                    var results = Json.evaluate(txtStr);
+                                    
+                                    if (results.rc == -1) {
+                                        alert(results.msg);
+                                    } else if (results.rc > 0) {
                                         search();
                                     } else {
-                                        alert('Updating event failed');
+                                        alert(results.msg);
                                     }
                                 }
                             }).request();
@@ -608,10 +621,6 @@ function setTime()
     var tmpBottom = formatTime(bottomTime.getHours(), bottomTime.getMinutes());
       
     var tmpLabel = "";
-    //var tmpLabel = workshopBox.options[workshopBox.options.selectedIndex].label.substring(0,25);
-    //if (tmpLabel != "") {
-    //    tmpLabel += "...";    
-    //}
     
     hoverDiv.setHTML('<table height="100%" id="hoverDivTable" align="center"><tbody><tr><td class="top" valign="top">'
                      + tmpTop + '</td></tr><tr><td class="middle" valign="top">' 

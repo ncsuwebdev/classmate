@@ -121,6 +121,11 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     {
     	$this->_helper->viewRenderer->setNeverRender();
     	
+    	$filter = Zend_Registry::get('inputFilter');
+    	$get = Zend_Registry::get('get');
+        
+        $workshopId = $filter->filter($get['workshopId']);
+    	
     	$workshop = new Workshop();
         $workshops = $workshop->fetchAll(null, 'title');
         
@@ -130,7 +135,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $workshopList[$w->workshopId] = $w->title;
         }
         
-        $this->view->workshops = $workshopList;
+        $this->view->workshops  = $workshopList;
+        $this->view->workshopId = $workshopId;
         
         //get all the users available for the instructor list
         $profile = new Profile();
@@ -150,6 +156,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     public function editEventAction()
     {
     	$this->_helper->viewRenderer->setNeverRender();
+    	
+    	$event = new Event();
     	
         $filter = Zend_Registry::get('inputFilter');
     	
@@ -195,7 +203,6 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        
 	        $this->view->currentInstructors = $currentInstructors;
 	        
-	        $event = new Event();
 	        $where = $event->getAdapter()->quoteInto('eventId = ?', $eventId);
 	        $e = $event->fetchAll($where)->current()->toArray();
 	        
@@ -232,7 +239,46 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        // is in the way in that time slot for that location already
 	        if ($locationId != $originalLocationId) {
 	            
-
+	            $where = $event->getAdapter()->quoteInto('date = ?', $date);
+	            $where .= " AND " . $event->getAdapter()->quoteInto('locationId = ?', $locationId);
+	            $where .= " AND " . $event->getAdapter()->quoteInto('status = ?', 'open');
+	            
+	            $possibleConflicts = $event->fetchAll($where);
+	            
+	            $conflictFound = false;
+	            
+	            if ($possibleConflicts->count() > 0) {
+	                
+	                $startTime = strtotime($startTime);
+	                $endTime   = strtoTime($endTime);
+	                
+	                foreach($possibleConflicts as $pc) {
+    	                
+	                    $pcStart = strtotime($pc->startTime);
+	                    $pcEnd   = strtotime($pc->endTime);
+	                    
+	                    if ($startTime == $pcStart) {
+                            $conflictFound = true;
+                        } else if (($startTime < $pcStart) && ($endTime > $pcStart)) {
+                            $conflictFound = true;
+                        } else if (($startTime >= $pcStart) && ($endTime <= $pcEnd)) { 
+                            $conflictFound = true;
+                        } else if (($startTime < $pcEnd) && ($endTime >= $pcEnd)) {
+                            $conflictFound = true;
+                        } else if (($startTime < $pcStart) && ($endTime > $pcEnd)) {
+                            $conflictFound = true;
+                        }   	                
+                        
+    	                if ($conflictFound) {
+                        
+                            $ret = array("rc"=>'-1', 
+                                         "msg"=>"An event is already scheduled during this time in the new location.  The event was not changed.");
+                            
+                            echo Zend_Json::encode($ret);   
+                            return false;
+                        }
+	                }
+	            }
 	        }
 	        
 	        if ($instructors == "none") {
@@ -241,18 +287,15 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	
 	        $instructorList = explode(":", $instructors);
 	        
-	        $date = explode("/", $date);
-	        $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
-	        
 	        $data = array('eventId'      => $eventId,
+	                      'locationId'   => $locationId,
 	                      'workshopId'   => $workshopId,
 	                      'maxSize'      => $maxSize,
 	                      'minSize'      => $minSize,
 	                      'waitlistSize' => $waitListSize
 	                     );
 	        
-	        $e = new Event();
-	        $e->update($data, null);
+	        $event->update($data, null);
 	        
 	        $instructor = new Instructor();
 	        
@@ -263,7 +306,11 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	            $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
 	        }
 	        
-	        echo $eventId;
+	        $ret = array("rc"=>$eventId,
+	                     "msg" => "Saving event failed"
+	                    );
+	        
+	        echo Zend_Json::encode($ret);
     	}
     }
     
@@ -377,7 +424,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
         }
         
-        echo $eventId;
+        $ret = array("rc" => $eventId,
+                     "msg" => "Creating new event failed"
+                    );
+        echo Zend_Json::encode($ret);
     }
     
     
@@ -394,6 +444,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 
         $where = $e->getAdapter()->quoteInto('eventId = ?', $eventId);
         $data = array('status'=>'canceled');
-        echo $e->update($data, $where);
+        $result = $e->update($data, $where);
+        
+        echo Zend_Json::encode(array("rc"=>$result));
     }
 }
