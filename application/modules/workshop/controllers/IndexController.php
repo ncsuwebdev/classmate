@@ -47,9 +47,34 @@ class Workshop_IndexController extends Internal_Controller_Action
     	
         $this->view->title = "Our Workshops";
         
-        $workshop = new Workshop();
+        $wc = new WorkshopCategory();
+        $categories = $wc->fetchAll(null, 'name');
         
-        $this->view->workshops = $workshop->fetchAll(null, 'title')->toArray();
+        $workshops = array();
+        foreach ($categories as $c) {
+        	$workshops[$c->workshopCategoryId]['category'] = $c->toArray();
+        }
+        
+        $workshop = new Workshop();
+        $event    = new Event();
+        
+        $result = $workshop->fetchAll(null, array('workshopCategoryId', 'title'));
+        foreach ($result as $r) {
+        	$temp = $r->toArray();
+        	
+        	$next = $event->getEvents($r->workshopId, null, time(), null, 'open', 1);
+        	
+        	if ($next->count() == 0) {
+        		$next = null;
+        	} else {
+        		$next = $next->current()->toArray();
+        	}
+        	
+        	$temp['nextEvent'] = $next;
+        	$workshops[$r->workshopCategoryId]['workshops'][] = $temp;
+        }
+        
+        $this->view->workshops = $workshops;
     }
     
     public function addAction()

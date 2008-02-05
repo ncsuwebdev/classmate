@@ -1,0 +1,19 @@
+div.category {
+    background-repeat: no-repeat;
+    padding: 2px 2px 20px 40px;
+}
+
+div.category div.name {
+    font-size: 150%;
+    font-weight: bold;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div.category div.description {
+	padding: 0px 0 5px 0;
+}
+
+div.category div.workshops {
+
+}
