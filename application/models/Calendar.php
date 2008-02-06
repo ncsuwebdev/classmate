@@ -210,7 +210,7 @@ class Calendar
             $tmp['monthDays'] = $zd->get(Zend_Date::MONTH_DAYS);
             $tmp['year']      = $zd->get(Zend_Date::YEAR);
             $tmp['weekNum']   = $zd->get(Zend_Date::WEEK);
-            $tmp['date']      = $zd->getDate();
+            $tmp['date']      = $zd->getTimestamp();
                
             $calData[$x] = $tmp;
             
