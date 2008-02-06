@@ -65,7 +65,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                                 "cnet/common/js.widgets/stickyWin.default.layout.js",
                                 "cnet/common/js.widgets/stickyWin.js",
                                 "cnet/common/js.widgets/stickyWin.Modal.js",
-                                "cnet/common/js.widgets/stickyWin.Ajax.js"
+                                "cnet/common/js.widgets/stickyWin.Ajax.js",
+                                "cnet/mootools.extended/Native/date.js",
+                                "cnet/mootools.extended/Native/date.extras.js",
+                                "calendar.js"
                             );
         
         $zd = new Zend_Date();
@@ -75,7 +78,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	    $this->view->endTime = mktime(23, 30, 0, 1, 1, 1970);
         $this->view->baseTime = mktime(0, 0, 0, 1, 1, 1970);
         $this->view->year = $zd->get(Zend_Date::YEAR);
-        $this->view->week = $zd->get(Zend_Date::WEEK);  
+        $this->view->week = $zd->get(Zend_Date::WEEK);
+        
+        $this->view->thisYear = $this->view->year;
+        $this->view->thisWeek = $this->view->week;  
         
         $this->view->title = "Schedule Workshops";
         

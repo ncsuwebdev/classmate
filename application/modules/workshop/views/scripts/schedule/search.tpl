@@ -7,9 +7,13 @@
 <input type="hidden" id="prevWeek" value="{$prevWeekNum}" />
 <input type="hidden" id="prevYear" value="{$prevYear}" />
 
-<input style="float: left;" id="previousWeekButton" type="button" value="&lsaquo; Previous Week">
-<input style="float: right;" id="nextWeekButton" type="button" value="Next Week &rsaquo;">
 <p class="weekViewTitle">{$calendar.0.date|date_format:$config.longDateFormat} - {$calendar.6.date|date_format:$config.longDateFormat}</p>
+<p align="center">
+<input class="previousWeek" id="previousWeekButton" type="button" title="Previous Week" />
+<input class="thisWeek" id="thisWeekButton" type="button" title="This Week" />
+<input id="selectAWeek" name="selectAWeek" type="text" style="display: none;" />
+<input class="nextWeek" id="nextWeekButton" type="button" title="Next Week" />
+</p>
 <div style="clear: both; height: 7px;"></div>
 <table class="weekViewDayHeader">
     <tbody>

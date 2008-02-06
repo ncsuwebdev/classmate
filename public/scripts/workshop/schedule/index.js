@@ -407,6 +407,28 @@ function processSearchResults()
         search();
     });
     
+    $('thisWeekButton').addEvent('click', function(e) {
+        $('year').value = $('thisYear').value;
+        $('week').value = $('thisWeek').value;
+        hoverDiv.setStyle('display', 'none');
+        search();        
+    });
+    
+    cal = new Calendar( 
+                    {selectAWeek: 'm.d.Y' },  
+                    {
+                        classes: ['dashboard'],
+                        onHideComplete: function(el) {
+                        
+                            if ($('selectAWeek').value != "") {
+                                $('week').value = Date.parse($('selectAWeek').value).getWeek();
+                                $('year').value = Date.parse($('selectAWeek').value).format('%Y');
+                                hoverDiv.setStyle('display', 'none');
+                                search();
+                            }                            
+                        }
+                    });
+    
     hoverDiv.addEvents({
             
         'mousemove': function(e) {
