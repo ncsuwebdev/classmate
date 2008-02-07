@@ -80,6 +80,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->year = $zd->get(Zend_Date::YEAR);
         $this->view->week = $zd->get(Zend_Date::WEEK);
         
+        $this->view->today = $zd->get(Zend_Date::MONTH) . "/" .
+                             $zd->get(Zend_Date::DAY) . "/" . 
+                             $zd->get(Zend_Date::YEAR);
+        
         $this->view->thisYear = $this->view->year;
         $this->view->thisWeek = $this->view->week;  
         
@@ -123,41 +127,6 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                
     }
     
-    public function eventPopupAction()
-    {
-    	$this->_helper->viewRenderer->setNeverRender();
-    	
-    	$filter = Zend_Registry::get('inputFilter');
-    	$get = Zend_Registry::get('get');
-        
-        $workshopId = $filter->filter($get['workshopId']);
-    	
-    	$workshop = new Workshop();
-        $workshops = $workshop->fetchAll(null, 'title');
-        
-        $workshopList = array();
-        $workshopList[0] = "";
-        foreach ($workshops as $w) {
-            $workshopList[$w->workshopId] = $w->title;
-        }
-        
-        $this->view->workshops  = $workshopList;
-        $this->view->workshopId = $workshopId;
-        
-        //get all the users available for the instructor list
-        $profile = new Profile();
-        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
-        
-        $instructors = array();
-        
-        foreach ($profiles as $p) {
-            $instructors[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
-        }
-        
-        $this->view->instructors = $instructors;
-        
-        $this->_response->setBody($this->view->render('schedule/eventpopup.tpl'));
-    }
     
     public function editEventAction()
     {
@@ -231,61 +200,79 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 
     		$eventId            = $filter->filter($post['eventId']);
 	        $workshopId         = $filter->filter($post['workshopId']);
-	        $originalLocationId = $filter->filter($post['originalLocationId']);
-	        $locationId         = $filter->filter($post['locationId']);
-	        $startTime          = $filter->filter($post['startTime']);
-	        $endTime            = $filter->filter($post['endTime']);
-	        $date               = $filter->filter($post['date']);
+	        $locationId         = $filter->filter($post['editLocationId']);
+	        $startTime          = $post['eventStartTime'];
+	        $endTime            = $post['eventEndTime'];
+	        $date               = $post['eventDate'];
 	        $minSize            = $filter->filter($post['workshopMinSize']);
 	        $maxSize            = $filter->filter($post['workshopMaxSize']);
 	        $waitListSize       = $filter->filter($post['workshopWaitListSize']);
 	        $instructors        = $filter->filter($post['instructors']);
 	        
-	        // the location is changing, so we need to make sure nothing else
-	        // is in the way in that time slot for that location already
-	        if ($locationId != $originalLocationId) {
+	        $date = $date['Date_Year'] . "-" . $date['Date_Month'] . "-" . $date['Date_Day'];
+	        
+	        if (strtolower($startTime['Time_Meridian']) == "pm" && $startTime['Time_Hour'] < 12) {
 	            
-	            $where = $event->getAdapter()->quoteInto('date = ?', $date);
-	            $where .= " AND " . $event->getAdapter()->quoteInto('locationId = ?', $locationId);
-	            $where .= " AND " . $event->getAdapter()->quoteInto('status = ?', 'open');
-	            
-	            $possibleConflicts = $event->fetchAll($where);
-	            
-	            $conflictFound = false;
-	            
-	            if ($possibleConflicts->count() > 0) {
-	                
-	                $startTime = strtotime($startTime);
-	                $endTime   = strtoTime($endTime);
-	                
-	                foreach($possibleConflicts as $pc) {
-    	                
-	                    $pcStart = strtotime($pc->startTime);
-	                    $pcEnd   = strtotime($pc->endTime);
-	                    
-	                    if ($startTime == $pcStart) {
-                            $conflictFound = true;
-                        } else if (($startTime < $pcStart) && ($endTime > $pcStart)) {
-                            $conflictFound = true;
-                        } else if (($startTime >= $pcStart) && ($endTime <= $pcEnd)) { 
-                            $conflictFound = true;
-                        } else if (($startTime < $pcEnd) && ($endTime >= $pcEnd)) {
-                            $conflictFound = true;
-                        } else if (($startTime < $pcStart) && ($endTime > $pcEnd)) {
-                            $conflictFound = true;
-                        }   	                
-                        
-    	                if ($conflictFound) {
-                        
-                            $ret = array("rc"=>'-1', 
-                                         "msg"=>"An event is already scheduled during this time in the new location.  The event was not changed.");
-                            
-                            echo Zend_Json::encode($ret);   
-                            return false;
-                        }
-	                }
-	            }
+	            $startTime['Time_Hour'] += 12;
 	        }
+	        
+	        if (strtolower($startTime['Time_Meridian']) == "am" && $startTime['Time_Hour'] == 12) {
+	            $startTime['Time_Hour'] = 0;
+	        }
+	        
+    	    if (strtolower($endTime['Time_Meridian']) == "pm" && $endTime['Time_Hour'] < 12) {
+                
+                $endTime['Time_Hour'] += 12;
+            }
+            
+            if (strtolower($endTime['Time_Meridian']) == "am" && $endTime['Time_Hour'] == 12) {
+                $endTime['Time_Hour'] = 0;
+            }	        
+	        
+	        $startTime = $startTime['Time_Hour'] . ":" . $startTime['Time_Minute'] . ":00";
+	        $endTime   = $endTime['Time_Hour'] . ":" . $endTime['Time_Minute'] . ":00";
+	        	            
+            $where = $event->getAdapter()->quoteInto('date = ?', $date);
+            $where .= " AND " . $event->getAdapter()->quoteInto('locationId = ?', $locationId);
+            $where .= " AND " . $event->getAdapter()->quoteInto('eventId != ?', $eventId);
+            $where .= " AND " . $event->getAdapter()->quoteInto('status = ?', 'open');
+            
+            $possibleConflicts = $event->fetchAll($where);
+            
+            $conflictFound = false;
+            
+            if ($possibleConflicts->count() > 0) {
+                
+                $startTs = strtotime($startTime);
+                $endTs   = strtoTime($endTime);
+                
+                foreach($possibleConflicts as $pc) {
+	                
+                    $pcStart = strtotime($pc->startTime);
+                    $pcEnd   = strtotime($pc->endTime);
+                    
+                    if ($startTs == $pcStart) {
+                        $conflictFound = true;
+                    } else if (($startTs < $pcStart) && ($endTs > $pcStart)) {
+                        $conflictFound = true;
+                    } else if (($startTs >= $pcStart) && ($endTs <= $pcEnd)) { 
+                        $conflictFound = true;
+                    } else if (($startTs < $pcEnd) && ($endTs >= $pcEnd)) {
+                        $conflictFound = true;
+                    } else if (($startTs < $pcStart) && ($endTime > $pcEnd)) {
+                        $conflictFound = true;
+                    }   	                
+                    
+	                if ($conflictFound) {
+                    
+                        $ret = array("rc"=>'-1', 
+                                     "msg"=>"An event is already scheduled during this time in the selected location.  The event was not changed.");
+                        
+                        echo Zend_Json::encode($ret);   
+                        return false;
+                    }
+                }
+            }
 	        
 	        if ($instructors == "none") {
 	            $instructors = "";
@@ -296,8 +283,11 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $data = array('eventId'      => $eventId,
 	                      'locationId'   => $locationId,
 	                      'workshopId'   => $workshopId,
-	                      'maxSize'      => $maxSize,
+	                      'startTime'    => $startTime,
+	                      'endTime'      => $endTime,
+	                      'date'         => $date,
 	                      'minSize'      => $minSize,
+	                      'maxSize'      => $maxSize,
 	                      'waitlistSize' => $waitListSize
 	                     );
 	        
@@ -387,53 +377,98 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     public function createEventAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
-
-        $post   = Zend_Registry::get('post');
+        
         $filter = Zend_Registry::get('inputFilter');
 
-        $workshopId   = $filter->filter($post['workshopId']);
-        $locationId   = $filter->filter($post['locationId']);
-        $startTime    = $filter->filter($post['startTime']);
-        $endTime      = $filter->filter($post['endTime']);
-        $date         = $filter->filter($post['date']);
-        $minSize      = $filter->filter($post['workshopMinSize']);
-        $maxSize      = $filter->filter($post['workshopMaxSize']);
-        $waitListSize = $filter->filter($post['workshopWaitListSize']);
-        $instructors  = $filter->filter($post['instructors']);
+        if (!$this->_request->isPost()) {
         
-        if ($instructors == "none") {
-            $instructors = "";
+            $get = Zend_Registry::get('get');
+            
+            $workshopId = 0;
+            
+            if (isset($get['workshopId'])) {
+                $workshopId = $filter->filter($get['workshopId']);   
+            }
+            
+            $this->view->date      = $filter->filter($get['date']);
+            $this->view->startTime = $filter->filter($get['startTime']);
+            $this->view->endTime   = $filter->filter($get['endTime']);
+            
+            $workshop = new Workshop();
+            $workshops = $workshop->fetchAll(null, 'title');
+            
+            $workshopList = array();
+            $workshopList[0] = "";
+            foreach ($workshops as $w) {
+                $workshopList[$w->workshopId] = $w->title;
+            }
+            
+            $this->view->workshops  = $workshopList;
+            $this->view->workshopId = $workshopId;
+            
+            //get all the users available for the instructor list
+            $profile = new Profile();
+            $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
+            
+            $instructors = array();
+            
+            foreach ($profiles as $p) {
+                $instructors[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+            }
+            
+            $this->view->instructors = $instructors;
+            
+            $this->_response->setBody($this->view->render('schedule/eventpopup.tpl'));
+            
+        } else {
+        
+            $post   = Zend_Registry::get('post');
+            $filter = Zend_Registry::get('inputFilter');
+    
+            $workshopId   = $filter->filter($post['workshopId']);
+            $locationId   = $filter->filter($post['locationId']);
+            $startTime    = $filter->filter($post['startTime']);
+            $endTime      = $filter->filter($post['endTime']);
+            $date         = $filter->filter($post['date']);
+            $minSize      = $filter->filter($post['workshopMinSize']);
+            $maxSize      = $filter->filter($post['workshopMaxSize']);
+            $waitListSize = $filter->filter($post['workshopWaitListSize']);
+            $instructors  = $filter->filter($post['instructors']);
+            
+            if ($instructors == "none") {
+                $instructors = "";
+            }
+    
+            $instructorList = explode(":", $instructors);
+            
+            $date = explode("/", $date);
+            $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
+            
+            $data = array('workshopId'   => $workshopId,
+                          'locationId'   => $locationId,
+                          'startTime'    => $startTime,
+                          'endTime'      => $endTime,
+                          'date'         => $dateStr,
+                          'maxSize'      => $maxSize,
+                          'minSize'      => $minSize,
+                          'waitlistSize' => $waitListSize
+                         );
+            
+            $e = new Event();
+    
+            $eventId = $e->insert($data);
+            
+            $instructor = new Instructor();
+            
+            foreach ($instructorList as $i) {
+                $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
+            }
+            
+            $ret = array("rc" => $eventId,
+                         "msg" => "Creating new event failed"
+                        );
+            echo Zend_Json::encode($ret);
         }
-
-        $instructorList = explode(":", $instructors);
-        
-        $date = explode("/", $date);
-        $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
-        
-        $data = array('workshopId'   => $workshopId,
-                      'locationId'   => $locationId,
-                      'startTime'    => $startTime,
-                      'endTime'      => $endTime,
-                      'date'         => $dateStr,
-                      'maxSize'      => $maxSize,
-                      'minSize'      => $minSize,
-                      'waitlistSize' => $waitListSize
-                     );
-        
-        $e = new Event();
-
-        $eventId = $e->insert($data);
-        
-        $instructor = new Instructor();
-        
-        foreach ($instructorList as $i) {
-            $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
-        }
-        
-        $ret = array("rc" => $eventId,
-                     "msg" => "Creating new event failed"
-                    );
-        echo Zend_Json::encode($ret);
     }
     
     

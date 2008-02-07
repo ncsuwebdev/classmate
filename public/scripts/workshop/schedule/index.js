@@ -1,7 +1,7 @@
 var sitePrefix;
 var workshopBox, instructorListBox, instructorAddButton, locationBox;
 var workshopLengthHours, workshopLengthMinutes, workshopLength;
-var searchUrl, createEventUrl, deleteEventUrl, eventPopupUrl, updateEventUrl;
+var searchUrl, createEventUrl, deleteEventUrl, updateEventUrl;
 var searchResultsContentBox;
 var hoverDiv;
 var currentColumn;
@@ -16,7 +16,6 @@ window.addEvent('domready', function() {
     searchUrl = sitePrefix + "/workshop/schedule/search";
     createEventUrl = sitePrefix + "/workshop/schedule/createEvent";
     deleteEventUrl = sitePrefix + "/workshop/schedule/deleteEvent";
-    eventPopupUrl = sitePrefix + "/workshop/schedule/eventPopup";
     updateEventUrl = sitePrefix + "/workshop/schedule/updateEvent";
     editEventUrl = sitePrefix + "/workshop/schedule/editEvent";
     
@@ -79,13 +78,32 @@ window.addEvent('domready', function() {
             return false;
         }
         
-        var extraData = "";
-        if ($('addModeWorkshopId').value > 0) {
-            extraData = '?workshopId=' + $('addModeWorkshopId').value; 
+        var tmpDay = new Date();
+        var today  = new Date();
+        
+        tmpDay.parse(currentColumn.title);
+        today.parse($('today').value);        
+        
+        if (today.diff(tmpDay) < 0) {
+            if (!confirm("This event occurs in the past, do you still want to schedule it?")) {
+                return false;
+            }
         }
+        
+        var extraData = "";
+        var tmpWsId = $('addModeWorkshopId').value;
+        tmpWsId = (tmpWsId > 0) ? tmpWsId : 0;
+
+        extraData = Object.toQueryString({
+                            workshopId: tmpWsId,
+                            startTime: newEventStartTime, 
+                            endTime: newEventEndTime, 
+                            date: currentColumn.title
+                    });       
+        
                
         new StickyWinModal.Ajax({
-            url: eventPopupUrl + extraData,
+            url: createEventUrl + "?" + extraData,
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
             caption: 'Create Event',
@@ -181,7 +199,7 @@ window.addEvent('domready', function() {
 function deleteEvent(eventId)
 {
 
-    if (confirm("Are you sure you want to remove this event?")) {
+    if (confirm("Are you sure you want to cancel this event?")) {
 
         var varStr = Object.toQueryString({eventId: eventId});
                
@@ -270,6 +288,21 @@ function initEventPopup()
     $('workshopId').setStyle('visibility', 'visible');
     $('workshopId').setStyle('opacity', '100');
     $('workshopId').setStyle('width', '225');
+    
+    $$('.eventDate').each(function(el) {
+        el.setStyle('visibility', 'visible');
+        el.setStyle('opacity', '100');
+    });
+    
+    $$('.eventStartTime').getChildren().each(function(el) {
+        el.setStyle('visibility', 'visible');
+        el.setStyle('opacity', '100');
+    });
+    
+    $$('.eventEndTime').getChildren().each(function(el) {
+        el.setStyle('visibility', 'visible');
+        el.setStyle('opacity', '100');
+    });
     
     $('instructorList').setStyle('visibility', 'visible');
     $('instructorList').setStyle('opacity', '100');
@@ -507,21 +540,11 @@ function processSearchResults()
                             if (instructorStr == "") {
                                 instructorStr = "none";
                             }
-                                                        
-                            var varStr = Object.toQueryString({
-                                eventId: $('eventId').value,
-                                workshopId: $('workshopId').value,
-                                locationId: $('editLocationId').value,
-                                originalLocationId: $('originalLocationId').value,
-                                startTime: $('eventStartTime').value,
-                                endTime: $('eventEndTime').value,
-                                date: $('eventDate').value,
-                                instructors: instructorStr,
-                                workshopMinSize: $('workshopMinSize').value,
-                                workshopMaxSize: $('workshopMaxSize').value,
-                                workshopWaitListSize: $('workshopWaitListSize').value
-                            });
-    
+                            
+                            var varStr = $('editEventForm').toQueryString();
+                            
+                            varStr += "&instructors=" + instructorStr;
+                                
                             new Ajax(editEventUrl, {
                                 method: 'post',
                                 data: varStr,

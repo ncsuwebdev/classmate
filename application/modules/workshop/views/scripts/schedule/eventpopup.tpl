@@ -10,6 +10,18 @@
                             <td id="locationDisplay"></td>
                         </tr>
                         <tr>
+                            <td>Date:</td>
+                            <td>{$date|date_format:$config.longDateFormat}</td>
+                        </tr>
+                        <tr>
+                            <td>Start Time:</td>
+                            <td>{$startTime|date_format:$config.timeFormat}</td>
+                        </tr>
+                        <tr>
+                            <td>End Time:</td>
+                            <td>{$endTime|date_format:$config.timeFormat}</td>
+                        </tr>
+                        <tr>
                             <td><label for="workshopId">Workshop:</label></td>
                             <td>{html_options id=workshopId name=workshopId options=$workshops selected=$workshopId}</td>
                         </tr>
