@@ -89,8 +89,8 @@ class Internal_Auth_Adapter_WrapAuth implements Zend_Auth_Adapter_Interface, Ot_
      */
     public function authenticate()
     {
-        $username = getenv('WRAP_USERID');
-
+        $username = (getenv('WRAP_USERID') == '') ? getenv('REDIRECT_WRAP_USERID') : getenv('WRAP_USERID');
+        
         if ($username == '') {
             setrawcookie('WRAP_REFERER', $this->_getUrl(), 0, '/', '.ncsu.edu');
             header('location:https://webauth.ncsu.edu/wrap-bin/was16.cgi');

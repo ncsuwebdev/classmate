@@ -525,7 +525,7 @@ div.bar ul {
 	border: solid 1px #ccc;
 	padding: 1px;
 	background: #ccc;
-	z-index: 5000000;
+	z-index: 50000;
 }
 
 .sub_menu a {

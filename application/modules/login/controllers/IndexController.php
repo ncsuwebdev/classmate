@@ -79,10 +79,12 @@ class Login_IndexController extends Internal_Controller_Action
             } else {
                 $realm = $filter->filter($post['realm']);
             }
+            
+            $userId = (isset($post['userId'])) ? $filter->filter($post['userId']) . '@' . $realm : '';
+            $password = (isset($post['password'])) ? $filter->filter($post['password']) : '';
 
             // Set up the authentication adapter
-            $authAdapter = new $config->authentication->$realm->class($filter->filter($post['userId']) . '@' . $realm,
-                                                                      $filter->filter($post['password']));
+            $authAdapter = new $config->authentication->$realm->class($userId, $password);
             $auth = Zend_Auth::getInstance();            
             
             $authRealm->realm = $realm;

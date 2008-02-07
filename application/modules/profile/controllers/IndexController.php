@@ -96,7 +96,7 @@ class Profile_IndexController extends Internal_Controller_Action
         
         $this->view->profile       = $up->toArray();
         $this->view->displayUserId = $displayUserId;
-        $this->view->title         = "My ClassMate for " . $displayUserId;
+        $this->view->title         = "MyClassMate for " . ((isset($up->firstName)) ? $up->firstName . ' ' . $up->lastName : $displayUserId);
         $this->view->types         = $config->profileTypes->toArray();
         		
 		$ca = new CustomAttribute();
@@ -132,6 +132,18 @@ class Profile_IndexController extends Internal_Controller_Action
         }
             
         $this->view->relatedWorkshops = $newRelated;
+        
+        $wc = new WorkshopCategory();
+        $result = $wc->fetchAll(null, 'name')->toArray();
+        
+        $categories = array();
+        foreach ($result as $c) {
+            $categories[$c['workshopCategoryId']] = $c;
+        }
+        
+        $this->view->categories = $categories;
+        
+        $this->view->hideTitle = true;
                     
         $this->view->javascript = array(
             'mootabs1.2.js',
@@ -182,7 +194,7 @@ class Profile_IndexController extends Internal_Controller_Action
 
                  $image = new Image;
 
-                 $image->resizeImage($filter->filter($_FILES['pic']['tmp_name']), 60, 60);
+                 $image->resizeImage($filter->filter($_FILES['pic']['tmp_name']), 32, 32);
 
                  $iData = array(
                     'source' => file_get_contents($filter->filter($_FILES['pic']['tmp_name'])),

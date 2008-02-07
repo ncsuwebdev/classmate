@@ -145,4 +145,11 @@ class IndexController extends Internal_Controller_Action
         }
     }   
     
+    public function testAction()
+    {
+    	$dt = new Zend_Date();
+    	$dt->addDay(3);
+    	echo $dt;
+    	die();
+    }
 }

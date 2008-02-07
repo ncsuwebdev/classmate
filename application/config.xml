@@ -43,8 +43,8 @@
     	   <timeFormat>%I:%M %p</timeFormat>
     	</display>
     	<search>
-    	   <workshopIndexPath>./search_index/workshops</workshopIndexPath>
-    	   <tagIndexPath>./search_index/tags</tagIndexPath>
+    	   <workshopIndexPath>/afs/unity/web/c/classmate-deo/search/workshops</workshopIndexPath>
+    	   <tagIndexPath>/afs/unity/web/c/classmate-deo/search/tags</tagIndexPath>
     	</search>
     	<bugContactRole>administrator</bugContactRole>
     	<navigation>
@@ -60,7 +60,7 @@
                <module>profile</module>
                <controller>index</controller>
                <action>index</action>               
-               <display>My ClassMate</display>   
+               <display>MyClassMate</display>   
                <link></link>
                <submenu></submenu>                 
            </tab4>   	   

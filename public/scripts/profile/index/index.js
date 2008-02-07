@@ -1,5 +1,5 @@
 window.addEvent('domready', function() {
-    
+    /*
     var accordion = new Accordion($$('.toggler'), $$('.element'), {
         
         opacity: false,
@@ -13,19 +13,10 @@ window.addEvent('domready', function() {
             el.addClass('inactive');
         },
     });
-
+    */
+    myTabs1 = new mootabs('classes', {
+        height: '210px',
+        changeTransition: 'none',
+        mouseOverClass: '',
+        });
 });
-
-var newsSlider;
-function toggleNews()
-{   
-
-    newsSlider.toggle();
-    
-    var tmp = $('toggleNewsLink');
-    if (tmp.getText() == "Hide News") {
-        tmp.setHTML("Show News");
-    } else {
-        tmp.setHTML("Hide News");
-    }       
-}

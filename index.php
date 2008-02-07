@@ -131,11 +131,10 @@ $front->setParam('acl', $acl)
       ->registerPlugin(new Internal_Plugin_Htmlheader())
       ->registerPlugin(new Zend_Controller_Plugin_ErrorHandler())
       ;
-      
+
 try {
     $front->dispatch();
 } catch (Exception $e) {
 	$req = new Zend_Session_Namespace('request');
 	$req->uri = '';
 }
-

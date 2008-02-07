@@ -1,11 +1,11 @@
 table.list {
     margin-bottom: 5px;
-    border: 1px solid #000;
+    border: 1px solid #6e6e6e;
     border-collapse: collapse;
 }
 
 table.list th {
-    background-color: #000000;
+    background-color: #464548;
     color: #FFFFFF;
     font-weight: bold;
     font-size: 90%;

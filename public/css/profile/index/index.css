@@ -1,28 +1,33 @@
 div#detailsLeft {
     width: 500px;   
+    margin-top: 18px;
 }
 
 div#detailsRight {
-    margin-top: 0px;
+
     width: 200px;
     float: right;
 }
 
 div.rightTitle {
     background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     line-height: 20px;
     color: #FFF;
     font-size: 100%;
+    padding-left: 5px;
 }
 
 div.edit {
     background-image: url(../../../images/edit.png);
     background-repeat: no-repeat;  
-    background-position: 110px 0px;   
-    margin-bottom: 10px;
-    padding-left: 130px;
+    background-position: 0px 0px;
+    width: 16px;
+    height: 16px;
+    float: right;  
+    margin-top: 2px;
+    margin-right: 3px;
 }
 
 div.rightContent {
@@ -36,10 +41,6 @@ div.rightContent table label {
     font-weight: bold;
 }
 
-div#events {
-    padding-bottom: 10px;   
-}
-
 div.event {
     padding: 7px 2px 7px 2px;
     margin-bottom: 10px;
@@ -49,13 +50,15 @@ div.event {
 }
 
 div.eventSpacer {
-    border-bottom: 1px dotted #000;
-    height: 1px;	
+    height: 1px;
+    background: #FFF url(../../../images/dot.gif) repeat-x;	
 }
 
 .workshopName {
     display: block;
     font-weight: bold;
+    background-repeat: no-repeat;
+    padding-left: 20px;
 }
 
 div.workshop {
@@ -66,6 +69,8 @@ div.workshop {
 div.workshop .name {
     font-size: 110%;
     font-weight: bold;
+    background-repeat: no-repeat;
+    padding-left:22px;
 }
 
 div.workshop .description {
@@ -140,40 +145,46 @@ div.inlineEdit:hover {
     list-style-type: none;
     margin: 0px;
     padding: 0px;
-    height: 24px;
+    height: 26px;
     width: 500px;
 }
 
 .mootabs_title li {
     float: left;
-    background-color: #ddd;
     padding: 2px 8px 2px 8px;
     margin-right: 4px;
     cursor: pointer;
     height: 20px;
-    background-color: #6e6e6e;
-    color: #FFF;
+    color: #3F3F3f;
+    border: 1px solid #fff;
+    background-color: #FFF;
+    position: relative;
+    z-index: 3;
 }
 
 .mootabs_title li.active {
-    
-    background-color: #C3593C;
+    border: 1px solid #CCC;
+    border-bottom: 0px;
+    font-weight: bold;
+    z-index: 5;
+    background: #FFF;
 }
 
 .mootabs_panel {
     display: none;
-    background-color: #ddd;
+    background-color: #fff;
     position: relative;
-    top: -1px;
+    top: -2px;
     overflow: auto;
     padding: 6px;
-    width: 500px;
+    width: 474px;
+    z-index: 3;
 }
 
 .mootabs_panel.active {
-    background-color: #F4F4F4;
+    background-color: #fff;
     display: block;
-    border: 1px solid #C3593C;
+    border: 1px solid #CCC;
 }
 
 div.sectionTitle {
@@ -237,4 +248,54 @@ div.sectionTitle p.content {
 	font-weight: bold;
 	line-height: 22px;
 	margin: 0px;
+}
+
+div#titleContainer {
+    padding-bottom: 5px;
+    height: 32px;
+    margin-bottom: 18px;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#titleContainer img {
+    float: left;
+    padding-right: 10px;
+}
+
+div#titleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+div#titleContainer div#wsTitle {
+    color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+}
+
+div.sectionBar {
+    background-color: #6e6e6e;
+    margin: 20px 0 10px 0;
+}
+
+div.sectionBar p.left {    
+    background-image: url(../../../images/h2-left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar p.content {
+    color: #FFF;
+    font-weight: bold;
+    line-height: 22px;
+    margin: 0px;
+}
+
+div.section {
+	margin-left: 12px;
 }

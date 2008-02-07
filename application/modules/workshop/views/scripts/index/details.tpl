@@ -38,13 +38,13 @@
 {/if}
 <div id="detailsRight">
     <div class="rightTitle">
+        {if $acl.addEvent}
+        <span id="addEvent" class="add"><a href="{$sitePrefix}/workshop/schedule/?workshopId={$workshop.workshopId}"></a>&nbsp;</span>
+        {/if}     
         Upcoming Schedule
     </div>
 
-    <div class="rightContent">
-        {if $acl.addEvent}
-        <span id="addEvent" class="add"><a href="{$sitePrefix}/workshop/schedule/?workshopId={$workshop.workshopId}"></a>Add New Event</span>
-        {/if}      
+    <div class="rightContent">     
 	    {foreach from=$events item=e name=events}
 	        <div class="event" id="event_{$e.eventId}">
 	            <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
@@ -77,14 +77,14 @@
     </div>  
     <div style="display: none" class="toolboxItem notify">Notify me when this is scheduled</div>
     <div class="rightTitle">
+        {if $acl.addLink}
+        <span id="addLink" class="add inlineEdit" target="addLinkForm"></span>
+        {/if}     
         Online Resources
     </div>
     
-    <div class="rightContent">
-        {if $acl.addLink}
-        <span id="addLink" class="add inlineEdit" target="addLinkForm">Add Resource</span>
-        <div id="addLinkForm" rel="type=link&size=20&url={$sitePrefix}/workshop/index/addLink/&response=response"><a href="http://"></a></div>
-        {/if}      
+    <div class="rightContent">     
+    <div id="addLinkForm" rel="type=link&size=20&url={$sitePrefix}/workshop/index/addLink/&response=response"><a href="http://"></a></div>
         <div id="links">      
 	        {foreach from=$links item=l}
 	        <div class="linkPackage" id="linkPackage_{$l.workshopLinkId}">
@@ -151,14 +151,14 @@
     {if $acl.addDocuments || count($documents) != 0}
     <div id="tabDocumentsHeader" class="sectionBar">   
         <p class="left"></p>
-        <p class="content"> 
+            {if $acl.addDocuments}
+                <div id="addDocument" class="add"></div>
+            {/if}        
+        <p class="content">
 	        Workshop Handouts
         </p>
     </div>
-    <div id="tabDocuments">
-	    {if $acl.addDocuments}
-	        <div id="addDocument" class="add">Add Documents</div>
-	    {/if} 
+    <div id="tabDocuments"> 
 	    Click the icon to download the file.    
         {if $acl.addDocuments}
         <div id="addDocumentForm">
