@@ -43,6 +43,7 @@ class Profile_IndexController extends Internal_Controller_Action
 		$get    = Zend_Registry::get('get');
 		$filter = Zend_Registry::get('inputFilter');
 		$config = Zend_Registry::get('config');
+		$uc     = Zend_Registry::get('userConfig');
 		
 		$editable = true;
 		if (isset($get['userId'])) {
@@ -99,26 +100,105 @@ class Profile_IndexController extends Internal_Controller_Action
         $this->view->title         = "MyClassMate for " . ((isset($up->firstName)) ? $up->firstName . ' ' . $up->lastName : $displayUserId);
         $this->view->types         = $config->profileTypes->toArray();
         		
+        $stayOpen = new Zend_Date();
+        $stayOpen->subHour($uc['numHoursEvaluationAvailability']['value']);
+        
 		$ca = new CustomAttribute();
 		$this->view->custom = $ca->getData('User_Profile', $userId, 'display');
 
+		// Get all current reservations for the user
         $attendees = new Attendees();
-        $events = $attendees->getEventsForAttendee($userId, time());
+        $currentReservations = $attendees->getEventsForAttendee($userId, $stayOpen->getTimestamp());
             
         $workshopIds = array();
-        foreach ($events as $e) {
+        $location = new Location();
+        $locationCache = array();        
+        
+        foreach ($currentReservations as &$e) {
             $workshopIds[] = $e['workshopId'];
+            
+            if ($e['status'] == 'waitlist') {
+            	
+                $waiting = $attendees->getAttendeesForEvent($e['eventId'], 'waitlist');
+                
+                $position = 1;
+                
+                foreach ($waiting as $w) {
+                	if ($userId == $w['userId']) {
+                		break;
+                	}
+                	$position++;
+                }
+
+                $e['waitlistPosition'] = $position;
+            }
+            
+            $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
+            $endDt   = new Zend_Date(strtotime($e['date'] . ' ' . $e['endTime']));
+            $endDt->addHour($uc['numHoursEvaluationAvailability']['value']);
+            
+            $e['evaluatable'] = ($startDt->getTimestamp() < time() && $endDt->getTimestamp() > time());
+            
+            $startDt->subHour($uc['numHoursEventCancel']['value']);
+            
+            $e['cancelable']  = ($startDt->getTimestamp() > time());
+            
+            if (isset($locationCache[$e['locationId']])) {
+            	$e['location'] = $locationCache[$e['locationId']];
+            } else {
+		        $thisLocation = $location->find($e['locationId']);        
+		        if (is_null($thisLocation)) {
+		            throw new Internal_Exception_Data('Location not found');
+		        }
+		        $e['location'] = $thisLocation->toArray();      
+		        $locationCache[$e['locationId']] = $e['location'];
+            }      
         }
             
-        $this->view->attendeeEvents = $events;      
+        $this->view->currentReservations = $currentReservations;      
 
-        $this->view->pastEvents = $attendees->getEventsForAttendee($userId, 0, time());
+        // Get all past reservations for the user
+        $this->view->pastReservations = $attendees->getEventsForAttendee($userId, 0, $stayOpen->getTimestamp());
 
+        $instructor = new Instructor();
+        
+        // Get presently taught classes
+        $currentTeaching = $instructor->getEventsForInstructor($userId, $stayOpen->getTimestamp());
+        foreach ($currentTeaching as &$e) {           
+            if (isset($locationCache[$e['locationId']])) {
+                $e['location'] = $locationCache[$e['locationId']];
+            } else {
+                $thisLocation = $location->find($e['locationId']);        
+                if (is_null($thisLocation)) {
+                    throw new Internal_Exception_Data('Location not found');
+                }
+                $e['location'] = $thisLocation->toArray();      
+                $locationCache[$e['locationId']] = $e['location'];
+            }      
+        }
+        $this->view->currentTeaching = $currentTeaching;
+        
+        // Get past taught classes
+        $pastTeaching = $instructor->getEventsForInstructor($userId, 0, $stayOpen->getTimestamp());
+        foreach ($pastTeaching as &$e) {
+            if (isset($locationCache[$e['locationId']])) {
+                $e['location'] = $locationCache[$e['locationId']];
+            } else {
+                $thisLocation = $location->find($e['locationId']);        
+                if (is_null($thisLocation)) {
+                    throw new Internal_Exception_Data('Location not found');
+                }
+                $e['location'] = $thisLocation->toArray();      
+                $locationCache[$e['locationId']] = $e['location'];
+            }        	
+        }
+        $this->view->pastTeaching = $pastTeaching;
+        
+        // Get all related workshops for the user
         $workshop = new Workshop();
-            
-        $related = $workshop->getRelatedWorkshops($workshopIds, 4);
-            
+
         $newRelated = array();
+        $related = $workshop->getRelatedWorkshops($workshopIds, 4);
            
         foreach ($related as $r) {
             if (!in_array($r->workshopId, $workshopIds)) {
@@ -127,10 +207,11 @@ class Profile_IndexController extends Internal_Controller_Action
                  'workshopId' => $r->workshopId,
                  'description' => $r->description,
                  'tags' => explode(',', $r->tags),
+                 'workshopCategoryId' => $r->workshopCategoryId,
                );
             }
         }
-            
+        
         $this->view->relatedWorkshops = $newRelated;
         
         $wc = new WorkshopCategory();

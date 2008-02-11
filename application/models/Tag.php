@@ -200,23 +200,37 @@ class Tag extends Ot_Db_Table
     public function insert(array $data)
     {
     	$tagId = parent::insert($data);
+        
+    	$this->index($data['tagId'], $data['tagName']);
     	
-    	$config = Zend_Registry::get('config');
-    	
-    	try {
+        return $tagId;
+    }
+    
+    public function index($tagId, $tagName)
+    {
+        $config = Zend_Registry::get('config');
+        
+        try {
             $index = Zend_Search_Lucene::open($config->search->tagIndexPath);
         } catch (Exception $e) {
             $index = Zend_Search_Lucene::create($config->search->tagIndexPath);
+        }
+        
+        $term  = new Zend_Search_Lucene_Index_Term($tagId, 'tagId');
+        $query = new Zend_Search_Lucene_Search_Query_Term($term);
+        
+        $hits = $index->find($query);
+        
+        foreach ($hits as $hit) {
+            $index->delete($hit->id);
         }
         
         $doc = new Zend_Search_Lucene_Document();
         
         $doc->addField(Zend_Search_Lucene_Field::Keyword('tagId', $tagId));
         
-        $doc->addField(Zend_Search_Lucene_Field::Text('name', $data['name']));
+        $doc->addField(Zend_Search_Lucene_Field::Text('name', $tagName));
         
-        $index->addDocument($doc);
-        
-        return $tagId;
+        $index->addDocument($doc);    	
     }
 }

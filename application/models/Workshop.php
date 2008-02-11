@@ -82,11 +82,17 @@ class Workshop extends Ot_Db_Table
     {
     	$config = Zend_Registry::get('config');
     	
-    	$thisWorkshop = $this->find($workshopId);
-    	if (is_null($thisWorkshop)) {
-    		return;
+    	if ($workshopId instanceof Zend_Db_Table_Row) {
+    		$thisWorkshop = $workshopId;
+    		$workshopId = $thisWorkshop->workshopId;
+    		
+    	} else {
+	    	$thisWorkshop = $this->find($workshopId);
+	    	if (is_null($thisWorkshop)) {
+	    		return;
+	    	}
     	}
-    	
+	    	
     	$tag = new Tag();
     	$tags = $tag->getTagsForAttribute('workshopId', $workshopId);
     	
@@ -113,6 +119,8 @@ class Workshop extends Ot_Db_Table
     	$doc = new Zend_Search_Lucene_Document();
     	
     	$doc->addField(Zend_Search_Lucene_Field::Keyword('workshopId', $workshopId));
+    	
+    	$doc->addField(Zend_Search_Lucene_Field::UnIndexed('workshopCategoryId', $thisWorkshop->workshopCategoryId));
     	
     	$doc->addField(Zend_Search_Lucene_Field::Text('title', $thisWorkshop->title));
     	

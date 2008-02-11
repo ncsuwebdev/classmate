@@ -73,12 +73,77 @@ div.workshop .name {
     padding-left:22px;
 }
 
+div.workshop .name a {
+	background-image: none;
+}
+
 div.workshop .description {
     
 }
 
 div.event .status {
+    float: right;
+    width: 180px;
+    padding: 3px;
+    line-height: 22px;
+}
+
+div.event .status a {
+    display: block;
+    padding-left: 15px;
+    background-image: url(../../../images/arrow_right.png);
+    background-repeat: no-repeat;
+    background-position: 5px 3px;    	
+}
+
+div.event .attending {
+    border: 1px solid #00CC00;	
+    background-color: #DFFFDF;
+    background-image: url(../../../images/tick.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+    padding-left: 22px;
     font-weight: bold;
+}
+
+div.event .waitlist {
+    border: 1px solid #F67E06;  
+    background-color: #FFDFBF;
+    background-image: url(../../../images/waitlist_small.png);
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    padding-left: 22px;
+    font-weight: bold;	
+}
+
+div.event .seatAvailable {
+    border: 1px solid #00CC00;  
+    background-color: #DFFFDF;
+    background-image: url(../../../images/accept.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+    padding-left: 22px;
+    font-weight: bold;	
+}
+
+div.event .waitlistAvailable {
+    border: 1px solid #ccc;  
+    background-color: #eee;
+    background-image: url(../../../images/time.png);
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    padding-left: 22px;
+    font-weight: bold;  	
+}
+
+div.event .fullClass {
+    border: 1px solid #c00;  
+    background-color: #FFBFBF;
+    background-image: url(../../../images/exclamation.png);
+    background-repeat: no-repeat;
+    background-position: 3px 3px;
+    padding-left: 22px;
+    font-weight: bold; 	
 }
 
 div.event .utility {
@@ -113,14 +178,18 @@ div.event .date {
 }
 
 div.event .dateTime {
-	width: 180px;
-	float: right;
-    background-image: url(../../../images/calendar.png);
-    background-repeat: no-repeat;  
-    background-position: 3px 3px;
-    background-color: #F4F4F4;	
-    padding-left: 22px;
-    border: 1px solid #DFDFDF;
+    padding-left: 20px;
+}
+
+div.event .dateTime .location {
+    display: block;	
+    font-style: italic;
+    color: #777;
+}
+
+div.event .dateTime .location b { 
+    font-style: normal;
+    padding-right: 4px;
 }
 
 div.inlineEdit {
@@ -155,7 +224,7 @@ div.inlineEdit:hover {
     margin-right: 4px;
     cursor: pointer;
     height: 20px;
-    color: #3F3F3f;
+    color: #C85E35;
     border: 1px solid #fff;
     background-color: #FFF;
     position: relative;
@@ -168,6 +237,7 @@ div.inlineEdit:hover {
     font-weight: bold;
     z-index: 5;
     background: #FFF;
+    color: #3F3F3f;
 }
 
 .mootabs_panel {

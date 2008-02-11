@@ -1,0 +1,94 @@
+div#detailsLeft {
+    width: 500px;   
+}
+
+div#detailsRight {
+    margin-top: 18px;
+    width: 200px;
+    float: right;
+    
+}
+
+div.rightTitle {
+    background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
+    text-align: left;
+    font-weight: bold;
+    line-height: 20px;
+    color: #FFF;
+    font-size: 100%;
+    padding-left: 6px;
+}
+
+div.rightContent {
+    padding: 10px 2px 10px 2px;
+    margin-bottom: 20px;
+    background-color: #F4F4F4;
+    border: 1px solid #C3593C;
+}
+
+div.rightContent div.event {
+    padding: 0px 2px 2px 25px;
+    margin-bottom: 10px;
+    background-image: url(../../../images/calendar.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 1px;
+    border: 0px solid #F4F4F4;
+}
+
+div.rightContent div.event .date {
+    display: block;
+    font-weight: bold;
+}
+
+div.rightContent div.event:hover {
+    background-color: #e4e4e4;  
+    cursor: pointer;
+}
+
+.mootabs_title {
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    height: 26px;
+    width: 500px;
+}
+
+.mootabs_title li {
+    float: left;
+    padding: 2px 8px 2px 8px;
+    margin-right: 4px;
+    cursor: pointer;
+    height: 20px;
+    color: #C85E35;
+    border: 1px solid #fff;
+    background-color: #FFF;
+    position: relative;
+    z-index: 3;
+}
+
+.mootabs_title li.active {
+    border: 1px solid #CCC;
+    border-bottom: 0px;
+    font-weight: bold;
+    z-index: 5;
+    background: #FFF;
+    color: #3F3F3f;
+}
+
+.mootabs_panel {
+    display: none;
+    background-color: #fff;
+    position: relative;
+    top: -2px;
+    overflow: auto;
+    padding: 6px;
+    width: 474px;
+    z-index: 3;
+}
+
+.mootabs_panel.active {
+    background-color: #fff;
+    display: block;
+    border: 1px solid #CCC;
+}

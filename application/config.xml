@@ -43,8 +43,8 @@
     	   <timeFormat>%I:%M %p</timeFormat>
     	</display>
     	<search>
-    	   <workshopIndexPath>/afs/unity/web/c/classmate-deo/search/workshops</workshopIndexPath>
-    	   <tagIndexPath>/afs/unity/web/c/classmate-deo/search/tags</tagIndexPath>
+           <workshopIndexPath>/afs/unity/web/i/itdapps5/searchIndex/classmate/workshops</workshopIndexPath>
+           <tagIndexPath>/afs/unity/web/i/itdapps5/searchIndex/classmate/tags</tagIndexPath>
     	</search>
     	<bugContactRole>administrator</bugContactRole>
     	<navigation>
@@ -176,7 +176,14 @@
                        <action></action>
                        <display>Workshop Categories</display>
                        <link></link>
-                   </tab12>                                       	           
+                   </tab12>     
+                   <tab13>
+                       <module>admin</module>
+                       <controller>search</controller>
+                       <action></action>
+                       <display>Search Re-Indexing</display>
+                       <link></link>
+                   </tab13>                                                      	           
     	       </submenu>
     	   </tab2>
     	</navigation>

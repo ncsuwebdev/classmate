@@ -69,4 +69,33 @@ class Instructor extends Ot_Db_Table
     	return $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();    	
     }
     
+    public function getEventsForInstructor($userId, $startDt = null, $endDt = null)
+    {
+        $dba = $this->getAdapter();
+        
+        $where = $dba->quoteInto('userId = ?', $userId);
+           
+        $result = $this->fetchAll($where);
+        
+        $eventIds = array();
+        foreach ($result as $r) {
+            $eventIds[] = $r->eventId;
+        }
+        
+        if (count($eventIds) == 0) {
+            return array();
+        }
+        
+        $event = new Event();
+        $workshop = new Workshop();
+        
+        $events = $event->getEvents(null, $eventIds, $startDt, $endDt, 'open')->toArray();
+
+        foreach ($events as &$e) {
+            $e['workshop'] = $workshop->find($e['workshopId'])->toArray();
+        }
+        
+        return $events;    	
+    }
+    
 }

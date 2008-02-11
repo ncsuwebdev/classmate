@@ -232,9 +232,20 @@ class Workshop_SignupController extends Internal_Controller_Action
             throw new Internal_Exception_Input('Event ID has no value');
         }
         
+        $editable = true;
+        if (isset($get['userId'])) {
+            if ($this->_acl->isAllowed($this->_role, 'profile_index', 'editAllProfiles')) {
+                $userId = $filter->filter($get['userId']);      
+            } else {
+                $userId = Zend_Auth::getInstance()->getIdentity();
+            }
+        } else {
+            $userId = Zend_Auth::getInstance()->getIdentity();
+        }
+                
         $event = new Event();
             
-        $status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $eventId);
+        $status = $event->getStatusOfUserForEvent($userId, $eventId);
         if ($status != 'waitlist' && $status != 'attending') {
             throw new Internal_Exception_Data('You are not atteding this class, so you cannot cancel it');
         }

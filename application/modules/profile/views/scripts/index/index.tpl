@@ -52,41 +52,51 @@
     the benefits of being a ClassMate member.    
     <div class="sectionBar">
         <p class="left"></p>
-        <p class="content">My Classes</p>
+        <p class="content">My Reservations</p>
     </div>
-    <div id="classes" class="section">
+    <div id="reservations" class="section">
 	    <ul class="mootabs_title">
-	        <li title="current">Current Reservations</li>
-	        <li title="history">Past Reservations</li>
+	        <li title="currentReservations">Current Reservations ({count source=$currentReservations})</li>
+	        <li title="pastReservations">Past Reservations ({count source=$pastReservations})</li>
+	        <li title="suggestedWorkshops">Suggested Workshops</li>
 	    </ul>
-        <div id="current" class="mootabs_panel">
-	        {foreach from=$attendeeEvents item=e name=current}
+        <div id="currentReservations" class="mootabs_panel">
+	        {foreach from=$currentReservations item=e name=current}
 	           {assign var=wc value=$e.workshop.workshopCategoryId}
-               {if $smarty.foreach.current.index < count($attendeeEvents) && $smarty.foreach.current.index != 0}
+               {if $smarty.foreach.current.index < count($currentReservations) && $smarty.foreach.current.index != 0}
                <div class="eventSpacer"></div>
                {/if}	           
-	        <div class="event">         
-	            <div class="dateTime">
-	                <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
-	                <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-	            </div>          
+	        <div class="event">
+	            <div class="status">
+	               <div class="{$e.status}">              
+	                {if $e.status == 'attending'}
+	                    You are attending this class.
+	                {elseif $e.status == 'waitlist'}
+	                    You are {$e.waitlistPosition|ordinal} on the waitlist.
+	                {/if}
+	                </div>
+	                {if $e.cancelable}
+	                <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}&amp;userId={$profile.userId}">Cancel Reservation...</a>
+	                {/if}
+		            {if $e.status == 'attending' && $e.evaluatable}
+		            <a href="{$sitePrefix}/workshop/evaluate/?eventId={$e.eventId}">Evaluate Class</a>
+		            {/if}
+                </div> 
 	            <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>
-	            {if $e.status == 'instructor'}
-	                <div class="instructor">Instructor Tools</div>
-	            {elseif $e.status == 'attending'}
-	                You are attending.  <a href="{$sitePrefix}/workshop/signup/reservation/?eventId={$e.eventId}&amp;userId={$profile.userId}">Click for reservation...</a>
-	            {elseif $e.status == 'waitlist'}
-	                You are on the waitlist.
-	            {/if}           
+                <div class="dateTime">
+                    <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
+                    <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
+                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                </div>           
 	        </div>
 	        {foreachelse}
 	        No Current Reservations Found.
 	        {/foreach}        
         </div> 
-        <div id="history" class="mootabs_panel">
-	        {foreach from=$pastEvents item=e name=past}
+        <div id="pastReservations" class="mootabs_panel">
+	        {foreach from=$pastReservations item=e name=past}
 	           {assign var=wc value=$e.workshop.workshopCategoryId}
-	           {if $smarty.foreach.past.index < count($pastEvents) && $smarty.foreach.past.index != 0}
+	           {if $smarty.foreach.past.index < count($pastReservations) && $smarty.foreach.past.index != 0}
 	           <div class="eventSpacer"></div>
 	           {/if}
 	        <div class="event">         
@@ -106,15 +116,8 @@
 	        {foreachelse}
 	        You have not taken any classes.
 	        {/foreach}         
-        </div>      
-    </div>
-    <br />
-    <div class="sectionBar">
-        <p class="left"></p>
-        <p class="content">Other Workshops You May Be Interested In</p>
-    </div>
-    <div class="section">  
-        <div class="workshops">
+        </div>  
+        <div id="suggestedWorkshops" class="workshops mootabs_panel">
             Based on the other workshops you have attended, you may be interested
             in these other workshops that we offer.<br />
             {foreach from=$relatedWorkshops item=w}
@@ -124,8 +127,80 @@
                 <div class="description">{$w.description|strip_tags|truncate:150}</div>  
             </div>
             {foreachelse}
+            <br />
             No related workshops found.
             {/foreach}
-        </div>    
-    </div>  
+        </div>
+    </div>
+    <br />
+    <div class="sectionBar">
+        <p class="left"></p>
+        <p class="content">Classes I Am Teaching</p>
+    </div>
+    {if count($currentTeaching) != 0 || count($pastTeaching) != 0}
+    <div id="teaching" class="section">
+        <ul class="mootabs_title">
+            <li title="currentTeaching">Current Classes ({count source=$currentTeaching})</li>
+            <li title="historyTeaching">Past Classes ({count source=$pastTeaching})</li>
+        </ul>
+        <div id="currentTeaching" class="mootabs_panel">
+            {foreach from=$currentTeaching item=e name=currentTeaching}
+               {assign var=wc value=$e.workshop.workshopCategoryId}
+               {if $smarty.foreach.currentTeaching.index < count($currentTeaching) && $smarty.foreach.currentTeaching.index != 0}
+               <div class="eventSpacer"></div>
+               {/if}               
+            <div class="event">
+                <div class="status">             
+                    {if $e.roleSize < $e.maxSize}
+                        <div class="seatAvailable"> {math equation="x - y" x=$e.maxSize y=$e.roleSize} of {$e.maxSize} seats available.</div>
+                    {else}
+                        {if $e.waitlistSize != 0}
+                            {if $e.waitlistTotal < $e.waitlistSize}
+                                <div class="waitlistAvailable"> {math equation="x-y" x=$e.waitlistSize y=$e.waitlistTotal} waitlist spots available.</div>
+                            {else}
+                                <div class="fullClass"> Class and waitlist are full.</div>
+                            {/if} 
+                        {else}
+                        <div class="fullClass"> All {$e.maxSize} seats are taken.  </div>  
+                        {/if}
+                    {/if}
+                    
+                    <a href="{$sitePrefix}/workshop/instructor/?eventId={$e.eventId}">Instructor Tools</a>
+                    
+                </div> 
+                <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>
+                <div class="dateTime">
+                    <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
+                    <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
+                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                </div>           
+            </div>
+            {foreachelse}
+            No Current Classes Found.
+            {/foreach}         
+        </div> 
+        <div id="historyTeaching" class="mootabs_panel">
+            {foreach from=$pastTeaching item=e name=pastTeaching}
+               {assign var=wc value=$e.workshop.workshopCategoryId}
+               {if $smarty.foreach.pastTeaching.index < count($pastTeaching) && $smarty.foreach.pastTeaching.index != 0}
+               <div class="eventSpacer"></div>
+               {/if}               
+            <div class="event">
+                <div class="status">             
+                    <a href="{$sitePrefix}/workshop/instructor/?eventId={$e.eventId}">Instructor Tools</a>
+                </div> 
+                <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>
+                <div class="dateTime">
+                    <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
+                    <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
+                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                </div>           
+            </div>
+            {foreachelse}
+            No Current Classes Found.
+            {/foreach}           
+        </div>
+    </div>
+    <br />
+    {/if}     
 </div>
