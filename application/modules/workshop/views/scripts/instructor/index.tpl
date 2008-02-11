@@ -11,5 +11,19 @@
     </div>
 </div>
 <div id="detailsLeft">  
-
+    <div id="tools">
+        <ul class="mootabs_title">
+            <li title="attendees">Class Attendees</li>
+            <li title="evaluations">Evaluations</li>
+            <li title="contact">Contact Attendees</li>
+        </ul>
+        <div id="attendees" class="mootabs_panel">
+        attendee list
+        </div>
+        <div id="evaluations" class="mootabs_panel">
+        eval stuff
+        </div>
+        <div id="contact" class="mootabs_panel">
+        contact list
+        </div>                
 </div>
