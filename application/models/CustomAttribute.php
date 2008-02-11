@@ -47,6 +47,7 @@ class CustomAttribute
 	   'radio',
 	   'checkbox',
 	   'select',
+	   'ranking'
 	);
 	
 	/**
@@ -129,7 +130,7 @@ class CustomAttribute
 	public function renderFormElement($attribute, $value = null)
 	{
 		$opts = array();
-		
+				
 		if ($attribute['required']) {
 			$opts['class'] = 'required';
 		}
@@ -149,7 +150,11 @@ class CustomAttribute
 				$attribute['formField'] = $view->formTextarea($name, $value, $opts);
 				break;
 			case 'radio':
-				$attribute['formField'] = $view->formRadio($name, $value, $opts, $attribute['options']);
+			    $listsep = "<br />\n";
+			    if ($attribute['direction'] == "horizontal") {
+			        $listsep = "&nbsp;";
+			    }
+				$attribute['formField'] = $view->formRadio($name, $value, $opts, $attribute['options'], $listsep);
 				break;
 			case 'checkbox':
 				$attribute['formField'] = $view->formCheckbox($name, $value, $opts);
@@ -158,6 +163,22 @@ class CustomAttribute
 				$opts['size'] = '1';
 				$attribute['formField'] = $view->formSelect($name, $value, $opts, $attribute['options']);
 				break;
+		    case 'ranking':
+		        $tmpOptions = array("N/A" => "N/A",
+    		                        "1" => "1",
+                		            "2" => "2", 
+                		            "3" => "3", 
+                		            "4" => "4", 
+                		            "5" => "5", 
+		                     );
+		                     
+		        $listsep = "<br />\n";
+                if ($attribute['direction'] == "horizontal") {
+                    $listsep = "&nbsp;";
+                }
+		               
+                $attribute['formField'] = $view->formRadio($name, $value, $opts, $tmpOptions, $listsep);
+                break;
 			default:
 				return '';
 		}
@@ -195,7 +216,14 @@ class CustomAttribute
         $nv = new NodeValue();
         $dba = $nv->getAdapter();
         
-        $dba->beginTransaction();
+        $inTransaction = false;
+        
+	    try {
+            $dba->beginTransaction();
+        } catch (Exception $e) {
+            $inTransaction = true;
+        }
+        
         foreach ($data as $key => $value) {
             $d = array(
                 'nodeId' => $nodeId,
@@ -214,20 +242,26 @@ class CustomAttribute
 	            try {
 	                 $nv->update($d, null);
 	            } catch (Exception $e) {
-	                $dba->rollBack();
+    	            if (!$inTransaction) {
+                        $dba->rollBack();
+                    }
 	                throw $e;
 	            }
             } else {
                 try {
                      $nv->insert($d);
                 } catch (Exception $e) {
-                    $dba->rollBack();
+                    if (!$inTransaction) {
+                        $dba->rollBack();
+                    }
                     throw $e;
                 }            	
             }
         }
         
-        $dba->commit();				
+	    if (!$inTransaction) {
+            $dba->commit();
+        }
 	}
 	
 	/**
@@ -310,14 +344,23 @@ class CustomAttribute
     {
     	$na = new NodeAttribute();
     	
-        $db = $na->getAdapter();
-        $db->beginTransaction();
+        $dba = $na->getAdapter();
+        
+        $inTransaction = false;
+        
+        try { 
+            $dba->beginTransaction();
+        } catch (Exception $e) {
+            $inTransaction = true;
+        }
 
         $i = 1;
         foreach ($order as $o) {
 
             if (!is_integer($o)) {                
-                $db->rollback();
+                if (!$inTransaction) {
+                    $dba->rollBack();
+                }
                 throw new Internal_Exception_Input("New position was not an integer.");
             }
 
@@ -330,12 +373,15 @@ class CustomAttribute
             try {
                 $na->update($data, $where);
             } catch(Exception $e) {
-                $db->rollback();
+                if (!$inTransaction) {
+                    $dba->rollBack();
+                }
                 throw $e;
             }
             $i++;
         }
-        $db->commit();
+        if (!$inTransaction) {
+            $dba->commit();
+        }
     }    	
 }
-?>

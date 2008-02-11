@@ -47,4 +47,65 @@ class Evaluation extends Ot_Db_Table
      * @var string
      */
     protected $_primary = 'evaluationId';
+    
+    public function saveEvaluation($eventId, $userId, $customAttributes)
+    {
+        
+        $dba = $this->getAdapter();
+        
+        $inTransaction = false;
+        
+        try {
+            $dba->beginTransaction();
+        } catch (Exception $e) {
+            $inTransaction = true;
+        }
+        
+        $data = array('eventId' => $eventId,
+                      'timestamp' => time()
+                     );
+
+        try {
+            $evaluationId = $this->insert($data);
+        } catch(Exception $e) {
+            if (!$inTransaction) {
+                $dba->rollBack();
+            }
+            throw $e;
+        }
+        
+        $evalUser = new EvaluationUser();
+        
+        $data = array('eventId' => $eventId,
+                      'timestamp' => time()
+                     );
+        
+        $data = array('eventId' => $eventId,
+                      'userId'  => $userId
+                     );
+                     
+        try {
+            $result = $evalUser->insert($data);
+        } catch (Exception $e) {
+            if (!$inTransaction) {
+                $dba->rollBack();
+            }
+            throw $e;
+        }
+        
+        $ca = new CustomAttribute();
+        
+        try {
+            $ca->saveData('evaluations', $evaluationId, $customAttributes);
+        } catch (Exception $e) {
+            if (!$inTransaction) {
+                $dba->rollBack();
+            }
+            throw $e;    
+        }
+        
+        if (!$inTransaction) {
+            $dba->commit();
+        }
+    }
 }

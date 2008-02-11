@@ -44,9 +44,17 @@
             <tr>
                 <td><label>Required:</label></td>
                 <td><input type="checkbox" value="1" name="required" id="required" {if $attribute.required}checked="checked"{/if}/></td>
+            </tr>
+            <tr>
+                <td><label>Display Direction:</label></td>
+                <td>
+                    <label for="direction"><input type="radio" value="vertical" name="direction" {if $attribute.direction eq 'vertical'}checked="checked"{/if}/>Vertical</label>
+                    <br />
+                    <label for="direction"><input type="radio" value="horizontal" name="direction" {if $attribute.direction eq 'horizontal'}checked="checked"{/if}/>Horizontal</label>
+                </td>
             </tr>  
         </table>
-        <input type="submit" value="Add Custom Attribute" />
+        <input type="submit" value="Save Custom Attribute" />
         <input type="button" value="Cancel" onclick="history.go(-1);" />
 
     </form>

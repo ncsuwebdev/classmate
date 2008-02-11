@@ -33,6 +33,7 @@ window.addEvent('domready', function() {
             
         });
     });  
+    
 });
 
 document.addEvent('click', function(e) {

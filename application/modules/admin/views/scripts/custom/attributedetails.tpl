@@ -32,6 +32,10 @@
         <tr>
             <td><label>Required:</label></td>
             <td>{if $attribute.required}Yes{else}No{/if}</td>
+        </tr>
+        <tr>
+            <td><label>Display Direction:</label></td>
+            <td>{$attribute.direction|capitalize}</td>
         </tr>  
         {if $attribute.type == 'radio' || $attribute.type == 'select'}   
         <tr>

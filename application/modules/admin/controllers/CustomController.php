@@ -193,12 +193,13 @@ class Admin_CustomController extends Internal_Controller_Action
             }
             
             $data = array(
-                       'nodeId'   => $filter->filter($post['nodeId']),
-                       'label'    => $filter->filter($post['label']),
-                       'type'     => $filter->filter($post['type']),
-                       'options'  => $ca->convertOptionsToString($options),
-                       'required' => $filter->filter($post['required']),
-                       'order'    => 0,
+                       'nodeId'    => $filter->filter($post['nodeId']),
+                       'label'     => $filter->filter($post['label']),
+                       'type'      => $filter->filter($post['type']),
+                       'options'   => $ca->convertOptionsToString($options),
+                       'required'  => $filter->filter($post['required']),
+                       'direction' => $filter->filter($post['direction']),
+                       'order'     => 0,
                     );
             
             $na = new NodeAttribute();
@@ -290,6 +291,7 @@ class Admin_CustomController extends Internal_Controller_Action
                        'label'       => $filter->filter($post['label']),
                        'type'        => $filter->filter($post['type']),
                        'required'    => $filter->filter($post['required']),
+                       'direction'   => $filter->filter($post['direction']),
                     );
                     
             if (($data['type'] == 'select' || $data['type'] == 'radio') && is_array($attribute['options'])) {

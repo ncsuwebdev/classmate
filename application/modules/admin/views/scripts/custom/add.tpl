@@ -20,7 +20,7 @@
 	        <tr>
 	            <td><label>Type:</label></td>
 	            <td>{html_options options=$types name=type class=required id=type}
-	            <div id="opt">
+	            <div id="opt" style="display: none;">
 	                <table class="form" id="options">
 		                <tr id="optionRow">
 		                    <td width="50"><label for="option[]">Option:</label></td>
@@ -39,7 +39,15 @@
 	        <tr>
 	            <td><label>Required:</label></td>
 	            <td><input type="checkbox" value="1" name="required" id="required" /></td>
-	        </tr>  
+	        </tr>
+            <tr>
+                <td><label>Display Direction:</label></td>
+                <td>
+                    <label for="direction"><input type="radio" value="vertical" checked="checked" name="direction" />Vertical</label>
+                    <br />
+                    <label for="direction"><input type="radio" value="horizontal" name="direction" />Horizontal</label>
+                </td>
+            </tr>  
 	    </table>
         <input type="submit" value="Add Custom Attribute" />
         <input type="button" value="Cancel" onclick="history.go(-1);" />

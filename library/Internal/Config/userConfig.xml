@@ -23,7 +23,7 @@
         </fromEmailName>
         <numHoursEvaluationAvailability>
             <description>The number of hours an evaluation is available after an event has finished.</description>
-            <value>24</value>
+            <value>124</value>
         </numHoursEvaluationAvailability>
         <numHoursEventCancel>
             <description>The number of hours before an event that a user can cancel their reservation.</description>
