@@ -61,7 +61,7 @@ class Attendees extends Ot_Db_Table
         
         $userIds = array();
         foreach ($result as $r) {
-            $userIds[] = $r->userId;
+            $userIds[$r->userId] = $r->toArray();
         }
         
         if (count($userIds) == 0) {
@@ -69,9 +69,15 @@ class Attendees extends Ot_Db_Table
         }
         
         $profile = new Profile();
-        $where = $profile->getAdapter()->quoteInto('userId IN (?)', $userIds);
+        $where = $profile->getAdapter()->quoteInto('userId IN (?)', array_keys($userIds));
         
-        return $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();       
+        $result = $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();
+
+        foreach ($result as &$r) {
+        	$r = array_merge($r, $userIds[$r['userId']]);
+        }
+        
+        return $result;
     }
     
     public function getEventsForAttendee($userId, $startDt = null, $endDt = null, $status='all')

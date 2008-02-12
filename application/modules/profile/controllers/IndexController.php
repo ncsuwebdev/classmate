@@ -81,12 +81,6 @@ class Profile_IndexController extends Internal_Controller_Action
            'name'        => $adapter['name'],
            'description' => $adapter['description'],
         );
-
-        if (!$a->autoLogin()) {
-            $au = $a->getUser($userId);
-            
-            $this->view->email = $au[0]['email'];
-        }
         
 		$profile = new Profile();		
 		$up = $profile->find($userId);
@@ -258,10 +252,11 @@ class Profile_IndexController extends Internal_Controller_Action
             }            
             
             $data = array(
-                'userId'    => $userId,
-                'firstName' => $filter->filter($post['firstName']),
-                'lastName'  => $filter->filter($post['lastName']),
-                'type'      => $filter->filter($post['type']),
+                'userId'       => $userId,
+                'firstName'    => $filter->filter($post['firstName']),
+                'lastName'     => $filter->filter($post['lastName']),
+                'emailAddress' => $filter->filter($post['emailAddress']),
+                'type'         => $filter->filter($post['type']),
             );
             
             $thisProfile = $profile->find($data['userId']);
@@ -292,7 +287,17 @@ class Profile_IndexController extends Internal_Controller_Action
                  $image->insert($iData);
 
                  $data['picImageId'] = $image->getAdapter()->lastInsertId();
-            }            
+            }         
+
+            $realm = preg_replace('/^[^@]*@/', '', $userId);        
+                    
+            $adapter = $config->authentication->$realm->toArray();
+    
+            $a = new $adapter['class']; 
+            
+            if (!$a->autoLogin()) {
+                $au = $a->editAccount($userId, '', $data['emailAddress']);
+            }
             
             $profile->update($data, null);
             
@@ -353,21 +358,23 @@ class Profile_IndexController extends Internal_Controller_Action
 	           'name'        => $adapter['name'],
 	           'description' => $adapter['description'],
 	        );
-	
-	        if (!$a->autoLogin()) {
-	            $au = $a->getUser($userId);
-	            
-	            $this->view->email = $au[0]['email'];
-	        }
 
 	        $up = $profile->find($userId);
 	        
 	        if (is_null($up)) {
 	            throw new Internal_Exception_Input('No profile exists for this user');
 	        }
+	        
+	        $up = $up->toArray();
+	        
+            if (!$a->autoLogin() && $up['emailAddress'] == '') {
+                $au = $a->getUser($userId);
+                
+                $up['emailAddress'] = $au[0]['email'];
+            }	        
         
 	        $this->view->types         = $config->profileTypes->toArray();
-	        $this->view->profile       = $up->toArray();
+	        $this->view->profile       = $up;
 	        $this->view->displayUserId = $displayUserId;
 	        $this->view->title         = "Details for " . $displayUserId;
 	                

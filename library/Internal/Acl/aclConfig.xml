@@ -110,8 +110,8 @@
         <privilege>editLink</privilege>
       </allow>
       <allow>
-        <resource>workshop_index</resource>
-        <privilege>getEventDetails</privilege>
+        <resource>workshop_signup</resource>
+        <privilege>*</privilege>
       </allow>
     </allows>
     <denys/>

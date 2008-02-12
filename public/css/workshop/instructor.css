@@ -1,0 +1,149 @@
+div#detailsLeft {
+    width: 500px;  
+    margin-top: 10px; 
+}
+
+div#detailsRight {
+    margin-top: 12px;
+    width: 200px;
+    float: right;
+    
+}
+
+div.rightTitle {
+    background: #C85E35 url(../../images/rt-200.gif) no-repeat;
+    text-align: left;
+    font-weight: bold;
+    line-height: 20px;
+    color: #FFF;
+    font-size: 100%;
+    padding-left: 6px;
+}
+
+div.rightContent {
+    padding: 10px 2px 10px 2px;
+    margin-bottom: 20px;
+    background-color: #F4F4F4;
+    border: 1px solid #C3593C;
+}
+
+div.rightContent td label {
+    font-weight: bold;	
+}
+
+.mootabs_title {
+    list-style-image: none;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    height: 26px;
+    width: 500px;
+}
+
+.mootabs_title li {
+    float: left;
+    padding: 2px 8px 2px 8px;
+    margin-right: 4px;
+    cursor: pointer;
+    height: 20px;
+    color: #C85E35;
+    border: 1px solid #fff;
+    background-color: #FFF;
+    position: relative;
+    z-index: 3;
+}
+
+.mootabs_title li.active {
+    border: 1px solid #CCC;
+    border-bottom: 0px;
+    font-weight: bold;
+    z-index: 5;
+    background: #FFF;
+    color: #3F3F3f;
+}
+
+.mootabs_panel {
+    display: none;
+    background-color: #fff;
+    position: relative;
+    top: -2px;
+    overflow: auto;
+    padding: 6px;
+    width: 474px;
+    z-index: 3;
+}
+
+.mootabs_panel.active {
+    background-color: #fff;
+    display: block;
+    border: 1px solid #CCC;
+}
+
+div.action {
+    padding: 2px 2px 2px 24px;
+    background: no-repeat 2px 2px; 	
+}
+
+div.attendanceAction {
+	background-image: url(../../images/group.png);
+}
+
+div.contactAction {
+	background-image: url(../../images/email.png);
+}
+
+div.evaluationAction {
+	background-image: url(../../images/chart_bar.png);
+}
+
+div.action * {
+	background-image: none;
+}
+
+div#workshopTitleContainer {
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+    line-height: 32px;
+    background: #FFF url(../../images/dot.gif) repeat-x bottom;
+}
+
+div#workshopTitleContainer img {
+    float: left;
+    padding-right: 10px;
+}
+
+div#workshopTitleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+div#workshopTitleContainer div#wsTitle {
+    color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+}
+
+div.event {
+	overflow: none;
+    margin: 0px 0px 20px 0px;
+    padding-left: 42px;
+    height: 22px;
+    background: #FFF url(../../images/dot.gif) repeat-x bottom;    
+}
+
+div.event .date {
+    margin-right: 5px;
+}
+
+div.event .location {
+	margin-left: 5px;
+}
+
+div.event .time {
+	margin: 0px 5px 0px 5px;
+}
+
+div.event .location b { 
+    font-style: normal;
+    padding-right: 4px;
+}

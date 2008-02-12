@@ -25,7 +25,11 @@
                 <td><input type="text" name="lastName" id="lastName" class="required" value="{$profile.lastName}" size="20" /></td>
             </tr>  
             <tr>
-                <td><label>User Type</label></td>
+                <td><label>Email:</label></td>
+                <td><input type="text" name="emailAddress" id="emailAddress" class="required" value="{$profile.emailAddress}" size="20" /></td>
+            </tr>             
+            <tr>
+                <td><label>User Type:</label></td>
                 <td>{html_options options=$types selected=$profile.type name=type id=type}</td>
             </tr>
 		    <tr>

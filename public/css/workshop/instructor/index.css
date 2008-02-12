@@ -1,94 +1,75 @@
-div#detailsLeft {
-    width: 500px;   
+div.attendee {
+    padding: 3px;
+    margin-bottom: 7px;
+    height: 32px;
+    line-height: 16px;
 }
 
-div#detailsRight {
-    margin-top: 18px;
-    width: 200px;
-    float: right;
-    
+div.taken {
+    border: 1px solid #CCC;
+    background-color: #f4f4f4;    
 }
 
-div.rightTitle {
-    background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
-    text-align: left;
-    font-weight: bold;
-    line-height: 20px;
-    color: #FFF;
-    font-size: 100%;
-    padding-left: 6px;
-}
-
-div.rightContent {
-    padding: 10px 2px 10px 2px;
-    margin-bottom: 20px;
-    background-color: #F4F4F4;
-    border: 1px solid #C3593C;
-}
-
-div.rightContent div.event {
-    padding: 0px 2px 2px 25px;
-    margin-bottom: 10px;
-    background-image: url(../../../images/calendar.png);
-    background-repeat: no-repeat;  
-    background-position: 3px 1px;
-    border: 0px solid #F4F4F4;
-}
-
-div.rightContent div.event .date {
-    display: block;
-    font-weight: bold;
-}
-
-div.rightContent div.event:hover {
-    background-color: #e4e4e4;  
-    cursor: pointer;
-}
-
-.mootabs_title {
-    list-style-image: none;
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
-    height: 26px;
-    width: 500px;
-}
-
-.mootabs_title li {
+div.attendee img {
     float: left;
-    padding: 2px 8px 2px 8px;
-    margin-right: 4px;
+    padding-right: 6px;
+}
+
+div.attendee .name {
+	font-weight: bold;
+}
+
+div.attendee .attendance {
+	float: right;
+	display: block;
+	width: 250px;
+	margin: 3px 0px 3px 0px;
+	padding: 2px 2px 2px 22px;
+}
+
+div.attendee .attendance div {
+	float: right;
+    overflow: hidden;
+    height: 16px;
     cursor: pointer;
-    height: 20px;
-    color: #C85E35;
-    border: 1px solid #fff;
-    background-color: #FFF;
-    position: relative;
-    z-index: 3;
 }
 
-.mootabs_title li.active {
-    border: 1px solid #CCC;
-    border-bottom: 0px;
-    font-weight: bold;
-    z-index: 5;
-    background: #FFF;
-    color: #3F3F3f;
+div.attendee .present {    
+	 
+    border: 1px solid #00CC00;  
+    background: #DFFFDF url(../../../images/tick.png) no-repeat 2px 2px;  
+ 
 }
 
-.mootabs_panel {
-    display: none;
-    background-color: #fff;
-    position: relative;
-    top: -2px;
-    overflow: auto;
-    padding: 6px;
-    width: 474px;
-    z-index: 3;
+div.attendee .absent {
+    border: 1px solid #CC0000;  
+    background: #FFDFDF url(../../../images/cross.png) no-repeat 2px 2px;  
 }
 
-.mootabs_panel.active {
-    background-color: #fff;
-    display: block;
-    border: 1px solid #CCC;
+div.attendee .on {
+	padding: 2px 2px 2px 20px; 
+}
+
+div.attendee .off {
+    padding: 2px 2px 2px 2px; 
+    margin:0px;	
+}
+
+div.attendee .off span {
+	display: none;
+}
+
+div.attendee .signup {
+	font-size: 90%;
+	color: #999;
+}
+
+.update {
+	display: block;
+	float: left;
+    background-color: #ffffcc;
+    opacity: 0;
+    width: 90px;
+    text-align: center;
+    padding: 2px;
 }

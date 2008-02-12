@@ -37,12 +37,6 @@ class Internal_Plugin_Htmlheader extends Zend_Controller_Plugin_Abstract
 
         $view     = $vr->view;
             	
-        /*
-        $scriptsDir = './public/scripts';
-        $scripts = $view->javascript;
-        
-        $view->javascript = $scripts;
-        */
         $view->javascript = $this->_autoload('./public/scripts', 'js', $request, $view->javascript);
         $view->css        = $this->_autoload('./public/css', 'css', $request, $view->css);
                               
@@ -50,18 +44,30 @@ class Internal_Plugin_Htmlheader extends Zend_Controller_Plugin_Abstract
     
     protected function _autoload($directory, $extension, $request, $existing)
     {
-        $autoload = $request->getModuleName() . '/' . $request->getControllerName() . '/' . $request->getActionName() . '.' . $extension;
+        $req = array(
+            'module' => $request->getModuleName(),
+            'controller' => $request->getControllerName(),
+            'action'     => $request->getActionName(),
+        );
+
+        $path = '';
         
-        if (is_file($directory . '/' . $autoload)) {
-             if (is_array($existing)) {
-                array_push($existing, $autoload);        
-             } else {
-                if ($existing != '') {
-                    $existing = array($existing, $autoload);
-                } else {
-                    $existing = array($autoload);
-                }
-             }
+        foreach ($req as $r) {
+            $path .= (($path == '') ? '' : '/') . $r; 
+            
+            $autoload = $path . '.' . $extension;
+        
+	        if (is_file($directory . '/' . $autoload)) {
+	             if (is_array($existing)) {
+	                array_push($existing, $autoload);        
+	             } else {
+	                if ($existing != '') {
+	                    $existing = array($existing, $autoload);
+	                } else {
+	                    $existing = array($autoload);
+	                }
+	             }
+	        }
         }
         
         return $existing;     	

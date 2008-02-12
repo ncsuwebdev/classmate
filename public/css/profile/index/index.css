@@ -99,7 +99,7 @@ div.event .status a {
 div.event .attending {
     border: 1px solid #00CC00;	
     background-color: #DFFFDF;
-    background-image: url(../../../images/tick.png);
+    background-image: url(../../../images/accept.png);
     background-repeat: no-repeat;
     background-position: 2px 2px;
     padding-left: 22px;

@@ -25,7 +25,7 @@
 	    <tr>
 	        <td>	        
 	        <label>Email:</label></td>
-	        <td>{$email|empty_alt:"None"}</td>
+	        <td>{$profile.emailAddress|empty_alt:"None"}</td>
 	    </tr>    
 	    <tr>
 	        <td>	        
@@ -132,12 +132,12 @@
             {/foreach}
         </div>
     </div>
+    {if count($currentTeaching) != 0 || count($pastTeaching) != 0}
     <br />
     <div class="sectionBar">
         <p class="left"></p>
         <p class="content">Classes I Am Teaching</p>
-    </div>
-    {if count($currentTeaching) != 0 || count($pastTeaching) != 0}
+    </div>    
     <div id="teaching" class="section">
         <ul class="mootabs_title">
             <li title="currentTeaching">Current Classes ({count source=$currentTeaching})</li>
