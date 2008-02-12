@@ -65,6 +65,8 @@ class Workshop_EvaluateController extends Internal_Controller_Action
                 throw new Internal_Exception_Data('Event not found');
             }
             
+            $this->view->event = $thisEvent->toArray();
+            
             $status = $event->getStatusOfUserForEvent($userId, $eventId);
             
             if ($status != "attending") {
@@ -88,7 +90,14 @@ class Workshop_EvaluateController extends Internal_Controller_Action
             }
             $this->view->workshop = $thisWorkshop->toArray();
             
+            $instructor = new Instructor();
+            $instructorList = $instructor->getInstructorsForEvent($eventId);
+
+            $this->view->instructors = $instructorList;
+            
             $this->view->title = "Evaluate " . $thisWorkshop->title;
+            
+            $this->view->javascript = array('slidingTabs.js');
             
             $this->view->custom = $ca->getData('evaluations', $userId, 'form');
             

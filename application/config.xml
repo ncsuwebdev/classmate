@@ -37,6 +37,7 @@
     	   <headerRowRepeat>25</headerRowRepeat>
     	   <dateTimeFormat>%m/%d/%Y %I:%M %p</dateTimeFormat>
            <medDateFormat>%b %e, %Y</medDateFormat>
+           <longDateCompactFormat>%a, %b %e, %Y</longDateCompactFormat>
     	   <longDateFormat>%A, %B %e, %Y</longDateFormat>
     	   <dateFormat>%m/%d/%Y</dateFormat>
            <dayFormat>%d</dayFormat>

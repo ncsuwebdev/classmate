@@ -366,9 +366,9 @@ class CustomAttribute
 
             $data = array("order" => $i);
 
-            $where = $db->quoteInto('attributeId = ?', $o) .
+            $where = $dba->quoteInto('attributeId = ?', $o) .
                      " AND " .
-                     $db->quoteInto('nodeId = ?', $nodeId);
+                     $dba->quoteInto('nodeId = ?', $nodeId);
 
             try {
                 $na->update($data, $where);

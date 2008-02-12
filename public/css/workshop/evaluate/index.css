@@ -1,0 +1,68 @@
+#evaluationHeading {
+    display: block;
+    text-align: left;
+    margin-bottom: 1em;
+    width: 500px;
+}
+
+#evaluationHeading * {
+	display: inline;
+	padding: 4px;
+	user-select: none;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+#evaluationHeading li.active {
+	background-color: #F2BE7C;
+}
+
+#evaluationForm {
+	width: 500px;	
+}
+
+#questionPanes {
+    border-style: none;
+    width: 500px;
+    margin: 0 auto 0 auto;
+    min-height: 200px;
+}
+        
+#panes div div { overflow: hidden; }
+
+#previous { 
+	float: none;
+	cursor: pointer;
+}
+
+#next { 
+	float: none;
+	cursor: pointer;
+}
+
+
+div#detailsRight {
+    width: 200px;
+    float: right;
+}
+
+div.rightTitle {
+    background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
+    text-align: left;
+    font-weight: bold;
+    line-height: 20px;
+    color: #FFF;
+    font-size: 100%;
+    padding-left: 5px;
+}
+
+div.rightContent {
+    padding: 10px 2px 10px 2px;
+    margin-bottom: 20px;
+    background-color: #F4F4F4;
+    border: 1px solid #C3593C;
+}
+
+div.rightContent table label {
+    font-weight: bold;
+}
