@@ -1,11 +1,11 @@
-#evaluationHeading {
+#evaluationControls {
     display: block;
     text-align: center;
     margin-bottom: 1em;
     width: 500px;
 }
 
-#evaluationHeading * {
+#evaluationControls * {
 	display: inline;
 	padding: 4px;
 	user-select: none;
@@ -13,7 +13,7 @@
 	vertical-align: middle;
 }
 
-#evaluationHeading li.active {
+#evaluationControls li.active {
 	background-color: #F2BE7C;
 }
 
@@ -72,11 +72,6 @@ div#workshopTitleContainer {
 div#workshopTitleContainer img {
     float: left;
     padding-right: 10px;
-}
-
-div#workshopTitleContainer .inlineEdit {
-    margin-top: 8px;
-    
 }
 
 div#workshopTitleContainer div#wsTitle {

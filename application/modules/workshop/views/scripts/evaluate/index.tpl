@@ -55,9 +55,9 @@
             </div>
         </div>
         
-        <div id="evaluationHeading">
+        <div id="evaluationControls">
             <img src="{$sitePrefix}/public/images/leftCircleArrow-orange.png" alt="Previous Question" id="previous" />
-            <ul id="evaluationHeadingButtons">
+            <ul id="evaluationControlsButtons">
                 {foreach name=customAttrs from=$custom item=c}
                 <li>{$smarty.foreach.customAttrs.iteration}</li>
                 {/foreach}

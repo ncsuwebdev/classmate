@@ -51,6 +51,20 @@ class CustomAttribute
 	);
 	
 	/**
+	 * The array of options returned for a custom attribute of type "ranking"
+	 *
+	 * @var array
+	 */
+	protected $_rankingOptions = array(
+	   'N/A' => 'N/A',
+       '1' => '1',
+       '2' => '2', 
+       '3' => '3', 
+       '4' => '4', 
+       '5' => '5'
+    );
+	
+	/**
 	 * Gets the attributes that have been assigned to a node, then renders 
 	 * them if need be
 	 *
@@ -69,16 +83,23 @@ class CustomAttribute
 		
 		$attributes = $na->fetchAll($where, 'order')->toArray();
 		
+        foreach ($attributes as &$a) {
+            if ($a['type'] == 'ranking') {
+                
+                $a['options'] = $this->convertOptionsToString($this->_rankingOptions);
+            }
+        }
+		
 		if ($render != 'none') {
 			foreach ($attributes as &$a) {
+			    
 				if ($render == 'display') {
 					$a['render'] = $this->renderDisplay($a);
 				} elseif ($render == 'form') {
 					$a['render'] = $this->renderFormElement($a);
 				} else {
 					$a['render'] = '';
-				}
-				
+				}			
 			}
 		}
 		
@@ -164,13 +185,7 @@ class CustomAttribute
 				$attribute['formField'] = $view->formSelect($name, $value, $opts, $attribute['options']);
 				break;
 		    case 'ranking':
-		        $tmpOptions = array("N/A" => "N/A",
-    		                        "1" => "1",
-                		            "2" => "2", 
-                		            "3" => "3", 
-                		            "4" => "4", 
-                		            "5" => "5", 
-		                     );
+		        $tmpOptions = $this->_rankingOptions;
 		                     
 		        $listsep = "<br />\n";
                 if ($attribute['direction'] == "horizontal") {

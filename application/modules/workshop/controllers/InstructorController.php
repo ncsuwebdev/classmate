@@ -157,6 +157,92 @@ class Workshop_InstructorController extends Internal_Controller_Action
     	$this->_setupTemplate();
     	
     	$this->view->toolTemplate = $this->view->render('instructor/contact.tpl');
-    	
+    }
+    
+    
+/**
+     * Displays the results of an evaluation as long as the user requesting the
+     * page is an instructor of the event.
+     *
+     */
+    public function evaluationResultsAction()
+    {
+        $filter = Zend_Registry::get('inputFilter');        
+        $userId = Zend_Auth::getInstance()->getIdentity();
+        
+        $get = Zend_Registry::get('get');
+        
+        if (!isset($get['eventId'])) {
+            throw new Internal_Exception_Input('Event ID not set');
+        }
+        
+        $eventId = $filter->filter($get['eventId']);
+        
+        if ($eventId == '') {
+            throw new Internal_Exception_Input('Event ID has no value');
+        }
+        
+        $this->view->eventId = $eventId;
+
+        $event = new Event();
+        
+        $status = $event->getStatusOfUserForEvent($userId, $eventId);
+        
+        if ($status != "instructor") {
+            throw new Internal_Exception_Data('You do not appear to be an instructor for this event.');
+        }
+        
+        // get the evaluationId from the eventId
+        $evaluation = new Evaluation();
+        $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $eventId);
+        $evaluations = $evaluation->fetchAll($where);
+        if (is_null($evaluations) || $evaluations->count() == 0) {
+            throw new Internal_Exception_Data('No evaluations found for this event');
+        }
+        
+        $ca = new CustomAttribute();
+        
+        $evaluationResults = array();
+        
+        $questions = $ca->getAttributesForNode('evaluations');
+        
+        foreach ($questions as &$q) {
+            $q['options'] = $ca->convertOptionsToArray($q['options']);
+            
+            $answers = array();
+            foreach ($evaluations as $e) {
+                $tmpAnswers = $ca->getData($q['nodeId'], $e->evaluationId);
+                
+                $tmp = array();
+                foreach ($tmpAnswers as $ta) {
+                    $tmp[$ta['attribute']['attributeId']] = $ta['value'];
+                }
+                
+                $answers[] = $tmp;
+            }
+           
+            foreach ($q['options'] as $key => $value) {
+                
+                $answerCount = 0;
+                
+                foreach ($answers as $a) {
+                    if ($a[$q['attributeId']] == $value) {
+                        $answerCount++;
+                    }
+                }
+                
+                $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
+            }
+        }
+        
+        $this->view->evaluationResults = $questions;              
+        
+        $this->view->javascript = array('excanvas.js', 'plootr.js', 'tabletochart.js', 'slidingTabs.js');
+        
+        $this->_setupTemplate();
+        
+        $this->_helper->viewRenderer('template');
+        
+        $this->view->toolTemplate = $this->view->render('instructor/evaluationResults.tpl');
     }
 }

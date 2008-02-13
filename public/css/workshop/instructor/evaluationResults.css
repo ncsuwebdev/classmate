@@ -1,0 +1,41 @@
+#evaluationControls {
+    display: block;
+    text-align: center;
+    margin-bottom: 1em;
+    width: 500px;
+}
+
+#evaluationControls * {
+    display: inline;
+    padding: 4px;
+    user-select: none;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#evaluationControls li.active {
+    background-color: #F2BE7C;
+}
+
+div#questionPanes {
+    border: 1px solid #DDDDDD;
+    width: 495px;
+    margin: 0 auto 0 auto;
+    min-height: 300px;
+    background-color: #F4F4F4;
+}
+
+#previous { 
+    float: none;
+    cursor: pointer;
+}
+
+#next { 
+    float: none;
+    cursor: pointer;
+}
+
+.questionTitle {
+    font-weight: bold;
+    font-size: 1.1em;
+}
