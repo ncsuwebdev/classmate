@@ -8,7 +8,7 @@
 <table>
     <tbody>
         <tr>
-            <td{if strlen($label) >= 20} colspan="2"{/if}><label for="{$tempAttribute.attributeId}">{$label}</label></td>
+            <td{if strlen($label) >= 20} colspan="2"{/if}><label class="attributeLabel" for="{$tempAttribute.attributeId}">{$label}</label></td>
             <td>{if strlen($tempAttribute.label) < 20}{$tempAttribute.formField}{/if}</td>
         </tr>
         {if strlen($tempAttribute.label) >= 20}

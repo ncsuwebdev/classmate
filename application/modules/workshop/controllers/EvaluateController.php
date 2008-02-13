@@ -34,6 +34,11 @@
  */
 class Workshop_EvaluateController extends Internal_Controller_Action 
 {   
+    /**
+     * Handles the evaluation for an event.  Shows the user the evaluation and
+     * saves the data from the evaluation.
+     *
+     */
     public function indexAction()
     {
         
@@ -92,10 +97,29 @@ class Workshop_EvaluateController extends Internal_Controller_Action
             
             $instructor = new Instructor();
             $instructorList = $instructor->getInstructorsForEvent($eventId);
-
+            if (is_null($instructorList)) {
+                throw new Internal_Exception_Data('Instructors not found');
+            }
             $this->view->instructors = $instructorList;
             
+            // lookup the location of the event
+            $location = new Location();
+            $thisLocation = $location->find($thisEvent->locationId);
+            if (is_null($thisLocation)) {
+                throw new Internal_Exception_Data('Location not found');
+            }
+            $this->view->location = $thisLocation->toArray();
+            
+            // lookup the workshop category
+            $wc = new WorkshopCategory();
+            $category = $wc->find($thisWorkshop->workshopCategoryId);
+            if (is_null($category)) {
+                throw new Internal_Exception_Data('Category not found');
+            }
+            $this->view->category = $category->toArray();
+            
             $this->view->title = "Evaluate " . $thisWorkshop->title;
+            $this->view->hideTitle = true;
             
             $this->view->javascript = array('slidingTabs.js');
             
@@ -122,8 +146,103 @@ class Workshop_EvaluateController extends Internal_Controller_Action
         }        
     }
     
+    /**
+     * The page the user is redirected to after taking the evaluation.
+     *
+     */
     public function thanksAction()
     {
         $this->view->title = "Thanks for your evaluation!";
+    }
+    
+    /**
+     * Displays teh results of an evaluation as long as the user requesting the
+     * page is an instructor of the event.
+     *
+     */
+    public function resultsAction()
+    {
+        $filter = Zend_Registry::get('inputFilter');        
+        $userId = Zend_Auth::getInstance()->getIdentity();
+        
+        $get = Zend_Registry::get('get');
+        
+        if (!isset($get['eventId'])) {
+            throw new Internal_Exception_Input('Event ID not set');
+        }
+        
+        $eventId = $filter->filter($get['eventId']);
+        
+        if ($eventId == '') {
+            throw new Internal_Exception_Input('Event ID has no value');
+        }
+        
+        $this->view->eventId = $eventId;
+        
+        $event = new Event();
+        $thisEvent = $event->find($eventId);
+        
+        if (is_null($thisEvent)) {
+            throw new Internal_Exception_Data('Event not found');
+        }
+        
+        $this->view->event = $thisEvent->toArray();
+        
+        $workshop = new Workshop();
+        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+        if (is_null($thisWorkshop)) {
+            throw new Internal_Exception_Data('Workshop not found');
+        }
+        $this->view->workshop = $thisWorkshop->toArray();
+        
+        $instructor = new Instructor();
+        $instructorList = $instructor->getInstructorsForEvent($eventId);
+        
+        if (is_null($instructorList)) {
+            throw new Internal_Exception_Data('Instructors not found');
+        }
+        $this->view->instructors = $instructorList;
+        
+        $instructors = array();
+        foreach ($instructorList as $i) {
+            $instructors[] = $i['userId'];
+        }
+        
+        if (!in_array($userId, $instructors)) {
+            throw new Internal_Exception_Data('You do not appear to be an instructor for this event.');
+        }
+        
+        // lookup the location of the event
+        $location = new Location();
+        $thisLocation = $location->find($thisEvent->locationId);
+        if (is_null($thisLocation)) {
+            throw new Internal_Exception_Data('Location not found');
+        }
+        $this->view->location = $thisLocation->toArray();
+        
+        // lookup the workshop category
+        $wc = new WorkshopCategory();
+        $category = $wc->find($thisWorkshop->workshopCategoryId);
+        if (is_null($category)) {
+            throw new Internal_Exception_Data('Category not found');
+        }
+        $this->view->category = $category->toArray();
+        
+        // get the evaluationId from the eventId
+        $evaluation = new Evaluation();
+        $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $eventId);
+        $evaluations = $evaluation->fetchAll($where);
+        if (is_null($evaluations) || $evaluations->count() == 0) {
+            throw new Internal_Exception_Data('No evaluations found for this event');
+        }
+        
+        $evaluationResults = array();
+        
+        
+        $ca = new CustomAttribute();        
+        
+        
+        $this->view->title = "Evaluation results for " . $thisWorkshop->title;
+        $this->view->hideTitle = true;
     }
 }
