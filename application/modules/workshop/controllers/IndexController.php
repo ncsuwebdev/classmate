@@ -401,12 +401,30 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             $d = $document->find($documentId);
             
+            $dm = new DocumentMap();
+            $where = $dm->getAdapter()->quoteInto('documentId = ?', $documentId);
+            $mapping = $dm->fetchAll($where);
+            
+            $map = $mapping->current();
+            
             $we = new WorkshopEditor();        
             if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'editAllWorkshops') && 
-                !$we->isEditor($d->workshopId, Zend_Auth::getInstance()->getIdentity())) {
+                !$we->isEditor($map->attributeId, Zend_Auth::getInstance()->getIdentity())) {
                 echo 'You do not have access to edit this';
                 return;         
             }            
+           
+            $uc = Zend_Registry::get('userConfig');
+            
+            if (!is_writable($uc['fileUploadPathWorkshop']['value'])) {
+                echo 'Target directory ' . $uc['fileUploadPathWorkshop']['value'] . ' is not writable';
+                return;
+            }
+            
+            $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $map->attributeId . '/' . $d->name;
+            if (is_file($target)) {
+                unlink($target);
+            }
             
             $document->deleteDocument($documentId);
             
@@ -415,12 +433,55 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
-    
+    public function downloadDocumentAction()
+    {
+        $get = Zend_Registry::get('get');
+        $filter = Zend_Registry::get('inputFilter');
+            
+        if (!isset($get['documentId'])) {
+            throw new Internal_Exception_Input('document ID not set');
+        }
+            
+        $documentId = $filter->filter($get['documentId']);
+          
+        if ($documentId == '') {
+            throw new Internal_Exception_Data('document ID can not be blank');
+        }  
+            
+        $document = new Document();
+            
+        $d = $document->find($documentId);
+           
+        $dm = new DocumentMap();
+        $where = $dm->getAdapter()->quoteInto('documentId = ?', $documentId);
+        $mapping = $dm->fetchAll($where);
+            
+        $map = $mapping->current(); 
+         
+        $uc = Zend_Registry::get('userConfig');
+           
+        if (!is_readable($uc['fileUploadPathWorkshop']['value'])) {
+            throw new Internal_Exception_Data('Target directory ' . $uc['fileUploadPathWorkshop']['value'] . ' is not readable');
+        }
+            
+        $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $map->attributeId . '/' . $d->name;
+        if (is_file($target)) {   
+        	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
+        	   
+	        header('Content-Type: application/octetstream');
+	        header('Content-Type: application/octet-stream');
+	        header('Content-Disposition: attachment; ' . 'filename="' . $d->name . '"');
+	        readfile($target); 
+        } else {
+        	throw new Internal_Exception_Data('File not found');    	
+        }
+    }
     public function addDocumentsAction()
     {
         if ($this->_request->isPost()) {
             $post = Zend_Registry::get('post');
             $filter = Zend_Registry::get('inputFilter');
+            $uc = Zend_Registry::get('userConfig');
             
             if (!isset($post['attributeName']) || !isset($post['attributeId'])) {
                 throw new Internal_Exception_Input('attribute name and ID not set');
@@ -438,7 +499,13 @@ class Workshop_IndexController extends Internal_Controller_Action
                 !$we->isEditor($attributeId, Zend_Auth::getInstance()->getIdentity())) {
                 throw new Internal_Exception_Access('You do not have access to add this');     
             }  
-                        
+
+            if (!is_writable($uc['fileUploadPathWorkshop']['value'])) {
+            	throw new Internal_Exception_Data('Target directory ' . $uc['fileUploadPathWorkshop']['value'] . ' is not writable');
+            }
+             
+            $targetPath = $uc['fileUploadPathWorkshop']['value'] . '/' . $attributeId . '/';
+            
             $document = new Document();
             
             foreach ($_FILES['uploadDocuments']['error'] as $key => $value) {
@@ -453,6 +520,16 @@ class Workshop_IndexController extends Internal_Controller_Action
 		                'uploadDt'    => time(),
 		                'filesize'    => $filter->filter($_FILES['uploadDocuments']['size'][$key]),
 		            );
+		            
+		            if (is_uploaded_file($filter->filter($_FILES['uploadDocuments']['tmp_name'][$key]))) {
+		            	if (!is_dir($targetPath)) {
+		            		mkdir($targetPath);
+		            	}
+		            	
+		            	$targetFile = $targetPath . '/' . $filter->filter($_FILES['uploadDocuments']['name'][$key]);
+		            	
+		            	move_uploaded_file($filter->filter($_FILES['uploadDocuments']['tmp_name'][$key]), $targetFile);
+		            }
 		            
 		            $documentId = $document->insert($data);
 		            

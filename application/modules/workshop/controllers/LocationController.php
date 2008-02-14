@@ -82,10 +82,6 @@ class Workshop_LocationController extends Internal_Controller_Action
     		throw new Internal_Exception_Data('Location not found');
     	}
     	
-    	if ($thisLocation->status == 'disabled' && !$this->_acl->isAllowed($this->_role, $this->_resource, 'viewDisabled')) {
-    		throw new Internal_Exception_Access('You are not authorized to view this location');
-    	}
-    	
         $this->view->acl = array(
             'edit'   => $this->_acl->isAllowed($this->_role, $this->_resource, 'edit'),
             );    	

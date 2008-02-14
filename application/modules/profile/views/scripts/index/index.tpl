@@ -86,7 +86,7 @@
                 <div class="dateTime">
                     <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
                     <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                    <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span> 
                 </div>           
 	        </div>
 	        {foreachelse}
@@ -111,7 +111,7 @@
 	            <div class="dateTime">
 	                <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
 	                <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-	                <span class="location"><b>Location:</b>{$e.location.name}</span> 
+	                <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span> 
 	            </div>                    
 	        </div>
 	        {foreachelse}
@@ -173,7 +173,7 @@
                 <div class="dateTime">
                     <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
                     <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                    <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span> 
                 </div>           
             </div>
             {foreachelse}
@@ -194,7 +194,7 @@
                 <div class="dateTime">
                     <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
                     <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-                    <span class="location"><b>Location:</b>{$e.location.name}</span> 
+                    <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span> 
                 </div>           
             </div>
             {foreachelse}

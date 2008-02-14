@@ -175,7 +175,6 @@
         </p>
     </div>
     <div id="tabDocuments"> 
-	    Click the icon to download the file.    
         {if $acl.addDocuments}
         <div id="addDocumentForm">
             Click "Browse" to upload new handouts.  Mutliple files can be uploaded at one time
@@ -184,17 +183,19 @@
                 <input type="hidden" name="attributeId" value="{$workshop.workshopId}" />
                 <input type="hidden" name="attributeName" value="workshopId" />
                 <input type="file" name="uploadDocuments"><br clear="all"/>
+                <input type="button" value="Cancel" onclick="javascript:toggleDocForm()" />
                 <input type="submit" value="Upload Files" />
             </form>              
         </div>
-        {/if}        
+        {/if}      
+	    Click the icon to download the file.          
 		<div id="documents">
 		    {foreach from=$documents item=d}
 		    <div class="document" title="{$d.description}" id="document_{$d.documentId}">
 		        {if $acl.deleteDocument}
 		        <div class="delete"></div>
 		        {/if}
-		        <a href="{$sitePrefix}/{$d.path}">
+		        <a href="{$sitePrefix}/workshop/index/downloadDocument/?documentId={$d.documentId}">
 		            <div class="icon docType-{$d.type}"></div>
 			    </a>
 			    <div class="data">

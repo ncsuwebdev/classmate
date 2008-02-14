@@ -63,7 +63,8 @@
                <action>index</action>               
                <display>MyClassMate</display>   
                <link></link>
-               <submenu></submenu>                 
+               <submenu>
+               </submenu>               
            </tab4>   	   
            <tab1>
                <module>workshop</module>
@@ -85,13 +86,13 @@
                        <display>Teaching Labs</display>
                        <link></link>
                    </tab5>
-                   <tab2>
+                   <tab6>
                        <module>workshop</module>
-                       <controller>proposal</controller>
-                       <action></action>
-                       <display>Teach a New Workshop!</display>
-                       <link></link>
-                   </tab2>  
+                       <controller>schedule</controller>
+                       <action>allevents</action>
+                       <display>View All Scheduled Workshops</display>
+                       <link></link>                   
+                   </tab6> 
                    <tab3>
                        <module>workshop</module>
                        <controller>request</controller>

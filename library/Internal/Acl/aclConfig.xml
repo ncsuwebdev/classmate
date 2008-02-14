@@ -122,6 +122,26 @@
         <privilege>editLink</privilege>
       </allow>
       <allow>
+        <resource>workshop_instructor</resource>
+        <privilege>attendance</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_instructor</resource>
+        <privilege>contact</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_instructor</resource>
+        <privilege>contactConfirm</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_instructor</resource>
+        <privilege>evaluationResults</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_instructor</resource>
+        <privilege>index</privilege>
+      </allow>
+      <allow>
         <resource>workshop_signup</resource>
         <privilege>*</privilege>
       </allow>

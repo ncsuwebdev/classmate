@@ -80,16 +80,11 @@ window.addEvent('domready', function() {
     });	
 	
 	if ($('addDocumentForm')) {
-		var docForm = $('addDocumentForm');
-		docForm.style.display = 'none';
 		$('addDocument').addEvent('click', function(e) {
 		   e = new Event(e);
 		   
-		   if (docForm.style.display == 'none') {
-		       docForm.style.display = 'block';
-		   } else {
-		       docForm.style.display = 'none';
-		   }
+		   toggleDocForm();
+		   
 		   e.stop();	   
 		});
     }
@@ -140,6 +135,18 @@ window.addEvent('domready', function() {
 	}  
 });
 
+function toggleDocForm() {
+    var docForm = $('addDocumentForm');
+    var button  = $('addDocument');
+    
+    if (docForm.style.display == 'none' || docForm.style.display == '') {
+        button.style.display = 'none';
+        docForm.style.display = 'block';
+    } else {
+        docForm.style.display = 'none';
+        button.style.display = 'block';
+    }
+}
 
 var myIEdit = iEdit.extend({
     editClass: '',

@@ -57,6 +57,8 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
         $this->view->instructors = $instructors;
         
+        $this->_checkValidViewer($instructors);
+        
         // lookup the location of the event
         $location = new Location();
         $thisLocation = $location->find($thisEvent->locationId);
@@ -84,9 +86,31 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->view->hideTitle = true;
         $this->view->title = 'Instructor Tools for ' . $thisWorkshop->title;
         		
+        $this->view->globalAcl = array(
+            'editEvent'       => $this->_acl->isAllowed($this->_role, 'workshop_schedule', 'editEvent'),
+        );
+        
         $this->_helper->viewRenderer('template');
         
 	}
+	
+	protected function _checkValidViewer($instructorList)
+	{
+	    $iList = array();
+        foreach ($instructorList as $i) {
+            $iList[] = $i['userId'];
+        }
+        
+        if (!$this->_acl->isAllowed($this->_role, $this->_resource, 'viewAllInstructorPages')
+            && !in_array(Zend_Auth::getInstance()->getIdentity(), $iList)) {
+                throw new Internal_Exception_Access('You do not have access to view this workshop');
+        }		
+	}
+	
+	public function viewAllInstructorPagesAction()
+	{}
+
+	
     /**
      * 
      *
@@ -146,7 +170,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
             //get all the users available for the instructor list
             $profile = new Profile();
             
-            $where = $profile->getAdapter()->quoteInto('userId NOT IN (?)', $userExclude);
+            $where = null;
+            if (count($userExclude) != 0) {
+                $where = $profile->getAdapter()->quoteInto('userId NOT IN (?)', $userExclude);
+            }
             
             $profiles = $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();            
             foreach ($profiles as $p) {
@@ -181,6 +208,8 @@ class Workshop_InstructorController extends Internal_Controller_Action
 	        // lookup the instructors
 	        $instructor = new Instructor();
 	        $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
+	        
+	        $this->_checkValidViewer($instructors);
 	        
 	        // lookup the attendees of the event
 	        $attendees = new Attendees();
@@ -231,15 +260,16 @@ class Workshop_InstructorController extends Internal_Controller_Action
             throw new Internal_Exception_Data('Event not found');
         }    	
         
+        // lookup the instructors
+        $instructor = new Instructor();
+        $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);        
+        $this->_checkValidViewer($instructors);
+        
         $attendees = new Attendees();
         $attendees->cancelReservation($filter->filter($get['userId']), $thisEvent->eventId);
 
+        
         $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
-    }
-    
-    public function promoteAttendeeAction()
-    {
-    	
     }
     
     public function attendanceAction()
@@ -259,6 +289,11 @@ class Workshop_InstructorController extends Internal_Controller_Action
     		  'userId'  => $userId,
     		  'attended' => ($attended == 'true'),
     		);
+    		
+            // lookup the instructors
+            $instructor = new Instructor();
+            $instructors = $instructor->getInstructorsForEvent($eventId);    		
+    		$this->_checkValidViewer($instructors);
     		
     		$attendees = new Attendees();
     		
@@ -306,11 +341,14 @@ class Workshop_InstructorController extends Internal_Controller_Action
                 $recipients = array_merge($recipients, $attendeeList);
             }    
 
+            $instructor = new Instructor();
+            $instructorList = $instructor->getInstructorsForEvent($thisEvent->eventId);
+                            
             if (isset($post['instructors']) && $filter->filter($post['instructors']) == 'ON') {
-            	$instructor = new Instructor();
-            	$instructorList = $instructor->getInstructorsForEvent($thisEvent->eventId);
             	$recipients = array_merge($recipients, $instructorList);
             }
+            
+            $this->_checkValidViewer($instructorList);
 
             $mail = new Zend_Mail();
             $mail->setFrom($thisProfile['emailAddress'], $thisProfile['firstName'] . ' ' . $thisProfile['lastName']);

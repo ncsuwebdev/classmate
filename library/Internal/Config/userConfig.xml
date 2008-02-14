@@ -29,10 +29,10 @@
             <description>The number of hours before an event that a user can cancel their reservation.</description>
             <value>1</value>
         </numHoursEventCancel>        
-        <fileUploadPathProposal>
-            <description>The absolute file upload path for proposals.</description>
-            <value>./public/files/proposal</value>
-        </fileUploadPathProposal>
+        <fileUploadPathWorkshop>
+            <description>Upload directory for workshop handouts.</description>
+            <value>/afs/unity/web/c/classmate-deo/files/workshop</value>
+        </fileUploadPathWorkshop>
         <fileUploadAllowableExtensions>
             <description>The allowable extensions for files.  I would not suggest putting executable files in here...</description>
             <value>pdf,doc,ppt,html,txt</value>

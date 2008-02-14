@@ -16,7 +16,7 @@
     </div>
     
     <div class="rightContent">
-        <table>
+        <table width="100%">
             <tbody>
                 <tr>
                     <td valign="top"><label>Instructors:</label></td>
@@ -39,7 +39,15 @@
                 <tr>
                     <td valign="top"><label>Waitlist #:</label></td>
                     <td>{$event.waitlistSize} students</td>
-                </tr>                                                
+                </tr> 
+                {if $globalAcl.editEvent}
+                <tr>
+                    <td colspan="2" align="center">
+                    <br />
+                    <input type="button" value="Edit Event Details" onclick="javascript:location.href='{$sitePrefix}/workshop/schedule/index/?eventId={$event.eventId}'" />
+                    </td>
+                </tr>
+                {/if}                                               
             </tbody>
         </table>    
     </div>
@@ -52,7 +60,7 @@
         <div class="event" id="event_{$e.eventId}">
             <span class="date">{$event.date|date_format:$config.longDateCompactFormat}</span> |
             <span class="time">{$event.startTime|date_format:$config.timeFormat} - {$event.endTime|date_format:$config.timeFormat}</span> |
-            <span class="location">{$location.name}</span>
+            <span class="location"><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$location.name}</a></span>
         </div>     
      {$toolTemplate}
 </div>

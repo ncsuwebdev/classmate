@@ -94,7 +94,8 @@ div#addDocumentForm {
     border: 1px solid #777;
     background-color: #DFDFDF;
     padding: 5px;
-    margin: 10px 5px 10px 5px;
+    margin: -11px 0px 10px 0px;
+    display: none;
 }
 
 div#addDocumentForm .item {

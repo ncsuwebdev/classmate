@@ -202,7 +202,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $this->view->event = $e;
 	        
 	        $location = new Location();
-            $locations = $location->fetchAll(null, 'name');
+	        $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
+            $locations = $location->fetchAll($where, 'name');
             
             $locationList = array();
             foreach($locations as $l) {
@@ -508,4 +509,104 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         
         echo Zend_Json::encode(array("rc"=>$result));
     }
+    
+    public function allEventsAction()
+    {
+        $event = new Event();
+        
+        $get = Zend_Registry::get('get');
+        $filter = Zend_Registry::get('inputFilter');
+        $uc     = Zend_Registry::get('userConfig');
+        
+        $stayOpen = new Zend_Date();
+        $stayOpen->subHour($uc['numHoursEvaluationAvailability']['value']);
+        
+        $startDt = $stayOpen->getTimestamp();
+        $endDt   = null;
+        
+        if (isset($get['time']) && $filter->filter($get['time']) == 'past') {
+            $startDt = null;
+            $endDt   = $stayOpen->getTimestamp();
+        }
+        
+        $attendees = new Attendees();
+        $attendeeEvents = $attendees->getEventsForAttendee(Zend_Auth::getInstance()->getIdentity());
+        
+        $userStatus = array();
+        foreach ($attendeeEvents as $e) {
+            $userStatus[$e['eventId']] = $e['status'];
+        }
+        
+        $instructor = new Instructor();
+        $instructorEvents = $instructor->getEventsForInstructor(Zend_Auth::getInstance()->getIdentity());
+        foreach ($instructorEvents as $e) {
+            $userStatus[$e['eventId']] = 'instructor';
+        }
+        
+        $acl = array(
+            'viewAllInstructorPages' => $this->_acl->isAllowed($this->_role, 'workshop_instructor', 'viewAllInstructorPages'),
+        );      
+        
+        $events = $event->getEvents(null, null, $startDt, $endDt, 'open')->toArray();
+        
+        $locationCache = array();
+        $location = new Location();
+        
+        $workshopCache = array();
+        $workshop = new Workshop();
+        
+        foreach ($events as &$e) {  
+            $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
+            $endDt   = new Zend_Date(strtotime($e['date'] . ' ' . $e['endTime']));
+            $endDt->addHour($uc['numHoursEvaluationAvailability']['value']);
+            
+            $e['evaluatable'] = ($startDt->getTimestamp() < time() && $endDt->getTimestamp() > time() && (isset($userStatus[$e['eventId']]) && $userStatus[$e['eventId']] == 'attending'));
+            
+            $e['signupable'] = ($startDt->getTimestamp() > time() && (!isset($userStatus[$e['eventId']])));
+            
+            $startDt->subHour($uc['numHoursEventCancel']['value']);
+            
+            $e['cancelable']  = ($startDt->getTimestamp() > time() && (isset($userStatus[$e['eventId']]) && $userStatus[$e['eventId']] != 'instructor'));
+            
+            
+            
+            $e['instructor'] = ($acl['viewAllInstructorPages'] || (isset($userStatus[$e['eventId']]) && $userStatus[$e['eventId']] == 'instructor'));
+                                 
+            if (isset($locationCache[$e['locationId']])) {
+                $e['location'] = $locationCache[$e['locationId']];
+            } else {
+                $thisLocation = $location->find($e['locationId']);        
+                if (!is_null($thisLocation)) {
+                    $e['location'] = $thisLocation->toArray();      
+                    $locationCache[$e['locationId']] = $e['location'];
+                }
+            }   
+               
+            if (isset($workshopCache[$e['workshopId']])) {
+                $e['workshop'] = $workshopCache[$e['workshopId']];
+            } else {
+                $thisWorskhop = $workshop->find($e['workshopId']);        
+                if (!is_null($thisWorskhop)) {
+                    $e['workshop'] = $thisWorskhop->toArray();      
+                    $workshopCache[$e['workshopId']] = $e['workshop'];
+                }
+            }
+        }   
+
+        $this->view->events = $events;
+        $this->view->acl    = $acl;
+        
+        $wc = new WorkshopCategory();
+        $result = $wc->fetchAll(null, 'name')->toArray();
+        
+        $categories = array();
+        foreach ($result as $c) {
+            $categories[$c['workshopCategoryId']] = $c;
+        }
+        
+        $this->view->categories = $categories;        
+        
+        $this->view->title = 'All Events';
+        
+    }    
 }

@@ -35,5 +35,5 @@
 	<div id="editDescription" class="inlineEdit" target="description"></div>
 	<div id="description" rel="type=textarea&cols=120&rows=20&url={$sitePrefix}/workshop/location/edit/&response=response">{$location.description|empty_alt:"No Description Provided"}</div>
 	{else}
-	<div id="description">{$location.location|empty_alt:"No Description Provided"}</div>
+	<div id="description">{$location.description|empty_alt:"No Description Provided"}</div>
 	{/if}
