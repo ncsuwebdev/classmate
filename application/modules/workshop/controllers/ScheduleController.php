@@ -118,8 +118,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->workshops = $workshopList;
         
         $location = new Location();
-        $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
-        $locations = $location->fetchAll($where, 'name');
+        $locations = $location->fetchAll(null, 'name');
         
         if (count($locations) == 0) {
             $this->_redirect('/workshop/schedule/noLocationsFound');
@@ -203,8 +202,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $this->view->event = $e;
 	        
 	        $location = new Location();
-	        $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
-            $locations = $location->fetchAll($where, 'name');
+            $locations = $location->fetchAll(null, 'name');
             
             $locationList = array();
             foreach($locations as $l) {
