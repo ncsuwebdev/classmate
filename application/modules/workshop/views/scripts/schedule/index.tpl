@@ -13,7 +13,7 @@
     <div id="searchResultsTitle">
         <form id="wsForm" style="float: left; display: inline; width: 50%;">
             <label for="locationId">Filter by Location:</label>
-            {html_options id=locationId name=locationId options=$locations}
+            {html_options id=locationId name=locationId options=$locations selected=$locationId}
         </form>
         <p style="float: right; margin-right: 10px;"><input id="modeButton" type="button" value="Switch to Add Mode" /></p>
             <br />

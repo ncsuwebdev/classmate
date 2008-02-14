@@ -63,7 +63,6 @@ window.addEvent('domready', function() {
     workshopLengthMinutes.addEvent('change', function(e) {
         workshopLength = (parseInt(workshopLengthHours.value) * 60) + parseInt(workshopLengthMinutes.value);
     });
-    
         
     hoverDiv = new Element('div');  
     hoverDiv.addClass('hoverDiv');

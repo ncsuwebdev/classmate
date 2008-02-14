@@ -63,6 +63,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             
             $e = new Event();
             $thisEvent = $e->find($eventId)->toArray();
+            
+            $this->view->locationId = $thisEvent['locationId'];
         }
         
         $this->view->javascript = array(
@@ -97,7 +99,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->thisWeek = $zd->get(Zend_Date::WEEK);
                              
         if (!is_null($eventId)) {
-            $zd->set($thisEvent['date']);
+            $tmpDate = explode('-', $thisEvent['date']);
+            $zd->setYear($tmpDate[0]);
+            $zd->setMonth($tmpDate[1]);
+            $zd->setDay($tmpDate[2]);
         }
         
         $this->view->year = $zd->get(Zend_Date::YEAR);
