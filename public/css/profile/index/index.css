@@ -116,6 +116,21 @@ div.event .waitlist {
     font-weight: bold;	
 }
 
+div.event .present {    
+    padding-left: 22px;
+    font-weight: bold;  
+    border: 1px solid #00CC00;  
+    background: #DFFFDF url(../../../images/tick.png) no-repeat 2px 2px;  
+ 
+}
+
+div.event .absent {
+	padding-left: 22px;
+    font-weight: bold;  
+    border: 1px solid #CC0000;  
+    background: #FFDFDF url(../../../images/cross.png) no-repeat 2px 2px;  
+}
+
 div.event .seatAvailable {
     border: 1px solid #00CC00;  
     background-color: #DFFFDF;

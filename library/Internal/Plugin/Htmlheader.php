@@ -47,7 +47,7 @@ class Internal_Plugin_Htmlheader extends Zend_Controller_Plugin_Abstract
         $req = array(
             'module' => $request->getModuleName(),
             'controller' => $request->getControllerName(),
-            'action'     => $request->getActionName(),
+            'action'     => strtolower($request->getActionName()),
         );
 
         $path = '';

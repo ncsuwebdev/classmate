@@ -1,0 +1,223 @@
+div#detailsLeft {
+    width: 500px;	
+}
+
+div#detailsRight {
+	margin-top: 18px;
+    width: 200px;
+    float: right;
+    
+}
+
+div.rightTitle {
+	background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
+    text-align: left;
+    font-weight: bold;
+    line-height: 20px;
+    color: #FFF;
+    font-size: 100%;
+    padding-left: 6px;
+}
+
+div.rightContent {
+	padding: 10px 2px 10px 2px;
+	margin-bottom: 20px;
+	background-color: #F4F4F4;
+	border: 1px solid #C3593C;
+}
+
+div.rightContent div.event {
+    padding: 0px 2px 2px 25px;
+    margin-bottom: 10px;
+    background-image: url(../../../images/calendar.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 1px;
+    border: 0px solid #F4F4F4;
+}
+
+div.rightContent div.event .date {
+    display: block;
+    font-weight: bold;
+}
+
+div.rightContent div.event .status {
+    display: block;
+    color: #C3593C;
+}
+
+div.rightContent div.event:hover {
+    background-color: #e4e4e4;  
+    cursor: pointer;
+}
+
+.add {
+	display: block;
+    float: right;
+    background-image: url(../../../images/add_white.png);
+    background-repeat: no-repeat;  
+    cursor: pointer;  
+    line-height: 18px; 
+    font-weight: bold;
+    background-position: 0px 3px;
+    width: 19px;
+    height: 19px;
+}
+
+div.rightContent .add {
+    clear: left;
+    float: none;
+    text-align: right;
+    background-position: 85px 1px;
+    width: 160px;
+    margin-bottom: 10px;
+}
+
+div.delete {
+    float: right;
+    padding-right: 3px;
+    cursor: pointer;
+    background-image: url(../../../images/delete.png);
+    background-repeat: no-repeat;  
+    width: 16px;
+    height: 16px;
+}
+
+div#response {
+    background-color: #ffffcc;
+    opacity: 0;
+    display: inline;
+}
+
+.searchTitle {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+div.inlineEdit {
+    background-image: url(../../../images/editFlag.png);
+    background-position: top right;
+    width: 40px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    left: -45px;
+    float: left;
+    margin-right: -45px;
+    z-index: 55;
+}
+
+div.inlineEdit:hover {
+    background-position: top left;
+}
+
+div#titleContainer {
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#titleContainer img {
+	float: left;
+	padding-right: 10px;
+}
+
+div#titleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+
+div#titleContainer span#name {
+	color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 0 0 0px;
+}
+
+div#titleContainer span#disabled {
+    color: #C00;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 10px 0 0px;	
+}
+
+div#addressContainer {
+    margin: 0px 0px 20px 0px;
+    padding-left: 43px;
+    height: 22px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#mapit {
+	background: #FFF url(../../../images/link.png) no-repeat top left;
+    margin-left: 20px;
+    float: right;
+}
+
+div#capacityContainer {
+    margin: 0 0 20px 0;	
+}
+
+div#mapit a {
+    background-image: none;
+    margin: 2px 2px 2px 22px;
+}
+
+div#description {
+    margin: 0px 0px 0px 0px;
+}
+
+div#prerequisites {
+    display: block;
+    margin: 0 0px 0 12px;
+}
+
+div#detailsLeft .sectionTitle {
+    font-size: 110%;
+    margin-right: 10px;
+}
+
+div.sectionBar {
+	background-color: #6e6e6e;
+	margin: 20px 0 10px 0;
+}
+
+div.sectionBar p.right {    
+	background-image: url(../../../images/h2-right.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px; 
+    float: right;   
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar p.left {    
+	background-image: url(../../../images/h2-left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar p.content {
+    color: #FFF;
+    font-weight: bold;
+    line-height: 22px;
+    margin: 0px;
+}
+
+#status {
+	margin-top: 5px;
+    float: right;
+}
+
+#disabledImage {
+    position: absolute;
+    float: left;
+    margin-top: 16px;
+    margin-left: 16px;
+}

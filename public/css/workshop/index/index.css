@@ -17,3 +17,22 @@ div.category div.description {
 div.category div.workshops {
 
 }
+
+.add {
+    background-image: url(../../../images/add.png);
+    background-repeat: no-repeat;  
+    cursor: pointer;  
+    line-height: 20px;
+    background-position: 0px 3px;
+    padding-left: 22px;
+    height: 19px;
+    margin-bottom: 20px;
+}
+
+.add * {
+    background-image: none;
+}
+
+tr.workshop:hover {
+    background-color: #EFEFEF;
+}

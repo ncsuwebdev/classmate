@@ -121,6 +121,7 @@ div#workshopTitleContainer div#wsTitle {
     color: #3F3F3F;
     font-size: 140%;
     font-weight: bold;
+    margin: 0 0 0 42px;
 }
 
 div.event {

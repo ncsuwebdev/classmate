@@ -1,3 +1,4 @@
+<a href="{$sitePrefix}/workshop/index/">&lt; &lt; Back to All Workshops</a><br />
 {if $acl.options}
 <div id="createEventPopup" style="position: absolute; left: -10000px;">
 <form method="POST" action="{$sitePrefix}/workshop/index/options" id="workshopOptionForm">
@@ -19,6 +20,17 @@
             </td>
          </tr>
          <tr>
+            <td>
+                <label for="status">Status:</label>
+            </td>
+            <td>
+                <input type="radio" name="status" id="status_enabled" value="enabled"{if $workshop.status == 'enabled'} checked="checked"{/if} /> Enabled &nbsp; &nbsp; 
+                <input type="radio" name="status" id="status_disabled" value="disabled"{if $workshop.status == 'disabled'} checked="checked"{/if} /> Disabled
+            </td>
+            <td>
+            </td>
+         </tr>         
+         <tr>
             <td colspan="3">
                 <label for="instructors">Workshop Editors:</label>
             </td>
@@ -37,6 +49,9 @@
 </div>
 {/if}
 <div id="detailsRight">
+    {if $acl.options}
+    <input type="button" id="manageWorkshop" value="Manage Workshop Options" />
+    {/if}
     <div class="rightTitle">
         {if $acl.addEvent}
         <span id="addEvent" class="add"><a href="{$sitePrefix}/workshop/schedule/?workshopId={$workshop.workshopId}"></a>&nbsp;</span>
@@ -51,7 +66,7 @@
 	            {$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}
 	            <span class="status">
                 {if $e.status == 'instructor'}
-                    <a href="{$sitePrefix}/workshop/signup/instructor/?eventId={$e.eventId}"></a>Instructor Options
+                    <a href="{$sitePrefix}/workshop/instructor/?eventId={$e.eventId}"></a>Instructor Tools...
                 {elseif $e.status == 'attending'}
                     <a href="{$sitePrefix}/workshop/signup/reservation/?eventId={$e.eventId}"></a>You are attending. Cancel...
                 {elseif $e.status == 'waitlist'}
@@ -103,9 +118,6 @@
 	        {/foreach}
         </div>
     </div>
-    {if $acl.options}
-    <div id='manageWorkshop'>Manage Workshop Options</div>
-    {/if}
 </div>
 <div id="detailsLeft">
 	<div id="response">&nbsp;</div> 
@@ -114,8 +126,12 @@
 	    {if $acl.edit}
 		<div id="editTitle" class="inlineEdit" target="wsTitle"></div>
 		{/if}
-		<img src="{$sitePrefix}/index/image/?imageId={$category.largeIconImageId}" alt="{$category.name}" />
-		<div id="wsTitle" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.title}</div>
+        <img src="{$sitePrefix}/index/image/?imageId={$category.largeIconImageId}" alt="{$category.name}" />		
+        {if $workshop.status == 'disabled'}
+        <img id="disabledImage" src="{$sitePrefix}/public/images/cross.png" />
+        <span id="disabled">DISABLED!</span>
+        {/if}		
+		<span id="wsTitle" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.title}</span>
 	</div>
     {if $acl.edit}
     <div id="editTags" class="inlineEdit" target="taglist"></div>

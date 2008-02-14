@@ -141,18 +141,66 @@ class Workshop_InstructorController extends Internal_Controller_Action
     {
     	$filter = Zend_Registry::get('inputFilter');
     	
+        
+        $profile = new Profile();
+        $thisProfile = $profile->find(Zend_Auth::getInstance()->getIdentity())->toArray();
+            	
     	if ($this->_request->isPost()) {
     		$post = Zend_Registry::get('post');
     		
-	        $attendees = new Attendees();
-	        $attendeeList = $attendees->getAttendeesForEvent($thisEvent->eventId, 'attending');
-	        $this->view->attendeeList = $attendeeList;
+	    	if (!isset($post['eventId'])) {
+	            throw new Internal_Exception_Input('Event ID not set');
+	        }
 	        
-	        $waitlist = $attendees->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
-	        $this->view->waitlist = $waitlist;     		
+	        // lookup the event
+	        $event = new Event();
+	        $thisEvent = $event->find($filter->filter($post['eventId']));
+	        if (is_null($thisEvent)) {
+	            throw new Internal_Exception_Data('Event not found');
+	        }
+	        
+    		$recipients = array();
+    		$attendees = new Attendees();
     		
-    		$this->_redirect('contactConfirm/?eventId=' . $data['eventId']);
+    		if (isset($post['attending']) && $filter->filter($post['attending']) == 'ON') {
+                $attendeeList = $attendees->getAttendeesForEvent($thisEvent->eventId, 'attending');
+	            $recipients = array_merge($recipients, $attendeeList);
+    		}
+    		
+    	    if (isset($post['waitlist']) && $filter->filter($post['waitlist']) == 'ON') {
+                $attendeeList = $attendees->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
+                $recipients = array_merge($recipients, $attendeeList);
+            }    
+
+            if (isset($post['instructors']) && $filter->filter($post['instructors']) == 'ON') {
+            	$instructor = new Instructor();
+            	$instructorList = $instructor->getInstructorsForEvent($thisEvent->eventId);
+            	$recipients = array_merge($recipients, $instructorList);
+            }
+
+            $mail = new Zend_Mail();
+            $mail->setFrom($thisProfile['emailAddress'], $thisProfile['firstName'] . ' ' . $thisProfile['lastName']);
+            $mail->setSubject($filter->filter($post['subject']));
+            $mail->setBodyText($filter->filter($post['message']));
+            
+            foreach ($recipients as $r) {
+            	$mail->addTo($r['emailAddress']);
+            }
+            
+            $eq = new EmailQueue();
+            
+            $data = array(
+                'attributeName'  => 'eventId',
+                'attributeId'    => $thisEvent->eventId,
+                'zendMailObject' => $mail,
+            );
+    		
+            $eq->queueEmail($data);
+            
+    		$this->_redirect('/workshop/instructor/contactConfirm/?eventId=' . $thisEvent->eventId);
     	}
+    	
+    	$this->view->profile = $thisProfile;
     	
     	$this->_setupTemplate();
     	
@@ -244,5 +292,11 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->_helper->viewRenderer('template');
         
         $this->view->toolTemplate = $this->view->render('instructor/evaluationResults.tpl');
+    }
+    
+    public function contactConfirmAction()
+    {
+    	$this->_setupTemplate();
+    	$this->view->toolTemplate = $this->view->render('instructor/contactconfirm.tpl');
     }
 }

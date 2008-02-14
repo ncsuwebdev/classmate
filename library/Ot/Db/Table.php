@@ -34,8 +34,10 @@ class Ot_Db_Table extends Zend_Db_Table
     	$result = parent::find($key);
     	
     	if (count($this->_primary) == 1) {
-    		if ($result->count() == 1) {
+    		if ($result instanceof Zend_Db_Table_Rowset && $result->count() == 1) {
     	   		return $result->current();
+    		} elseif (is_array($result) && count($result) == 1) {
+    		    return $result[0];
     		} elseif (!is_array($key)) {
     			return null;
     		}

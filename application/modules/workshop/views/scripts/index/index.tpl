@@ -3,9 +3,9 @@ what we teach.  Click on the title to see when we are offering it next!
 <br /><br />
 
     {if $acl.add}
-    <a href="{$sitePrefix}/workshop/index/add/"><img src="{$sitePrefix}/public/images/add.png" alt="Add"></a>
-    <a href="{$sitePrefix}/workshop/index/add/">Add New Workshop</a><br /><br />
+    <div class="add"><a href="{$sitePrefix}/workshop/index/add/">Add New Workshop</a></div>
     {/if}
+    
     {foreach from=$workshops item=w name=workshops}
         <div class="category" style="background-image:url({$sitePrefix}/index/image/?imageId={$w.category.largeIconImageId});">
             <div class="name">
@@ -19,12 +19,16 @@ what we teach.  Click on the title to see when we are offering it next!
 	           <table class="list">
 	               <tbody>
 	                   <tr>
-	                       <th width="250">Workshop</th>
+	                       <th width="450">Workshop</th>
 	                       <th width="150">Next Scheduled Class</th>
 	                   </tr>
 	        {foreach from=$w.workshops item=s}
-	            <tr>
+	            {if ($s.status == 'disabled' && $acl.viewDisabled) || $s.status == 'enabled'}
+	            <tr class="workshop">
 	               <td>
+	               {if $s.status == 'disabled'}
+	               <B>DISABLED!</B> &nbsp; 
+	               {/if}
 		            {if $acl.details}
 		                <a href="{$sitePrefix}/workshop/index/details/?workshopId={$s.workshopId}">{$s.title}</a>
 		            {else}
@@ -37,8 +41,9 @@ what we teach.  Click on the title to see when we are offering it next!
 	               {else}
 	               {$s.nextEvent.date|date_format:$config.medDateFormat}
 	               {/if}
-	               </td>
+	               </td>               
 	            </tr>
+	            {/if}
 	        {foreachelse}
 	            <tr>
 	               <td class="noResults">

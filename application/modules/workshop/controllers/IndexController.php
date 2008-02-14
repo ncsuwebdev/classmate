@@ -43,6 +43,7 @@ class Workshop_IndexController extends Internal_Controller_Action
     	$this->view->acl = array(
     	   'add'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'add'),
     	   'details' => $this->_acl->isAllowed($this->_role, $this->_resource, 'details'),
+    	   'viewDisabled' => $this->_acl->isAllowed($this->_role, $this->_resource, 'viewDisabled'),
     	);
     	
         $this->view->title = "Our Workshops";
@@ -76,6 +77,9 @@ class Workshop_IndexController extends Internal_Controller_Action
         
         $this->view->workshops = $workshops;
     }
+    
+    public function viewDisabledAction()
+    {}
     
     public function addAction()
     {
@@ -363,7 +367,8 @@ class Workshop_IndexController extends Internal_Controller_Action
             $data = array(
                 'workshopId' => $workshopId,
                 'workshopCategoryId' => $filter->filter($post['workshopCategoryId']),
-            );
+                'status'             => $filter->filter($post['status']),
+            );         
             
             $workshop = new Workshop();
             $workshop->update($data, null);

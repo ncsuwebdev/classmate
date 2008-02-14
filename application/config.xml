@@ -71,6 +71,20 @@
                <action>index</action>
                <display>Our Workshops</display>
                <submenu>
+                   <tab1>
+                       <module>workshop</module>
+                       <controller>index</controller>
+                       <action></action>
+                       <display>Workshops We Teach</display>
+                       <link></link>                   
+                   </tab1>
+                   <tab5>
+                       <module>workshop</module>
+                       <controller>location</controller>
+                       <action></action>
+                       <display>Teaching Labs</display>
+                       <link></link>
+                   </tab5>
                    <tab2>
                        <module>workshop</module>
                        <controller>proposal</controller>
@@ -163,14 +177,7 @@
                        <action></action>
                        <display>App Config</display>
                        <link></link>
-                   </tab10>
-                   <tab11>
-                       <module>admin</module>
-                       <controller>location</controller>
-                       <action></action>
-                       <display>Locations</display>
-                       <link></link>
-                   </tab11>    
+                   </tab10>   
                    <tab12>
                        <module>admin</module>
                        <controller>category</controller>

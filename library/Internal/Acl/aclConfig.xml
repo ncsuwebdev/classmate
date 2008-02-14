@@ -57,6 +57,14 @@
         <resource>workshop_index</resource>
         <privilege>index</privilege>
       </allow>
+      <allow>
+        <resource>workshop_location</resource>
+        <privilege>details</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_location</resource>
+        <privilege>index</privilege>
+      </allow>
     </allows>
     <denys/>
   </role>

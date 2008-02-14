@@ -99,19 +99,20 @@
 	           {if $smarty.foreach.past.index < count($pastReservations) && $smarty.foreach.past.index != 0}
 	           <div class="eventSpacer"></div>
 	           {/if}
-	        <div class="event">         
+	        <div class="event">    
+	            <div class="status">        
+	                {if $e.attended == 1}
+	                <div class="present">You attended this class</div>
+	                {else}
+	                <div class="absent">You were absent</div>
+	                {/if}
+                </div>
+                 <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>
 	            <div class="dateTime">
 	                <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
 	                <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-	            </div>          
-	            <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>
-	            {if $e.status == 'instructor'}
-	                <div class="instructor">Instructor Tools</div>
-	            {elseif $e.status == 'attending'}
-	                You attended this class.
-	            {elseif $e.status == 'waitlist'}
-	                You were on the waitlist, but didn't attend.
-	            {/if}           
+	                <span class="location"><b>Location:</b>{$e.location.name}</span> 
+	            </div>                    
 	        </div>
 	        {foreachelse}
 	        You have not taken any classes.

@@ -330,7 +330,6 @@ div.inlineEdit:hover {
 
 div#workshopTitleContainer {
     padding-bottom: 5px;
-    height: 32px;
     margin-bottom: 0px;
     line-height: 32px;
     background: #FFF url(../../../images/dot.gif) repeat-x bottom;
@@ -347,15 +346,30 @@ div#workshopTitleContainer .inlineEdit {
 }
 
 
-div#workshopTitleContainer div#wsTitle {
+div#workshopTitleContainer #wsTitle {
 	color: #3F3F3F;
     font-size: 140%;
     font-weight: bold;
+    margin: 0 0 0 0px;
+}
+
+div#workshopTitleContainer span#disabled {
+    color: #C00;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 10px 0 0px;   
+}
+
+#disabledImage {
+    position: absolute;
+    float: left;
+    margin-top: 16px;
+    margin-left: 16px;
 }
 
 div#tags {
     margin: 0px 0px 20px 0px;
-    padding-left: 42px;
+    padding-left: 43px;
     height: 22px;
     background: #FFF url(../../../images/dot.gif) repeat-x bottom;
 }
@@ -430,11 +444,10 @@ div.event span.restricted {
 }
 
 #manageWorkshop {
-    padding-left: 23px;
-    background-image: url(../../../images/brick.png);
-    background-position: top left;    
-    background-repeat: no-repeat;
-    cursor: pointer;	
+    margin-bottom: 20px;
+    width: 100%;
+    line-height: 20px;
+    height: 20px;
 }
 
 #workshopCategoryId {

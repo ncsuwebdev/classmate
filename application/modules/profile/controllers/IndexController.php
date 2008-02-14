@@ -152,7 +152,20 @@ class Profile_IndexController extends Internal_Controller_Action
         $this->view->currentReservations = $currentReservations;      
 
         // Get all past reservations for the user
-        $this->view->pastReservations = $attendees->getEventsForAttendee($userId, 0, $stayOpen->getTimestamp());
+        $pastReservations = $attendees->getEventsForAttendee($userId, 0, $stayOpen->getTimestamp(), 'attending');
+	    foreach ($pastReservations as &$e) {           
+            if (isset($locationCache[$e['locationId']])) {
+                $e['location'] = $locationCache[$e['locationId']];
+            } else {
+                $thisLocation = $location->find($e['locationId']);        
+                if (is_null($thisLocation)) {
+                    throw new Internal_Exception_Data('Location not found');
+                }
+                $e['location'] = $thisLocation->toArray();      
+                $locationCache[$e['locationId']] = $e['location'];
+            }      
+        }        
+        $this->view->pastReservations = $pastReservations;        
 
         $instructor = new Instructor();
         
