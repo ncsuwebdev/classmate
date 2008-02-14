@@ -54,6 +54,17 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $this->view->startInAddMode = 1;
         }
         
+        $eventId = null;
+        if (isset($get['eventId'])) {
+            $eventId = $filter->filter($get['eventId']);
+            
+            $this->view->eventId = $eventId;
+            $this->view->startInEditMode = 1;
+            
+            $e = new Event();
+            $thisEvent = $e->find($eventId)->toArray();
+        }
+        
         $this->view->javascript = array(
                                 "cnet/common/utilities/dbug.js",
                                 "cnet/mootools.extended/Native/element.shortcuts.js",
@@ -77,20 +88,26 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->startTime = mktime(0, 0, 0, 1, 1, 1970);
 	    $this->view->endTime = mktime(23, 30, 0, 1, 1, 1970);
         $this->view->baseTime = mktime(0, 0, 0, 1, 1, 1970);
-        $this->view->year = $zd->get(Zend_Date::YEAR);
-        $this->view->week = $zd->get(Zend_Date::WEEK);
         
         $this->view->today = $zd->get(Zend_Date::MONTH) . "/" .
                              $zd->get(Zend_Date::DAY) . "/" . 
                              $zd->get(Zend_Date::YEAR);
+
+        $this->view->thisYear = $zd->get(Zend_Date::YEAR);
+        $this->view->thisWeek = $zd->get(Zend_Date::WEEK);
+                             
+        if (!is_null($eventId)) {
+            $zd->set($thisEvent['date']);
+        }
         
-        $this->view->thisYear = $this->view->year;
-        $this->view->thisWeek = $this->view->week;  
+        $this->view->year = $zd->get(Zend_Date::YEAR);
+        $this->view->week = $zd->get(Zend_Date::WEEK);                             
         
         $this->view->title = "Schedule Workshops";
         
         $workshop = new Workshop();
-        $workshops = $workshop->fetchAll(null, 'title');
+        $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
+        $workshops = $workshop->fetchAll($where, 'title');
         
         $workshopList = array();
         $workshopList[0] = "";
@@ -101,7 +118,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->view->workshops = $workshopList;
         
         $location = new Location();
-        $locations = $location->fetchAll(null, 'name');
+        $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
+        $locations = $location->fetchAll($where, 'name');
         
         if (count($locations) == 0) {
             $this->_redirect('/workshop/schedule/noLocationsFound');
@@ -145,7 +163,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $this->view->eventId = $eventId;
     		
 	        $workshop = new Workshop();
-	        $workshops = $workshop->fetchAll(null, 'title');
+	        $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
+	        $workshops = $workshop->fetchAll($where, 'title');
 	        
 	        $workshopList = array();
 	        $workshopList[0] = "";
@@ -184,7 +203,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $this->view->event = $e;
 	        
 	        $location = new Location();
-            $locations = $location->fetchAll();
+	        $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
+            $locations = $location->fetchAll($where, 'name');
             
             $locationList = array();
             foreach($locations as $l) {
@@ -395,7 +415,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $this->view->endTime   = $filter->filter($get['endTime']);
             
             $workshop = new Workshop();
-            $workshops = $workshop->fetchAll(null, 'title');
+            $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
+            $workshops = $workshop->fetchAll($where, 'title');
             
             $workshopList = array();
             $workshopList[0] = "";

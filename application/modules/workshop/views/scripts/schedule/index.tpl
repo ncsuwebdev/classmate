@@ -4,6 +4,8 @@
 <input type="hidden" id="thisWeek" value="{$thisWeek}" />
 <input type="hidden" id="startInAddMode" value="{$startInAddMode}" />
 <input type="hidden" id="addModeWorkshopId" value="{$workshopId}" />
+<input type="hidden" id="startInEditMode" value="{$startInEditMode}" />
+<input type="hidden" id="editModeEventId" value="{$eventId}" />
 <input type="hidden" id="basetime" value="{$baseTime}" />
 <input type="hidden" id="today" value="{$today}" />
 

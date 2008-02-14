@@ -39,3 +39,15 @@ div#questionPanes {
     font-weight: bold;
     font-size: 1.1em;
 }
+
+.answerRow1 {
+    background-color: none;
+}
+
+.answerRow2 {
+    background-color: #BBBBBB;
+}
+
+.answerRow1 td, .answerRow2 td {
+    padding: 5px;
+}

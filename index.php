@@ -86,12 +86,14 @@ $auth->setStorage(new Ot_Auth_Storage_Session($_SERVER['SERVER_NAME'] . $baseUrl
 $writer = new Zend_Log_Writer_Db($db, 'tbl_log');
 
 $logger = new Zend_Log($writer);
+
+$logger->setEventItem('sid', session_id());
+$logger->setEventItem('timestamp', time());
+$logger->setEventItem('request', str_replace($baseUrl, '', $_SERVER['REQUEST_URI']));
+
 if (!is_null($auth->getIdentity())) {
     $logger->setEventItem('userId', $auth->getIdentity());
     $logger->setEventItem('role', Ot_Authz::getInstance()->getRole());
-    $logger->setEventItem('sid', session_id());
-    $logger->setEventItem('timestamp', time());
-    $logger->setEventItem('request', str_replace($baseUrl, '', $_SERVER['REQUEST_URI']));
 }
 
 Zend_Registry::set('logger', $logger);

@@ -90,6 +90,10 @@
         <privilege>index</privilege>
       </allow>
       <allow>
+        <resource>workshop_evaluate</resource>
+        <privilege>*</privilege>
+      </allow>
+      <allow>
         <resource>workshop_index</resource>
         <privilege>addDocuments</privilege>
       </allow>

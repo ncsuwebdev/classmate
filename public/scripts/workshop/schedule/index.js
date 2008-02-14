@@ -630,10 +630,13 @@ function processSearchResults()
     });
     
     if ($('startInAddMode').value == 1) {
-        modeButton.fireEvent('click');   
+        modeButton.fireEvent('click');
+    } else if ($('startInEditMode').value == 1) {
+        $($('editModeEventId').value).fireEvent('dblclick');
     }
     
     $('startInAddMode').value = 0;
+    $('startInEditMode').value = 0;
 }
 
 

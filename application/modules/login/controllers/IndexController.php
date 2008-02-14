@@ -84,7 +84,11 @@ class Login_IndexController extends Internal_Controller_Action
             $userId = (isset($post['userId'])) ? $filter->filter($post['userId']) . '@' . $realm : '';
             $password = (isset($post['password'])) ? $filter->filter($post['password']) : '';
 
+            $userId = (isset($post['userId'])) ? $filter->filter($post['userId']) : '';
+            $password = (isset($post['password'])) ? $filter->filter($post['password']) : '';
+            
             // Set up the authentication adapter
+            $authAdapter = new $config->authentication->$realm->class($userId . '@' . $realm, $password);
             $authAdapter = new $config->authentication->$realm->class($userId, $password);
             $auth = Zend_Auth::getInstance();            
             
@@ -120,6 +124,8 @@ class Login_IndexController extends Internal_Controller_Action
 
             $profile->addProfile($userId);
             
+            $this->_logger->setEventItem('userId', $auth->getIdentity());
+            $this->_logger->setEventItem('role', Ot_Authz::getInstance()->getRole());
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->info('User Logged In');  

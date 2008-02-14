@@ -117,81 +117,88 @@
     	       <submenu>
     	           <tab1>
     	               <module>admin</module>
-    	               <controller>user</controller>
-    	               <action></action>
-    	               <display>Users</display>
-    	               <link></link>
-    	           </tab1>
-    	           <tab2>
-    	               <module>admin</module>
     	               <controller>acl</controller>
     	               <action></action>
     	               <display>Access Roles</display>
     	               <link></link>
-    	           </tab2>
-    	           <tab3>
-    	               <module>admin</module>
-    	               <controller>emailqueue</controller>
-    	               <action></action>
-    	               <display>Email Queue</display>
-    	               <link></link>
-    	           </tab3>
-    	           <tab4>
-    	               <module>admin</module>
-    	               <controller>log</controller>
-    	               <action></action>
-    	               <display>Logs</display>
-    	               <link></link>
-    	           </tab4>
-    	           <tab6>
-    	               <module>admin</module>
-    	               <controller>cron</controller>
-    	               <action></action>
-    	               <display>Cron Status</display>
-    	               <link></link>
-    	           </tab6>
-                   <tab7> 
+    	           </tab1>
+                   <tab2> 
                        <module>admin</module>
                        <controller>api</controller>
                        <action></action>
                        <display>Api Access</display>
                        <link></link>
-                   </tab7>  
-                   <tab8>
-                       <module>admin</module>
-                       <controller>custom</controller>
-                       <action></action>
-                       <display>Custom Attributes</display>
-                       <link></link>
-                   </tab8>
-                   <tab9>
-                       <module>admin</module>
-                       <controller>email</controller>
-                       <action></action>
-                       <display>Email Triggers</display>
-                       <link></link>
-                   </tab9>
-                   <tab10>
+                   </tab2>
+                   <tab3>
                        <module>admin</module>
                        <controller>config</controller>
                        <action></action>
                        <display>App Config</display>
                        <link></link>
-                   </tab10>   
+                   </tab3>
+                   <tab4>
+                       <module>admin</module>
+                       <controller>cron</controller>
+                       <action></action>
+                       <display>Cron Status</display>
+                       <link></link>
+                   </tab4>
+                   <tab5>
+                       <module>admin</module>
+                       <controller>custom</controller>
+                       <action></action>
+                       <display>Custom Attributes</display>
+                       <link></link>
+                   </tab5>
+                   <tab6>
+                       <module>admin</module>
+                       <controller>email</controller>
+                       <action></action>
+                       <display>Email Triggers</display>
+                       <link></link>
+                   </tab6>
+    	           <tab7>
+    	               <module>admin</module>
+    	               <controller>emailqueue</controller>
+    	               <action></action>
+    	               <display>Email Queue</display>
+    	               <link></link>
+    	           </tab7>
+                   <tab8>
+                       <module>admin</module>
+                       <controller>log</controller>
+                       <action></action>
+                       <display>Logs</display>
+                       <link></link>
+                   </tab8>    
+                   <tab9>
+                       <module>admin</module>
+                       <controller>search</controller>
+                       <action></action>
+                       <display>Search Re-Indexing</display>
+                       <link></link>
+                   </tab9>
+                   <tab10>
+                       <module>admin</module>
+                       <controller>stats</controller>
+                       <action></action>
+                       <display>Stats</display>
+                       <link></link>
+                   </tab10>
+                   <tab11>
+                       <module>admin</module>
+                       <controller>user</controller>
+                       <action></action>
+                       <display>Users</display>
+                       <link></link>
+                   </tab11>     
                    <tab12>
                        <module>admin</module>
                        <controller>category</controller>
                        <action></action>
                        <display>Workshop Categories</display>
                        <link></link>
-                   </tab12>     
-                   <tab13>
-                       <module>admin</module>
-                       <controller>search</controller>
-                       <action></action>
-                       <display>Search Re-Indexing</display>
-                       <link></link>
-                   </tab13>                                                      	           
+                   </tab12>                                                 	           
     	       </submenu>
     	   </tab2>
     	</navigation>

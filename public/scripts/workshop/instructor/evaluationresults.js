@@ -1,7 +1,8 @@
 window.addEvent('domready', function() {
 
-    $$('.question').toChart({
+    $$('.graphQuestion').toChart({
             'legend': false,
+            'barWidthFillFraction': 0.5,
             'barOrientation': 'vertical',
             'backgroundColor': '#BBBBBB',
             'yTickPrecision': 0,

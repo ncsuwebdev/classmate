@@ -379,8 +379,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $eventId);
         $evaluations = $evaluation->fetchAll($where);
         if (is_null($evaluations) || $evaluations->count() == 0) {
-            throw new Internal_Exception_Data('No evaluations found for this event');
+            $this->view->noEvaluationsYet = true;
         }
+        
+        $this->view->totalEvaluations = $evaluations->count();
         
         $ca = new CustomAttribute();
         
@@ -403,17 +405,26 @@ class Workshop_InstructorController extends Internal_Controller_Action
                 $answers[] = $tmp;
             }
            
-            foreach ($q['options'] as $key => $value) {
+            if ($q['type'] == 'ranking' || $q['type'] == 'select' || $q['type'] == 'radio') {
                 
-                $answerCount = 0;
-                
-                foreach ($answers as $a) {
-                    if ($a[$q['attributeId']] == $value) {
-                        $answerCount++;
+                foreach ($q['options'] as $key => $value) {
+                    
+                    $answerCount = 0;
+                    
+                    foreach ($answers as $a) {
+                        if ($a[$q['attributeId']] == $value) {
+                            $answerCount++;
+                        }
                     }
+                    
+                    $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
                 }
                 
-                $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
+            } else {
+                
+                foreach ($answers as $a) {
+                    $q['results'][] = $a[$q['attributeId']];   
+                }
             }
         }
         
@@ -425,7 +436,7 @@ class Workshop_InstructorController extends Internal_Controller_Action
         
         $this->_helper->viewRenderer('template');
         
-        $this->view->toolTemplate = $this->view->render('instructor/evaluationResults.tpl');
+        $this->view->toolTemplate = $this->view->render('instructor/evaluationresults.tpl');
     }
     
     public function contactConfirmAction()
