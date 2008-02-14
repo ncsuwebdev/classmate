@@ -118,7 +118,7 @@ class Attendees extends Ot_Db_Table
     	return $events;
     }
 
-    public function makeReservation($userId, $eventId)
+    public function makeReservation($userId, $eventId, $overrideStatus = 'firstAvailable')
     {
     	$event = new Event();
     	$status = $event->getStatusOfUserForEvent($userId, $eventId);
@@ -137,17 +137,22 @@ class Attendees extends Ot_Db_Table
             throw new Internal_Exception_Data('Event not found');
         }
         
+        /*
         $eventTime = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
         if ($eventTime < time()) {
             throw new Internal_Exception_Data('The signup for this class is closed');
-        }
+        }*/
         
-        if ($thisEvent->roleSize < $thisEvent->maxSize) {
-        	$status = 'attending';
-        } elseif ($thisEvent->waitlistSize != 0 && $thisEvent->waitlistSize > $thisEvent->waitlistTotal) {
-        	$status = 'waitlist';
+        if ($overrideStatus == 'firstAvailable') {
+	        if ($thisEvent->roleSize < $thisEvent->maxSize) {
+	        	$status = 'attending';
+	        } elseif ($thisEvent->waitlistSize != 0 && $thisEvent->waitlistSize > $thisEvent->waitlistTotal) {
+	        	$status = 'waitlist';
+	        } else {
+	        	throw new Internal_Exception_Data('The class is full and no waitlist spot is available');
+	        }
         } else {
-        	throw new Internal_Exception_Data('The class is full and no waitlist spot is available');
+        	$status = $overrideStatus;
         }
         
         $dba = $this->getAdapter();

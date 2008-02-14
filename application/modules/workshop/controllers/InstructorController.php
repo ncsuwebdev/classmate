@@ -105,7 +105,141 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $waitlist = $attendees->getAttendeesForEvent($thisEvent['eventId'], 'waitlist');
         $this->view->waitlist = $waitlist;     
 
+        $this->view->acl = array(
+            'addAttendee'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'addAttendee'),
+            'deleteAttendee'  => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteAttendee'),
+            'promoteAttendee' => $this->_acl->isAllowed($this->_role, $this->_resource, 'promoteAttendee'),
+        );
+        
+        if ($this->view->acl['addAttendee']) {
+            $this->view->javascript = array(
+                'Stickman.MultiUpload.js',
+                "cnet/common/utilities/dbug.js",
+                "cnet/mootools.extended/Native/element.shortcuts.js",
+                "cnet/mootools.extended/Native/element.dimensions.js",
+                "cnet/mootools.extended/Native/element.position.js",
+                "cnet/mootools.extended/Native/element.pin.js", 
+                "cnet/common/browser.fixes/IframeShim.js",
+                "cnet/common/js.widgets/modalizer.js",
+                "cnet/common/js.widgets/stickyWin.default.layout.js",
+                "cnet/common/js.widgets/stickyWin.js",
+                "cnet/common/js.widgets/stickyWin.Modal.js",
+                "cnet/common/js.widgets/stickyWinFx.js",
+                "cnet/common/js.widgets/stickyWinFx.Drag.js",   
+            );
+            
+            $userExclude = array();
+            foreach ($attendeeList as $a) {
+            	$userExclude[] = $a['userId'];
+            }
+            
+            foreach ($waitlist as $w) {
+            	$userExclude[] = $w['userId'];
+            }
+            
+            $instructors = $this->view->instructors;
+            
+            foreach ($instructors as $i) {
+            	$userExclude[] = $i['userId'];
+            }
+            
+            //get all the users available for the instructor list
+            $profile = new Profile();
+            
+            $where = $profile->getAdapter()->quoteInto('userId NOT IN (?)', $userExclude);
+            
+            $profiles = $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();            
+            foreach ($profiles as $p) {
+                $users[$p['userId']] = $p['lastName'] . ", " . $p['firstName'];            
+            }
+            
+            $this->view->users = $users;        
+        }
+        
         $this->view->toolTemplate = $this->view->render('instructor/index.tpl');
+    }
+    
+    public function addAttendeeAction()
+    {
+    	if ($this->_request->isPost()) {
+    		
+    		$post = Zend_Registry::get('post');
+    		
+    		$filter = Zend_Registry::get('inputFilter');
+    		
+	        if (!isset($post['eventId'])) {
+	            throw new Internal_Exception_Input('Event ID not set');
+	        }
+	        
+	        // lookup the event
+	        $event = new Event();
+	        $thisEvent = $event->find($filter->filter($post['eventId']));
+	        if (is_null($thisEvent)) {
+	            throw new Internal_Exception_Data('Event not found');
+	        }
+	        
+	        // lookup the instructors
+	        $instructor = new Instructor();
+	        $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
+	        
+	        // lookup the attendees of the event
+	        $attendees = new Attendees();
+	        $attendeeList = $attendees->getAttendeesForEvent($thisEvent->eventId, 'attending');
+	        
+	        $waitlist = $attendees->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
+	        
+    	    $userExclude = array();
+            foreach ($attendeeList as $a) {
+                $userExclude[] = $a['userId'];
+            }
+            
+            foreach ($waitlist as $w) {
+                $userExclude[] = $w['userId'];
+            }
+
+            foreach ($instructors as $i) {
+                $userExclude[] = $i['userId'];
+            }	       
+
+            foreach ($post['userId'] as $u) {
+            	$u = $filter->filter($u);
+            	
+            	if (!in_array($userExclude)) {
+            		$attendees->makeReservation($u, $thisEvent->eventId, $filter->filter($post['type']));
+            	}
+            }
+            
+            $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
+    	}
+    }
+    
+    public function deleteAttendeeAction()
+    {
+
+        $get = Zend_Registry::get('get');
+            
+        $filter = Zend_Registry::get('inputFilter');
+            
+        if (!isset($get['eventId'])) {
+            throw new Internal_Exception_Input('Event ID not set');
+        }
+            
+        // lookup the event
+        $event = new Event();
+        $thisEvent = $event->find($filter->filter($get['eventId']));
+        if (is_null($thisEvent)) {
+            throw new Internal_Exception_Data('Event not found');
+        }    	
+        
+        $attendees = new Attendees();
+        $attendees->cancelReservation($filter->filter($get['userId']), $thisEvent->eventId);
+
+        $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
+    }
+    
+    public function promoteAttendeeAction()
+    {
+    	
     }
     
     public function attendanceAction()
