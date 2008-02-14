@@ -65,16 +65,17 @@ class Login_IndexController extends Internal_Controller_Action
         $filter = Zend_Registry::get('inputFilter');
 
         $authRealm = new Zend_Session_Namespace('authRealm');
-        
+        $authRealm->setExpirationHops(1);
+
         if (Zend_Auth::getInstance()->hasIdentity()) {
         	$this->_redirect('/');
         }
         
-        if ((isset($authRealm->realm) && $authRealm->autoLogin) || strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+        if ((isset($authRealm->realm) && $authRealm->autoLogin) || $this->_request->isPost()) {
 
             $post = Zend_Registry::get('post');
             
-            if (isset($authRealm->realm)) {
+            if (isset($authRealm->realm) && !$this->_request->isPost()) {
             	$realm = $authRealm->realm;
             } else {
                 $realm = $filter->filter($post['realm']);
