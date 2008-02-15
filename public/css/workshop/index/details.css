@@ -408,17 +408,7 @@ div.sectionBar {
 	margin: 20px 0 10px 0;
 }
 
-div.sectionBar p.right {    
-	background-image: url(../../../images/h2-right.png);
-    background-repeat: no-repeat;  
-    background-position: 0px 0px; 
-    float: right;   
-    height: 22px;
-    width: 11px;
-    margin: 0px;
-}
-
-div.sectionBar p.left {    
+div.sectionBar .left {    
 	background-image: url(../../../images/h2-left.png);
     background-repeat: no-repeat;  
     background-position: 0px 0px;   
@@ -428,11 +418,12 @@ div.sectionBar p.left {
     margin: 0px;
 }
 
-div.sectionBar p.content {
+div.sectionBar .content {
     color: #FFF;
     font-weight: bold;
     line-height: 22px;
     margin: 0px;
+    display: inline;
 }
 
 

@@ -2,7 +2,9 @@ window.addEvent('domready', function() {
 
     var realm = $('realm');
     realm.addEvent('change', function() {
-        var sel = realm.options[realm.options.selectedIndex];
+        var selected = realm.options.selectedIndex;
+        
+        var sel = $(realm.options[selected]);
         
         var login = $('loginForm');
         var manual = $('manual');

@@ -125,11 +125,12 @@ div#workshopTitleContainer div#wsTitle {
 }
 
 div.event {
-	overflow: none;
+	overflow: hidden;
     margin: 0px 0px 20px 0px;
     padding-left: 42px;
     height: 22px;
-    background: #FFF url(../../images/dot.gif) repeat-x bottom;    
+    line-height: 20px;
+    background: #FFF url(../../images/dot.gif) repeat-x 0px 20px;    
 }
 
 div.event .date {
@@ -138,6 +139,7 @@ div.event .date {
 
 div.event .location {
 	margin-left: 5px;
+	overflow: hidden;
 }
 
 div.event .time {

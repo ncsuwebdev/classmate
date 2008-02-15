@@ -1,3 +1,12 @@
+{if count($messages) != 0}
+<div class="messageContainer">
+	<div class="message">
+	{foreach from=$messages item=m}
+	{$m}<br />
+	{/foreach}
+	</div>
+</div>
+{/if}
 Select the way you would like to log in to ClassMate below.  
 <br /><br />
 <table width="100%">

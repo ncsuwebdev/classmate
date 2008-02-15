@@ -125,7 +125,7 @@ class Login_IndexController extends Internal_Controller_Action
             $profile->addProfile($userId);
             
             $this->_logger->setEventItem('userId', $auth->getIdentity());
-            $this->_logger->setEventItem('role', Ot_Authz::getInstance()->getRole());
+            $this->_logger->setEventItem('role', '');
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->info('User Logged In');  
@@ -205,13 +205,13 @@ class Login_IndexController extends Internal_Controller_Action
                 }
                 
                 $user = $user[0];
-                
+                /*
 	            $trigger = new EmailTrigger();
 	            $trigger->newPassword = $newPassword;
 	            $trigger->userEmail   = $user['email'];
 	            $trigger->userId      = $user['userId'];                 
 	            $trigger->dispatch('Login_Index_Forgot');
-	                            
+	              */              
 	            $this->_flashMessenger->addMessage('Password was reset and an email was sent to the address on file');
 		            
 	            $this->_logger->setEventItem('attributeName', 'userId');
@@ -328,10 +328,6 @@ class Login_IndexController extends Internal_Controller_Action
 	        $data['password'] = $auth->addAccount($data['userId'], '', $data['email']);
 	        
 	        $authz->addUser($data['userId'], $data['role']);
-	        
-	        $trigger = new EmailTrigger();
-	        $trigger->setVariables($data);
-	        $trigger->dispatch('Login_Index_Signup');
 	        
 	        $this->_flashMessenger->addMessage('Account was created and an email has been sent to the address provided');
 	        

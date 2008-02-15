@@ -214,8 +214,9 @@ class Internal_Auth_Adapter_DbAuth implements Zend_Auth_Adapter_Interface, Ot_Au
         $mail->setFrom($this->_defaultFrom);
         $mail->setSubject('You have been given a new ' . $config->branding->appTitle . ' Account');
 
-        $body = "A new account has been created for you to access the " . $config->branding->appTitle . " system.\n\n" .
-                "User ID: " . $userId . "\n" .
+        $body = "A new ClassMate account has been created for you.\n\n" .
+                "Login Type: ClassMate Account\n" . 
+                "User ID: " . preg_replace('/@.*/i', '', $userId) . "\n" .
                 "Password: " . $password . "\n" .
                 "\n\n" .
                 "To log in, go to " . $this->_getUrl() . " and enter in this information.";
@@ -291,8 +292,9 @@ class Internal_Auth_Adapter_DbAuth implements Zend_Auth_Adapter_Interface, Ot_Au
         $mail->setFrom($this->_defaultFrom);
         $mail->setSubject('Your password for ' . $config->branding->appTitle . ' has been reset.');
 
-        $body = "Your password has been reset.  Use the following credentials:\n\n" .
-                "User ID: " . $userId . "\n" .
+        $body = "Your password for ClassMate has been reset.  Use the following credentials:\n\n" .
+                "Login Type: ClassMate Account\n" . 
+                "User ID: " . preg_replace('/@.*/i', '', $userId) . "\n" .
                 "Password: " . $password . "\n" .
                 "\n\n" .
                 "To log in, go to " . $this->_getUrl() . " and enter in this information.";

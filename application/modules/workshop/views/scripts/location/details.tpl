@@ -10,7 +10,6 @@
 		{/if}
 		<img id="statusImage" src="{$sitePrefix}/public/images/network-idle.png" alt="{$location.name}" />  
         {if $location.status == 'disabled'}
-        <img id="disabledImage" src="{$sitePrefix}/public/images/cross.png" />
         <span id="disabled">DISABLED!</span>
         {/if}
 		<span id="name" rel="type=input&size=40&url={$sitePrefix}/workshop/location/edit/&response=response">{$location.name}</span>

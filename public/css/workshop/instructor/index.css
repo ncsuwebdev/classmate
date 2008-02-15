@@ -12,7 +12,7 @@ div.taken {
 
 div.attendee img {
     float: left;
-    padding-right: 6px;
+    padding-right: 0px;
 }
 
 div.attendee .name {
@@ -33,9 +33,9 @@ div.attendee .name img {
 div.attendee .attendance {
 	float: right;
 	display: block;
-	width: 250px;
+	width: 230px;
 	margin: 3px 0px 3px 0px;
-	padding: 2px 2px 2px 22px;
+	padding: 2px 2px 2px 2px;
 }
 
 div.attendee .attendance div {
@@ -81,7 +81,8 @@ div.attendee .signup {
 	float: left;
     background-color: #ffffcc;
     opacity: 0;
-    width: 90px;
+    filter:alpha(opacity=0);
+    width: 70px;
     text-align: center;
     padding: 2px;
 }
@@ -94,7 +95,7 @@ div.attendee .signup {
     background-position: 0px 3px;
     padding-left: 22px;
     height: 19px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     float: right;
 }
 

@@ -10,11 +10,7 @@
     {foreach from=$locations item=l name=locations}
 	    {if ($l.status == 'disabled' && $acl.viewDisabled) || $l.status == 'enabled'}
 	    <div class="location">
-	        {if $l.status == 'enabled'}
 	        <img src="{$sitePrefix}/public/images/network-idle.png" alt="{$location.name}" />
-	        {else}
-	        <img src="{$sitePrefix}/public/images/network-offline.png" alt="{$location.name}" />
-	        {/if}
 	        <div class="name">{if $l.status == 'disabled'}<B>DISABLED!</B> &nbsp; {/if}<a href="{$sitePrefix}/workshop/location/details/?locationId={$l.locationId}">{$l.name}</a></div>
 	        {if $l.address != ''}
 	        <div class="mapit"><a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q={$l.address}&ie=UTF8&z=16&iwloc=addr" target="_blank">Map With Google Maps!</a></div>        

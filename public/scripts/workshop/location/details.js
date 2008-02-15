@@ -58,15 +58,8 @@ window.addEvent('domready', function() {
                    
                    span.injectBefore($('name'));
                    
-                   var img = new Element('img');
-                   img.src = sitePrefix + '/public/images/cross.png';
-                   img.id  = 'disabledImage';
-                   
-                   img.injectBefore($('disabled'));
-                   
                } else {
                    $('disabled').remove();
-                   $('disabledImage').remove();
                } 
          
             }             

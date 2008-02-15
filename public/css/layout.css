@@ -545,3 +545,11 @@ div.bar ul {
 .item_line {
 	border-top:solid 1px #DEDEDE;
 }
+
+.message {
+    border: 1px solid #CC0;
+    background-color: #FFFFDF;
+    padding: 4px 4px 4px 24px;
+    margin: 20px 0 20px 0;
+    background: #FFFFDF url(../images/warning.png) no-repeat 3px 3px;
+}
