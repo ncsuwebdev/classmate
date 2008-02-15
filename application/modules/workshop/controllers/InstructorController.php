@@ -107,12 +107,16 @@ class Workshop_InstructorController extends Internal_Controller_Action
         }		
 	}
 	
+	/**
+	 * Allows a user to view all the intructor pages
+	 *
+	 */
 	public function viewAllInstructorPagesAction()
 	{}
 
 	
     /**
-     * 
+     * The main instructor page for an event.
      *
      */
     public function indexAction()
@@ -186,6 +190,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->view->toolTemplate = $this->view->render('instructor/index.tpl');
     }
     
+    /**
+     * Allows a user to add an attendee to the event.
+     *
+     */
     public function addAttendeeAction()
     {
     	if ($this->_request->isPost()) {
@@ -242,6 +250,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
     	}
     }
     
+    /**
+     * Allows a user to delete an attendee from an event.
+     *
+     */
     public function deleteAttendeeAction()
     {
 
@@ -272,6 +284,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
     }
     
+    /**
+     * Allows a user to set the attendance status of a user
+     *
+     */
     public function attendanceAction()
     {
     	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -306,6 +322,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
     	}
     }
     
+    /**
+     * Allows a user to contact all the people in their event.
+     *
+     */
     public function contactAction()
     {
     	$filter = Zend_Registry::get('inputFilter');
@@ -380,7 +400,7 @@ class Workshop_InstructorController extends Internal_Controller_Action
     }
     
     
-/**
+    /**
      * Displays the results of an evaluation as long as the user requesting the
      * page is an instructor of the event.
      *
@@ -477,6 +497,10 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->view->toolTemplate = $this->view->render('instructor/evaluationresults.tpl');
     }
     
+    /**
+     * Allows a user to see a confirmation that their emails were queued.
+     *
+     */
     public function contactConfirmAction()
     {
     	$this->_setupTemplate();

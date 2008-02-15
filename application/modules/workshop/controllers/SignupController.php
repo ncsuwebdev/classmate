@@ -35,7 +35,7 @@
 class Workshop_SignupController extends Internal_Controller_Action 
 {	
     /**
-     * Action when going to the main login page
+     * The main page a person sees when they want to sign up for an event
      *
      */
     public function indexAction()
@@ -110,6 +110,10 @@ class Workshop_SignupController extends Internal_Controller_Action
         $this->view->status = $status;
     }
     
+    /**
+     * Allows a user to sign up for an event.
+     *
+     */
     public function reserveAction()
     {
         $get = Zend_Registry::get('get'); 
@@ -150,6 +154,10 @@ class Workshop_SignupController extends Internal_Controller_Action
         $this->_redirect('profile/');       
     }
     
+    /**
+     * Allows a user to cancel their reservation for an event.
+     *
+     */
     public function cancelAction()
     {
     	$filter = Zend_Registry::get('inputFilter');

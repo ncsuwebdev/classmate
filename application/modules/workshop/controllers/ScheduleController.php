@@ -35,7 +35,9 @@
 class Workshop_ScheduleController extends Internal_Controller_Action 
 {   
     /**
-     * Action when going to the main login page
+     * The main scheduler page.  This allows a user to view and edit the schedule.  Users
+     * will almost certainly need access to this entire controller to make the
+     * scheduler work properly and look right.
      *
      */
     public function indexAction()
@@ -149,7 +151,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                
     }
     
-    
+    /**
+     * Allows a user to edit an events details
+     *
+     */
     public function editEventAction()
     {
     	$this->_helper->viewRenderer->setNeverRender();
@@ -334,9 +339,19 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     	}
     }
     
+    /**
+     * This function is used to prevent the user from seeing the schedule if
+     * no locations exist in the system.
+     *
+     */
     public function noLocationsFoundAction()
     {}
     
+    /**
+     * Gets the schedule data to display.  Users need access to this if they
+     * want to view any of the data on the schedule.
+     *
+     */
     public function searchAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
@@ -398,6 +413,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->_response->setBody($this->view->render('schedule/search.tpl'));
     }
     
+    /**
+     * Allows a user to create an event.
+     *
+     */
     public function createEventAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
@@ -496,7 +515,11 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         }
     }
     
-    
+    /**
+     * Allows a user to delete an event from the schedule (it really cancels an
+     * event).
+     *
+     */
     public function deleteEventAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
@@ -535,6 +558,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         echo Zend_Json::encode(array("rc"=>$result));
     }
     
+    /**
+     * Allows all the user to get all the events that are happening.
+     *
+     */
     public function allEventsAction()
     {
         $event = new Event();

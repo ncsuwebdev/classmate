@@ -35,7 +35,8 @@
 class Workshop_IndexController extends Internal_Controller_Action 
 {	
     /**
-     * Action when going to the main login page
+     * The main workshop page.  It has the list of all the workshops that are 
+     * available in the system.
      *
      */
     public function indexAction()
@@ -78,9 +79,19 @@ class Workshop_IndexController extends Internal_Controller_Action
         $this->view->workshops = $workshops;
     }
     
+    /**
+     * Access to this function is needed in order for a user to see the workshops
+     * that are disabled. 
+     *
+     */
     public function viewDisabledAction()
     {}
     
+    
+    /**
+     * The function to add a new workshop to the system.
+     *
+     */
     public function addAction()
     {
         if ($this->_request->isPost()) {
@@ -120,6 +131,10 @@ class Workshop_IndexController extends Internal_Controller_Action
         );    	
     }
     
+    /**
+     * Allows a user to view the details of a workshop
+     *
+     */
     public function detailsAction()
     {
     	$get = Zend_Registry::get('get');
@@ -241,6 +256,10 @@ class Workshop_IndexController extends Internal_Controller_Action
     	$this->view->sessionID = session_id();
     }
     
+    /**
+     * Allows a user to edit a workshop
+     *
+     */
     public function editAction()
     {
     	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -307,6 +326,10 @@ class Workshop_IndexController extends Internal_Controller_Action
     	}
     }
     
+    /**
+     * Let's a user manage the options for a workshop
+     *
+     */
     public function optionsAction()
     {
     	if ($this->_request->isPost()) {
@@ -380,6 +403,10 @@ class Workshop_IndexController extends Internal_Controller_Action
         $this->_redirect('/workshop/index/details?workshopId=' . $workshopId);
     }
     
+    /**
+     * Allows a user to have permission to delete a document from a workshop
+     *
+     */
     public function deleteDocumentAction()
     {
     	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -436,6 +463,10 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
+    /**
+     * Allows a user access to download a document from a workshop
+     *
+     */
     public function downloadDocumentAction()
     {
         $get = Zend_Registry::get('get');
@@ -479,6 +510,11 @@ class Workshop_IndexController extends Internal_Controller_Action
         	throw new Internal_Exception_Data('File not found');    	
         }
     }
+    
+    /**
+     * Allows a user to add documents to a workshop
+     *
+     */
     public function addDocumentsAction()
     {
         if ($this->_request->isPost()) {
@@ -553,6 +589,11 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
+    
+    /**
+     * Allows a user to edit a document.
+     *
+     */
     public function editDocumentAction()
     {
         $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -607,6 +648,11 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
+    
+    /**
+     * Allows a user to delete a link associated with a workshop.
+     *
+     */
     public function deleteLinkAction()
     {
         $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -645,7 +691,10 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
-    
+    /**
+     * Allows a user to add a link associated with a workshop.
+     *
+     */
     public function addLinkAction()
     {
         if ($this->_request->isPost()) {
@@ -680,6 +729,10 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }
     
+    /**
+     * Allows a user to edit a link associated with a workshop.
+     *
+     */
     public function editLinkAction()
     {
         $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
@@ -732,8 +785,13 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }    
     
+    /**
+     * If a user has access to this function they have access to edit all the workshops.
+     *
+     */
     public function editAllWorkshopsAction()
     {}
+    
     
     protected function _getDocumentType($mime)
     {

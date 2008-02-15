@@ -35,7 +35,7 @@
 class Workshop_LocationController extends Internal_Controller_Action 
 {	
     /**
-     * Action when going to the main login page
+     * Allows a user to view the list of locations.
      *
      */
     public function indexAction()
@@ -60,9 +60,18 @@ class Workshop_LocationController extends Internal_Controller_Action
         $this->view->locations = $locations;       
     }
     
+    /**
+     * If a user has access to this action, they can view the locations that are
+     * disabled.
+     *
+     */    
     public function viewDisabledAction()
     {}
-    
+
+    /**
+     * Allows a user to view the details of a location.
+     *
+     */
     public function detailsAction()
     {
     	$get = Zend_Registry::get('get');
@@ -94,6 +103,10 @@ class Workshop_LocationController extends Internal_Controller_Action
     	
     }
     
+    /**
+     * Allows a user to add a location.
+     *
+     */
     public function addAction()
     {
         if ($this->_request->isPost()) {
@@ -120,6 +133,10 @@ class Workshop_LocationController extends Internal_Controller_Action
         $this->view->javascript = array('tiny_mce/tiny_mce.js', 'tinyMceConfig.js');
     }
     
+    /**
+     * Allows a user to edit a location.
+     *
+     */
     public function editAction()
     {
         $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
