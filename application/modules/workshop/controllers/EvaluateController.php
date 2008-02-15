@@ -146,16 +146,11 @@ class Workshop_EvaluateController extends Internal_Controller_Action
             // custom attributes is the custom array that will be save by the CustomAttributes model
             $evaluation->saveEvaluation($eventId, $userId, $customAttributes);
             
-            $this->_redirect('workshop/evaluate/thanks');
+            $fm = $this->getHelper('FlashMessenger');
+            $fm->setNamespace('login');
+            $fm->addMessage('Thanks for your evaluation!');
+        
+            $this->_redirect('profile/');
         }        
-    }
-    
-    /**
-     * The page the user is redirected to after taking the evaluation.
-     *
-     */
-    public function thanksAction()
-    {
-        $this->view->title = "Thanks for your evaluation!";
     }
 }
