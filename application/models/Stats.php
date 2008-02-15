@@ -55,13 +55,26 @@ class Stats extends Ot_Db_Table
         return $this->fetchAll($where)->count();
     }
     
-    public function getUpcomingEventCount()
+    public function getUpcomingEventsCount()
     {
         $event = new Event();
         
         $events['open'] = count($event->getEvents(null, null, time(), null, 'open'));
         $events['closed'] = count($event->getEvents(null, null, time(), null, 'closed'));
         $events['canceled'] = count($event->getEvents(null, null, time(), null, 'canceled'));
+        $events['totalNumber'] = $events['open'] + $events['closed'] + $events['canceled'];
+        
+        return $events;
+    }
+    
+    public function getPastEventsCount()
+    {
+        $event = new Event();
+        
+        $events['open'] = count($event->getEvents(null, null, 0, time(), 'open'));
+        $events['closed'] = count($event->getEvents(null, null, 0, time(), 'closed'));
+        $events['canceled'] = count($event->getEvents(null, null, 0, time(), 'canceled'));
+        $events['totalNumber'] = $events['open'] + $events['closed'] + $events['canceled'];
         
         return $events;
     }

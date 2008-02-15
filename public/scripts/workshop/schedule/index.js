@@ -110,6 +110,9 @@ window.addEvent('domready', function() {
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
             caption: 'Create Event',
+            modalOptions: {
+                hideOnClick: false
+            },
             stickyWinHTMLOptions: {
                 width: '600px',
                 buttons: [
@@ -285,6 +288,10 @@ function search()
 function initEventPopup()
 {
 
+    $$('.closeButton').each(function(el) {
+        el.remove();
+    });
+
     if ($('editLocationId')) {
         $('editLocationId').setStyle('visibility', 'visible');
         $('editLocationId').setStyle('opacity', '100');
@@ -421,9 +428,7 @@ function initEventPopup()
                     $('instructors').empty();
                 }
                 
-                $('instructors').adopt(tmpBox);                       
-                
-                //tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+                $('instructors').adopt(tmpBox);                                       
             }
         }
     });
@@ -513,6 +518,9 @@ function processSearchResults()
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
             caption: 'Edit Event',
+            modalOptions: {
+                hideOnClick: false
+            },
             stickyWinHTMLOptions: {
                 width: '600px',
                 buttons: [

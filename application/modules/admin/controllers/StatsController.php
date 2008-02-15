@@ -30,6 +30,9 @@ class Admin_StatsController extends Internal_Controller_Action
         
         $this->view->loginCount = $stats->getLoginCount();
         
-        $this->view->eventCounts = $stats->getUpcomingEventCount();
+        $this->view->upcomingEventCounts = $stats->getUpcomingEventsCount();
+        $this->view->pastEventCounts = $stats->getPastEventsCount();
+        
+        $this->view->javascript = array('excanvas.js', 'plootr.js', 'tabletochart.js');
     }
 }

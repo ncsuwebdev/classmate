@@ -1,0 +1,9 @@
+fieldset {
+    width: 500px;
+    padding: 7px;
+}
+
+fieldset legend {
+    font-weight: bold;
+    font-size: 1.2em;
+}
