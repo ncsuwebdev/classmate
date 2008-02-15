@@ -36,7 +36,7 @@
 class Admin_SearchController extends Internal_Controller_Action 
 {
     /**
-     * displays logs based on search criteria
+     * displays all search indexes
      */
     public function indexAction()
     {
@@ -44,7 +44,7 @@ class Admin_SearchController extends Internal_Controller_Action
     }
 
     /**
-     * shows the details of the log message
+     * reindexes the selected search index
      *
      */
     public function reindexAction()

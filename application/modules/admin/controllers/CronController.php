@@ -36,7 +36,7 @@
 class Admin_CronController extends Internal_Controller_Action 
 {
     /**
-     * shows all the semesters
+     * shows all the cron jobs
      *
      */
     public function indexAction()
@@ -59,6 +59,10 @@ class Admin_CronController extends Internal_Controller_Action
         $this->view->title          = "Cron Job Status";
     }
 
+    /**
+     * Toggles the status of the selected cron job
+     *
+     */
     public function toggleAction()
     {
         $cs = new CronStatus();

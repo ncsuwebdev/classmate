@@ -55,6 +55,10 @@ class Admin_ApiController extends Internal_Controller_Action
         $this->view->codes = $codes->toArray();
     }
 
+    /**
+     * Add an API code
+     *
+     */
     public function addAction()
     {
         $filter = Zend_Registry::get('inputFilter');
@@ -83,7 +87,10 @@ class Admin_ApiController extends Internal_Controller_Action
         }
     }
 
-    
+    /**
+     * Deletes an API code
+     *
+     */
     public function deleteAction()
     {
         $filter = Zend_Registry::get('inputFilter');

@@ -28,6 +28,10 @@
 class Admin_CategoryController extends Internal_Controller_Action 
 {
     
+	/**
+	 * Shows all workshop categories
+	 *
+	 */
     public function indexAction()
     {
         $this->view->title = "Workshop Category Management";      
@@ -45,6 +49,10 @@ class Admin_CategoryController extends Internal_Controller_Action
         $this->view->wcs = $wcs;       
     }
     
+    /**
+     * Add a new workshop category
+     *
+     */
     public function addAction()
     {
         if ($this->_request->isPost()) {
@@ -93,6 +101,10 @@ class Admin_CategoryController extends Internal_Controller_Action
         $this->view->title = "Add a Location";
     }
     
+    /**
+     * edit a category
+     *
+     */
     public function editAction()
     {
         if ($this->_request->isPost()) {
@@ -162,6 +174,10 @@ class Admin_CategoryController extends Internal_Controller_Action
         }
     }
     
+    /**
+     * Delete a category
+     *
+     */
     public function deleteAction()
     {       
         $get    = Zend_Registry::get('get');
