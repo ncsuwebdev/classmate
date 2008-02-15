@@ -10,10 +10,6 @@
         <privilege>details</privilege>
       </allow>
       <allow>
-        <resource>default_bug</resource>
-        <privilege>index</privilege>
-      </allow>
-      <allow>
         <resource>default_documentation</resource>
         <privilege>*</privilege>
       </allow>

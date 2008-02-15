@@ -425,12 +425,12 @@ class Workshop_InstructorController extends Internal_Controller_Action
         $this->view->eventId = $eventId;
 
         $event = new Event();
-        
+        /*
         $status = $event->getStatusOfUserForEvent($userId, $eventId);
         
         if ($status != "instructor") {
             throw new Internal_Exception_Data('You do not appear to be an instructor for this event.');
-        }
+        }*/
         
         // get the evaluationId from the eventId
         $evaluation = new Evaluation();
