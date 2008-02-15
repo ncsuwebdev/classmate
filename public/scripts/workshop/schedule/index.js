@@ -9,6 +9,8 @@ var baseTime;
 var startTime, endTime;
 var newEventStartTime, newEventEndTime;
 var modeButton, currentMode;
+var insideColumn;
+var tmpClickWindow, tmpDoubleClickWindow;
 
 window.addEvent('domready', function() {
     
@@ -22,6 +24,8 @@ window.addEvent('domready', function() {
     searchResultsContentBox = $('workshopSearchResultsContent');
     
     baseTime = parseInt($('basetime').value);
+    
+    insideColumn = false;
     
     workshopBox = $('workshopId');
     instructorListBox = $('instructorList');
@@ -49,7 +53,7 @@ window.addEvent('domready', function() {
         } else {
             currentMode = "add";
             $('workshopAddForm').setStyle('display', 'block');
-            $$('.delete').each (function(el){
+            $$('.delete').each (function(el) {
                 el.setStyle('visibility', 'hidden');
             });
             modeButton.value = "Switch to Edit Mode";
@@ -101,7 +105,7 @@ window.addEvent('domready', function() {
                     });       
         
                
-        new StickyWinModal.Ajax({
+        tmpClickWindow = new StickyWinModal.Ajax({
             url: createEventUrl + "?" + extraData,
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
@@ -112,6 +116,7 @@ window.addEvent('domready', function() {
                     {
                         text: 'Cancel', 
                         onClick: function() {
+                            tmpClickWindow.destroy();
                         }
                     },
                     {
@@ -181,6 +186,7 @@ window.addEvent('domready', function() {
                                     } else {
                                         alert(results.msg);
                                     }
+                                    tmpClickWindow.destroy();
                                 }
                             }).request();
                         }
@@ -257,15 +263,16 @@ function search()
 {   
     var year = $('year').value;
     var week = $('week').value;
+    var location = $('locationId').value;
     
-    var extraData = Object.toQueryString({year: year, week: week});
+    var varStr = Object.toQueryString({locationId: location, year: year, week: week});
 
     hoverDiv.setStyle('display', 'none');
     searchResultsContentBox.empty();    
 
     new Ajax(searchUrl, {
         method: 'get',
-        data: $('wsForm').toQueryString() + "&" + extraData,
+        data: varStr,
         update: searchResultsContentBox,
         onRequest: function() {
             $('workshopSearchResultsLoading').style.display = 'block';
@@ -311,6 +318,7 @@ function initEventPopup()
         $('locationDisplay').setText(locationBox.options[locationBox.options.selectedIndex].label);
     }
     
+    // add instructors to the display if they're selected in the list box already
     var tmpListBox = $('instructorList');
     for (var i=0; i < tmpListBox.options.length; i++) {
         if (tmpListBox[i].selected) {
@@ -331,7 +339,7 @@ function initEventPopup()
             tmpCloseBtn.addClass('closeBtn');
             
             tmpCloseBtn.addEvent('click', function(e) {
-                $('instructorList').options[this.title].setStyle('display', '');
+                
                 this.parentNode.remove();
                 
                 if ($('instructors').innerHTML == "") {
@@ -355,57 +363,68 @@ function initEventPopup()
             $('instructors').adopt(tmpBox);                       
             
             tmpListBox.options[i].selected = false;
-            tmpListBox.options[i].setStyle('display', 'none');
         }
     }
     
-    tmpListBox.multiple = false;
+    tmpListBox.multiple = false; // set it back so you can't select multiple items
     
+    // add instructor from the list to the display of instructors
     $('instructorAddButton').addEvent('click', function(e) {
         var tmpListBox = $('instructorList');
         
         if (tmpListBox.options.selectedIndex >= 0) {
-            var tmpBox = new Element('div');
-            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-            tmpBox.addClass('instructorName');
-            
-            var tmpLeft = new Element('p');
-            tmpLeft.addClass('left');
-                                    
-            var tmpRight = new Element('p');
-            tmpRight.addClass('right');
-            
-            var tmpCloseBtn = new Element('p');
-            tmpCloseBtn.innerHTML = "&nbsp;";
-            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
-            tmpCloseBtn.addClass('closeBtn');
-            
-            tmpCloseBtn.addEvent('click', function(e) {
-                $('instructorList').options[this.title].setStyle('display', '');
-                this.parentNode.remove();
-                
-                if ($('instructors').innerHTML == "") {
-                    $('instructors').innerHTML = "None Added";
+        
+            var tmpChildren = $('instructors').getChildren();
+            var found = false;
+            for (var i = 0; i < tmpChildren.length; i++) {
+                if (tmpChildren[i].title == tmpListBox.options[tmpListBox.options.selectedIndex].value) {
+                    found = true;
                 }
-            });
-            
-            
-            var tmpP = new Element('a');
-            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
-            tmpP.addClass('content');
-            
-            tmpBox.adopt(tmpLeft);
-            tmpBox.adopt(tmpRight);
-            tmpBox.adopt(tmpCloseBtn);
-            tmpBox.adopt(tmpP);
-            
-            if($('instructors').innerHTML == "None Added") {
-                $('instructors').empty();
             }
             
-            $('instructors').adopt(tmpBox);                       
+            if (!found) {
             
-            tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+                var tmpBox = new Element('div');
+                tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+                tmpBox.addClass('instructorName');
+                
+                var tmpLeft = new Element('p');
+                tmpLeft.addClass('left');
+                                        
+                var tmpRight = new Element('p');
+                tmpRight.addClass('right');
+                
+                var tmpCloseBtn = new Element('p');
+                tmpCloseBtn.innerHTML = "&nbsp;";
+                tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+                tmpCloseBtn.addClass('closeBtn');
+                
+                tmpCloseBtn.addEvent('click', function(e) {
+                
+                    this.parentNode.remove();
+                
+                    if ($('instructors').innerHTML == "") {
+                        $('instructors').innerHTML = "None Added";
+                    }
+                });
+                
+                var tmpP = new Element('a');
+                tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+                tmpP.addClass('content');
+                
+                tmpBox.adopt(tmpLeft);
+                tmpBox.adopt(tmpRight);
+                tmpBox.adopt(tmpCloseBtn);
+                tmpBox.adopt(tmpP);
+                
+                if($('instructors').innerHTML == "None Added") {
+                    $('instructors').empty();
+                }
+                
+                $('instructors').adopt(tmpBox);                       
+                
+                //tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+            }
         }
     });
 }
@@ -489,7 +508,7 @@ function processSearchResults()
     
         el.addEvent('dblclick', function (e) {
             
-            new StickyWinModal.Ajax({
+            tmpDoubleClickWindow = new StickyWinModal.Ajax({
             url: editEventUrl + "?eventId=" + el.id,
             onDisplay: initEventPopup,
             wrapWithStickyWinDefaultHTML: true,
@@ -500,12 +519,16 @@ function processSearchResults()
                     {
                         text: 'Cancel', 
                         onClick: function() {
+                            tmpDoubleClickWindow.destroy();
                         }
                     },
                     {
                         text: 'Save Event', 
                         onClick: function(e) {
-                        
+                            
+                            var event = new Event(e);
+                            event.stop();
+                            
                             if ($('workshopId').value == 0) {
                                 alert("You must select a workshop");
                                 return false;
@@ -562,6 +585,7 @@ function processSearchResults()
                                     } else {
                                         alert(results.msg);
                                     }
+                                    tmpDoubleClickWindow.destroy();
                                 }
                             }).request();
                         }
@@ -580,6 +604,7 @@ function processSearchResults()
             'mouseenter': function(e) {
             
                 currentColumn = el;
+                insideColumn = true;
             
                 if (currentMode == "add") {
                     hoverDiv.setStyle('display', 'block');
@@ -605,7 +630,7 @@ function processSearchResults()
             
             'mousemove': function(e) {
 
-                if (currentMode == "add") {
+                if (currentMode == "add" && insideColumn == true) {
 
                     var e = new Event(e);
                     

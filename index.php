@@ -87,6 +87,8 @@ $writer = new Zend_Log_Writer_Db($db, 'tbl_log');
 
 $logger = new Zend_Log($writer);
 
+$logger->addPriority('LOGIN', 8);
+
 $logger->setEventItem('sid', session_id());
 $logger->setEventItem('timestamp', time());
 $logger->setEventItem('request', str_replace($baseUrl, '', $_SERVER['REQUEST_URI']));

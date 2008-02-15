@@ -26,6 +26,10 @@ class Admin_StatsController extends Internal_Controller_Action
 {
     public function indexAction()
     {
+        $stats = new Stats();
         
+        $this->view->loginCount = $stats->getLoginCount();
+        
+        $this->view->eventCounts = $stats->getUpcomingEventCount();
     }
 }

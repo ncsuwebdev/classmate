@@ -105,7 +105,7 @@ class Login_IndexController extends Internal_Controller_Action
             if (!$result->isValid()) {
 	            $this->_logger->setEventItem('attributeName', 'userId');
 	            $this->_logger->setEventItem('attributeId', $userId);
-	            $this->_logger->info('Invalid Login Attempt');             	
+	            $this->_logger->info('Invalid Login Attempt');          
                 throw new Internal_Exception_Data('Invalid Login Credentials');
             }
             
@@ -128,7 +128,7 @@ class Login_IndexController extends Internal_Controller_Action
             $this->_logger->setEventItem('role', '');
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
-            $this->_logger->info('User Logged In');  
+            $this->_logger->login('User Logged In');  
                         
             if ($user['role'] == 'activation_pending') {
             	$this->_redirect('/profile/index/edit/');
