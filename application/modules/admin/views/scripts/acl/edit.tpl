@@ -25,7 +25,7 @@
                 inherited (directly or indirectly) from this role:
                 <ul>
                 {foreach from=$children item=c}
-                <li><a href="{$sitePrefix}/acl/details/?originalRoleName={$c.name}">{$c.from}</li>
+                <li><a href="{$sitePrefix}/admin/acl/details/?originalRoleName={$c.name}">{$c.from}</li>
                 {/foreach}
                 </ul>
                 </td>

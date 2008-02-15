@@ -116,6 +116,16 @@ class IndexController extends Internal_Controller_Action
     	$searchTerm = new SearchTerm();
     	$searchTerm->increment($search);
     	
+        $wc = new WorkshopCategory();
+        $result = $wc->fetchAll(null, 'name')->toArray();
+        
+        $categories = array();
+        foreach ($result as $c) {
+            $categories[$c['workshopCategoryId']] = $c;
+        }
+        
+        $this->view->categories = $categories;
+            	
     	$this->view->title = "Your search for &quot;" . $search . "&quot; returned " . count($workshops) . " workshop" . ((count($workshops) != 1) ? "s" : "") . ":";
     	$this->view->workshops = $workshops;
     }

@@ -11,7 +11,8 @@ div#detailsRight {
 
 div.rightTitle {
     background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
-    text-align: center;
+    text-align: left;
+    padding-left: 5px;
     font-weight: bold;
     line-height: 20px;
     color: #FFF;
@@ -96,4 +97,29 @@ div.event span.restricted {
     background-image: url(../../../images/restricted.png);
     background-position: top left;    
     background-repeat: no-repeat;
+}
+
+div#workshopTitleContainer {
+    margin-top: 20px;
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#workshopTitleContainer img {
+    float: left;
+    padding-right: 10px;
+}
+
+div#workshopTitleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+div#workshopTitleContainer div#wsTitle {
+    color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 0 0 42px;
 }

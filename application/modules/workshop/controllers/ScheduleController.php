@@ -506,11 +506,31 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 
         $eventId = $filter->filter($post['eventId']);
                 
-        $e = new Event();
+        $event = new Event();
 
-        $where = $e->getAdapter()->quoteInto('eventId = ?', $eventId);
+        $dba = $event->getAdapter();
+        
+        $dba->beginTransaction();
+        
+        $where = $dba->quoteInto('eventId = ?', $eventId);
         $data = array('status'=>'canceled');
-        $result = $e->update($data, $where);
+        
+        try {
+            $result = $event->update($data, $where);
+        } catch (Exception $e) {
+        	$dba->rollback();
+        	throw $e;
+        }
+        
+        $attendees = new Attendees();
+        try {
+        	$result = $attendees->update($data, $where);
+        } catch (Exception $e) {
+        	$dba->rollback();
+        	throw $e;
+        }
+        
+        $dba->commit();
         
         echo Zend_Json::encode(array("rc"=>$result));
     }

@@ -1,5 +1,6 @@
 div.searchResult {
-    padding-bottom: 30px;
+    padding: 0px 0px 30px 24px;
+    background-repeat: no-repeat;
 }
 
 div.searchResult .title {

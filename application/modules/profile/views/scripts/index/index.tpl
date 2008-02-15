@@ -47,6 +47,13 @@
         {/if}
         <div id="wsTitle">{$title}</div>
     </div>
+	{if count($messages) != 0}
+	    <div class="message">
+	    {foreach from=$messages item=m}
+	    {$m}<br />
+	    {/foreach}
+	    </div>
+	{/if}    
     <b>MyClassMate</b> is your one-stop-shop for all the classes you are involved
     with.  Make sure to keep your user information up-to-date so that you get all
     the benefits of being a ClassMate member.    

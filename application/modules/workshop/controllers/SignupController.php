@@ -96,6 +96,14 @@ class Workshop_SignupController extends Internal_Controller_Action
 	           $newEvents[] = $e;
 	    	}
 	    }   
+	    
+        // lookup the workshop category
+        $wc = new WorkshopCategory();
+        $category = $wc->find($thisWorkshop->workshopCategoryId);
+        if (is_null($category)) {
+            throw new Internal_Exception_Data('Category not found');
+        }
+        $this->view->category = $category->toArray();	    
 
 	    $this->view->upcomingEvents = $newEvents;
         
@@ -117,8 +125,27 @@ class Workshop_SignupController extends Internal_Controller_Action
             throw new Internal_Exception_Input('Event ID has no value');
         } 
         
+        $event = new Event();
+        $thisEvent = $event->find($eventId);
+            
+        if (is_null($thisEvent)) {
+            throw new Internal_Exception_Data('Event not found');
+        }
+
+        $workshop = new Workshop();
+        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+        if (is_null($thisWorkshop)) {
+            throw new Internal_Exception_Data('Workshop not found');
+        }
+                
         $attendees = new Attendees();
         $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
+                    
+        $fm = $this->getHelper('FlashMessenger');
+        $fm->setNamespace('login');
+        $fm->addMessage('You have successfully signed up for <b>' . $thisWorkshop->title . '</b>.<br /><br />Your reservation ' . 
+            'will show up below under &quot;My Reservations&quot;.  Should you need to cancel your reservation, you ' . 
+            'can get back to this page by clicking on the &quot;MyClassMate&quot; link in the navigation bar.');
         
         $this->_redirect('profile/');       
     }
@@ -141,6 +168,19 @@ class Workshop_SignupController extends Internal_Controller_Action
                 throw new Internal_Exception_Input('Event ID has no value');
             }
             
+	        $event = new Event();
+	        $thisEvent = $event->find($eventId);
+	            
+	        if (is_null($thisEvent)) {
+	            throw new Internal_Exception_Data('Event not found');
+	        }
+	
+	        $workshop = new Workshop();
+	        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+	        if (is_null($thisWorkshop)) {
+	            throw new Internal_Exception_Data('Workshop not found');
+	        }
+            
             $status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $eventId);
             if ($status != 'waitlist' && $status != 'attending') {
                 throw new Internal_Exception_Data('You are not atteding this class, so you cannot cancel it');
@@ -149,7 +189,10 @@ class Workshop_SignupController extends Internal_Controller_Action
             $attendees = new Attendees();
             $attendees->cancelReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
             
-            $this->_redirect('/profile/');
+            $fm = $this->getHelper('FlashMessenger');
+            $fm->setNamespace('login');
+            $fm->addMessage('You have successfully canceled your reservation for <b>' . $thisWorkshop->title . '</b>.');               
+            $this->_redirect('profile/');
             
     	} else {
 	        $get = Zend_Registry::get('get');	        
@@ -208,75 +251,18 @@ class Workshop_SignupController extends Internal_Controller_Action
 	               $newEvents[] = $e;
 	            }
 	        }   
-	
+	        
+            // lookup the workshop category
+	        $wc = new WorkshopCategory();
+	        $category = $wc->find($thisWorkshop->workshopCategoryId);
+	        if (is_null($category)) {
+	            throw new Internal_Exception_Data('Category not found');
+	        }
+	        $this->view->category = $category->toArray();   
+        	        
 	        $this->view->upcomingEvents = $newEvents;
         	        
 	        $this->view->hideTitle = true;
 	    }
-    }
-    
-    public function reservationAction()
-    {
-    	$this->view->title = 'Reservation Details';
-    	
-    	$get = Zend_Registry::get('get');
-    	$filter = Zend_Registry::get('inputFilter');
-    	
-        if (!isset($get['eventId'])) {
-            throw new Internal_Exception_Input('Event ID not set');
-        }
-            
-        $eventId = $filter->filter($get['eventId']);
-          
-        if ($eventId == '') {
-            throw new Internal_Exception_Input('Event ID has no value');
-        }
-        
-        $editable = true;
-        if (isset($get['userId'])) {
-            if ($this->_acl->isAllowed($this->_role, 'profile_index', 'editAllProfiles')) {
-                $userId = $filter->filter($get['userId']);      
-            } else {
-                $userId = Zend_Auth::getInstance()->getIdentity();
-            }
-        } else {
-            $userId = Zend_Auth::getInstance()->getIdentity();
-        }
-                
-        $event = new Event();
-            
-        $status = $event->getStatusOfUserForEvent($userId, $eventId);
-        if ($status != 'waitlist' && $status != 'attending') {
-            throw new Internal_Exception_Data('You are not atteding this class, so you cannot cancel it');
-        }
-        $this->view->status = $status;  
-            
-        $event = new Event();
-        $thisEvent = $event->find($eventId);
-            
-        if (is_null($thisEvent)) {
-            throw new Internal_Exception_Data('Event not found');
-        }
-            
-        $this->view->event = $thisEvent->toArray();
-            
-        $location = new Location();        
-        $thisLocation = $location->find($thisEvent->locationId);        
-        if (is_null($thisLocation)) {
-            throw new Internal_Exception_Data('Location not found');
-        }
-        $this->view->location = $thisLocation->toArray();
-                        
-        $workshop = new Workshop();
-        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
-        if (is_null($thisWorkshop)) {
-            throw new Internal_Exception_Data('Workshop not found');
-        }
-        $this->view->workshop = $thisWorkshop->toArray();        
-            
-        $instructor = new Instructor();
-        $instructors = $instructor->getInstructorsForEvent($eventId);        
-                	
-    	$this->view->instructors = $instructors;
     }
 }

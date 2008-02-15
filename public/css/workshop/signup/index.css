@@ -11,11 +11,12 @@ div#detailsRight {
 
 div.rightTitle {
     background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
-    text-align: center;
+    text-align: left;
     font-weight: bold;
     line-height: 20px;
     color: #FFF;
     font-size: 100%;
+    padding-left: 5px;
 }
 
 div.rightContent {
@@ -61,10 +62,10 @@ div#restricted {
 }
 
 h3#signup {
-    background-image: url(../../../images/success.png);
-    background-repeat: no-repeat;
-    padding-left: 23px;
-    color: #5CA353;
+	border: 1px solid #0C0;
+	background-color: #DFFFDF;
+	padding: 5px;
+	text-align: center;
 }
 div.rightContent div.event {
     padding: 0px 2px 2px 25px;
@@ -96,4 +97,56 @@ div.event span.restricted {
     background-image: url(../../../images/restricted.png);
     background-position: top left;    
     background-repeat: no-repeat;
+}
+
+div#prereqs {
+    margin: 0px 0 20px 12px;
+}
+
+div.sectionBar {
+    background-color: #6e6e6e;
+    margin: 20px 0 10px 0;
+}
+
+div.sectionBar .left {    
+    background-image: url(../../../images/h2-left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.sectionBar .content {
+    color: #FFF;
+    font-weight: bold;
+    line-height: 22px;
+    margin: 0px;
+    display: inline;
+}
+
+div#workshopTitleContainer {
+	margin-top: 20px;
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+    line-height: 32px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#workshopTitleContainer img {
+    float: left;
+    padding-right: 10px;
+}
+
+div#workshopTitleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+div#workshopTitleContainer div#wsTitle {
+    color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 0 0 42px;
 }

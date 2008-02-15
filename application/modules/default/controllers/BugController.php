@@ -78,7 +78,7 @@ class BugController extends Internal_Controller_Action
 
         $thisBug = $bug->find((int)$bugId);
 
-        if ($thisBug->count() != 1) {
+        if (is_null($thisBug)) {
             throw new Internal_Exception_Input('Bug not found');
         }
 
@@ -92,7 +92,7 @@ class BugController extends Internal_Controller_Action
             'fixed'  => 'Fixed',
             );
 
-        $this->view->bug = $thisBug->current()->toArray();
+        $this->view->bug = $thisBug->toArray();
         $this->view->title = 'Bug Details';
     }
 
@@ -118,6 +118,7 @@ class BugController extends Internal_Controller_Action
 
             $result = $bug->insert($data);
 
+            /*
             $mail = new Zend_Mail();
 
             $config = Zend_Registry::get('config');
@@ -137,7 +138,7 @@ class BugController extends Internal_Controller_Action
                 $mail->setBodyText($data['description']);
 
                 $mail->send();
-            }
+            }*/
             
             $this->_logger->setEventItem('attributeName', 'bugId');
             $this->_logger->setEventItem('attributeId', (int)$result);

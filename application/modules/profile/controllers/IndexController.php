@@ -236,7 +236,11 @@ class Profile_IndexController extends Internal_Controller_Action
         $this->view->javascript = array(
             'mootabs1.2.js',
         );
+        
+        $fm = $this->getHelper('FlashMessenger');
+        $fm->setNamespace('login');
             		
+        $this->view->messages = $fm->getMessages();
 	}
 	
 	/**

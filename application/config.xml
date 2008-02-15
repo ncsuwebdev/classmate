@@ -130,6 +130,13 @@
                        <display>App Config</display>
                        <link></link>
                    </tab3>
+                   <tab13>
+                       <module>default</module>
+                       <controller>bug</controller>
+                       <action>index</action>
+                       <display>Bug Reports</display>
+                       <link></link>                        
+                   </tab13>
                    <tab4>
                        <module>admin</module>
                        <controller>cron</controller>

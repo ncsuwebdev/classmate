@@ -16,7 +16,7 @@
             </tr>  
             <tr>
                 <td valign="top"><label>Location:</label></td>
-                <td>{$location.name}</td>
+                <td><a href="{$sitePrefix}/workshop/location/details/?locationId={$location.locationId}">{$location.name}</a></td>
             </tr>    
             <tr>
                 <td valign="top"><label>Instructor{if count($instructors) > 1}s{/if}:</label></td>
@@ -44,9 +44,9 @@
                 {if $e.status == 'instructor'}
                     <a href="{$sitePrefix}/workshop/signup/instructor/?eventId={$e.eventId}"></a>Instructor Options
                 {elseif $e.status == 'attending'}
-                    <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>You are attending. Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You are attending. Cancel...
                 {elseif $e.status == 'waitlist'}
-                    <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>You're on the waitlist.  Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You're on the waitlist.  Cancel...
                 {elseif $e.status == 'restricted'}
                     <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a><span class="restricted">Attendance Restricted</span>
                 {else}
@@ -68,7 +68,10 @@
     </div>      
 </div>
 <div id="detailsLeft">
-    <div id="wsTitle">Cancel Reservation: <a href="{$sitePrefix}/workshop/index/details/?workshopId={$event.workshopId}">{$workshop.title|truncate:45}</a></div> 
+    <div id="workshopTitleContainer">
+        <img src="{$sitePrefix}/index/image/?imageId={$category.largeIconImageId}" alt="{$category.name}" />
+        <div id="wsTitle">Signup for <a href="{$sitePrefix}/workshop/index/details/?workshopId={$workshop.workshopId}">{$workshop.title}</a></div>       
+    </div>
     <form method="POST" action="">
         <input type="hidden" name="eventId" value="{$event.eventId}" />
         <div id="fullClass" class="banner">
