@@ -92,7 +92,7 @@ class Workshop_IndexController extends Internal_Controller_Action
                 'title'              => $filter->filter($post['title']),
                 'description'        => $htmlFilter->filter($post['description']),
                 'prerequisites'      => $htmlFilter->filter($post['prerequisites']),
-                'softwareDependency' => $filter->filter($post['softwareDependency']), 
+                'workshopCategoryId' => $filter->filter($post['workshopCategoryId']),
             );
             
             $tags = explode(',', $filter->filter($post['tags']));
@@ -109,11 +109,14 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             $this->_redirect('/workshop/');
         }
+        
+        $wc = new WorkshopCategory();
+        $this->view->categories = $wc->fetchAll(null, 'name')->toArray();
+                    
         $this->view->title = 'Add a Workshop';
         
         $this->view->javascript = array(
             'tiny_mce/tiny_mce.js',
-            'workshop/proposal/index.js'
         );    	
     }
     

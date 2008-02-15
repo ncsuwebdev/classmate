@@ -7,7 +7,7 @@ window.addEvent('domready', function() {
     var myCompleter = new Autocompleter.Ajax.Json(box, sitePrefix + '/index/autoSuggest/', {
         'postVar' : 'search',
 	
-        'multi' : true,
+        'multi' : true
         
     });  
 });

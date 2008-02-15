@@ -3,41 +3,39 @@
 <div id="createEventPopup" style="position: absolute; left: -10000px;">
 <form method="POST" action="{$sitePrefix}/workshop/index/options" id="workshopOptionForm">
 <input type="hidden" name="workshopId" value="{$workshop.workshopId}">
-<table width="100%" class="form">
+<table width="450" class="form">
     <tbody>
         <tr>
-            <td>
+            <td width="25%">
                 <label for="workshopCategoryId">Category:</label>
             </td>
-            <td>
+            <td colspan="2" width="55%">
 	            <select size="1" name="workshopCategoryId" id="workshopCategoryId">
 	                 {foreach from=$categories item=c}
 	                 <option value="{$c.workshopCategoryId}" style="background-image:url({$sitePrefix}/index/image/?imageId={$c.smallIconImageId})"{if $c.workshopCategoryId == $workshop.workshopCategoryId} selected="selected"{/if}>{$c.name}</option>
 	                 {/foreach}
 	            </select>
             </td>
-            <td>
-            </td>
+            <td></td>
          </tr>
          <tr>
-            <td>
+            <td width="25%">
                 <label for="status">Status:</label>
             </td>
-            <td>
+            <td colspan="2" width="50%">
                 <input type="radio" name="status" id="status_enabled" value="enabled"{if $workshop.status == 'enabled'} checked="checked"{/if} /> Enabled &nbsp; &nbsp; 
                 <input type="radio" name="status" id="status_disabled" value="disabled"{if $workshop.status == 'disabled'} checked="checked"{/if} /> Disabled
             </td>
-            <td>
-            </td>
+            <td></td>
          </tr>         
          <tr>
-            <td colspan="3">
+            <td colspan="4">
                 <label for="instructors">Workshop Editors:</label>
             </td>
          </tr>
          <tr>
-            <td colspan="2" id="editors">None Added</td>
-            <td align="center">
+            <td colspan="2" width="50%" id="editors">None Added</td>
+            <td align="center" colspan="2" width="50%">
                 {html_options size=10 multiple=true id=editorList name=editorList options=$users selected=$currentEditors}
                 <br />
                 <input type="button" id="editorAddButton" value="&lsaquo; Add Selected User" />              

@@ -1,4 +1,5 @@
 var editing = false;
+var myStickyWin = null;
 
 window.addEvent('domready', function() {
 
@@ -112,7 +113,10 @@ window.addEvent('domready', function() {
 	        
 	    $('manageWorkshop').addEvent('click', function(e) {
 	    
-	        new StickyWinModal({
+	        myStickyWin = new StickyWinModal({
+	            modalOptions: {
+	               hideOnClick: false
+	            },
 	            onDisplay: initEventPopup,
 	            content: stickyWinHTML('Manage Workshop Options', eventPopupHtml, {
 	                width: '500px',
@@ -120,6 +124,7 @@ window.addEvent('domready', function() {
 	                    {
 	                        text: 'Cancel', 
 	                        onClick: function() {
+	                           myStickyWin.destroy();
 	                        }
 	                    },
 	                    {
@@ -209,6 +214,10 @@ var myIEdit = iEdit.extend({
 
 function initEventPopup()
 {
+    $$('.closeButton').each(function(el) {
+        el.remove();
+    });
+    
     $('workshopCategoryId').setStyle('visibility', 'visible');
     $('workshopCategoryId').setStyle('opacity', '100');
     $('workshopCategoryId').setStyle('width', '225');
@@ -242,7 +251,6 @@ function initEventPopup()
             tmpCloseBtn.addClass('closeBtn');
             
             tmpCloseBtn.addEvent('click', function(e) {
-                $('editorList').options[this.title].setStyle('display', '');
                 this.parentNode.remove();
                 
                 if ($('editors').innerHTML == "") {
@@ -267,7 +275,6 @@ function initEventPopup()
             $('editors').adopt(tmpBox);                       
             
             tmpListBox.options[i].selected = false;
-            tmpListBox.options[i].setStyle('display', 'none');
         }
     }
     
@@ -277,53 +284,61 @@ function initEventPopup()
         var tmpListBox = $('editorList');
         
         if (tmpListBox.options.selectedIndex >= 0) {
-            var tmpBox = new Element('div');
-            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-            tmpBox.addClass('editorName');
-            
-            var hidden = new Element('input');
-            hidden.type = 'hidden';
-            hidden.name = 'editor[]';
-            hidden.value = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-                        
-            var tmpLeft = new Element('p');
-            tmpLeft.addClass('left');
-                                    
-            var tmpRight = new Element('p');
-            tmpRight.addClass('right');
-            
-            var tmpCloseBtn = new Element('p');
-            tmpCloseBtn.innerHTML = "&nbsp;";
-            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
-            tmpCloseBtn.addClass('closeBtn');
-            
-            tmpCloseBtn.addEvent('click', function(e) {
-                $('editorList').options[this.title].setStyle('display', '');
-                this.parentNode.remove();
-                
-                if ($('editors').innerHTML == "") {
-                    $('editors').innerHTML = "None Added";
+        
+            var tmpChildren = $('editors').getChildren();
+            var found = false;
+            for (var i = 0; i < tmpChildren.length; i++) {
+                if (tmpChildren[i].title == tmpListBox.options[tmpListBox.options.selectedIndex].value) {
+                    found = true;
                 }
-            });
-            
-            
-            var tmpP = new Element('a');
-            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
-            tmpP.addClass('content');
-            
-            tmpBox.adopt(hidden);
-            tmpBox.adopt(tmpLeft);
-            tmpBox.adopt(tmpRight);
-            tmpBox.adopt(tmpCloseBtn);
-            tmpBox.adopt(tmpP);
-            
-            if($('editors').innerHTML == "None Added") {
-                $('editors').empty();
             }
             
-            $('editors').adopt(tmpBox);                       
-            
-            tmpListBox.options[tmpListBox.options.selectedIndex].setStyle('display', 'none');
+            if (!found) {        
+	            var tmpBox = new Element('div');
+	            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+	            tmpBox.addClass('editorName');
+	            
+	            var hidden = new Element('input');
+	            hidden.type = 'hidden';
+	            hidden.name = 'editor[]';
+	            hidden.value = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+	                        
+	            var tmpLeft = new Element('p');
+	            tmpLeft.addClass('left');
+	                                    
+	            var tmpRight = new Element('p');
+	            tmpRight.addClass('right');
+	            
+	            var tmpCloseBtn = new Element('p');
+	            tmpCloseBtn.innerHTML = "&nbsp;";
+	            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+	            tmpCloseBtn.addClass('closeBtn');
+	            
+	            tmpCloseBtn.addEvent('click', function(e) {
+	                this.parentNode.remove();
+	                
+	                if ($('editors').innerHTML == "") {
+	                    $('editors').innerHTML = "None Added";
+	                }
+	            });
+	            
+	            
+	            var tmpP = new Element('a');
+	            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+	            tmpP.addClass('content');
+	            
+	            tmpBox.adopt(hidden);
+	            tmpBox.adopt(tmpLeft);
+	            tmpBox.adopt(tmpRight);
+	            tmpBox.adopt(tmpCloseBtn);
+	            tmpBox.adopt(tmpP);
+	            
+	            if($('editors').innerHTML == "None Added") {
+	                $('editors').empty();
+	            }
+	            
+	            $('editors').adopt(tmpBox);  
+	        }                     
         }
     });
 }

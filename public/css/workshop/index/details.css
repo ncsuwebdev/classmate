@@ -438,7 +438,6 @@ div.event span.restricted {
 #manageWorkshop {
     margin-bottom: 20px;
     width: 100%;
-    line-height: 20px;
     height: 20px;
 }
 
@@ -491,6 +490,7 @@ div.editorName a.content {
     margin: 0px;
     font-size: 10px;
     font-weight: bold;
+    overflow: hidden;
 }
 
 div.editorName p.closeBtn {

@@ -1,3 +1,5 @@
+var myStickyWin = null;
+
 window.addEvent('domready', function() {
     //
 
@@ -81,7 +83,10 @@ window.addEvent('domready', function() {
             
         $('addAttendee').addEvent('click', function(e) {
         
-            new StickyWinModal({
+            myStickyWin = new StickyWinModal({
+                modalOptions: {
+                   hideOnClick: false
+                },            
                 onDisplay: initEventPopup,
                 content: stickyWinHTML('Add Attendees to Class', eventPopupHtml, {
                     width: '500px',
@@ -89,6 +94,7 @@ window.addEvent('domready', function() {
                         {
                             text: 'Cancel', 
                             onClick: function() {
+                                myStickyWin.destroy();
                             }
                         },
                         {
@@ -106,6 +112,10 @@ window.addEvent('domready', function() {
 
 function initEventPopup()
 {    
+    $$('.closeButton').each(function(el) {
+        el.remove();
+    });
+    
     $('attendeeList').setStyle('visibility', 'visible');
     $('attendeeList').setStyle('opacity', '100');
     $('attendeeList').setStyle('width', '200'); 
@@ -135,7 +145,6 @@ function initEventPopup()
             tmpCloseBtn.addClass('closeBtn');
             
             tmpCloseBtn.addEvent('click', function(e) {
-                $($('attendeeList').options[this.title]).setStyle('display', '');
                 this.parentNode.remove();
                 
                 if ($('attendees').innerHTML == "") {
@@ -160,7 +169,6 @@ function initEventPopup()
             $('attendees').adopt(tmpBox);                       
             
             tmpListBox.options[i].selected = false;
-            $(tmpListBox.options[i]).setStyle('display', 'none');
         }
     }
     
@@ -170,54 +178,60 @@ function initEventPopup()
         var tmpListBox = $('attendeeList');
         
         if (tmpListBox.options.selectedIndex >= 0) {
-            var tmpBox = new Element('div');
-            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-            tmpBox.addClass('attendeeName');
-            
-            var hidden = new Element('input');
-            hidden.type = 'hidden';
-            hidden.name = 'userId[]';
-            hidden.value = tmpListBox.options[tmpListBox.options.selectedIndex].value;
-                        
-            var tmpLeft = new Element('p');
-            tmpLeft.addClass('left');
-                                    
-            var tmpRight = new Element('p');
-            tmpRight.addClass('right');
-            
-            var tmpCloseBtn = new Element('p');
-            tmpCloseBtn.innerHTML = "&nbsp;";
-            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
-            tmpCloseBtn.addClass('closeBtn');
-            
-            tmpCloseBtn.addEvent('click', function(e) {
-                $(tmpListBox.options[this.title]).setStyle('display', '');
-                this.parentNode.remove();
-                
-                if ($('attendees').innerHTML == "") {
-                    $('attendees').innerHTML = "None Added";
+            var tmpChildren = $('attendees').getChildren();
+            var found = false;
+            for (var i = 0; i < tmpChildren.length; i++) {
+                if (tmpChildren[i].title == tmpListBox.options[tmpListBox.options.selectedIndex].value) {
+                    found = true;
                 }
-            });
-            
-            
-            var tmpP = new Element('a');
-            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
-            tmpP.addClass('content');
-            
-            tmpBox.adopt(hidden);
-            tmpBox.adopt(tmpLeft);
-            tmpBox.adopt(tmpRight);
-            tmpBox.adopt(tmpCloseBtn);
-            tmpBox.adopt(tmpP);
-            
-            if($('attendees').innerHTML == "None Added") {
-                $('attendees').empty();
             }
             
-            $('attendees').adopt(tmpBox);                       
-            
-            $(tmpListBox.options[tmpListBox.options.selectedIndex]).setStyle('display', 'none');
-            alert(typeof $(tmpListBox.options[tmpListBox.options.selectedIndex]));
+            if (!found) {        
+	            var tmpBox = new Element('div');
+	            tmpBox.title = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+	            tmpBox.addClass('attendeeName');
+	            
+	            var hidden = new Element('input');
+	            hidden.type = 'hidden';
+	            hidden.name = 'userId[]';
+	            hidden.value = tmpListBox.options[tmpListBox.options.selectedIndex].value;
+	                        
+	            var tmpLeft = new Element('p');
+	            tmpLeft.addClass('left');
+	                                    
+	            var tmpRight = new Element('p');
+	            tmpRight.addClass('right');
+	            
+	            var tmpCloseBtn = new Element('p');
+	            tmpCloseBtn.innerHTML = "&nbsp;";
+	            tmpCloseBtn.title = tmpListBox.options.selectedIndex;
+	            tmpCloseBtn.addClass('closeBtn');
+	            
+	            tmpCloseBtn.addEvent('click', function(e) {
+	                this.parentNode.remove();
+	                
+	                if ($('attendees').innerHTML == "") {
+	                    $('attendees').innerHTML = "None Added";
+	                }
+	            });
+	            
+	            
+	            var tmpP = new Element('a');
+	            tmpP.innerHTML = tmpListBox.options[tmpListBox.options.selectedIndex].label;
+	            tmpP.addClass('content');
+	            
+	            tmpBox.adopt(hidden);
+	            tmpBox.adopt(tmpLeft);
+	            tmpBox.adopt(tmpRight);
+	            tmpBox.adopt(tmpCloseBtn);
+	            tmpBox.adopt(tmpP);
+	            
+	            if($('attendees').innerHTML == "None Added") {
+	                $('attendees').empty();
+	            }
+	            
+	            $('attendees').adopt(tmpBox);                       
+            }
         }
     });
 }
