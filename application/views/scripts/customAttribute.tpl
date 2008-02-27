@@ -15,7 +15,7 @@
         <tr>
             <td colspan="2">{$tempAttribute.formField}</td>
         </tr>
+        {/if}
     </tbody>
 </table>
 </div>
-{/if}

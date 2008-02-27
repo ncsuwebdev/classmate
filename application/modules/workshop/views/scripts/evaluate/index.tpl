@@ -54,17 +54,16 @@
                 </div>
             </div>
         </div>
-        
-        <div id="evaluationControls">
-            <img src="{$sitePrefix}/public/images/leftCircleArrow-orange.png" alt="Previous Question" id="previous" />
-            <ul id="evaluationControlsButtons">
-                {foreach name=customAttrs from=$custom item=c}
-                <li>{$smarty.foreach.customAttrs.iteration}</li>
-                {/foreach}
-                <li>{math equation="x + y" x=1 y=$smarty.foreach.customAttrs.iteration}</li>
-            </ul>
-            <img src="{$sitePrefix}/public/images/rightCircleArrow-orange.png" alt="Next Question" id="next" />
-        </div>
     </form>
+    </div>
+    <div id="evaluationControls">
+        <img src="{$sitePrefix}/public/images/leftCircleArrow-orange.png" alt="Previous Question" id="previous" />
+        <ul id="evaluationControlsButtons">
+            {foreach name=customAttrs from=$custom item=c}
+            <li>{$smarty.foreach.customAttrs.iteration}</li>
+            {/foreach}
+            <li>{math equation="x + y" x=1 y=$smarty.foreach.customAttrs.iteration}</li>
+        </ul>
+        <img src="{$sitePrefix}/public/images/rightCircleArrow-orange.png" alt="Next Question" id="next" />
     </div>
 </div>
