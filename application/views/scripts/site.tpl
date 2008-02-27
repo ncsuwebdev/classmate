@@ -134,7 +134,7 @@
 			
 		    </div>
 		    <div class="right">
-		        <a href="http://itdapps.ncsu.edu/"><img src="http://itdapps5.ncsu.edu/htdocs/public/images/minilogo.png" width="128" height="21" alt="OIT - Outreach Technologies" /></a>
+		        <a href="http://webapps.ncsu.edu/"><img src="{$sitePrefix}/public/images/ot_minilogo.png" width="128" height="21" alt="OIT - Outreach Technologies" /></a>
 		    </div>
 		    <a href="{$sitePrefix}/documentation/">Documentation</a> | 
 		    <a href="{$sitePrefix}/faq/">F.A.Q.</a> | 
