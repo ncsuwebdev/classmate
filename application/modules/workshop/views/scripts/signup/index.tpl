@@ -109,7 +109,7 @@
 	        </div>
 	        <input type="button" value="Sign-Up To Attend Now!" onclick="location.href='{$sitePrefix}/workshop/signup/reserve/?eventId={$event.eventId}'">
 	        
-            <input type="button" value="Cacnel, Go Back" onclick="history.go(-1);" />
+            <input type="button" value="Cancel, Go Back" onclick="history.go(-1);" />
 	    {else}
 	        {if $event.waitlistSize != 0 && $event.waitlistSize > $event.waitlistTotal}
 	               <div id="fullClass" class="banner">
@@ -130,7 +130,7 @@
 	            {$workshop.prerequisites|empty_alt:"No Prerequisites were defined for this workshop"}
 	            </div>
 	             <input type="button" value="Sign-Up for the Waitlist Now!" onclick="location.href='{$sitePrefix}/workshop/signup/reserve/?eventId={$event.eventId}'">
-	             <input type="button" value="Cacnel, Go Back" onclick="history.go(-1);" />
+	             <input type="button" value="Cancel, Go Back" onclick="history.go(-1);" />
 	        {else}  
 	             <div id="fullClass" class="banner">
 	             We're Sorry, this class is currently full.  If you would still like to attend this workshop, you can try one of the other times this workshop is

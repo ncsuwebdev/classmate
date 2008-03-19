@@ -47,6 +47,12 @@
     {/if}
     <b>Attendees:</b> {count source=$attendeeList} of {$event.maxSize} seats taken<br /><br />
     
+    <form style="float: right;" method="post" action="{$sitePrefix}/workshop/instructor/markAllAsAttended">
+        <input type="hidden" value="{$event.eventId}" name="eventId" />
+        <input type="submit" value="Mark all attendees as attended" />
+    </form>
+    <br />
+    <br />
     {foreach from=$attendeeList item=a}
        <div class="attendee taken">
         {if $a.picImageId == 0}

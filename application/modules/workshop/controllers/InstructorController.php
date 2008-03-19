@@ -323,6 +323,34 @@ class Workshop_InstructorController extends Internal_Controller_Action
     }
     
     /**
+     * Marks all attendees as attended at once
+     *
+     */
+    public function markAllAsAttendedAction()
+    {
+        if ($this->_request->isPost()) {
+            
+            $post = Zend_Registry::get('post');
+            $filter = Zend_Registry::get('inputFilter');
+            
+            $eventId = $filter->filter($post['eventId']);
+            
+            $data = array(
+              'eventId' => $eventId,
+              'attended' => true,
+            );
+                       
+            $attendees = new Attendees();
+            
+            $where = $attendees->getAdapter()->quoteInto('eventId = ?', $eventId);
+            $attendees->update($data, $where);
+            
+            $this->_redirect('/workshop/instructor/?eventId=' . $eventId);
+        }
+        
+    }
+    
+    /**
      * Allows a user to contact all the people in their event.
      *
      */

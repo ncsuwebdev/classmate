@@ -9,6 +9,16 @@ div#detailsRight {
     
 }
 
+.featured_badge {
+    width: 75px;
+    height: 75px;
+    position: relative;
+    left: 50px;
+    top: 20px;
+    background-image: url(../../../images/featured_badge.png);
+    float: right;	
+}
+
 div.rightTitle {
 	background: #C85E35 url(../../../images/rt-200.gif) no-repeat;
     text-align: left;

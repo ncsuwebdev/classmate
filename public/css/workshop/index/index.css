@@ -10,12 +10,29 @@ div.category div.name {
     background: #FFF url(../../../images/dot.gif) repeat-x bottom;
 }
 
+div.featured {
+    margin-top: 25px;
+    border-top: 1px dotted #000;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+div.featured_badge {
+    background: #FFF url(../../../images/featured_badge.png) no-repeat;
+    width: 75px;
+    height: 75px;
+    float: left;
+    position: relative;
+    top: -40px;
+    left: -15px;	
+}
+
 div.category div.description {
 	padding: 0px 0 5px 0;
 }
 
 div.category div.workshops {
-
+    width: 100%;
 }
 
 .add {
@@ -35,4 +52,15 @@ div.category div.workshops {
 
 tr.workshop:hover {
     background-color: #EFEFEF;
+}
+
+#categorySelect {
+    height: 16px;
+}
+
+#categorySelect option {
+    background-repeat: no-repeat;
+    padding: 5px 3px 5px 22px;
+    background-position: 2px 2px; 
+    border-bottom: 1px solid #CCC;  
 }

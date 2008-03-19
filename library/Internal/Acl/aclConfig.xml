@@ -61,6 +61,14 @@
         <resource>workshop_location</resource>
         <privilege>index</privilege>
       </allow>
+      <allow>
+        <resource>workshop_schedule</resource>
+        <privilege>allEvents</privilege>
+      </allow>
+      <allow>
+        <resource>workshop_schedule</resource>
+        <privilege>search</privilege>
+      </allow>
     </allows>
     <denys/>
   </role>

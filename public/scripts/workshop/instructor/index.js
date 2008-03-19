@@ -24,6 +24,7 @@ window.addEvent('domready', function() {
             }
             
             el.addEvent('click', function (e) {
+                
                 if (!el.hasClass('on')) {
  
                     var userId = main.id.replace(/^[^_]*\_/, '');

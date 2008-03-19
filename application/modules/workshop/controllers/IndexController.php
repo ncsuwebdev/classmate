@@ -47,6 +47,8 @@ class Workshop_IndexController extends Internal_Controller_Action
     	   'viewDisabled' => $this->_acl->isAllowed($this->_role, $this->_resource, 'viewDisabled'),
     	);
     	
+    	$this->view->javascript = array("calendar.js");
+    	
         $this->view->title = "Our Workshops";
         
         $wc = new WorkshopCategory();
@@ -77,6 +79,20 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
         
         $this->view->workshops = $workshops;
+        
+        $featured = array();
+        
+        foreach ($workshops as $thisWs) {
+            if (isset($thisWs['workshops'])) {
+                foreach ($thisWs['workshops'] as $w) {
+                    if ($w['featured'] == 1) {
+                        $featured[] = $w;
+                    }
+                }
+            }
+        }
+               
+        $this->view->featured = $featured; 
     }
     
     /**
@@ -390,10 +406,16 @@ class Workshop_IndexController extends Internal_Controller_Action
             	$we->delete($where);
             }
             
+            $featured = 0;
+            if (isset($post['featured'])) {
+                $featured = $filter->filter($post['featured']);
+            } 
+            
             $data = array(
                 'workshopId' => $workshopId,
                 'workshopCategoryId' => $filter->filter($post['workshopCategoryId']),
                 'status'             => $filter->filter($post['status']),
+                'featured'           => $featured
             );         
             
             $workshop = new Workshop();
@@ -409,7 +431,7 @@ class Workshop_IndexController extends Internal_Controller_Action
      */
     public function deleteDocumentAction()
     {
-    	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
+    	//$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
     	
         if ($this->_request->isPost()) {
             $post = Zend_Registry::get('post');
@@ -423,7 +445,7 @@ class Workshop_IndexController extends Internal_Controller_Action
             $documentId = $filter->filter($post['documentId']);
             
             if ($documentId == '') {
-                echo 'document ID can not be blank';
+                echo 'Document ID can not be blank';
                 return;
             }  
             
@@ -460,6 +482,47 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             echo "Document successfully deleted.";
             return;
+        }
+    }
+    
+    public function downloadHandoutsAction()
+    {      
+        
+        $get = Zend_Registry::get('get');
+        $filter = Zend_Registry::get('inputFilter');
+        
+        if (!isset($get['workshopId'])) {
+            throw new Internal_Exception_Input('Workshop ID must be set');
+        }
+        
+        $workshopId = $filter->filter($get['workshopId']);
+        
+        $docMap = new DocumentMap();
+
+        $where =  $docMap->getAdapter()->quoteInto('attributeId = ?', $workshopId);
+        $where .= " AND ";
+        $where .=  $docMap->getAdapter()->quoteInto('attributeName = ?', 'workshopId');
+        $maps = $docMap->fetchAll($where);
+        
+        if ($maps->count() == 0) {
+            throw new Internal_Exception_Data("This workshop has no handouts yet.");
+        } else {
+        
+            $uc = Zend_Registry::get('userConfig');
+            
+            if (!is_readable($uc['fileUploadPathWorkshop']['value'])) {
+                throw new Internal_Exception_Data('Target directory ' . $uc['fileUploadPathWorkshop']['value'] . ' is not readable');
+            }
+            
+            $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $workshopId . '/all_handouts.zip';
+                
+            $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
+
+            header('Content-Type: application/octetstream');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; ' . 'filename="all_handouts.zip"');
+            
+            readfile($target);           
         }
     }
     
@@ -585,6 +648,10 @@ class Workshop_IndexController extends Internal_Controller_Action
             	
             }
             
+            if ($attributeName == "workshopId") {
+                $document->rebuildZipFile($attributeId);
+            }
+            
             $this->_redirect('/workshop/index/details/?workshopId=' . $attributeId);
         }
     }
@@ -643,6 +710,13 @@ class Workshop_IndexController extends Internal_Controller_Action
                         
             $document->update($data, null);
             
+            $docMap = new DocumentMap();
+            $where = $docMap->getAdapter()->quoteInto('documentId = ?', $documentId);
+            $thisDocMap = $docMap->fetchRow($where);
+            if ($thisDocMap->attributeName == "workshopId") {
+                $document->rebuildZipFile($thisDocMap->attributeId);
+            }
+            
             echo 'Document saved successfully';
             return;         
         }
@@ -662,7 +736,7 @@ class Workshop_IndexController extends Internal_Controller_Action
             $filter = Zend_Registry::get('inputFilter');
             
             if (!isset($post['workshopLinkId'])) {
-                echo 'link ID not set';
+                echo 'Link ID not set';
                 return;
             }
             
@@ -742,14 +816,14 @@ class Workshop_IndexController extends Internal_Controller_Action
             $filter = Zend_Registry::get('inputFilter');
             
             if (!isset($post['workshopLinkId'])) {
-                echo 'link ID not set';
+                echo 'Link ID not set';
                 return;
             }
             
             $workshopLinkId = $filter->filter($post['workshopLinkId']);
             
             if ($workshopLinkId == '') {
-                echo 'link ID can not be blank';
+                echo 'Link ID can not be blank';
                 return;
             }
             

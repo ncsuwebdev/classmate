@@ -11,14 +11,18 @@
             <li title="searches">Top Searches</li>
         </ul>
 	    <div id="events" class="mootabs_panel">
-	       <div class="tabDesc">These are the upcoming classes we are offering:</div>
+	       <div class="tabDesc">
+              These are the upcoming classes we are offering:
+              <br />
+              <a href="{$sitePrefix}/workshop/schedule/allevents" title="Full Schedule">View the full schedule</a>           
+           </div>
 	        {foreach from=$upcoming item=e}
 	        <div class="event">
 	           <span class="date">{$e.date|date_format:$config.medDateFormat}</span>
 	           <div class="workshopName"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title|truncate:40}</a></div> 
 	        </div>
 	        {foreachelse}
-	        You are not signed up for any classes right now.
+	        There are no upcoming classes right now.
 	        {/foreach}
 	    </div>
         <div id="popular" class="mootabs_panel">

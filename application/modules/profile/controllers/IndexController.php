@@ -108,8 +108,19 @@ class Profile_IndexController extends Internal_Controller_Action
         $location = new Location();
         $locationCache = array();        
         
+	    $docMap = new DocumentMap();
+               
         foreach ($currentReservations as &$e) {
             $workshopIds[] = $e['workshopId'];
+            
+            $where =  $docMap->getAdapter()->quoteInto('attributeId = ?', $e['workshopId']);
+            $where .= " AND ";
+            $where .=  $docMap->getAdapter()->quoteInto('attributeName = ?', "workshopId");
+            $maps = $docMap->fetchAll($where);
+            
+            if ($maps->count() > 0) {
+                $e['hasHandouts'] = true;
+            }
             
             if ($e['status'] == 'waitlist') {
             	

@@ -201,7 +201,7 @@ class Tag extends Ot_Db_Table
     {
     	$tagId = parent::insert($data);
         
-    	$this->index($data['tagId'], $data['tagName']);
+    	$this->index($tagId, $data['name']);
     	
         return $tagId;
     }

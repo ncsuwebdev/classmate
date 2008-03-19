@@ -68,7 +68,7 @@ class Document extends Ot_Db_Table
     	}
     	
     	$where = $this->getAdapter()->quoteInto('documentId IN (?)', $docIds);
-    	
+   	
     	return $this->fetchAll($where, 'name')->toArray();
     }
     
@@ -76,10 +76,57 @@ class Document extends Ot_Db_Table
     {
         $docMap = new DocumentMap();
         
+        $where =  $docMap->getAdapter()->quoteInto('documentId = ?', $documentId);
+        
+        $mapping = $docMap->fetchRow($where);
+                
         $where = $docMap->getAdapter()->quoteInto('documentId = ?', $documentId);
         
         $docMap->delete($where);
-
+        
         $this->delete($where);
+        
+        if ($mapping->attributeName == "workshopId") {
+            $this->rebuildZipFile($mapping->attributeId);    
+        }
+    }
+    
+    public function rebuildZipFile($workshopId)
+    {                    
+        $dm = new DocumentMap();
+        
+        $where =  $dm->getAdapter()->quoteInto('attributeId = ?', $workshopId);
+        $where .= " AND ";
+        $where .= $dm->getAdapter()->quoteInto('attributeName = ?', 'workshopId');
+        
+        $mappings = $dm->fetchAll($where);
+            
+        $docs = array();
+        
+        foreach ($mappings as $m) {
+            $docs[] = $this->find($m->documentId);
+        }
+        
+        $uc = Zend_Registry::get('userConfig');
+           
+        if (!is_readable($uc['fileUploadPathWorkshop']['value'])) {
+            throw new Internal_Exception_Data('Target directory ' . $uc['fileUploadPathWorkshop']['value'] . ' is not readable');
+        }
+        
+        $zip = new Zip($uc['fileUploadPathWorkshop']['value'] . '/' . $workshopId . '/all_handouts.zip');
+               
+        foreach ($docs as $d) {
+            
+            $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $workshopId . '/' . $d->name;
+
+            if (is_file($target)) {
+                $zip->addFiles($target);
+                 
+            } else {
+                throw new Internal_Exception_Data('File not found: ' . $target);        
+            }
+        }
+        
+        $zip->createZipFile();
     }
 }

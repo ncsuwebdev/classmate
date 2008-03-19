@@ -61,6 +61,12 @@ class IndexController extends Internal_Controller_Action
         $this->view->javascript = array('mootabs1.2.js');
     }
     
+    public function bypassAction()
+    {
+        
+        $this->view->test = file_get_contents('http://sports.yahoo.com/');        
+    }
+    
     public function autoSuggestAction()
     {
         $this->_helper->viewRenderer->setNeverRender();

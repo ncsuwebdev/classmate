@@ -26,6 +26,14 @@
                 <input type="radio" name="status" id="status_enabled" value="enabled"{if $workshop.status == 'enabled'} checked="checked"{/if} /> Enabled &nbsp; &nbsp; 
                 <input type="radio" name="status" id="status_disabled" value="disabled"{if $workshop.status == 'disabled'} checked="checked"{/if} /> Disabled
             </td>
+         </tr>
+         <tr>
+            <td width="25%">
+                <label for="featured">Featured:</label>
+            </td>
+            <td colspan="2" width="50%">
+                <input type="checkbox" name="featured" value="1" id="featured"{if $workshop.featured == 1} checked="checked"{/if} /> 
+            </td>
             <td></td>
          </tr>         
          <tr>
@@ -66,17 +74,24 @@
                 {if $e.status == 'instructor'}
                     <a href="{$sitePrefix}/workshop/instructor/?eventId={$e.eventId}"></a>Instructor Tools...
                 {elseif $e.status == 'attending'}
-                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You are attending. Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You are attending.
+                    <br />
+                    Cancel...
                 {elseif $e.status == 'waitlist'}
-                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You're on the waitlist.  Cancel...
+                    <a href="{$sitePrefix}/workshop/signup/cancel/?eventId={$e.eventId}"></a>You're on the waitlist.
+                    <br />
+                    Cancel...
                 {elseif $e.status == 'restricted'}
                     <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a><span class="restricted">Attendance Restricted</span>
                 {else}
                     {if $e.roleSize < $e.maxSize}
-                        <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>{math equation="x-y" x=$e.maxSize y=$e.roleSize} seats remaining. Register...
+                        <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>{math equation="x-y" x=$e.maxSize y=$e.roleSize} seats remaining.</a>
+                        <br />
+                        Register...
                     {else}
                         {if $e.waitlistSize != 0 && $e.waitlistSize > $e.waitlistTotal}
-                            <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>Class is full.  Signup to waitlist...
+                            <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>Class is full.
+                            <br />Signup to waitlist...
                         {else}
                             This class is full.
                         {/if}                  
@@ -118,6 +133,11 @@
     </div>
 </div>
 <div id="detailsLeft">
+
+    {if $workshop.featured == 1}
+    <div class="featured_badge"></div>
+    {/if}
+
 	<div id="response">&nbsp;</div> 
 	<input type="hidden" name="workshopId" id="workshopId" value="{$workshop.workshopId}" class="postArgs taglist description wsTitle prerequisites" />   
 	<div id="workshopTitleContainer">
