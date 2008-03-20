@@ -431,7 +431,7 @@ class Workshop_IndexController extends Internal_Controller_Action
      */
     public function deleteDocumentAction()
     {
-    	//$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
+    	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
     	
         if ($this->_request->isPost()) {
             $post = Zend_Registry::get('post');
