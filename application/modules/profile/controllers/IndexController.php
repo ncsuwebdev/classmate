@@ -109,6 +109,8 @@ class Profile_IndexController extends Internal_Controller_Action
         $locationCache = array();        
         
 	    $docMap = new DocumentMap();
+	    $instructor = new Instructor();
+        $profile = new Profile();
                
         foreach ($currentReservations as &$e) {
             $workshopIds[] = $e['workshopId'];
@@ -147,6 +149,13 @@ class Profile_IndexController extends Internal_Controller_Action
             $startDt->subHour($uc['numHoursEventCancel']['value']);
             
             $e['cancelable']  = ($startDt->getTimestamp() > time());
+            
+            $where = $instructor->getAdapter()->quoteInto('eventId = ?', $e['eventId']);
+            $e['instructors'] = $instructor->fetchAll($where)->toArray();
+            
+            foreach ($e['instructors'] as &$i) {
+                $i['profile'] = $profile->find($i['userId'])->toArray();
+            }
             
             if (isset($locationCache[$e['locationId']])) {
             	$e['location'] = $locationCache[$e['locationId']];

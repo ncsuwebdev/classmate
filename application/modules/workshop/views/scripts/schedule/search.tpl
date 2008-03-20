@@ -61,11 +61,11 @@
                         </p>
                         <p class="eventDetails">
                         {if $e.workshop}
-                            {if $acl.details}
-                            <a href="{$sitePrefix}/schedule/index/details?eventId={$e.eventId}">
+                            {if $acl.instructorTools}
+                            <a href="{$sitePrefix}/workshop/instructor/?eventId={$e.eventId}">
                             {/if}
                             {$e.workshop.title|truncate:30}
-                            {if $acl.details}
+                            {if $acl.instructorTools}
                             </a>
                             {/if}
                         {else}                           

@@ -79,20 +79,20 @@
                        <display>Workshops We Teach</display>
                        <link></link>                   
                    </tab1>
-                   <tab5>
+                   <tab2>
                        <module>workshop</module>
                        <controller>location</controller>
                        <action></action>
                        <display>Teaching Labs</display>
                        <link></link>
-                   </tab5>
-                   <tab6>
+                   </tab2>
+                   <tab3>
                        <module>workshop</module>
                        <controller>schedule</controller>
                        <action>allevents</action>
                        <display>View All Scheduled Workshops</display>
                        <link></link>                   
-                   </tab6>
+                   </tab3>
                    <tab4>
                        <module>workshop</module>
                        <controller>schedule</controller>

@@ -168,6 +168,16 @@ div.event .dateTime .location {
     color: #777;
 }
 
+.instructorList {
+    margin: 0px;
+    display: block;
+    color: #000;	
+}
+
+.instructorList b {
+    color: #777;	
+}
+
 div.event .dateTime .location b { 
     font-style: normal;
     padding-right: 4px;

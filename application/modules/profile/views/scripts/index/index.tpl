@@ -96,7 +96,15 @@
                 <div class="dateTime">
                     <span class="date">{$e.date|date_format:$config.longDateFormat}</span>
                     <span class="time">{$e.startTime|date_format:$config.timeFormat} - {$e.endTime|date_format:$config.timeFormat}</span>
-                    <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span> 
+                    <span class="location"><b>Location:</b><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$e.location.name}</a></span>
+                    <span class="instructor"><b>Instructor{if count($e.instructors) > 1}s{/if}: </b>
+                        {foreach from=$e.instructors item=i name=instructor}
+                            {if $smarty.foreach.instructor.index != 0}, {/if}
+                            {$i.profile.firstName|capitalize} {$i.profile.lastName|capitalize}                
+                        {foreachelse}
+                            No instructor assigned yet
+                        {/foreach}   
+                    </span> 
                 </div>           
 	        </div>
 	        {foreachelse}

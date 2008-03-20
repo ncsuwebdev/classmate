@@ -357,7 +357,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         $this->_helper->viewRenderer->setNeverRender();
 
         $this->view->acl = array(
-           'delete'     => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteEvent'),
+           'delete'          => $this->_acl->isAllowed($this->_role, $this->_resource, 'deleteEvent'),
+           'instructorTools' => $this->_acl->isAllowed($this->_role, 'workshop_instructor', 'index')
         );
         
         $get    = Zend_Registry::get('get');
@@ -479,11 +480,14 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $waitListSize = $filter->filter($post['workshopWaitListSize']);
             $instructors  = $filter->filter($post['instructors']);
             
-            if ($instructors == "none") {
+            if ($instructors == "none" || $instructors == "undefined") {
                 $instructors = "";
             }
     
-            $instructorList = explode(":", $instructors);
+            $instructorList = array();
+            if ($instructors != "") {
+                $instructorList = explode(":", $instructors);
+            }
             
             $date = explode("/", $date);
             $dateStr = $date[2] . "-" . $date[0] . "-" . $date[1];
@@ -566,7 +570,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
     {
         $event = new Event();
         
-        $get = Zend_Registry::get('get');
+        $get    = Zend_Registry::get('get');
         $filter = Zend_Registry::get('inputFilter');
         $uc     = Zend_Registry::get('userConfig');
         
@@ -606,6 +610,10 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         
         $workshopCache = array();
         $workshop = new Workshop();
+        $instructor = new Instructor();
+        $profile = new Profile();
+        
+        $instructorDropDown = array();
         
         foreach ($events as &$e) {  
             $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
@@ -620,10 +628,18 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             
             $e['cancelable']  = ($startDt->getTimestamp() > time() && (isset($userStatus[$e['eventId']]) && $userStatus[$e['eventId']] != 'instructor'));
             
-            
-            
             $e['instructor'] = ($acl['viewAllInstructorPages'] || (isset($userStatus[$e['eventId']]) && $userStatus[$e['eventId']] == 'instructor'));
-                                 
+
+            $where = $instructor->getAdapter()->quoteInto('eventId = ?', $e['eventId']);
+            $e['instructors'] = $instructor->fetchAll($where)->toArray();
+            
+            foreach ($e['instructors'] as &$i) {
+                $i['profile'] = $profile->find($i['userId'])->toArray();
+                if (!empty($i['profile'])) {
+                    $instructorDropDown[$i['userId']] = $i['profile'];
+                }
+            }
+                       
             if (isset($locationCache[$e['locationId']])) {
                 $e['location'] = $locationCache[$e['locationId']];
             } else {
@@ -645,6 +661,9 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             }
         }   
 
+        sort($instructorDropDown);
+        $this->view->instructorDropDown = $instructorDropDown;
+        
         $this->view->events = $events;
         $this->view->acl    = $acl;
         
@@ -656,9 +675,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $categories[$c['workshopCategoryId']] = $c;
         }
         
-        $this->view->categories = $categories;        
+        $this->view->categories = $categories;
         
         $this->view->title = 'All Events';
-        
     }    
 }

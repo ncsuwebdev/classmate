@@ -269,6 +269,11 @@ div.instructorName a.content:hover {
     text-decoration: none;
 }
 
+p.eventDetails a {
+    color: #FFF;
+    text-decoration: underline;	
+}
+
 #selectWeekButton {
     background-image: url(../../../images/calendar.png);
     background-repeat: no-repeat;

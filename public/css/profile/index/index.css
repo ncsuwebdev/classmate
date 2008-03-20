@@ -387,3 +387,13 @@ div.sectionBar .content {
 div.section {
 	margin-left: 12px;
 }
+
+.instructor {
+    margin: 0px;
+    display: block;
+    color: #000;    
+}
+
+.instructor b {
+    color: #777;    
+}
