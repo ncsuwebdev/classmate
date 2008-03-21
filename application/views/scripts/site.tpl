@@ -139,7 +139,7 @@
 		    <a href="{$sitePrefix}/documentation/">Documentation</a> | 
 		    <a href="{$sitePrefix}/faq/">F.A.Q.</a> | 
             <a href="#">RSS Feed</a> | 
-            <a href="#">Contact</a> | 
+            <a href="{$sitePrefix}/contact/">Contact Us</a> | 
             <a href="{$sitePrefix}/bug/add/">File Bug Report</a><br />
             &copy; {$copyrightDate} North Carolina State University
 		</div>        

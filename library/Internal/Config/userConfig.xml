@@ -13,6 +13,18 @@
             <description>The applcation description.</description>
             <value>Where all your classmate classness comes true.</value>
         </appDescription>
+        <contactEmailAddress>
+            <description>The email address to which the contact us form email will be sent.</description>
+            <value>classreg@ncsu.edu</value>
+        </contactEmailAddress>
+        <contactEmailName>
+            <description>The name that goes with the contact email address.</description>
+            <value>ClassMate Website</value>
+        </contactEmailName>        
+        <contactEmailSubject>
+            <description>The subject of the contact email.</description>
+            <value>Email from ClassMate website</value>
+        </contactEmailSubject>
         <fromEmailAddress>
             <description>The global from email address.  All email from the system will come from this address.</description>
             <value>admin@classmate.ncsu.edu</value>
