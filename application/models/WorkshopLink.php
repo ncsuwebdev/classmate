@@ -53,7 +53,7 @@ class WorkshopLink extends Ot_Db_Table
     public function getLinksForWorkshop($workshopId)
     {
     	$where = $this->getAdapter()->quoteInto('workshopId = ?', $workshopId);
-    	return $this->fetchAll($where, 'name');
+    	return $this->fetchAll($where, 'order');
     }
     
     public function deleteWorkshopLink($workshopLinkId)
@@ -61,6 +61,45 @@ class WorkshopLink extends Ot_Db_Table
         $where = $this->getAdapter()->quoteInto('workshopLinkId = ?', $workshopLinkId);
 
         $this->delete($where);
+    }    
+    
+
+    /**
+     * Updates the display order of the URLs from a workshop.
+     *
+     * @param int $workshopId
+     * @param array $order
+     */
+    public function updateLinkOrder($workshopId, $order)
+    {
+        $db = $this->getAdapter();
+        $db->beginTransaction();
+
+        $i = 1;
+        foreach ($order as $o) {
+
+            if (!is_integer($o)) {
+                $db->rollback();
+                throw new Internal_Exception_Data('New position was not an integer.');
+            }
+
+            $data = array("order" => $i);
+
+            $where = $db->quoteInto('workshopLinkId = ?', $o) .
+                     " AND " .
+                     $db->quoteInto('workshopId = ?', $workshopId);
+
+            try {
+                $this->update($data, $where);
+            } catch(Exception $e) {
+                $db->rollback();
+                throw $e;
+            }
+            $i++;
+        }
+        $db->commit();
+
+        return true;
     }    
 }
 ?>

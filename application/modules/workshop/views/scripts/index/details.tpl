@@ -113,12 +113,20 @@
     
     <div class="rightContent">     
     <div id="addLinkForm" rel="type=link&size=20&url={$sitePrefix}/workshop/index/addLink/&response=response"><a href="http://"></a></div>
+        {if $acl.reorderLink}
+        Drag the icon to reorder the links.<br /><br />
+        <span style="display: none;" id="sortUrl">{$sitePrefix}/workshop/index/saveLinkOrder/</span>
+        {/if}
         <div id="links">      
+        
 	        {foreach from=$links item=l}
 	        <div class="linkPackage" id="linkPackage_{$l.workshopLinkId}">
 	            {if $acl.editLink}
 		        <div id="editLink" class="inlineEdit" target="link_{$l.workshopLinkId}"></div>
 		        {/if}
+                {if $acl.reorderLink}
+                <div class="order">&nbsp;</div>
+                {/if}		        
 		        {if $acl.deleteLink}
 		        <div class="delete"></div>
 		        {/if}

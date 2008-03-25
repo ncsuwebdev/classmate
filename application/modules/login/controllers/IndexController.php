@@ -84,9 +84,6 @@ class Login_IndexController extends Internal_Controller_Action
             $userId = (isset($post['userId'])) ? $filter->filter($post['userId']) . '@' . $realm : '';
             $password = (isset($post['password'])) ? $filter->filter($post['password']) : '';
 
-            $userId = (isset($post['userId'])) ? $filter->filter($post['userId']) : '';
-            $password = (isset($post['password'])) ? $filter->filter($post['password']) : '';
-            
             // Set up the authentication adapter
             $authAdapter = new $config->authentication->$realm->class($userId . '@' . $realm, $password);
             $authAdapter = new $config->authentication->$realm->class($userId, $password);
@@ -106,7 +103,7 @@ class Login_IndexController extends Internal_Controller_Action
 	            $this->_logger->setEventItem('attributeName', 'userId');
 	            $this->_logger->setEventItem('attributeId', $userId);
 	            $this->_logger->info('Invalid Login Attempt');          
-                throw new Internal_Exception_Data('Invalid Login Credentials');
+                throw new Internal_Exception_Data('Invalid Login Credentials:  Your username or password was not correct.');
             }
             
             $authz = new $config->authorization($userId);
@@ -124,13 +121,17 @@ class Login_IndexController extends Internal_Controller_Action
 
             $profile->addProfile($userId);
             
+            $myProfile = $profile->find($userId);
+            
+            $empty = ($myProfile->emailAddress == '' || $myProfile->firstName == '' || $myProfile->lastName == '');
+            
             $this->_logger->setEventItem('userId', $auth->getIdentity());
             $this->_logger->setEventItem('role', '');
             $this->_logger->setEventItem('attributeName', 'userId');
             $this->_logger->setEventItem('attributeId', $userId);
             $this->_logger->login('User Logged In');  
                         
-            if ($user['role'] == 'activation_pending') {
+            if ($user['role'] == 'activation_pending' || $empty) {
             	$this->_redirect('/profile/index/edit/');
             } else {
             	$req = new Zend_Session_Namespace('request');

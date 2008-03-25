@@ -60,14 +60,18 @@ div.rightContent div.event:hover {
     cursor: pointer;
 }
 
-div.rightContent div.link {
+div.link {
     background-image: url(../../../images/link.png);
     background-repeat: no-repeat;  
     background-position: 3px 1px;	
     padding-left: 25px;
 }
 
-div.rightContent div.link .edit {
+div.link * {
+    background-image: none; 
+}
+
+div.link .edit {
 	background-image: url(../../../images/edit.png);
 	background-repeat: no-repeat;  
 	width: 16px;
@@ -75,6 +79,8 @@ div.rightContent div.link .edit {
 	float: right;
 	cursor: pointer;
 }
+
+
 
 div.rightContent div.link * {
     background-image: none;	
@@ -514,6 +520,12 @@ div.editorName p.closeBtn {
 
 div.editorName a.content:hover {
     text-decoration: none;
+}
+
+div.order {
+	width: 20px;
+	height: 17px;
+	float: left;
 }
 
 div.DefaultStickyWin div.body{font-family:verdana; font-size:11px; line-height: 13px;}

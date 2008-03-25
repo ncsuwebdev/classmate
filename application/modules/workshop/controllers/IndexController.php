@@ -217,6 +217,7 @@ class Workshop_IndexController extends Internal_Controller_Action
            'addLink'        => $isEditor,
            'deleteLink'     => $isEditor,
            'editLink'       => $isEditor,
+           'reorderLink'    => $isEditor,
            'addEvent'       => $this->_acl->isAllowed($this->_role, 'workshop_schedule', 'index'),
            'options'        => $this->_acl->isAllowed($this->_role, $this->_resource, 'options'),
         );
@@ -859,6 +860,39 @@ class Workshop_IndexController extends Internal_Controller_Action
         }
     }    
     
+    /**
+     * Updates the URL list's display order from the AJAX request in the
+     * groupView view template.
+     *
+     */
+    public function saveLinkOrderAction()
+    {
+        if ($this->_request->isPost()) {
+            
+            $this->_helper->viewRenderer->setNeverRender();
+
+            $filter = Zend_Registry::get('inputFilter');
+            $post = Zend_Registry::get('post');
+
+            $workshopId = (int)$filter->filter($post['workshopId']);
+            $order = $filter->filter($post['order']);
+            $order = explode(',', $order);
+
+            for ($x = 0; $x < count($order); $x++) {
+                $order[$x] = (int)preg_replace('/^[^_]*\_/', '', $order[$x]);
+            }
+
+            $workshopLink = new WorkshopLink();
+
+            try {
+                $result = $workshopLink->updateLinkOrder($workshopId, $order);
+            } catch (Exception $e) {
+            	echo $e->getMessage();
+            }
+            
+            echo 'Order saved successfully';
+        }
+    }    
     /**
      * If a user has access to this function they have access to edit all the workshops.
      *

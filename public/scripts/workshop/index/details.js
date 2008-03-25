@@ -4,6 +4,7 @@ var myStickyWin = null;
 window.addEvent('domready', function() {
 
     var sitePrefix = $('sitePrefix').value;
+    var updateEl = $('response');
     
     if ($('uploadForm')) {
 	   var multiupload = new MultiUpload($('uploadForm').uploadDocuments, 10, '[{id}]', true, true );
@@ -28,8 +29,7 @@ window.addEvent('domready', function() {
             }
             
             if (confirm('Are you sure you want to delete this document?')) {
-                var documentId = item.getParent().id.replace(/^[^_]*\_/i, '');
-                var updateEl = $('response');                        
+                var documentId = item.getParent().id.replace(/^[^_]*\_/i, '');                  
                         
 				new Ajax(sitePrefix + '/workshop/index/deleteDocument/', {
 				    method: 'post',
@@ -59,8 +59,7 @@ window.addEvent('domready', function() {
             }
             
             if (confirm('Are you sure you want to delete this online resource?')) {
-                var workshopLinkId = item.getParent().id.replace(/^[^_]*\_/i, '');
-                var updateEl = $('response');                        
+                var workshopLinkId = item.getParent().id.replace(/^[^_]*\_/i, '');                        
                         
                 new Ajax( sitePrefix + '/workshop/index/deleteLink/', {
                     method: 'post',
@@ -138,7 +137,93 @@ window.addEvent('domready', function() {
 	        });
 	    });  
 	}  
+	
+    if ($('links')) {
+
+        var sortList = new Sortables('links', {
+            handles: $$('#links div.order'),
+            onStart: function(element) {
+                $$('#links div.link').each(function(el){
+                    if (el.hasClass('activeDrag')) {
+                        el.removeClass('activeDrag');
+                    }
+                });
+
+                $$('.delete').each(function(el) {
+                    el.style.display = 'none';
+                });
+                
+                $$('.inlineEdit').each(function(el) {
+                    el.style.display = 'none';
+                });
+                
+                
+                element.addClass('activeDrag');
+            },
+            onComplete: function(element){
+                $$('#links div.link').each(function(el,i){
+
+                    if (el.hasClass('activeDrag')) {
+                        el.removeClass('activeDrag');
+                    }
+                })
+                
+                $$('.delete').each(function(el) {
+                    el.style.display = '';
+                });
+                
+                $$('.inlineEdit').each(function(el) {
+                    el.style.display = '';
+                });
+
+                var queryString = Object.toQueryString({workshopId: $('workshopId').value, order: sortList.serialize()})
+
+                new Ajax($('sortUrl').innerHTML, {
+                    method: 'post',
+                    postBody: queryString,
+                    update: updateEl,
+                    onComplete: function(){
+                        var responseFade = new Fx.Style(updateEl.getProperty('id'), 'opacity', {
+                            duration:2000
+                        });
+                        responseFade.start.pass([1,0],responseFade).delay(1000);
+                    }
+                }).request();
+            },
+
+            ghost: true
+        });
+        $$('#links div.order').each(function(el){
+            el.disableSelection();
+        });
+    }
+	
 });
+
+Element.extend({
+    disableSelection: function(){
+        if (window.ie) this.onselectstart = function(){ return false };
+        this.style.MozUserSelect = "none";
+        return this;
+    },
+
+    removeChildren: function() {
+        while (this.lastChild) this.removeChild(this.lastChild);
+    }
+
+});
+
+Sortables.implement({
+
+    serialize: function(){
+        var serial = [];
+        this.list.getChildren().each(function(el, i){
+            serial[i] = el.id;
+        });
+        return serial;
+    }
+});
+
 
 function toggleDocForm() {
     var docForm = $('addDocumentForm');

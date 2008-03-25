@@ -47,4 +47,18 @@ class EvaluationUser extends Ot_Db_Table
      * @var string
      */
     protected $_primary = array('eventId', 'userId');
+    
+    public function hasCompleted($userId, $eventId)
+    {
+    	$dba = $this->getAdapter();
+    	
+    	$where = $dba->quoteInto('userId = ?', $userId) . 
+    	   ' AND ' . 
+    	   $dba->quoteInto('eventId = ?', $eventId);
+    	   
+    	$result = $this->fetchAll($where);
+    	
+    	return ($result->count() != 0);
+    	
+    }
 }

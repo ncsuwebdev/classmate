@@ -102,7 +102,7 @@ class Profile_IndexController extends Internal_Controller_Action
 
 		// Get all current reservations for the user
         $attendees = new Attendees();
-        $currentReservations = $attendees->getEventsForAttendee($userId, $stayOpen->getTimestamp());
+        $reservations = $attendees->getEventsForAttendee($userId);
             
         $workshopIds = array();
         $location = new Location();
@@ -112,43 +112,43 @@ class Profile_IndexController extends Internal_Controller_Action
 	    $instructor = new Instructor();
         $profile = new Profile();
                
-        foreach ($currentReservations as &$e) {
+        $activeReservations = array();
+        $completedReservations = array();
+        
+        $eu = new EvaluationUser();
+        
+        foreach ($reservations as $r) {
+        	
+        	$active = false;
+        	$e = $r;
+        	
+        	// we determine if the class is open
+            $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
+            $endDt   = new Zend_Date(strtotime($e['date'] . ' ' . $e['endTime']));
+            $endDt->addHour($uc['numHoursEvaluationAvailability']['value']);
+            
+            $e['evaluatable'] = false;
+            
+            // checks to see if its possible that the class is open for evaluation
+            if ((($startDt->getTimestamp() < time() && $endDt->getTimestamp() > time()) && !$eu->hasCompleted($userId, $r['eventId']))) {
+            	$e['evaluatable'] = true;
+            	$active = true;
+            } elseif ($startDt->getTimestamp() > time()) {
+            	$e['evaluatable'] = false;
+            	$active = true;
+            }
+            
             $workshopIds[] = $e['workshopId'];
             
-            $where =  $docMap->getAdapter()->quoteInto('attributeId = ?', $e['workshopId']);
-            $where .= " AND ";
-            $where .=  $docMap->getAdapter()->quoteInto('attributeName = ?', "workshopId");
+            $where =  $docMap->getAdapter()->quoteInto('attributeId = ?', $e['workshopId']) . 
+                " AND " . 
+                $docMap->getAdapter()->quoteInto('attributeName = ?', "workshopId");
+                
             $maps = $docMap->fetchAll($where);
             
             if ($maps->count() > 0) {
                 $e['hasHandouts'] = true;
             }
-            
-            if ($e['status'] == 'waitlist') {
-            	
-                $waiting = $attendees->getAttendeesForEvent($e['eventId'], 'waitlist');
-                
-                $position = 1;
-                
-                foreach ($waiting as $w) {
-                	if ($userId == $w['userId']) {
-                		break;
-                	}
-                	$position++;
-                }
-
-                $e['waitlistPosition'] = $position;
-            }
-            
-            $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
-            $endDt   = new Zend_Date(strtotime($e['date'] . ' ' . $e['endTime']));
-            $endDt->addHour($uc['numHoursEvaluationAvailability']['value']);
-            
-            $e['evaluatable'] = ($startDt->getTimestamp() < time() && $endDt->getTimestamp() > time());
-            
-            $startDt->subHour($uc['numHoursEventCancel']['value']);
-            
-            $e['cancelable']  = ($startDt->getTimestamp() > time());
             
             $where = $instructor->getAdapter()->quoteInto('eventId = ?', $e['eventId']);
             $e['instructors'] = $instructor->fetchAll($where)->toArray();
@@ -158,40 +158,55 @@ class Profile_IndexController extends Internal_Controller_Action
             }
             
             if (isset($locationCache[$e['locationId']])) {
-            	$e['location'] = $locationCache[$e['locationId']];
+                $e['location'] = $locationCache[$e['locationId']];
             } else {
-		        $thisLocation = $location->find($e['locationId']);        
-		        if (is_null($thisLocation)) {
-		            throw new Internal_Exception_Data('Location not found');
-		        }
-		        $e['location'] = $thisLocation->toArray();      
-		        $locationCache[$e['locationId']] = $e['location'];
-            }      
+                $thisLocation = $location->find($e['locationId']);        
+                if (is_null($thisLocation)) {
+                    throw new Internal_Exception_Data('Location not found');
+                }
+                $e['location'] = $thisLocation->toArray();      
+                $locationCache[$e['locationId']] = $e['location'];
+            }                  
+            
+            $e['cancelable'] = false;
+            
+            if ($active) {
+            	
+                $startDt->subHour($uc['numHoursEventCancel']['value']);
+                $e['cancelable']  = ($startDt->getTimestamp() > time()); 
+                           
+                if ($e['status'] == 'waitlist') {
+            	
+	                $waiting = $attendees->getAttendeesForEvent($e['eventId'], 'waitlist');
+	                
+	                $position = 1;
+	                
+	                foreach ($waiting as $w) {
+	                	if ($userId == $w['userId']) {
+	                		break;
+	                	}
+	                	$position++;
+	                }
+	
+	                $e['waitlistPosition'] = $position;
+
+                }
+                
+                $activeReservations[] = $e;
+            } else {
+            	$completedReservations[] = $e;
+            }
         }
             
-        $this->view->currentReservations = $currentReservations;      
+        $this->view->activeReservations = $activeReservations;        
+        $this->view->completedReservations = array_reverse($completedReservations);        
 
-        // Get all past reservations for the user
-        $pastReservations = $attendees->getEventsForAttendee($userId, 0, $stayOpen->getTimestamp(), 'attending');
-	    foreach ($pastReservations as &$e) {           
-            if (isset($locationCache[$e['locationId']])) {
-                $e['location'] = $locationCache[$e['locationId']];
-            } else {
-                $thisLocation = $location->find($e['locationId']);        
-                if (is_null($thisLocation)) {
-                    throw new Internal_Exception_Data('Location not found');
-                }
-                $e['location'] = $thisLocation->toArray();      
-                $locationCache[$e['locationId']] = $e['location'];
-            }      
-        }        
-        $this->view->pastReservations = $pastReservations;        
-
-        $instructor = new Instructor();
+        $activeTeaching = array();
+        $completedTeaching = array();
         
         // Get presently taught classes
-        $currentTeaching = $instructor->getEventsForInstructor($userId, $stayOpen->getTimestamp());
-        foreach ($currentTeaching as &$e) {           
+        $teaching = $instructor->getEventsForInstructor($userId);
+        foreach ($teaching as $e) {           
             if (isset($locationCache[$e['locationId']])) {
                 $e['location'] = $locationCache[$e['locationId']];
             } else {
@@ -201,25 +216,19 @@ class Profile_IndexController extends Internal_Controller_Action
                 }
                 $e['location'] = $thisLocation->toArray();      
                 $locationCache[$e['locationId']] = $e['location'];
-            }      
+            } 
+
+            $startDt = new Zend_Date(strtotime($e['date'] . ' ' . $e['startTime']));
+            
+            if ($startDt->getTimestamp() > time()) {
+            	$activeTeaching[] = $e;
+            } else {
+            	$completedTeaching[] = $e;
+            }
         }
-        $this->view->currentTeaching = $currentTeaching;
         
-        // Get past taught classes
-        $pastTeaching = $instructor->getEventsForInstructor($userId, 0, $stayOpen->getTimestamp());
-        foreach ($pastTeaching as &$e) {
-            if (isset($locationCache[$e['locationId']])) {
-                $e['location'] = $locationCache[$e['locationId']];
-            } else {
-                $thisLocation = $location->find($e['locationId']);        
-                if (is_null($thisLocation)) {
-                    throw new Internal_Exception_Data('Location not found');
-                }
-                $e['location'] = $thisLocation->toArray();      
-                $locationCache[$e['locationId']] = $e['location'];
-            }        	
-        }
-        $this->view->pastTeaching = $pastTeaching;
+        $this->view->activeTeaching = $activeTeaching;
+        $this->view->completedTeaching = array_reverse($completedTeaching);
         
         // Get all related workshops for the user
         $workshop = new Workshop();

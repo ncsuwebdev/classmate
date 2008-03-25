@@ -63,12 +63,12 @@
     </div>
     <div id="reservations" class="section">
 	    <ul class="mootabs_title">
-	        <li title="currentReservations">Current Reservations ({count source=$currentReservations})</li>
-	        <li title="pastReservations">Past Reservations ({count source=$pastReservations})</li>
+	        <li title="currentReservations">Active Reservations ({count source=$activeReservations})</li>
+	        <li title="pastReservations">Completed Reservations ({count source=$completedReservations})</li>
 	        <li title="suggestedWorkshops">Suggested Workshops</li>
 	    </ul>
         <div id="currentReservations" class="mootabs_panel">
-	        {foreach from=$currentReservations item=e name=current}
+	        {foreach from=$activeReservations item=e name=current}
 	           {assign var=wc value=$e.workshop.workshopCategoryId}
                {if $smarty.foreach.current.index < count($currentReservations) && $smarty.foreach.current.index != 0}
                <div class="eventSpacer"></div>
@@ -112,7 +112,7 @@
 	        {/foreach}        
         </div> 
         <div id="pastReservations" class="mootabs_panel">
-	        {foreach from=$pastReservations item=e name=past}
+	        {foreach from=$completedReservations item=e name=past}
 	           {assign var=wc value=$e.workshop.workshopCategoryId}
 	           {if $smarty.foreach.past.index < count($pastReservations) && $smarty.foreach.past.index != 0}
 	           <div class="eventSpacer"></div>
@@ -151,7 +151,7 @@
             {/foreach}
         </div>
     </div>
-    {if count($currentTeaching) != 0 || count($pastTeaching) != 0}
+    {if count($activeTeaching) != 0 || count($completedTeaching) != 0}
     <br />
     <div class="sectionBar">
         <p class="left"></p>
@@ -159,11 +159,11 @@
     </div>    
     <div id="teaching" class="section">
         <ul class="mootabs_title">
-            <li title="currentTeaching">Current Classes ({count source=$currentTeaching})</li>
-            <li title="historyTeaching">Past Classes ({count source=$pastTeaching})</li>
+            <li title="currentTeaching">Upcoming Classes ({count source=$activeTeaching})</li>
+            <li title="historyTeaching">Completed Classes ({count source=$completedTeaching})</li>
         </ul>
         <div id="currentTeaching" class="mootabs_panel">
-            {foreach from=$currentTeaching item=e name=currentTeaching}
+            {foreach from=$activeTeaching item=e name=currentTeaching}
                {assign var=wc value=$e.workshop.workshopCategoryId}
                {if $smarty.foreach.currentTeaching.index < count($currentTeaching) && $smarty.foreach.currentTeaching.index != 0}
                <div class="eventSpacer"></div>
@@ -199,7 +199,7 @@
             {/foreach}         
         </div> 
         <div id="historyTeaching" class="mootabs_panel">
-            {foreach from=$pastTeaching item=e name=pastTeaching}
+            {foreach from=$completedTeaching item=e name=pastTeaching}
                {assign var=wc value=$e.workshop.workshopCategoryId}
                {if $smarty.foreach.pastTeaching.index < count($pastTeaching) && $smarty.foreach.pastTeaching.index != 0}
                <div class="eventSpacer"></div>
