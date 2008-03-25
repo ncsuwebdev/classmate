@@ -16,10 +16,10 @@ window.addEvent('domready', function() {
     
     sitePrefix = $('sitePrefix').value;
     searchUrl = sitePrefix + "/workshop/schedule/search";
-    createEventUrl = sitePrefix + "/workshop/schedule/createEvent";
-    deleteEventUrl = sitePrefix + "/workshop/schedule/deleteEvent";
-    updateEventUrl = sitePrefix + "/workshop/schedule/updateEvent";
-    editEventUrl = sitePrefix + "/workshop/schedule/editEvent";
+    createEventUrl = sitePrefix + "/workshop/schedule/create-event";
+    deleteEventUrl = sitePrefix + "/workshop/schedule/delete-event";
+    updateEventUrl = sitePrefix + "/workshop/schedule/update-event";
+    editEventUrl = sitePrefix + "/workshop/schedule/edit-event";
     
     searchResultsContentBox = $('workshopSearchResultsContent');
     

@@ -1,6 +1,6 @@
 <div>
     You can alter this email template below.<br /><br />
-    <form method="post" action="id="edit" class="checkRequiredFields"">
+    <form method="post" action="" id="edit" class="checkRequiredFields"">
         <input type="hidden" name="emailTemplateId" value="{$template.emailTemplateId}" />
         <input type="hidden" name="triggerId" value="{$template.triggerId}" /> 
         <table class="form">

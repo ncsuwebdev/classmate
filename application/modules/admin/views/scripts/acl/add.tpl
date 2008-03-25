@@ -3,7 +3,7 @@
     roles to inherit permission from an existing role.  Inheritance is optional
     but is useful in implementing a tiered access system.<br /><br />
 
-    <form method="POST" id="aclEditor" action="{$sitePrefix}/admin/acl/{$action}" class="checkRequiredFields">
+    <form method="post" id="aclEditor" action="{$sitePrefix}/admin/acl/{$action}" class="checkRequiredFields">
         <input type="hidden" name="originalRoleName" id="originalRoleName" value="{$originalRoleName}" />
         <table class="form">
             <tr>

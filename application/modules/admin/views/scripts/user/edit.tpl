@@ -1,6 +1,6 @@
 <div id="userIndexAdd">
     Role assignment for <b>{$displayUserId}</b>.  Select a new role below.<br /><br />
-    <form method="POST" action="">
+    <form method="post" action="">
         <input type="hidden" name="userId" value="{$userId}" />
         <table class="form">
             <tr>

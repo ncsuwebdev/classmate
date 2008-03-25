@@ -1,5 +1,5 @@
 <div id="bugAdd">
-    If you are experiencing an issue with Aerial, you can file a bug report here.  If you
+    If you are experiencing a problem, you can file a bug report here.  If you
     have a feature request, you should contact your administrator directly.<br /><br />
     <form method="POST" action="">
     <table class="form">

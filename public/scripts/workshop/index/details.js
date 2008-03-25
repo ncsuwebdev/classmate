@@ -31,7 +31,7 @@ window.addEvent('domready', function() {
             if (confirm('Are you sure you want to delete this document?')) {
                 var documentId = item.getParent().id.replace(/^[^_]*\_/i, '');                  
                         
-				new Ajax(sitePrefix + '/workshop/index/deleteDocument/', {
+				new Ajax(sitePrefix + '/workshop/index/delete-document/', {
 				    method: 'post',
 				    postBody: 'documentId=' + documentId,
 				    update: updateEl,
@@ -61,7 +61,7 @@ window.addEvent('domready', function() {
             if (confirm('Are you sure you want to delete this online resource?')) {
                 var workshopLinkId = item.getParent().id.replace(/^[^_]*\_/i, '');                        
                         
-                new Ajax( sitePrefix + '/workshop/index/deleteLink/', {
+                new Ajax( sitePrefix + '/workshop/index/delete-link/', {
                     method: 'post',
                     postBody: 'workshopLinkId=' + workshopLinkId,
                     update: updateEl,

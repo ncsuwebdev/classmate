@@ -8,7 +8,7 @@
     <div class="rightContent">
         <div class="action attendanceAction"><a href="{$sitePrefix}/workshop/instructor/?eventId={$event.eventId}">Take Roll / View Attendees</a></div>
         <div class="action contactAction"><a href="{$sitePrefix}/workshop/instructor/contact/?eventId={$event.eventId}">Contact All Attendees</a></div> 
-        <div class="action evaluationAction"><a href="{$sitePrefix}/workshop/instructor/evaluationResults/?eventId={$event.eventId}">View Evaluation Results</a></div>   
+        <div class="action evaluationAction"><a href="{$sitePrefix}/workshop/instructor/evaluation-results/?eventId={$event.eventId}">View Evaluation Results</a></div>   
     </div>
     
     <div class="rightTitle">

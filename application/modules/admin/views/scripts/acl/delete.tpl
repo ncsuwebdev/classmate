@@ -1,5 +1,5 @@
 <div id="aclIndexDelete">
-    <form method="POST" action="">
+    <form method="post" action="">
         <input type="hidden" name="originalRoleName" value="{$originalRoleName}" />
         You have selected to delete the role <b>{$originalRoleName}</b>.  This will disable
         access to all users who are assigned this role.  You can assign those users

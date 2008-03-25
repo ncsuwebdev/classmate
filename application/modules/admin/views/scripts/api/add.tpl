@@ -1,5 +1,5 @@
 Enter user ID to add code for.<br /><br />
-<form method="POST" action="">
+<form method="post" action="">
     <table class="form">
         <tr>
             <td><label for="userId">User:</label></td>

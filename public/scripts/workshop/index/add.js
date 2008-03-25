@@ -4,7 +4,7 @@ window.addEvent('domready', function() {
     var box = $('tags');
     var sitePrefix = $('sitePrefix').value;
     
-    var myCompleter = new Autocompleter.Ajax.Json(box, sitePrefix + '/index/autoSuggest/', {
+    var myCompleter = new Autocompleter.Ajax.Json(box, sitePrefix + '/index/auto-suggest/', {
         'postVar' : 'search',
 	
         'multi' : true

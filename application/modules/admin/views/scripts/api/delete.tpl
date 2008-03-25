@@ -1,5 +1,5 @@
 <div id="aclIndexDelete">
-    <form method="POST" action="">
+    <form method="post" action="">
         <input type="hidden" name="userId" value="{$userId}" />
         You have selected to delete the code for <b>{$userId}</b>.
         <br /><br />

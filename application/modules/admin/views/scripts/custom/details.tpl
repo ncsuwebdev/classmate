@@ -17,7 +17,7 @@
 		<span id="listStatus">&nbsp;</span><br /><br />
 		<span style="display: none;" id="parentIdName">nodeId</span>
 		<span style="display: none;" id="parentIdValue">{$node.nodeId}</span>
-		<span style="display: none;" id="sortUrl">{$sitePrefix}/admin/custom/orderAttributes/</span>
+		<span style="display: none;" id="sortUrl">{$sitePrefix}/admin/custom/order-attributes/</span>
 		<div id="list">
 		{foreach from=$attributes item=a name=attributes}
 		<table class="elm" id="{$a.attributeId}">
@@ -27,7 +27,7 @@
 		        <td class="description">
 		            <div>
 		                {if $acl.attributeDetails}
-		                <a href="{$sitePrefix}/admin/custom/attributeDetails/?attributeId={$a.attributeId}">{$a.label}</a>
+		                <a href="{$sitePrefix}/admin/custom/attribute-details/?attributeId={$a.attributeId}">{$a.label}</a>
 		                {else}
 		                {$a.label}
 		                {/if}

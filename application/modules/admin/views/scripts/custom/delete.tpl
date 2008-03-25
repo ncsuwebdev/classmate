@@ -1,6 +1,6 @@
 <div id="userIndexDelete">
 &nbsp;
-    <form method="POST" action="">
+    <form method="post" action="">
        <input type="hidden" name="attributeId" value="{$attribute.attributeId}" />
        <table class="form">
             <tr>

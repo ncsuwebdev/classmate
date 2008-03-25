@@ -1,4 +1,4 @@
-<form method="POST" class="checkRequiredFields" id="add">
+<form method="post" class="checkRequiredFields" id="add">
 <table class="form">
     <tr>
         <td>

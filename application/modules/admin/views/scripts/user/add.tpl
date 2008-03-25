@@ -1,6 +1,6 @@
 <div id="userIndexAdd">
     Enter in the information below to add a user to the system.<br /><br />           
-    <form method="POST" action="">
+    <form method="post" action="">
         <table class="form">
             <tr>
                 <td><label for="realm">Select Login Type:</label></td>

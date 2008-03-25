@@ -1,6 +1,6 @@
 {if $acl.addAttendee}
 <div id="createEventPopup" style="position: absolute; left: -10000px;">
-<form method="POST" action="{$sitePrefix}/workshop/instructor/addAttendee/" id="addAttendeeForm">
+<form method="POST" action="{$sitePrefix}/workshop/instructor/add-attendee/" id="addAttendeeForm">
 <input type="hidden" name="eventId" value="{$event.eventId}">
 <table width="100%" class="form">
     <tbody>     

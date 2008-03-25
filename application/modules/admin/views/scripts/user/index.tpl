@@ -1,5 +1,5 @@
 <div id="userIndexIndex">
-    Here you can add users and grant them roles.  Roles are defined by the applicaiton
+    Here you can add users and grant them roles.  Roles are defined by the application
     administrator and can be set <a href="{$sitePrefix}/admin/acl/">here</a>.<br /><br />
 
     {if $acl.add}

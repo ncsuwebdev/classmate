@@ -71,7 +71,7 @@ window.addEvent('domready', function() {
             if (confirm('Are you sure you want to remove ' + name + ' from the class role?')) {
                 var userId = el.id.replace(/^[^_]*\_/, '');
                 
-                location.href=sitePrefix + '/workshop/instructor/deleteAttendee/?userId=' + userId + '&eventId=' + eventId;
+                location.href=sitePrefix + '/workshop/instructor/delete-attendee/?userId=' + userId + '&eventId=' + eventId;
             }
         });
     });

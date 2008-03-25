@@ -7,7 +7,7 @@ the email address you provide.  If you already have an account for {$appTitle}, 
 		<div class="lt"></div>
 		    <div class="lbox">
 		    Enter your requested user ID below, as well as your email address.<br /><br />
-			<form method="POST" action="" id="signup" class="checkRequiredFields">
+			<form method="post" action="" id="signup" class="checkRequiredFields">
 			   <input type="hidden" name="realm" value="{$realm}" />
 				<table class="form">
                     <tr>

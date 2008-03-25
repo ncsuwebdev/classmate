@@ -26,7 +26,7 @@
 	        {/foreach}
             <div class="event">
                <span class="date"></span>
-               <div class="workshopName"><a href="{$sitePrefix}/workshop/schedule/allevents" title="Full Schedule">View more dates...</a></div> 
+               <div class="workshopName"><a href="{$sitePrefix}/workshop/schedule/all-events" title="Full Schedule">View more dates...</a></div> 
             </div>
 	    </div>
         <div id="popular" class="mootabs_panel">

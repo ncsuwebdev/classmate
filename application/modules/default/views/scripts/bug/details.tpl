@@ -4,7 +4,7 @@
             <td><label>Status:</label></td>
             <td>
             {if $acl.changeStatus}
-            <form method="post" action="{$sitePrefix}/bug/changeStatus">
+            <form method="post" action="{$sitePrefix}/bug/change-status">
                 <input type="hidden" name="bugId" value="{$bug.bugId}" />
                 {html_options name=status id=status options=$statusTypes selected=$bug.status}
                 <input type="submit" value="Set Status">

@@ -41,7 +41,7 @@
 		            {else}
 		            Logged in as {$loggedInUser} via {$loggedInRealm}  &nbsp;|&nbsp;
 		            {if $authManageLocally}
-		            <a href="{$sitePrefix}/login/index/changePassword/">Change Password</a> &nbsp;|&nbsp;
+		            <a href="{$sitePrefix}/login/index/change-password/">Change Password</a> &nbsp;|&nbsp;
 		            {/if}
 		            <a href="{$sitePrefix}/login/index/logout/">Sign Out</a>
 		            {/if}                    

@@ -1,5 +1,5 @@
 <div id="userIndexDelete">
-    <form method="POST" action="">
+    <form method="post" action="">
         <input type="hidden" name="userId" value="{$userId}" />
         You have selected to delete the user <b>{$displayUserId} ({$role})</b> who logs in via <b>{$realmName}</b>.  Are you sure
         you want to do this?

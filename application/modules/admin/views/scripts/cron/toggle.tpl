@@ -1,5 +1,5 @@
 <div id="adminCronToggle">
-    <form method="POST" action="">
+    <form method="post" action="">
         <input type="hidden" name="path" value="{$path}" />
         <input type="hidden" name="status" value="{$status}" />
         Are you sure you want to <b>{$status}</b> <b>{$displayPath}</b>?

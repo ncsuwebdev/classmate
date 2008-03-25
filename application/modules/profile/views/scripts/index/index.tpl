@@ -89,7 +89,7 @@
 		            <a href="{$sitePrefix}/workshop/evaluate/?eventId={$e.eventId}">Evaluate Class</a>
 		            {/if}
                     {if $e.status == 'attending' && $e.hasHandouts}
-                    <a href="{$sitePrefix}/workshop/index/downloadHandouts?workshopId={$e.workshop.workshopId}">Download Handouts</a>
+                    <a href="{$sitePrefix}/workshop/index/download-handouts?workshopId={$e.workshop.workshopId}">Download Handouts</a>
                     {/if}
                 </div> 
 	            <div class="workshopName" style="background-image:url({$sitePrefix}/index/image/?imageId={$categories.$wc.smallIconImageId});"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title}</a></div>

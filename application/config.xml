@@ -89,7 +89,7 @@
                    <tab3>
                        <module>workshop</module>
                        <controller>schedule</controller>
-                       <action>allEvents</action>
+                       <action>all-events</action>
                        <display>View All Scheduled Workshops</display>
                        <link></link>                   
                    </tab3>
