@@ -61,12 +61,6 @@ class IndexController extends Internal_Controller_Action
         $this->view->javascript = array('mootabs1.2.js');
     }
     
-    public function bypassAction()
-    {
-        
-        $this->view->test = file_get_contents('http://sports.yahoo.com/');        
-    }
-    
     public function autoSuggestAction()
     {
         $this->_helper->viewRenderer->setNeverRender();
@@ -91,7 +85,7 @@ class IndexController extends Internal_Controller_Action
 	            $index = Zend_Search_Lucene::create($config->search->tagIndexPath);
 	        }        
 
-	        $res = $index->find('+' . $search);
+	        $res = $index->find($search . '*');
 	        
 	        foreach ($res as $r) {
 	        	$ret[] = $r->name;

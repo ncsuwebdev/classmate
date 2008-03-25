@@ -85,7 +85,7 @@
                     <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a><span class="restricted">Attendance Restricted</span>
                 {else}
                     {if $e.roleSize < $e.maxSize}
-                        <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}"></a>{math equation="x-y" x=$e.maxSize y=$e.roleSize} seats remaining.</a>
+                        <a href="{$sitePrefix}/workshop/signup/?eventId={$e.eventId}">{math equation="x-y" x=$e.maxSize y=$e.roleSize} seats remaining.</a>
                         <br />
                         Register...
                     {else}
@@ -174,7 +174,7 @@
     </div>  	
 	{if $acl.edit}
 	<div id="editDescription" class="inlineEdit" target="description"></div>
-	<div id="description" rel="type=textarea&cols=80&rows=20&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.description}</div>
+	<div id="description" rel="type=textarea&cols=80&rows=20&url={$sitePrefix}/workshop/index/edit/&response=response">{$workshop.description|empty_alt:"No Description Provided"}</div>
 	{else}
 	<div id="description">{$workshop.description|empty_alt:"No Description Provided"}</div>
 	{/if}

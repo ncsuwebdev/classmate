@@ -33,7 +33,7 @@
  */
 require_once $_SERVER['KEY_MANAGER_PATH'];
 set_include_path('.'
-                  . PATH_SEPARATOR . $_SERVER['SHARED_LIB_PATH'] . '/Zend/Framework/1.0.3/'
+                  . PATH_SEPARATOR . $_SERVER['SHARED_LIB_PATH'] . '/Zend/Framework/1.5/'
                   . PATH_SEPARATOR . $_SERVER['SHARED_LIB_PATH'] . '/Smarty/2.6.18/'
                   . PATH_SEPARATOR . get_include_path());
 

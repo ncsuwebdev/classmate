@@ -123,7 +123,6 @@ Zend_Controller_Action_HelperBroker::addHelper($vr);
 $front->setBaseUrl($baseUrl)
       ->addModuleDirectory('./application/modules')
       ->setRouter(new Zend_Controller_Router_Rewrite())
-      ->setDispatcher(new Zend_Controller_Dispatcher_Standard())
       ;
 
 // Create new instance of the ACL

@@ -29,16 +29,19 @@ class Ot_Db_Table extends Zend_Db_Table
         return parent::update($data, $where);
     }
     
-    public function find($key)
+    public function find()
     {
-    	$result = parent::find($key);
+    	$args = func_get_args();
+    	
+    	//$result = call_user_func_array(array($this, 'parent::find'), $args);
+    	$result = parent::find($args);
     	
     	if (count($this->_primary) == 1) {
     		if ($result instanceof Zend_Db_Table_Rowset && $result->count() == 1) {
     	   		return $result->current();
     		} elseif (is_array($result) && count($result) == 1) {
     		    return $result[0];
-    		} elseif (!is_array($key)) {
+    		} elseif (!is_array(func_get_arg(0))) {
     			return null;
     		}
     	}

@@ -601,9 +601,7 @@ class Admin_AclController extends Internal_Controller_Action
                         }
                     }
 
-                    if (!class_exists($classname)) {
-                        Zend_Loader::loadFile($file, $controllers[$key]);
-                    }
+                    require_once($controllers[$key] . DIRECTORY_SEPARATOR . $file);
 
                     $class = new ReflectionClass($classname);
                     $methods = $class->getMethods();
