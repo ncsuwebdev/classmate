@@ -151,6 +151,16 @@ class Workshop_SignupController extends Internal_Controller_Action
             'will show up below under &quot;My Reservations&quot;.  Should you need to cancel your reservation, you ' . 
             'can get back to this page by clicking on the &quot;MyClassMate&quot; link in the navigation bar.');
         
+        $data = array(
+                    'userId'        => Zend_Auth::getInstance()->getIdentity(),
+                    'workshopTitle' => $thisWorkshop->title, 
+                    'date'          => $thisEvent->date
+                );
+        
+        $trigger = new EmailTrigger();
+        $trigger->setVariables($data);
+        $trigger->dispatch('Event_Signup');
+        
         $this->_redirect('profile/');       
     }
     
@@ -199,7 +209,18 @@ class Workshop_SignupController extends Internal_Controller_Action
             
             $fm = $this->getHelper('FlashMessenger');
             $fm->setNamespace('login');
-            $fm->addMessage('You have successfully canceled your reservation for <b>' . $thisWorkshop->title . '</b>.');               
+            $fm->addMessage('You have successfully canceled your reservation for <b>' . $thisWorkshop->title . '</b>.');
+
+            $data = array(
+                    'userId'        => Zend_Auth::getInstance()->getIdentity(),
+                    'workshopTitle' => $thisWorkshop->title, 
+                    'date'          => $thisEvent->date
+                );
+        
+            $trigger = new EmailTrigger();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Event_Cancel_Reservation');            
+            
             $this->_redirect('profile/');
             
     	} else {

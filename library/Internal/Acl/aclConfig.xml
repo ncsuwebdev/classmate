@@ -10,6 +10,10 @@
         <privilege>details</privilege>
       </allow>
       <allow>
+        <resource>default_contact</resource>
+        <privilege>*</privilege>
+      </allow>
+      <allow>
         <resource>default_documentation</resource>
         <privilege>*</privilege>
       </allow>

@@ -134,6 +134,10 @@ class Workshop_IndexController extends Internal_Controller_Action
             $tag = new Tag();
             $tag->setTagsForAttribute('workshopId', $data['workshopId'], $tags);
             
+            $trigger = new EmailTrigger();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Workshop_Add');
+            
             $this->_redirect('/workshop/');
         }
         
@@ -337,6 +341,10 @@ class Workshop_IndexController extends Internal_Controller_Action
     	    }
     	    
     	    $workshop->index($workshopId);
+    	    
+    	    $trigger = new EmailTrigger();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Workshop_Edit');
     	    
     	    echo 'Workshop saved successfully';
     	    return;    	    

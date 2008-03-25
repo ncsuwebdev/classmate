@@ -46,12 +46,13 @@
     <div class="add" id="addAttendee">Add Attendee</div>   
     {/if}
     <b>Attendees:</b> {count source=$attendeeList} of {$event.maxSize} seats taken<br /><br />
-    
+    {if count($attendeeList) > 0}
     <form style="float: right;" method="post" action="{$sitePrefix}/workshop/instructor/markAllAsAttended">
         <input type="hidden" value="{$event.eventId}" name="eventId" />
         <input type="submit" value="Mark all attendees as attended" />
     </form>
     <br />
+    {/if}
     <br />
     {foreach from=$attendeeList item=a}
        <div class="attendee taken">
@@ -92,7 +93,14 @@
             <span>{$a.firstName} {$a.lastName}</span>
 	        {if $acl.deleteAttendee}
 	        <img id="del_{$a.userId}" src="{$sitePrefix}/public/images/delete.png" alt="remove {$a.firstName} {$a.lastName}" class="removeAttendee" />
-	        {/if} 
+	        {/if}
+            {if $acl.promoteAttendee}
+            <form style="display: inline; padding-left: 30px;" action="{$sitePrefix}/workshop/instructor/promoteAttendee" method="post">
+                <input type="hidden" name="eventId" value="{$event.eventId}" />
+                <input type="hidden" name="userId" value="{$a.userId}" />
+                <input type="submit" value="Move to attendees" />
+            </form>
+            {/if} 
 	        </div>
             <div class="signup">Signed up on {$a.timestamp|date_format:$config.dateTimeFormat}</div>
             </div>    

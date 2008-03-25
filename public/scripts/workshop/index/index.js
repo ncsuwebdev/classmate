@@ -10,9 +10,22 @@ window.addEvent('domready', function() {
                    
         hideAllCategories();
         
-        var box = $('categorySelect');           
+        var box = $('categorySelect');
         
-        $(box.options[box.options.selectedIndex].value).setStyle('display', '');
+        var val = box.options[box.options.selectedIndex].value;
+        
+        if (val == "category_all") {
+            
+            $$('.catBox').each(function (el) {
+                el.setStyle('display', '');
+            });
+            
+            $('category_0').setStyle('display', 'none');
+                            
+        } else {
+        
+            $(val).setStyle('display', '');
+        }
     });         
 });
 

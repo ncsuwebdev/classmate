@@ -62,6 +62,17 @@ class ContactController extends Internal_Controller_Action
                  ->setSubject($uc['contactEmailSubject']['value'])
                  ->send();
                  
+            $data = array(
+                       'name'    => $name,
+                       'email'   => $email,
+                       'content' => $content
+                    );
+                 
+            $trigger = new EmailTrigger();
+            $data['userId'] = Zend_Auth::getInstance()->getIdentity();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Contact_Email_Sent');
+                 
             $this->_redirect('/contact/thanks');
         }
     }

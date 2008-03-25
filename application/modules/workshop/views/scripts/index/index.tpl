@@ -12,6 +12,7 @@ what we teach.  Click on the title to see when we are offering it next!
         {foreach from=$workshops item=w}
             <option style="background-image:url({$sitePrefix}/index/image/?imageId={$w.category.smallIconImageId});" value="category_{$w.category.workshopCategoryId}">{$w.category.name}</option>
         {/foreach}
+        <option value="category_all">All Workshops</option>
     </select>
     <input type="button" value="Go" id="categorySelectButton" />
     <br /><br />

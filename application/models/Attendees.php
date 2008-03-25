@@ -117,6 +117,35 @@ class Attendees extends Ot_Db_Table
     	
     	return $events;
     }
+    
+    public function fillEvent($eventId)
+    {
+        $event = new Event();
+        $thisEvent = $event->find($eventId);
+        
+        if (($thisEvent->roleSize >= $thisEvent->maxSize) || $thisEvent->waitlistTotal == 0) {
+            return true;                
+        }
+        
+        $openSpots = $thisEvent->maxSize - $thisEvent->roleSize;
+        
+        $where = $this->getAdapter()->quoteInto('eventId = ?', $eventId) .
+                 " AND " .
+                 $this->getAdapter()->quoteInto('status = ?', 'waitlist');
+                 
+        $allWaitlisted = $this->fetchAll($where, 'timestamp');
+        
+        $counter = 0;
+        foreach ($allWaitlisted as $u) {
+            
+            if ($counter == $openSpots) {
+                return true;
+            } else {
+                $this->makeReservation($u->userId, $eventId);
+                $counter++;
+            }                        
+        }
+    }
 
     public function makeReservation($userId, $eventId, $overrideStatus = 'firstAvailable')
     {

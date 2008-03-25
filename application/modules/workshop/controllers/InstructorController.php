@@ -191,6 +191,28 @@ class Workshop_InstructorController extends Internal_Controller_Action
     }
     
     /**
+     * Moves a user from the waitlist to the attendee roster
+     *
+     */
+    public function promoteAttendeeAction()
+    {
+        if ($this->_request->isPost()) {
+            
+            $post = Zend_Registry::get('post');
+            $filter = Zend_Registry::get('inputFilter');
+            
+            $userId  = $filter->filter($post['userId']);
+            $eventId = $filter->filter($post['eventId']);
+            
+            $attendees = new Attendees();
+            
+            $attendees->makeReservation($userId, $eventId, 'attending');
+        }
+        
+        $this->_redirect('/workshop/instructor/?eventId=' . $eventId);
+    }
+    
+    /**
      * Allows a user to add an attendee to the event.
      *
      */

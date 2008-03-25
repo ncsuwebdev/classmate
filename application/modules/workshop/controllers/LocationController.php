@@ -125,6 +125,11 @@ class Workshop_LocationController extends Internal_Controller_Action
             $location = new Location();
             
             $locationId = $location->insert($data);
+                    
+            $trigger = new EmailTrigger();
+            $data['userId'] = Zend_Auth::getInstance()->getIdentity();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Location_Add');
             
             $this->_redirect('/workshop/location/details/?locationId=' . $locationId);
         }

@@ -223,6 +223,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             $this->view->locations = $locationList;
 	        
 	        $this->_response->setBody($this->view->render('schedule/editevent.tpl'));
+	        
     	} else {
     		
     		$post = Zend_Registry::get('post');
@@ -237,6 +238,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        $maxSize            = $filter->filter($post['workshopMaxSize']);
 	        $waitListSize       = $filter->filter($post['workshopWaitListSize']);
 	        $instructors        = $filter->filter($post['instructors']);
+	        
+	        $originalEvent = $event->find($eventId);
 	        
 	        $date = $date['Date_Year'] . "-" . $date['Date_Month'] . "-" . $date['Date_Day'];
 	        
@@ -302,12 +305,15 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                     }
                 }
             }
-	        
-	        if ($instructors == "none") {
-	            $instructors = "";
-	        }
+	            
+    	    if ($instructors == "none" || $instructors == "undefined") {
+                $instructors = "";
+            }
 	
-	        $instructorList = explode(":", $instructors);
+        	$instructorList = array();
+            if ($instructors != "") {
+                $instructorList = explode(":", $instructors);
+            }
 	        
 	        $data = array('eventId'      => $eventId,
 	                      'locationId'   => $locationId,
@@ -329,6 +335,12 @@ class Workshop_ScheduleController extends Internal_Controller_Action
 	        
 	        foreach ($instructorList as $i) {
 	            $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
+	        }
+	        
+	        // move people on the waitlist (if any) to the newly added spots
+	        if ($maxSize > $originalEvent->maxSize) {
+	            $attendees = new Attendees();
+	            $attendees->fillEvent($eventId);
 	        }
 	        
 	        $ret = array("rc"=>$eventId,
@@ -434,9 +446,13 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                 $workshopId = $filter->filter($get['workshopId']);   
             }
             
-            $this->view->date      = $filter->filter($get['date']);
-            $this->view->startTime = $filter->filter($get['startTime']);
-            $this->view->endTime   = $filter->filter($get['endTime']);
+            $date      = $filter->filter($get['date']);
+            $startTime = $filter->filter($get['startTime']);
+            $endTime   = $filter->filter($get['endTime']);
+            
+            $this->view->date      = $date;
+            $this->view->startTime = $startTime;
+            $this->view->endTime   = $endTime;
             
             $workshop = new Workshop();
             $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
@@ -469,7 +485,9 @@ class Workshop_ScheduleController extends Internal_Controller_Action
         
             $post   = Zend_Registry::get('post');
             $filter = Zend_Registry::get('inputFilter');
-    
+            
+            $e = new Event();
+
             $workshopId   = $filter->filter($post['workshopId']);
             $locationId   = $filter->filter($post['locationId']);
             $startTime    = $filter->filter($post['startTime']);
@@ -502,7 +520,8 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                           'waitlistSize' => $waitListSize
                          );
             
-            $e = new Event();
+            $workshop = new Workshop();
+            $thisWorkshop = $workshop->find($workshopId);
     
             $eventId = $e->insert($data);
             
@@ -512,8 +531,20 @@ class Workshop_ScheduleController extends Internal_Controller_Action
                 $instructor->insert(array("userId"=>trim($i), "eventId"=>$eventId));            
             }
             
+            $data = array(
+                    'userId'        => Zend_Auth::getInstance()->getIdentity(),
+                    'workshopTitle' => $thisWorkshop->title, 
+                    'date'          => $dateStr,
+                    'startTime'     => $startTime,
+                    'endTime'       => $endTime
+                );
+        
+            $trigger = new EmailTrigger();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Event_Create');
+            
             $ret = array("rc" => $eventId,
-                         "msg" => "Creating new event failed"
+                         "msg" => "Creating new event failed" // this is only read if rc == 0
                         );
             echo Zend_Json::encode($ret);
         }
