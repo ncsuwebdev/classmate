@@ -544,7 +544,7 @@ class Workshop_InstructorController extends Internal_Controller_Action
         
         $this->_helper->viewRenderer('template');
         
-        $this->view->toolTemplate = $this->view->render('instructor/evaluationresults.tpl');
+        $this->view->toolTemplate = $this->view->render('instructor/evaluation-results.tpl');
     }
     
     /**
