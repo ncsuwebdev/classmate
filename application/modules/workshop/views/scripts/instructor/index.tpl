@@ -12,6 +12,11 @@
          <tr>
             <td id="attendees" width="250">None Added</td>
             <td align="center">
+                <div style="margin-bottom: 3px;">
+                    <input type="text" size="20" id="attendeeFilterBox" />
+                    <input type="button" id="attendeeFilterButton" value="Filter" />
+                    <input type="button" id="attendeeFilterClear" value="Clear" />
+                </div>
                 {html_options size=10 multiple=true id=attendeeList name=attendeeList options=$users}
                 <br />
                 <input type="button" id="attendeeAddButton" value="&lsaquo; Add Selected User" />              

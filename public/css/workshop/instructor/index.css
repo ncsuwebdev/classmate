@@ -107,6 +107,10 @@ div.attendee .signup {
     width: 200px;   
 }
 
+.attendeeList {
+    width: 200px;	
+}
+
 div.attendeeName {
     line-height: 22px;
     height: 22px;

@@ -1,7 +1,6 @@
 var myStickyWin = null;
 
 window.addEvent('domready', function() {
-    //
 
     var onWidth = '100px', offWidth = '16px';
     
@@ -176,7 +175,12 @@ function initEventPopup()
     tmpListBox.multiple = false;
     
     $('attendeeAddButton').addEvent('click', function(e) {
-        var tmpListBox = $('attendeeList');
+        
+        if ($('attendeeListClone')) {
+            var tmpListBox = $('attendeeListClone');
+        } else {
+            var tmpListBox = $('attendeeList');
+        }
         
         if (tmpListBox.options.selectedIndex >= 0) {
             var tmpChildren = $('attendees').getChildren();
@@ -234,5 +238,51 @@ function initEventPopup()
 	            $('attendees').adopt(tmpBox);                       
             }
         }
+    });
+    
+    $('attendeeFilterClear').addEvent('click', function(e) {
+        $('attendeeFilterBox').value = "";
+        $('attendeeFilterButton').fireEvent('click');
+    });
+    
+    $('attendeeFilterButton').addEvent('click', function (e) {    
+               
+        var attendeeListClone = null;
+                        
+        if ($('attendeeListClone')) {           
+           var p = $('attendeeListClone').getParent();
+           p.removeChild($('attendeeListClone'));
+        }
+                        
+        $('attendeeList').setStyle('display', 'block');
+        
+        var filterVal = $('attendeeFilterBox').value;
+        
+        if (filterVal != "") { 
+                
+            attendeeListClone = new Element('select');
+            attendeeListClone.size = 10;
+            attendeeListClone.addClass('attendeeList');
+            attendeeListClone.id = "attendeeListClone";
+                                    
+            var regex = new RegExp(filterVal, 'i');
+            
+            var tmpListBox = $('attendeeList');
+            
+            for (var i=0; i < tmpListBox.options.length; i++) {
+                
+                if (tmpListBox[i].label.match(regex)) {
+                    var tmpOpt = new Element('option');
+                    tmpOpt.label = tmpListBox[i].label;
+                    tmpOpt.value = tmpListBox[i].value;
+                    tmpOpt.innerHTML = tmpListBox[i].innerHTML;
+                    attendeeListClone.adopt(tmpOpt);
+                }
+            }
+            
+            attendeeListClone.injectAfter('attendeeList');
+            $('attendeeList').setStyle('display', 'none');
+        }
+        
     });
 }

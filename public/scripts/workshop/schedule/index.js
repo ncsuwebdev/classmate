@@ -377,7 +377,12 @@ function initEventPopup()
     
     // add instructor from the list to the display of instructors
     $('instructorAddButton').addEvent('click', function(e) {
-        var tmpListBox = $('instructorList');
+        
+        if ($('instructorListClone')) {
+            var tmpListBox = $('instructorListClone');
+        } else {
+            var tmpListBox = $('instructorList');
+        }
         
         if (tmpListBox.options.selectedIndex >= 0) {
         
@@ -431,6 +436,52 @@ function initEventPopup()
                 $('instructors').adopt(tmpBox);                                       
             }
         }
+    });
+    
+    $('instructorFilterClear').addEvent('click', function(e) {
+        $('instructorFilterBox').value = "";
+        $('instructorFilterButton').fireEvent('click');
+    });
+    
+    $('instructorFilterButton').addEvent('click', function (e) {    
+               
+        var instructorListClone = null;
+                        
+        if ($('instructorListClone')) {           
+           var p = $('instructorListClone').getParent();
+           p.removeChild($('instructorListClone'));
+        }
+                        
+        $('instructorList').setStyle('display', 'block');
+        
+        var filterVal = $('instructorFilterBox').value;
+        
+        if (filterVal != "") { 
+                
+            instructorListClone = new Element('select');
+            instructorListClone.size = 10;
+            instructorListClone.addClass('instructorList');
+            instructorListClone.id = "instructorListClone";
+                                    
+            var regex = new RegExp(filterVal, 'i');
+            
+            var tmpListBox = $('instructorList');
+            
+            for (var i=0; i < tmpListBox.options.length; i++) {
+                
+                if (tmpListBox[i].label.match(regex)) {
+                    var tmpOpt = new Element('option');
+                    tmpOpt.label = tmpListBox[i].label;
+                    tmpOpt.value = tmpListBox[i].value;
+                    tmpOpt.innerHTML = tmpListBox[i].innerHTML;
+                    instructorListClone.adopt(tmpOpt);
+                }
+            }
+            
+            instructorListClone.injectAfter('instructorList');
+            $('instructorList').setStyle('display', 'none');
+        }
+        
     });
 }
 

@@ -218,7 +218,11 @@ div.weekViewWrapper {
 }
 
 #instructorList {
-    width: 150px;	
+    width: 175px;	
+}
+
+.instructorList {
+    width: 175px;   
 }
 
 div.instructorName {

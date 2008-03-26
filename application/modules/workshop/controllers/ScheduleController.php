@@ -222,7 +222,7 @@ class Workshop_ScheduleController extends Internal_Controller_Action
             
             $this->view->locations = $locationList;
 	        
-	        $this->_response->setBody($this->view->render('schedule/editevent.tpl'));
+	        $this->_response->setBody($this->view->render('schedule/edit-event.tpl'));
 	        
     	} else {
     		
