@@ -53,7 +53,7 @@ class IndexController extends Internal_Controller_Action
     	
     	$this->view->upcoming = $upcoming;
     	
-    	$searchTerm = new SearchTerm;
+    	$searchTerm = new SearchTerm();
     	
     	$this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(5)->toArray();
     	
