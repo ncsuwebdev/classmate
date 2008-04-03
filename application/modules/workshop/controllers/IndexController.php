@@ -49,7 +49,7 @@ class Workshop_IndexController extends Internal_Controller_Action
     	
     	$this->view->javascript = array("calendar.js");
     	
-        $this->view->title = "Our Workshops";
+        $this->view->title = "Workshops";
         
         $wc = new WorkshopCategory();
         $categories = $wc->fetchAll(null, 'name');

@@ -69,8 +69,8 @@
         
         <span class="attendance" id="att_{$a.userId}">    
             <span class="update" id="update_{$a.userId}">&nbsp;</span>  
-            <div class="present {if $a.attended == 0}off{else}on{/if}"><span>Attended Class</span></div>
-            <div class="absent {if $a.attended == 0}on{else}off{/if}"><span>Absent from Class</span></div>      
+            <div class="present {if $a.attended == 0}off{else}on{/if}"><span>Attended Workshop</span></div>
+            <div class="absent {if $a.attended == 0}on{else}off{/if}"><span>Absent from Workshop</span></div>      
         </span>    
         <span class="name">       
         <span>{$a.firstName} {$a.lastName}</span>

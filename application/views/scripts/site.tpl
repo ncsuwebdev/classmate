@@ -85,7 +85,7 @@
                 </form>
             </div>
             <div class="newsletter">
-                <p>Subscribe to our newsletter!</p>
+                <p><a href="{$newsletterLink}" target="_blank">Subscribe to our newsletter!</a></p>
             </div>
         </div>
         

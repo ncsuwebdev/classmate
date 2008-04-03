@@ -1,7 +1,7 @@
 <div id="detailsRight">
     <div class="rightTitle">
         {if $acl.edit}
-            <a href="{$sitePrefix}/profile/index/edit/?userId={$profile.userId}"><div class="edit">&nbsp;</div></a>
+            <a href="{$sitePrefix}/profile/index/edit/?userId={$profile.userId}">Edit</a>
         {/if}      
         User Information      
     </div>
@@ -54,7 +54,7 @@
 	    {/foreach}
 	    </div>
 	{/if}    
-    <b>MyClassMate</b> is your one-stop-shop for all the classes you are involved
+    <b>My Appointments</b> is your one-stop-shop for all the workshops you are involved
     with.  Make sure to keep your user information up-to-date so that you get all
     the benefits of being a ClassMate member.    
     <div class="sectionBar">
@@ -133,7 +133,7 @@
 	            </div>                    
 	        </div>
 	        {foreachelse}
-	        You have not taken any classes.
+	        You have not attended any workshops.
 	        {/foreach}         
         </div>  
         <div id="suggestedWorkshops" class="workshops mootabs_panel">
@@ -155,12 +155,12 @@
     <br />
     <div class="sectionBar">
         <p class="left"></p>
-        <p class="content">Classes I Am Teaching</p>
+        <p class="content">Workshops I Am Teaching</p>
     </div>    
     <div id="teaching" class="section">
         <ul class="mootabs_title">
-            <li title="currentTeaching">Upcoming Classes ({count source=$activeTeaching})</li>
-            <li title="historyTeaching">Completed Classes ({count source=$completedTeaching})</li>
+            <li title="currentTeaching">Upcoming Workshops ({count source=$activeTeaching})</li>
+            <li title="historyTeaching">Completed Workshops ({count source=$completedTeaching})</li>
         </ul>
         <div id="currentTeaching" class="mootabs_panel">
             {foreach from=$activeTeaching item=e name=currentTeaching}
@@ -195,7 +195,7 @@
                 </div>           
             </div>
             {foreachelse}
-            No Current Classes Found.
+            You are not currently teaching any workshops.
             {/foreach}         
         </div> 
         <div id="historyTeaching" class="mootabs_panel">
@@ -216,7 +216,7 @@
                 </div>           
             </div>
             {foreachelse}
-            No Current Classes Found.
+            You have not taught any workshops.
             {/foreach}           
         </div>
     </div>

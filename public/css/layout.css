@@ -213,6 +213,10 @@ img {
     margin: 0 0 3px 0;
 }
 
+.newsletter a {
+	background: none;
+	color: #FFF;
+}
 .subheader {
     clear: both;
     height: 5px;

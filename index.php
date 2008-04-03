@@ -109,6 +109,7 @@ $view->appTitle = $config->branding->appTitle;
 $view->config = $config->display->toArray();
 $view->userConfig = $userConfig->toArray();
 $view->addScriptPath('./application/views/scripts/');
+$view->newsletterLink = $config->newsletterLink;
 
 
 $branch = explode('/', str_replace($view->sitePrefix . '/', '', $_SERVER['REQUEST_URI']));

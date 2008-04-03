@@ -91,7 +91,7 @@ class Profile_IndexController extends Internal_Controller_Action
         
         $this->view->profile       = $up->toArray();
         $this->view->displayUserId = $displayUserId;
-        $this->view->title         = "MyClassMate for " . ((isset($up->firstName)) ? $up->firstName . ' ' . $up->lastName : $displayUserId);
+        $this->view->title         = "Appointments for " . ((isset($up->firstName)) ? $up->firstName . ' ' . $up->lastName : $displayUserId);
         $this->view->types         = $config->profileTypes->toArray();
         		
         $stayOpen = new Zend_Date();

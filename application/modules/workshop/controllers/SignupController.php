@@ -149,7 +149,7 @@ class Workshop_SignupController extends Internal_Controller_Action
         $fm->setNamespace('login');
         $fm->addMessage('You have successfully signed up for <b>' . $thisWorkshop->title . '</b>.<br /><br />Your reservation ' . 
             'will show up below under &quot;My Reservations&quot;.  Should you need to cancel your reservation, you ' . 
-            'can get back to this page by clicking on the &quot;MyClassMate&quot; link in the navigation bar.');
+            'can get back to this page by clicking on the &quot;My Appointments&quot; link in the navigation bar.');
         
         $data = array(
                     'userId'        => Zend_Auth::getInstance()->getIdentity(),

@@ -33,7 +33,6 @@ class Ot_Db_Table extends Zend_Db_Table
     {
     	$args = func_get_args();
     	
-    	//$result = call_user_func_array(array($this, 'parent::find'), $args);
     	$result = parent::find($args);
     	
     	if (count($this->_primary) == 1) {

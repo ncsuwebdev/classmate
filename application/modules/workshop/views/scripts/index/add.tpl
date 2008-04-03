@@ -19,7 +19,7 @@
     <tr>
         <td><label for="tags">Tags:
         <td>
-            <input type="text" name="tags" id="tags" value="" size="30" /> <a href="{$sitePrefix}/help/?search=tags" target="_blank">What are tags?</a><br />
+            <input type="text" name="tags" id="tags" value="" size="30" /><br />
             Separate tags by commas.
         </td>
     </tr>        

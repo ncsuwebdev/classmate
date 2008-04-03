@@ -1,6 +1,6 @@
 <div>
-    If you sign up for one of our workshops, chances are your class will be held
-    in one of these locations.  Check out the details for directions
+    If you sign up for one of our workshops, chances are your event will be held
+    in one of these locations.  Check out the details for directions.
     <br /><br />
 
     {if $acl.add}

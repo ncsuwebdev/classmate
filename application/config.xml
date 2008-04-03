@@ -33,6 +33,7 @@
     	<aclConfigFile>./library/Internal/Acl/aclConfig.xml</aclConfigFile>
         <userConfigFile>./library/Internal/Config/userConfig.xml</userConfigFile>
     	<cronDirectory>./cron</cronDirectory>
+    	<newsletterLink>http://oit.ncsu.edu/news/index.php</newsletterLink>
     	<display>
     	   <headerRowRepeat>25</headerRowRepeat>
     	   <dateTimeFormat>%m/%d/%Y %I:%M %p</dateTimeFormat>
@@ -61,7 +62,7 @@
                <module>profile</module>
                <controller>index</controller>
                <action>index</action>               
-               <display>MyClassMate</display>   
+               <display>My Appointments</display>   
                <link></link>
                <submenu>
                </submenu>               
@@ -70,13 +71,13 @@
                <module>workshop</module>
                <controller>index</controller>
                <action>index</action>
-               <display>Our Workshops</display>
+               <display>Workshops</display>
                <submenu>
                    <tab1>
                        <module>workshop</module>
                        <controller>index</controller>
                        <action></action>
-                       <display>Workshops We Teach</display>
+                       <display>Workshop Listing</display>
                        <link></link>                   
                    </tab1>
                    <tab2>

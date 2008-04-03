@@ -2,7 +2,7 @@
     <div class="sectionTitle">
         <p class="left"></p>
         <p class="right"></p>
-        <p class="content">ClassMate Classes</p>
+        <p class="content">ClassMate Workshops</p>
     </div>
     <div id="myTabs">
         <ul class="mootabs_title">
@@ -12,7 +12,7 @@
         </ul>
 	    <div id="events" class="mootabs_panel">
 	       <div class="tabDesc">
-              These are the upcoming classes we are offering:
+              These are the upcoming workshops we are offering:
            </div>
 	        {foreach from=$upcoming item=e name=upcoming}
                 {if $smarty.foreach.upcoming.index < 4}
@@ -22,7 +22,7 @@
         	        </div>
                 {/if}
 	        {foreachelse}
-	        There are no upcoming classes right now.
+	        There are no upcoming workshops right now.
 	        {/foreach}
             <div class="event">
                <span class="date"></span>

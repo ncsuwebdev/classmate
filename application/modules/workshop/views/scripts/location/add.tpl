@@ -1,6 +1,6 @@
 <div>
     Here you can add a new teaching lab to the system.  This will be a selectable option
-    when scheduling classes.<br /><br />
+    when scheduling workshops.<br /><br />
     
     <form method="post" action="" class="checkRequiredFields" id="addForm">
         <table class="form">

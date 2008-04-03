@@ -84,7 +84,7 @@
 	{elseif $status == 'waitlist'}
 	<h3 id="signup">You are on the waitlist for this class.</h3>
 	You are on the waitlist for this class.  Once a spot becomes available, you will be automatically
-	put into the class.  You can access your reservation from the <b>MyClassMate</b> link in the navigation bar.
+	put into the class.  You can access your reservation from the <b>My Appointments</b> link in the navigation bar.
 	<br /><br />
 	{elseif $status == 'restricted'}
 	<div id="restricted" class="banner">

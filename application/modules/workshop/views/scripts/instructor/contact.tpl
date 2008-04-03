@@ -8,9 +8,9 @@ the message to and ClassMate will take care of the rest!<br /><br />
         <tr>
             <td><label>Send To:</label></td>
             <td>
-                <input type="checkbox" name="attending" id="attending" value="ON" /> Attendees of the class<br />
+                <input type="checkbox" name="attending" id="attending" value="ON" /> Attendees of the workshop<br />
                 <input type="checkbox" name="waitlist" id="waitlist" value="ON" /> People on the waitlist<br />
-                <input type="checkbox" name="instructors" id="instructors" value="ON" /> Instructors of this class<br />
+                <input type="checkbox" name="instructors" id="instructors" value="ON" /> Instructors of this workshop<br />
             </td>
         </tr>
         <tr>
