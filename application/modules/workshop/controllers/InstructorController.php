@@ -206,7 +206,67 @@ class Workshop_InstructorController extends Internal_Controller_Action
             
             $attendees = new Attendees();
             
+            // lookup the event
+            $event = new Event();
+            $thisEvent = $event->find($eventId);
+            if (is_null($thisEvent)) {
+                throw new Internal_Exception_Data('Event not found');
+            }
+            
+            $workshop = new Workshop();
+            $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+            if (is_null($thisWorkshop)) {
+                throw new Internal_Exception_Data('Workshop not found');
+            }
+            
+            $location = new Location();
+            $thisLocation = $location->find($thisEvent->locationId);
+            
+            if (is_null($thisLocation)) {
+                throw new Internal_Exception_Data('Location Not Found');
+            }           
+            
+            $instructor = new Instructor();
+            $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
+               
+            $instructorNames = array();
+            $instructorEmails = array();
+            
+            foreach ($instructors as $i) {
+                $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+                $instructorEmails[] = $i['emailAddress'];
+            }
+            
+	        $profile = new Profile();       
+	        $up = $profile->find($userId);
+	        
+	        if (is_null($up)) {
+	            throw new Internal_Exception_Input('No profile exists for this user');
+	        }            
+                        
             $attendees->makeReservation($userId, $eventId, 'attending');
+            
+            $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
+	        $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
+	        
+	        $data = array(
+	            'workshopName'              => $thisWorkshop->title,
+	            'workshopDate'              => date('m/d/Y', $startDt),
+	            'workshopStartTime'         => date('g:i a', $startDt),
+	            'workshopEndTime'           => date('g:i a', $endDt),
+	            'workshopMinimumEnrollment' => $thisEvent->minSize,
+	            'locationName'              => $thisLocation->name,
+	            'locationAddress'           => $thisLocation->address,
+	            'userId'                    => $userId,
+	            'instructorNames'           => implode(', ', $instructorNames),
+	            'instructorEmails'          => implode(', ', $instructorEmails),
+	            'studentEmail'              => $up->emailAddress,
+	            'studentName'               => $up->firstName . ' ' . $up->lastName,
+	        );
+	        
+	        $trigger = new EmailTrigger();
+            $trigger->setVariables($data);
+            $trigger->dispatch('Event_Instructor_Waitlist_To_Attending');
         }
         
         $this->_redirect('/workshop/instructor/?eventId=' . $eventId);
@@ -235,11 +295,30 @@ class Workshop_InstructorController extends Internal_Controller_Action
 	            throw new Internal_Exception_Data('Event not found');
 	        }
 	        
-	        // lookup the instructors
-	        $instructor = new Instructor();
-	        $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
-	        
-	        $this->_checkValidViewer($instructors);
+    	    $workshop = new Workshop();
+            $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+            if (is_null($thisWorkshop)) {
+                throw new Internal_Exception_Data('Workshop not found');
+            }
+            
+            $location = new Location();
+            $thisLocation = $location->find($thisEvent->locationId);
+            
+            if (is_null($thisLocation)) {
+                throw new Internal_Exception_Data('Location Not Found');
+            }           
+            
+            $instructor = new Instructor();
+            $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
+            $this->_checkValidViewer($instructors);
+               
+            $instructorNames = array();
+            $instructorEmails = array();
+            
+            foreach ($instructors as $i) {
+                $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+                $instructorEmails[] = $i['emailAddress'];
+            }
 	        
 	        // lookup the attendees of the event
 	        $attendees = new Attendees();
@@ -260,11 +339,58 @@ class Workshop_InstructorController extends Internal_Controller_Action
                 $userExclude[] = $i['userId'];
             }	       
 
+            $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
+            $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
+            
+            $data = array(
+                'workshopName'              => $thisWorkshop->title,
+                'workshopDate'              => date('m/d/Y', $startDt),
+                'workshopStartTime'         => date('g:i a', $startDt),
+                'workshopEndTime'           => date('g:i a', $endDt),
+                'workshopMinimumEnrollment' => $thisEvent->minSize,
+                'locationName'              => $thisLocation->name,
+                'locationAddress'           => $thisLocation->address,
+                'instructorNames'           => implode(', ', $instructorNames),
+                'instructorEmails'          => implode(', ', $instructorEmails),
+            ); 
+                        
             foreach ($post['userId'] as $u) {
             	$u = $filter->filter($u);
             	
             	if (!in_array($userExclude)) {
-            		$attendees->makeReservation($u, $thisEvent->eventId, $filter->filter($post['type']));
+            	    $profile = new Profile();       
+                    $up = $profile->find($u);
+
+                    if (!is_null($up)) {
+                    	$status = $attendees->makeReservation($u, $thisEvent->eventId, $filter->filter($post['type']));
+                    	
+                    	$data['studentEmail'] = $up->emailAddress;
+                    	$data['studentName']  = $up->firstName . ' ' . $up->lastName;
+                    	$data['userId']       = $u;
+                    	
+                    	if ($status == 'waitlist') {
+				            $waiting = $attendees->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
+				                    
+				            $position = 1;
+				                   
+				            foreach ($waiting as $w) {
+				                if ($u == $w['userId']) {
+				                    break;
+				                }
+				                $position++;
+				            }
+				    
+				            $data['waitlistPosition'] = $position; 
+				                               		
+                    		$trigger = new EmailTrigger();
+                            $trigger->setVariables($data);
+                            $trigger->dispatch('Event_Instructor_Signup_Waitlist');
+                    	} else {
+                    	    $trigger = new EmailTrigger();
+                            $trigger->setVariables($data);
+                            $trigger->dispatch('Event_Instructor_Signup');
+                    	}
+                    }
             	}
             }
             
@@ -294,14 +420,79 @@ class Workshop_InstructorController extends Internal_Controller_Action
             throw new Internal_Exception_Data('Event not found');
         }    	
         
-        // lookup the instructors
+        $workshop = new Workshop();
+        $thisWorkshop = $workshop->find($thisEvent->workshopId);        
+        if (is_null($thisWorkshop)) {
+            throw new Internal_Exception_Data('Workshop not found');
+        }
+            
+        $location = new Location();
+        $thisLocation = $location->find($thisEvent->locationId);
+            
+        if (is_null($thisLocation)) {
+            throw new Internal_Exception_Data('Location Not Found');
+        }           
+            
+        $profile = new Profile();       
+        $up = $profile->find($filter->filter($get['userId']));
+            
+        if (is_null($up)) {
+            throw new Internal_Exception_Input('No profile exists for this user');
+        }
+           
         $instructor = new Instructor();
-        $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);        
+        $instructors = $instructor->getInstructorsForEvent($eventId);
         $this->_checkValidViewer($instructors);
+         
+        $instructorNames = array();
+        $instructorEmails = array();
+            
+        foreach ($instructors as $i) {
+            $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+            $instructorEmails[] = $i['emailAddress'];
+        }     
         
         $attendees = new Attendees();
         $attendees->cancelReservation($filter->filter($get['userId']), $thisEvent->eventId);
 
+        $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
+        $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
+            
+        $data = array(
+            'workshopName'              => $thisWorkshop->title,
+            'workshopDate'              => date('m/d/Y', $startDt),
+            'workshopStartTime'         => date('g:i a', $startDt),
+            'workshopEndTime'           => date('g:i a', $endDt),
+            'workshopMinimumEnrollment' => $thisEvent->minSize,
+            'locationName'              => $thisLocation->name,
+            'locationAddress'           => $thisLocation->address,
+            'userId'                    => $filter->filter($get['userId']),
+            'instructorNames'           => implode(', ', $instructorNames),
+            'instructorEmails'          => implode(', ', $instructorEmails),
+            'studentEmail'              => $up->emailAddress,
+            'studentName'               => $up->firstName . ' ' . $up->lastName,
+        );
+
+        $trigger = new EmailTrigger();
+        $trigger->setVariables($data);
+        $trigger->dispatch('Event_Instructor_Cancel_Reservation');  
+        
+        $waiting = $attendees->getAttendeesForEvent($eventId, 'waitlist');
+        if (count($waiting) != 0) {             
+            $up = $profile->find($waiting[0]['userId']);
+                
+            if (!is_null($up)) {
+                $attendees->makeReservation($up->userId, $eventId);
+                    
+                $data['studentEmail'] = $up->emailAddress;
+                $data['studentName']  = $up->firstName . ' ' . $up->lastName;
+                $data['userId']       = $up->userId;
+                    
+                $trigger = new EmailTrigger();
+                $trigger->setVariables($data);
+                $trigger->dispatch('Event_Waitlist_To_Attending'); 
+            }               
+        }           
         
         $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
     }

@@ -93,19 +93,14 @@ class EmailTrigger extends Ot_Db_Table
         $where = $emailTriggerVariable->getAdapter()->quoteInto('triggerId = ?', $triggerId);
         $expectedVars = $emailTriggerVariable->fetchAll($where)->toArray();
         
-        foreach ($expectedVars as $e) {
-            if (!isset($this->_emailVars[$e['variable']])) {
-                throw new Internal_Exception_Data($e['variable'] . " must be set");
-            }
-        }
 
         $where = $emailTemplate->getAdapter()->quoteInto('triggerId = ?', $triggerId);
         $templates = $emailTemplate->fetchAll($where)->toArray();
         
         $userConfig = Zend_Registry::get('userConfig');
         
-        $fromEmail = $userConfig['fromEmailAddress'];
-        $fromName  = $userConfig['fromEmailName'];
+        $fromEmail = $userConfig['fromEmailAddress']['value'];
+        $fromName  = $userConfig['fromEmailName']['value'];
                     
         foreach ($templates as $template) {
             

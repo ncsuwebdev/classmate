@@ -135,6 +135,13 @@ class Workshop_SignupController extends Internal_Controller_Action
         if (is_null($thisEvent)) {
             throw new Internal_Exception_Data('Event not found');
         }
+        
+        $location = new Location();
+        $thisLocation = $location->find($thisEvent->locationId);
+        
+        if (is_null($thisLocation)) {
+        	throw new Internal_Exception_Data('Location Not Found');
+        }
 
         $workshop = new Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
@@ -142,24 +149,76 @@ class Workshop_SignupController extends Internal_Controller_Action
             throw new Internal_Exception_Data('Workshop not found');
         }
                 
+        
+        $profile = new Profile();       
+        $up = $profile->find(Zend_Auth::getInstance()->getIdentity());
+        
+        if (is_null($up)) {
+            throw new Internal_Exception_Input('No profile exists for this user');
+        }
+        
+        $instructor = new Instructor();
+        $instructors = $instructor->getInstructorsForEvent($eventId);
+                
+        $instructorNames = array();
+        $instructorEmails = array();
+        
+        foreach ($instructors as $i) {
+            $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+            $instructorEmails[] = $i['emailAddress'];
+        }
+
+        $status = 'attending';
         $attendees = new Attendees();
-        $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
-                    
+        $status = $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
+                
         $fm = $this->getHelper('FlashMessenger');
         $fm->setNamespace('login');
         $fm->addMessage('You have successfully signed up for <b>' . $thisWorkshop->title . '</b>.<br /><br />Your reservation ' . 
             'will show up below under &quot;My Reservations&quot;.  Should you need to cancel your reservation, you ' . 
             'can get back to this page by clicking on the &quot;My Appointments&quot; link in the navigation bar.');
         
+        $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
+        $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
+        
         $data = array(
-                    'userId'        => Zend_Auth::getInstance()->getIdentity(),
-                    'workshopTitle' => $thisWorkshop->title, 
-                    'date'          => $thisEvent->date
-                );
+            'workshopName'              => $thisWorkshop->title,
+            'workshopDate'              => date('m/d/Y', $startDt),
+            'workshopStartTime'         => date('g:i a', $startDt),
+            'workshopEndTime'           => date('g:i a', $endDt),
+            'workshopMinimumEnrollment' => $thisEvent->minSize,
+            'locationName'              => $thisLocation->name,
+            'locationAddress'           => $thisLocation->address,
+            'userId'                    => Zend_Auth::getInstance()->getIdentity(),
+            'instructorNames'           => implode(', ', $instructorNames),
+            'instructorEmails'          => implode(', ', $instructorEmails),
+            'studentEmail'              => $up->emailAddress,
+            'studentName'               => $up->firstName . ' ' . $up->lastName,
+        );
+        
+        if ($status == 'waitlist') {
+            $waiting = $attendees->getAttendeesForEvent($e['eventId'], 'waitlist');
+                    
+            $position = 1;
+                   
+            foreach ($waiting as $w) {
+                if ($data['userId'] == $w['userId']) {
+                    break;
+                }
+                $position++;
+            }
+    
+            $data['waitlistPosition'] = $position;
+        }
         
         $trigger = new EmailTrigger();
         $trigger->setVariables($data);
-        $trigger->dispatch('Event_Signup');
+        
+        if ($status == 'waitlist') {
+        	$trigger->dispatch('Event_Signup_Waitlist');
+        } else {
+            $trigger->dispatch('Event_Signup');
+        }
         
         $this->_redirect('profile/');       
     }
@@ -198,7 +257,32 @@ class Workshop_SignupController extends Internal_Controller_Action
 	        if (is_null($thisWorkshop)) {
 	            throw new Internal_Exception_Data('Workshop not found');
 	        }
+	        
+    	    $location = new Location();
+	        $thisLocation = $location->find($thisEvent->locationId);
+	        
+	        if (is_null($thisLocation)) {
+	            throw new Internal_Exception_Data('Location Not Found');
+	        }	        
             
+    	    $profile = new Profile();       
+	        $up = $profile->find(Zend_Auth::getInstance()->getIdentity());
+	        
+	        if (is_null($up)) {
+	            throw new Internal_Exception_Input('No profile exists for this user');
+	        }
+	        
+	        $instructor = new Instructor();
+	        $instructors = $instructor->getInstructorsForEvent($eventId);
+	                
+	        $instructorNames = array();
+	        $instructorEmails = array();
+	        
+	        foreach ($instructors as $i) {
+	            $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+	            $instructorEmails[] = $i['emailAddress'];
+	        }
+        	        
             $status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity(), $eventId);
             if ($status != 'waitlist' && $status != 'attending') {
                 throw new Internal_Exception_Data('You are not atteding this class, so you cannot cancel it');
@@ -207,19 +291,45 @@ class Workshop_SignupController extends Internal_Controller_Action
             $attendees = new Attendees();
             $attendees->cancelReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
             
+	        $data = array(
+	            'workshopName'              => $thisWorkshop->title,
+	            'workshopDate'              => date('m/d/Y', $startDt),
+	            'workshopStartTime'         => date('g:i a', $startDt),
+	            'workshopEndTime'           => date('g:i a', $endDt),
+	            'workshopMinimumEnrollment' => $thisEvent->minSize,
+	            'locationName'              => $thisLocation->name,
+	            'locationAddress'           => $thisLocation->address,
+	            'userId'                    => Zend_Auth::getInstance()->getIdentity(),
+	            'instructorNames'           => implode(', ', $instructorNames),
+	            'instructorEmails'          => implode(', ', $instructorEmails),
+	            'studentEmail'              => $up->emailAddress,
+	            'studentName'               => $up->firstName . ' ' . $up->lastName,
+	        );       
+	        
             $fm = $this->getHelper('FlashMessenger');
             $fm->setNamespace('login');
             $fm->addMessage('You have successfully canceled your reservation for <b>' . $thisWorkshop->title . '</b>.');
-
-            $data = array(
-                    'userId'        => Zend_Auth::getInstance()->getIdentity(),
-                    'workshopTitle' => $thisWorkshop->title, 
-                    'date'          => $thisEvent->date
-                );
         
             $trigger = new EmailTrigger();
             $trigger->setVariables($data);
-            $trigger->dispatch('Event_Cancel_Reservation');            
+            $trigger->dispatch('Event_Cancel_Reservation');   	        
+
+	    	$waiting = $attendees->getAttendeesForEvent($eventId, 'waitlist');
+	        if (count($waiting) != 0) {	            
+	            $up = $profile->find($waiting[0]['userId']);
+	            
+	            if (!is_null($up)) {
+	            	$attendees->makeReservation($up->userId, $eventId);
+	            	
+		            $data['studentEmail'] = $up->emailAddress;
+		            $data['studentName']  = $up->firstName . ' ' . $up->lastName;
+		            $data['userId']       = $up->userId;
+		            
+		            $trigger = new EmailTrigger();
+		            $trigger->setVariables($data);
+		            $trigger->dispatch('Event_Waitlist_To_Attending'); 
+	            }  	            
+	        }	                 
             
             $this->_redirect('profile/');
             

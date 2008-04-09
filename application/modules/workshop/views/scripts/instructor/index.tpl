@@ -100,7 +100,7 @@
 	        <img id="del_{$a.userId}" src="{$sitePrefix}/public/images/delete.png" alt="remove {$a.firstName} {$a.lastName}" class="removeAttendee" />
 	        {/if}
             {if $acl.promoteAttendee}
-            <form style="display: inline; padding-left: 30px;" action="{$sitePrefix}/workshop/instructor/promoteAttendee" method="post">
+            <form style="display: inline; padding-left: 30px;" action="{$sitePrefix}/workshop/instructor/promote-attendee" method="post">
                 <input type="hidden" name="eventId" value="{$event.eventId}" />
                 <input type="hidden" name="userId" value="{$a.userId}" />
                 <input type="submit" value="Move to attendees" />

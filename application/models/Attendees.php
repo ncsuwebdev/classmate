@@ -333,18 +333,6 @@ class Attendees extends Ot_Db_Table
             throw $e;
         }
         
-        $waiting = $this->getAttendeesForEvent($eventId, 'waitlist');
-        if (count($waiting) != 0) {
-        	try {
-        	   $this->makeReservation($waiting[0]['userId'], $eventId);
-        	} catch (Exception $e) {
-        	    if (!$inTransaction) {
-                    $dba->rollBack();
-                }
-        		throw $e;
-        	}
-        }
-        
         if (!$inTransaction) {
             $dba->commit();
         } 
