@@ -88,6 +88,13 @@
         <b>Waitlist: </b> {count source=$waitlist} of {$event.waitlistSize} seats taken<br /><br />
         {foreach from=$waitlist item=a}
            <div class="attendee taken">
+            {if $acl.promoteAttendee}
+            <form style="display: inline; padding-left: 30px; float: right;" action="{$sitePrefix}/workshop/instructor/promote-attendee" method="post">
+                <input type="hidden" name="eventId" value="{$event.eventId}" />
+                <input type="hidden" name="userId" value="{$a.userId}" />
+                <input type="submit" value="Move to attendees" />
+            </form>
+            {/if}            
             {if $a.picImageId == 0}
             <img src="{$sitePrefix}/public/images/system-users.png" border="0" />
             {else}
@@ -99,13 +106,7 @@
 	        {if $acl.deleteAttendee}
 	        <img id="del_{$a.userId}" src="{$sitePrefix}/public/images/delete.png" alt="remove {$a.firstName} {$a.lastName}" class="removeAttendee" />
 	        {/if}
-            {if $acl.promoteAttendee}
-            <form style="display: inline; padding-left: 30px;" action="{$sitePrefix}/workshop/instructor/promote-attendee" method="post">
-                <input type="hidden" name="eventId" value="{$event.eventId}" />
-                <input type="hidden" name="userId" value="{$a.userId}" />
-                <input type="submit" value="Move to attendees" />
-            </form>
-            {/if} 
+            
 	        </div>
             <div class="signup">Signed up on {$a.timestamp|date_format:$config.dateTimeFormat}</div>
             </div>    

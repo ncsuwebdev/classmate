@@ -57,11 +57,11 @@ class Attendees extends Ot_Db_Table
         	   $this->getAdapter()->quoteInto('status = ?', $status);
         }
         
-        $result = $this->fetchAll($where, 'timestamp DESC');
+        $result = $this->fetchAll($where, 'timestamp ASC')->toArray();
         
         $userIds = array();
         foreach ($result as $r) {
-            $userIds[$r->userId] = $r->toArray();
+            $userIds[] = $r['userId'];
         }
         
         if (count($userIds) == 0) {
@@ -69,12 +69,17 @@ class Attendees extends Ot_Db_Table
         }
         
         $profile = new Profile();
-        $where = $profile->getAdapter()->quoteInto('userId IN (?)', array_keys($userIds));
+        $where = $profile->getAdapter()->quoteInto('userId IN (?)', $userIds);
         
-        $result = $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();
+        $profiles = $profile->fetchAll($where, array('lastName', 'firstName'))->toArray();
 
+        $pMap = array();
+        foreach ($profiles as $p) {
+        	$pMap[$p['userId']] = $p;
+        }
+        
         foreach ($result as &$r) {
-        	$r = array_merge($r, $userIds[$r['userId']]);
+        	$r = array_merge($r, $pMap[$r['userId']]);
         }
         
         return $result;
