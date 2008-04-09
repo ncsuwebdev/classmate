@@ -67,7 +67,7 @@
       </allow>
       <allow>
         <resource>workshop_schedule</resource>
-        <privilege>allEvents</privilege>
+        <privilege>all-events</privilege>
       </allow>
       <allow>
         <resource>workshop_schedule</resource>
