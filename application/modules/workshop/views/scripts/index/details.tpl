@@ -112,7 +112,7 @@
     </div>
     
     <div class="rightContent">     
-    <div id="addLinkForm" rel="type=link&size=20&url={$sitePrefix}/workshop/index/addLink/&response=response"><a href="http://"></a></div>
+    <div id="addLinkForm" rel="type=link&size=20&url={$sitePrefix}/workshop/index/add-link/&response=response"><a href="http://"></a></div>
         {if $acl.reorderLink}
         Drag the icon to reorder the links.<br /><br />
         <span style="display: none;" id="sortUrl">{$sitePrefix}/workshop/index/saveLinkOrder/</span>
@@ -130,7 +130,7 @@
 		        {if $acl.deleteLink}
 		        <div class="delete"></div>
 		        {/if}
-		        <div class="link" id="link_{$l.workshopLinkId}" rel="type=link&size=20&url={$sitePrefix}/workshop/index/editLink/&response=response">
+		        <div class="link" id="link_{$l.workshopLinkId}" rel="type=link&size=20&url={$sitePrefix}/workshop/index/edit-link/&response=response">
 		            <a href="{$l.url}" target="_blank">{$l.name|truncate:30:'...':true}</a>	            
 		        </div>
 		    </div>
@@ -205,7 +205,7 @@
         <div id="addDocumentForm">
             Click "Browse" to upload new handouts.  Mutliple files can be uploaded at one time
             by clicking the "Browse" button again.<br /><br />
-            <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{$sitePrefix}/workshop/index/addDocuments/">
+            <form id="uploadForm" method="POST" enctype="multipart/form-data" action="{$sitePrefix}/workshop/index/add-documents/">
                 <input type="hidden" name="attributeId" value="{$workshop.workshopId}" />
                 <input type="hidden" name="attributeName" value="workshopId" />
                 <input type="file" name="uploadDocuments"><br clear="all"/>
@@ -221,14 +221,14 @@
 		        {if $acl.deleteDocument}
 		        <div class="delete"></div>
 		        {/if}
-		        <a href="{$sitePrefix}/workshop/index/downloadDocument/?documentId={$d.documentId}">
+		        <a href="{$sitePrefix}/workshop/index/download-document/?documentId={$d.documentId}">
 		            <div class="icon docType-{$d.type}"></div>
 			    </a>
 			    <div class="data">
 			        <div><span class="name">{$d.name|truncate:50}</span> (<span class="filesize">{$d.filesize} bytes</span>)</div>
 			        {if $acl.editDocument}
 			        <input type="hidden" name="documentId" id="documentId_{$d.documentId}" value="{$d.documentId}" class="postArgs documentTitle_{$d.documentId}" />
-			        <span class="title editable inlineEdit" target="documentTitle_{$d.documentId}" id="documentTitle_{$d.documentId}" rel="type=input&size=40&url={$sitePrefix}/workshop/index/editDocument/&response=response" title="Click here to edit">{$d.title|empty_alt:"Click here to add a title"}</span>
+			        <span class="title editable inlineEdit" target="documentTitle_{$d.documentId}" id="documentTitle_{$d.documentId}" rel="type=input&size=40&url={$sitePrefix}/workshop/index/edit-document/&response=response" title="Click here to edit">{$d.title|empty_alt:"Click here to add a title"}</span>
 			        {else}
 			        <span class="title">{$d.title|empty_alt:"No Description Provided"}</span>
 			        {/if}

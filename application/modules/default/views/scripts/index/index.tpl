@@ -13,6 +13,11 @@
 	    <div id="events" class="mootabs_panel">
 	       <div class="tabDesc">
               These are the upcoming workshops we are offering:
+              
+              {if count($upcoming) == 0}
+              <br /><br />
+              There are no upcoming workshops right now. 
+              {/if}
            </div>
 	        {foreach from=$upcoming item=e name=upcoming}
                 {if $smarty.foreach.upcoming.index < 4}
@@ -21,13 +26,13 @@
         	           <div class="workshopName"><a href="{$sitePrefix}/workshop/index/details/?workshopId={$e.workshopId}">{$e.workshop.title|truncate:40}</a></div> 
         	        </div>
                 {/if}
-	        {foreachelse}
-	        There are no upcoming workshops right now.
 	        {/foreach}
+	        {if count($upcoming) != 0}
             <div class="event">
                <span class="date"></span>
                <div class="workshopName"><a href="{$sitePrefix}/workshop/schedule/all-events" title="Full Schedule">View more dates...</a></div> 
             </div>
+            {/if}
 	    </div>
         <div id="popular" class="mootabs_panel">
         Coming Soon

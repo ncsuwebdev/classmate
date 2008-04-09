@@ -60,7 +60,7 @@
         <div class="event" id="event_{$e.eventId}">
             <span class="date">{$event.date|date_format:$config.longDateCompactFormat}</span> |
             <span class="time">{$event.startTime|date_format:$config.timeFormat} - {$event.endTime|date_format:$config.timeFormat}</span> |
-            <span class="location"><a href="{$sitePrefix}/workshop/location/details/?locationId={$e.location.locationId}">{$location.name}</a></span>
+            <span class="location"><a href="{$sitePrefix}/workshop/location/details/?locationId={$location.locationId}">{$location.name}</a></span>
         </div>     
      {$toolTemplate}
 </div>
