@@ -46,6 +46,11 @@
             </td>
             <td valign="top" align="center" width="50%">
                 <div>Add Instructors</div>
+                <div style="margin: 3px; 0 3px 0;">
+                    <input type="text" size="17" id="instructorFilterBox" />
+                    <input type="button" id="instructorFilterButton" value="Filter" />
+                    <input type="button" id="instructorFilterClear" value="Clear" />
+                </div>
                 {html_options size=10 id=instructorList name=instructorList options=$instructors}
                 <input type="button" id="instructorAddButton" value="&lsaquo; Add Selected Instructor" />                                
             </td>
