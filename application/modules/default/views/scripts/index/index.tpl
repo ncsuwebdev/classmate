@@ -45,5 +45,9 @@
     </div>    
 </div>
 <div id="left">
-ClassMate is your one-stop-shop for registering for classes
+ClassMate is your one-stop shop for registering for Office of Information Technology 
+(OIT) Workshops at North Carolina State University. For more information about 
+our training program, please visit our <a href="http://www.ncsu.edu/it/education/" target="_blank">Technology Training and Engagement website</a>.
+<br /><br />
+Learn more about out new registration system on our <a href="http://www.ncsu.edu/it/education/faculty-staff/reg_overview.php" target="_blank">Classmate Overview page</a>.
 </div>
