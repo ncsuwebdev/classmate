@@ -291,6 +291,9 @@ class Workshop_SignupController extends Internal_Controller_Action
             $attendees = new Attendees();
             $attendees->cancelReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
             
+            $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
+            $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
+        
 	        $data = array(
 	            'workshopName'              => $thisWorkshop->title,
 	            'workshopDate'              => date('m/d/Y', $startDt),

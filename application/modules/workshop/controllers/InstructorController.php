@@ -615,12 +615,13 @@ class Workshop_InstructorController extends Internal_Controller_Action
             $mail->setFrom($thisProfile['emailAddress'], $thisProfile['firstName'] . ' ' . $thisProfile['lastName']);
             $mail->setSubject($filter->filter($post['subject']));
             $mail->setBodyText($filter->filter($post['message']));
+            $mail->addTo($thisProfile['emailAddress']);
             
             foreach ($recipients as $r) {
-            	$mail->addTo($r['emailAddress']);
+            	$mail->addBcc($r['emailAddress']);
             }
             
-            $eq = new EmailQueue();
+            /*$eq = new EmailQueue();
             
             $data = array(
                 'attributeName'  => 'eventId',
@@ -629,8 +630,9 @@ class Workshop_InstructorController extends Internal_Controller_Action
             );
     		
             $eq->queueEmail($data);
-            
-    		$this->_redirect('/workshop/instructor/contactConfirm/?eventId=' . $thisEvent->eventId);
+            */
+            $mail->send();
+    		$this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
     	}
     	
     	$this->view->profile = $thisProfile;
