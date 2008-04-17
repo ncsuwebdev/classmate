@@ -82,6 +82,7 @@ class Workshop_SignupController extends Internal_Controller_Action
         
         $instructor = new Instructor();
         $instructors = $instructor->getInstructorsForEvent($eventId);        
+        $this->view->instructors = $instructors;
         
         $this->view->title = "Signup for " . $thisWorkshop->title;
         $this->view->hideTitle = true;
