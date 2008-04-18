@@ -318,22 +318,24 @@ class Workshop_SignupController extends Internal_Controller_Action
             $trigger->setVariables($data);
             $trigger->dispatch('Event_Cancel_Reservation');   	        
 
-	    	$waiting = $attendees->getAttendeesForEvent($eventId, 'waitlist');
-	        if (count($waiting) != 0) {	            
-	            $up = $profile->find($waiting[0]['userId']);
-	            
-	            if (!is_null($up)) {
-	            	$attendees->makeReservation($up->userId, $eventId);
-	            	
-		            $data['studentEmail'] = $up->emailAddress;
-		            $data['studentName']  = $up->firstName . ' ' . $up->lastName;
-		            $data['userId']       = $up->userId;
+            if ($status != 'waitlist') {
+		    	$waiting = $attendees->getAttendeesForEvent($eventId, 'waitlist');
+		        if (count($waiting) != 0) {	            
+		            $up = $profile->find($waiting[0]['userId']);
 		            
-		            $trigger = new EmailTrigger();
-		            $trigger->setVariables($data);
-		            $trigger->dispatch('Event_Waitlist_To_Attending'); 
-	            }  	            
-	        }	                 
+		            if (!is_null($up)) {
+		            	$attendees->makeReservation($up->userId, $eventId);
+		            	
+			            $data['studentEmail'] = $up->emailAddress;
+			            $data['studentName']  = $up->firstName . ' ' . $up->lastName;
+			            $data['userId']       = $up->userId;
+			            
+			            $trigger = new EmailTrigger();
+			            $trigger->setVariables($data);
+			            $trigger->dispatch('Event_Waitlist_To_Attending'); 
+		            }  	            
+		        }	
+            }                 
             
             $this->_redirect('profile/');
             

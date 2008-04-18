@@ -328,7 +328,7 @@ class Attendees extends Ot_Db_Table
         } else {
             $data['waitlistTotal'] = $thisEvent->waitlistTotal - 1;
         }
-        
+
         try {
             $event->update($data, null);
         } catch (Exception $e) {
