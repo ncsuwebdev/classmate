@@ -1,7 +1,6 @@
 <?php
 /**
- * Cyclone
- *
+ * 
  * LICENSE
  *
  * This source file is subject to the new BSD license that is bundled
@@ -14,8 +13,7 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Cyclone
- * @subpackage Internal_Cron_Setup
+ * @package    Internal_Cron_Setup
  * @category   Cron Job
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  * @license    http://itdapps.ncsu.edu/bsd.txt  BSD License
@@ -29,8 +27,7 @@
  * Sets up the cron jobs in a native environment so that they have access to all
  * models, just as the application does.
  *
- * @package    Cyclone
- * @subpackage Internal_Cron_Setup
+ * @package    Internal_Cron_Setup
  * @category   Cron Job
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  */
@@ -45,21 +42,33 @@ final class Internal_Cron
     {
         $offset = preg_replace('/\/$/', '', $offset);
 
-        require_once $offset . '/application/appConfig.php';
-
-        error_reporting(E_ALL|E_STRICT);
-
-        set_include_path('.'
-                          . PATH_SEPARATOR . $offset . '/library'
-                          . PATH_SEPARATOR . $offset . '/application/models/'
-                          . PATH_SEPARATOR . get_include_path());
-
-        require_once 'Zend/Loader.php';
-        Zend_Loader::registerAutoload();
-
-        $db = Zend_Db::factory($dbConfig['adapter'], $dbConfig);
-        Zend_Db_Table::setDefaultAdapter($db);
-        Zend_Registry::set('dbAdapter', $db);
+		$dbConfig = array();
+		
+		require_once $offset . '/application/appConfig.php';
+		
+		error_reporting(E_ALL|E_STRICT);
+		
+		set_include_path('.'
+		                  . PATH_SEPARATOR . $offset . '/library'
+		                  . PATH_SEPARATOR . $offset . '/application/models/'
+		                  . PATH_SEPARATOR . get_include_path());
+		
+		require_once 'Zend/Loader.php';
+		Zend_Loader::registerAutoload();
+				
+		//load configuration
+		$config = new Zend_Config_Xml($offset . '/application/config.xml', 'production');
+		Zend_Registry::set('config', $config);
+		
+		date_default_timezone_set($config->timezone);
+		
+		$userConfig = new Zend_Config_Xml($offset . '/library/Internal/Config/userConfig.xml', 'production');
+		Zend_Registry::set('userConfigFile', $config->userConfigFile);
+		Zend_Registry::set('userConfig', $userConfig->toArray());
+		
+		$db = Zend_Db::factory($dbConfig['adapter'], $dbConfig);
+		Zend_Db_Table::setDefaultAdapter($db);
+		Zend_Registry::set('dbAdapter', $db);
 
         // Setup Logger
         $writer = new Zend_Log_Writer_Db($db, 'tbl_log');
@@ -71,19 +80,7 @@ final class Internal_Cron
         $logger->setEventItem('timestamp', time());
         $logger->setEventItem('request', $_SERVER['REQUEST_URI']);
 
-        Zend_Registry::set('logger', $logger);
-
-        //load configuration
-        $config = new Zend_Config_Xml($offset . '/application/config.xml', 'production');
-        Zend_Registry::set('config', $config);
-
-        Zend_Registry::set('remedyConfig', $remedyConfig);
-
-        date_default_timezone_set($config->timezone);
-
-        $db = Zend_Db::factory($dbConfig['adapter'], $dbConfig);
-        Zend_Db_Table::setDefaultAdapter($db);
-        Zend_Registry::set('dbAdapter', $db);
+        Zend_Registry::set('logger', $logger);        
     }
 
     /**

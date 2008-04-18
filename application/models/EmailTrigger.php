@@ -79,6 +79,11 @@ class EmailTrigger extends Ot_Db_Table
     	$this->_emailVars = array_merge($this->_emailVars, $data);
     }
     
+    public function getVariables()
+    {
+    	return $this->_emailVars;
+    }
+    
     /**
      * Dispatches (sends) the email specified 
      * 

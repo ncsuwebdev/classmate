@@ -69,5 +69,17 @@
             <description>Default waitlist size for a workshop</description>
             <value>10</value>        
         </defaultWorkshopWaitListSize>
+        <numHoursLowAttendanceNotification>
+            <description>The number of hours before a workshop is supposed to start to send a notification if the class size is less than the minimum requirement.</description>
+            <value>24</value>        
+        </numHoursLowAttendanceNotification>     
+        <numHoursFirstReminder>
+            <description>The number of hours before a workshop is supposed to start to send a notification of class attendance.</description>
+            <value>120</value>        
+        </numHoursFirstReminder>  
+        <numHoursFinalReminder>
+            <description>The number of hours before a workshop is supposed to start to send a final notification of class attendance.</description>
+            <value>24</value>        
+        </numHoursFinalReminder>                     
     </production>
 </configdata>
