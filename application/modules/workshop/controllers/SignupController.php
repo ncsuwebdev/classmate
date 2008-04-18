@@ -171,6 +171,8 @@ class Workshop_SignupController extends Internal_Controller_Action
 
         $status = 'attending';
         $attendees = new Attendees();
+        $dba = $attendees->getAdapter();
+        
         $status = $attendees->makeReservation(Zend_Auth::getInstance()->getIdentity(), $eventId);
                 
         $fm = $this->getHelper('FlashMessenger');
@@ -198,7 +200,7 @@ class Workshop_SignupController extends Internal_Controller_Action
         );
         
         if ($status == 'waitlist') {
-            $waiting = $attendees->getAttendeesForEvent($e['eventId'], 'waitlist');
+            $waiting = $attendees->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
                     
             $position = 1;
                    
@@ -211,7 +213,7 @@ class Workshop_SignupController extends Internal_Controller_Action
     
             $data['waitlistPosition'] = $position;
         }
-        
+
         $trigger = new EmailTrigger();
         $trigger->setVariables($data);
         
