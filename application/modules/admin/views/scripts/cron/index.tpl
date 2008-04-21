@@ -20,6 +20,7 @@
         <tr>
             <th width="250">Cron Job</th>
             <th width="130">Status</th>
+            <th width="150">Last Execution</th>
             {if $acl.edit}
             <th width="50">Edit</th>
             {/if}
@@ -39,6 +40,9 @@
             {if $acl.toggle}
             </a>
             {/if}
+            </td>
+            <td align="center">
+                {$c.lastRunDt|date_format:$config.dateTimeFormat}
             </td>
             {if $acl.edit}
             <td style="text-align:center">

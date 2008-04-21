@@ -75,7 +75,7 @@
         </numHoursLowAttendanceNotification>     
         <numHoursFirstReminder>
             <description>The number of hours before a workshop is supposed to start to send a notification of class attendance.</description>
-            <value>120</value>        
+            <value>48</value>        
         </numHoursFirstReminder>  
         <numHoursFinalReminder>
             <description>The number of hours before a workshop is supposed to start to send a final notification of class attendance.</description>
