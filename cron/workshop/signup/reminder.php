@@ -26,9 +26,14 @@ Internal_Cron::setup('../../../');
 Zend_Loader::loadClass('CronStatus');
 $cs = new CronStatus;
 
-if (!$cs->isEnabled('workshop_signup_reminder')) {
+$cronId = 'workshop_signup_reminder';
+
+if (!$cs->isEnabled($cronId)) {
     die();
 }
+
+$lastRunDt = $cs->getLastRunDt($cronId);
+$ts = time();
 
 $logger = Zend_Registry::get('logger');
 $uc = Zend_Registry::get('userConfig');
@@ -42,18 +47,30 @@ $workshop   = new Workshop();
 $instructor = new Instructor();
 $attendees  = new Attendees();
 
-$firstDt = new Zend_Date();
-$firstDt->addHour($uc['numHoursFirstReminder']['value']);
-
-$finalDt = new Zend_Date();
-$finalDt->addHour($uc['numHoursFinalReminder']['value']);
+$lastRunDt = new Zend_Date($lastRunDt);
+$currentDt = new Zend_Date();
 
 foreach ($events as $e) {
     
     $startDt = strtotime($e->date . ' ' . $e->startTime);
     $endDt   = strtotime($e->date . ' ' . $e->endTime);
     
-    if ($startDt < $firstDt->getTimestamp()) {
+    $firstDt = new Zend_Date($startDt);
+    $firstDt->subHour($uc['numHoursFirstReminder']['value']);
+    
+    $finalDt = new Zend_Date($startDt);
+    $finalDt->subHour($uc['numHoursFinalReminder']['value']);
+    
+    $notification = null;
+    if ($firstDt->getTimestamp() > $lastRunDt->getTimestamp() && $firstDt->getTimestamp() < $currentDt->getTimestamp()) {
+        $notification = 'first';	
+    }
+    
+    if ($finalDt->getTimestamp() > $lastRunDt->getTimestamp() && $finalDt->getTimestamp() < $currentDt->getTimestamp()) {
+        $notification = 'final';    
+    }
+    
+    if (!is_null($notification)) {
         $thisLocation = $location->find($e->locationId);
         if (is_null($thisLocation)) {
             Internal_Cron::error('Location Not Found');
@@ -86,7 +103,7 @@ foreach ($events as $e) {
             'instructorNames'           => implode(', ', $instructorNames),
             'instructorEmails'          => implode(', ', $instructorEmails),
         );      
-    
+        
         $attending = $attendees->getAttendeesForEvent($e->eventId, 'attending');
         
         foreach ($attending as $a) {
@@ -96,9 +113,14 @@ foreach ($events as $e) {
             $trigger->studentEmail = $a['emailAddress'];
             $trigger->studentName = $a['firstName'] . ' ' . $a['lastName'];
             
-            if ($startDt < $finalDt->getTimestamp()) {
+	        echo "<pre>";
+	        print_R($trigger->getVariables());   
+	                 
+            if ($notification == 'final') {
+            	echo "Final Reminder";
             	$trigger->dispatch('Event_Attendee_Final_Reminder');
             } else {
+            	echo "First Reminder";
             	$trigger->dispatch('Event_Attendee_First_Reminder');
             }   
         }	
@@ -106,10 +128,12 @@ foreach ($events as $e) {
         $trigger = new EmailTrigger();
         $trigger->setVariables($data);
         
-        if ($startDt < $finalDt->getTimestamp()) {
+        if ($notification == 'final') {
             $trigger->dispatch('Event_Instructor_Final_Reminder');
         } else {
         	$trigger->dispatch('Event_Instructor_First_Reminder');
         }
     }
 }
+
+$cs->executed($cronId, $ts);

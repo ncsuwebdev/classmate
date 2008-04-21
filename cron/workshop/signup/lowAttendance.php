@@ -26,9 +26,14 @@ Internal_Cron::setup('../../../');
 Zend_Loader::loadClass('CronStatus');
 $cs = new CronStatus;
 
-if (!$cs->isEnabled('workshop_signup_lowAttendance')) {
+$cronId = 'workshop_signup_lowAttendance';
+
+if (!$cs->isEnabled($cronId)) {
     die();
 }
+
+$lastRunDt = $cs->getLastRunDt($cronId);
+$ts = time();
 
 $logger = Zend_Registry::get('logger');
 $uc = Zend_Registry::get('userConfig');
@@ -41,7 +46,7 @@ $location = new Location();
 $workshop = new Workshop();
 $instructor = new Instructor();
 
-$checkDt = new Zend_Date();
+$checkDt = new Zend_Date($lastRunDt);
 $checkDt->addHour($uc['numHoursLowAttendanceNotification']['value']);
 
 foreach ($events as $e) {
@@ -51,7 +56,7 @@ foreach ($events as $e) {
 		$startDt = strtotime($e->date . ' ' . $e->startTime);
 		$endDt   = strtotime($e->date . ' ' . $e->endTime);
 
-		if ($startDt < $checkDt->getTimestamp()) {
+		if ($checkDt->getTimestamp() > $startDt && $lastRunDt  < $startDt) {
 		
 	        $thisLocation = $location->find($e->locationId);
 	        if (is_null($thisLocation)) {
@@ -73,8 +78,6 @@ foreach ($events as $e) {
 	            $instructorEmails[] = $i['emailAddress'];
 	        }	
 	
-	        
-	        
 	        $data = array(
 	            'workshopName'              => $thisWorkshop->title,
 	            'workshopDate'              => date('m/d/Y', $startDt),
@@ -95,5 +98,7 @@ foreach ($events as $e) {
 		}
 	}
 }
+
+$cs->executed($cronId, $ts);
 
 die();

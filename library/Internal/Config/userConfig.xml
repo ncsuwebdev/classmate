@@ -80,6 +80,10 @@
         <numHoursFinalReminder>
             <description>The number of hours before a workshop is supposed to start to send a final notification of class attendance.</description>
             <value>24</value>        
-        </numHoursFinalReminder>                     
+        </numHoursFinalReminder>       
+        <numHoursEvaluationReminder>
+            <description>The number of hours after a workshop is supposed to finish to send a reminder to users to fill out the class evaluation.  This only applies to users who have not filled out the evaluation already, but were marked as attended.</description>
+            <value>24</value>        
+        </numHoursEvaluationReminder>                      
     </production>
 </configdata>

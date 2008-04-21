@@ -194,6 +194,7 @@ class Profile_IndexController extends Internal_Controller_Action
                 
                 $activeReservations[] = $e;
             } else {
+            	
             	$completedReservations[] = $e;
             }
         }
@@ -268,7 +269,7 @@ class Profile_IndexController extends Internal_Controller_Action
         
         $fm = $this->getHelper('FlashMessenger');
         $fm->setNamespace('login');
-            		
+
         $this->view->messages = $fm->getMessages();
 	}
 	

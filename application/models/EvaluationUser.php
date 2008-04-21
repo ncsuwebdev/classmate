@@ -61,4 +61,18 @@ class EvaluationUser extends Ot_Db_Table
     	return ($result->count() != 0);
     	
     }
+    
+    public function getCompleted($eventId)
+    {
+    	$where = $this->getAdapter()->quoteInto('eventId = ?', $eventId);
+    	
+    	$result = $this->fetchAll($where);
+    	
+    	$ret = array();
+    	foreach ($result as $r) {
+    		$ret[] = $r->userId;
+    	}
+    	
+    	return $ret;
+    }
 }

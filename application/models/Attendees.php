@@ -103,7 +103,10 @@ class Attendees extends Ot_Db_Table
     	
     	$eventIds = array();
     	foreach ($result as $r) {
-    		$eventIds[$r->eventId] = $r->status;
+    		$eventIds[$r->eventId] = array(
+    		    'status' => $r->status,
+    		    'attended' => $r->attended,
+    		);
     	}
     	
     	if (count($eventIds) == 0) {
@@ -117,7 +120,8 @@ class Attendees extends Ot_Db_Table
 
     	foreach ($events as &$e) {
     		$e['workshop'] = $workshop->find($e['workshopId'])->toArray();
-    		$e['status'] = $eventIds[$e['eventId']];
+    		$e['status'] = $eventIds[$e['eventId']]['status'];
+    		$e['attended'] = $eventIds[$e['eventId']]['attended'];
     	}
     	
     	return $events;
