@@ -112,15 +112,10 @@ foreach ($events as $e) {
             $trigger->userId = $a['userId'];
             $trigger->studentEmail = $a['emailAddress'];
             $trigger->studentName = $a['firstName'] . ' ' . $a['lastName'];
-            
-	        echo "<pre>";
-	        print_R($trigger->getVariables());   
 	                 
             if ($notification == 'final') {
-            	echo "Final Reminder";
             	$trigger->dispatch('Event_Attendee_Final_Reminder');
             } else {
-            	echo "First Reminder";
             	$trigger->dispatch('Event_Attendee_First_Reminder');
             }   
         }	

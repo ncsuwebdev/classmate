@@ -78,7 +78,7 @@ final class Internal_Cron
         $logger->setEventItem('role', 'cron');
         $logger->setEventItem('sid', session_id());
         $logger->setEventItem('timestamp', time());
-        $logger->setEventItem('request', $_SERVER['REQUEST_URI']);
+        $logger->setEventItem('request', 'cron');
 
         Zend_Registry::set('logger', $logger);        
     }
