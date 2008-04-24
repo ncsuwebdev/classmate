@@ -6,7 +6,7 @@
         {foreach from=$evaluationResults item=q}
             {if $q.type == 'radio' || $q.type == 'ranking' || $q.type == 'select'}
                 <div>
-                    <div style="padding: 10px;">
+                    <div style="padding: 30px;">
                     <p class="questionTitle">{$q.label}</p>
                     <table id="question_{$q.attributeId}" class="graphQuestion" border="1">
                         <tr>
@@ -17,7 +17,6 @@
                         </tr>
                         <tr>
                         {foreach from=$q.results item=r}
-                            <th>{$r.answerLabel}</th>
                             <td>{$r.answerCount}</td>
                         {/foreach}
                         </tr>
@@ -26,7 +25,7 @@
                 </div>
             {elseif $q.type == 'text' || $q.type == 'textarea'}
                 <div>
-                    <div style="padding: 10px;">
+                    <div style="padding: 30px;">
                         <p class="questionTitle">{$q.label}</p>
                         <table id="question_{$q.attributeId}" width="100%">
                             <tbody>
