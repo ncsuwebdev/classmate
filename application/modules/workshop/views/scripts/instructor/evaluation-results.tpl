@@ -10,7 +10,6 @@
                     <p class="questionTitle">{$q.label}</p>
                     <table id="question_{$q.attributeId}" class="graphQuestion" border="1">
                         <tr>
-                            <td></td>
                             {foreach from=$q.options item=opt}
                             <th>{$opt}</th>
                             {/foreach}
