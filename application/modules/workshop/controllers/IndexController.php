@@ -525,7 +525,7 @@ class Workshop_IndexController extends Internal_Controller_Action
             
             $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $workshopId . '/all_handouts.zip';
                 
-            $this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
+            $this->_helper->getExistingHelper('viewRenderer')->setNoRender();
 
             header('Content-Type: application/octetstream');
             header('Content-Type: application/octet-stream');
@@ -572,8 +572,8 @@ class Workshop_IndexController extends Internal_Controller_Action
             
         $target = $uc['fileUploadPathWorkshop']['value'] . '/' . $map->attributeId . '/' . $d->name;
         if (is_file($target)) {   
-        	$this->_helper->getExistingHelper('viewRenderer')->setNeverRender();
-        	   
+        	$this->_helper->viewRenderer->setNoRender();
+        	        	   
 	        header('Content-Type: application/octetstream');
 	        header('Content-Type: application/octet-stream');
 	        header('Content-Disposition: attachment; ' . 'filename="' . $d->name . '"');

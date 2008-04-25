@@ -231,6 +231,10 @@ class Internal_Acl extends Zend_Acl
         if (!$this->hasRole($data['name'])) {
             $current = array_merge($current, array($data));
         }
+        
+        $filter = new Zend_Filter();
+        $filter->addFilter(new Zend_Filter_Word_CamelCaseToDash());
+        $filter->addFilter(new Zend_Filter_StringToLower());
 
         $roles = array();
         foreach ($current as $r) {
@@ -276,13 +280,13 @@ class Internal_Acl extends Zend_Acl
                 $resource = $doc->createElement('resource');
                 $resource = $allow->appendChild($resource);
 
-                $resourceValue = $doc->createTextNode($a['resource']);
+                $resourceValue = $doc->createTextNode($filter->filter($a['resource']));
                 $resourceValue = $resource->appendChild($resourceValue);
 
                 $privilege = $doc->createElement('privilege');
                 $privilege = $allow->appendChild($privilege);
 
-                $privilegeValue = $doc->createTextNode($a['privilege']);
+                $privilegeValue = $doc->createTextNode($filter->filter($a['privilege']));
                 $privilegeValue = $privilege->appendChild($privilegeValue);
             }
 
@@ -296,13 +300,13 @@ class Internal_Acl extends Zend_Acl
                 $resource = $doc->createElement('resource');
                 $resource = $deny->appendChild($resource);
 
-                $resourceValue = $doc->createTextNode($d['resource']);
+                $resourceValue = $doc->createTextNode($filter->filter($d['resource']));
                 $resourceValue = $resource->appendChild($resourceValue);
 
                 $privilege = $doc->createElement('privilege');
                 $privilege = $deny->appendChild($privilege);
 
-                $privilegeValue = $doc->createTextNode($d['privilege']);
+                $privilegeValue = $doc->createTextNode($filter->filter($d['privilege']));
                 $privilegeValue = $privilege->appendChild($privilegeValue);
             }
 

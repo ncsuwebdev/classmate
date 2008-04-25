@@ -82,6 +82,16 @@ class Workshop_EvaluateController extends Internal_Controller_Action
                 throw new Internal_Exception_Access('You are not on record as having attended this event');
             }
             
+            $now = time();
+            
+            $endTime = strtotime($thisEvent->date . " " . $thisEvent->endTime);
+            $userConfig = Zend_Registry::get('userConfig');
+            $graceTime = $userConfig['numHoursEvaluationAvailability']['value'] * 3600;
+            
+            if ($now > ($endTime + $graceTime)) {
+                throw new Internal_Exception_Access('The evaluation period for this event has already ended');        
+            }
+            
             $evalUser = new EvaluationUser();
             $where = $evalUser->getAdapter()->quoteInto('eventId = ?', $eventId);
             $where .= " AND ";

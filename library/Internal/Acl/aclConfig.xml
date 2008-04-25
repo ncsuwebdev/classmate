@@ -87,7 +87,7 @@
       </allow>
       <allow>
         <resource>login_index</resource>
-        <privilege>changePassword</privilege>
+        <privilege>change-password</privilege>
       </allow>
       <allow>
         <resource>profile_index</resource>
@@ -103,31 +103,11 @@
       </allow>
       <allow>
         <resource>workshop_index</resource>
-        <privilege>addDocuments</privilege>
+        <privilege>download-document</privilege>
       </allow>
       <allow>
         <resource>workshop_index</resource>
-        <privilege>addLink</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_index</resource>
-        <privilege>deleteDocument</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_index</resource>
-        <privilege>deleteLink</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_index</resource>
-        <privilege>edit</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_index</resource>
-        <privilege>editDocument</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_index</resource>
-        <privilege>editLink</privilege>
+        <privilege>download-handouts</privilege>
       </allow>
       <allow>
         <resource>workshop_instructor</resource>
@@ -139,11 +119,11 @@
       </allow>
       <allow>
         <resource>workshop_instructor</resource>
-        <privilege>contactConfirm</privilege>
+        <privilege>contact-confirm</privilege>
       </allow>
       <allow>
         <resource>workshop_instructor</resource>
-        <privilege>evaluationResults</privilege>
+        <privilege>evaluation-results</privilege>
       </allow>
       <allow>
         <resource>workshop_instructor</resource>
