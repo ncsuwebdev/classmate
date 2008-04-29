@@ -86,10 +86,6 @@
         <privilege>add</privilege>
       </allow>
       <allow>
-        <resource>login_index</resource>
-        <privilege>change-password</privilege>
-      </allow>
-      <allow>
         <resource>profile_index</resource>
         <privilege>edit</privilege>
       </allow>
@@ -116,14 +112,6 @@
       <allow>
         <resource>workshop_instructor</resource>
         <privilege>contact</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_instructor</resource>
-        <privilege>contact-confirm</privilege>
-      </allow>
-      <allow>
-        <resource>workshop_instructor</resource>
-        <privilege>evaluation-results</privilege>
       </allow>
       <allow>
         <resource>workshop_instructor</resource>
