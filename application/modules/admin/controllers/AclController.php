@@ -540,7 +540,10 @@ class Admin_AclController extends Internal_Controller_Action
 
         $result = array();
 
-
+        $filter = new Zend_Filter();
+        $filter->addFilter(new Zend_Filter_Word_CamelCaseToDash());
+        $filter->addFilter(new Zend_Filter_StringToLower()); 
+        
         // gets all controllers to get the actions in them
         foreach ($controllers as $key => $value) {
             foreach (new DirectoryIterator($value) as $file) {
@@ -556,6 +559,8 @@ class Admin_AclController extends Internal_Controller_Action
                     $controllerName = preg_replace('/^[^_]*\_/', '',
                         preg_replace('/controller/i', '', $classname));
 
+                    $controllerName = $filter->filter($controllerName);
+                    
                     $resource = strtolower($key . '_' . $controllerName);
 
                     $result[$key][$controllerName]['all'] = array('access' => false, 'inherit' => '');
@@ -613,6 +618,9 @@ class Admin_AclController extends Internal_Controller_Action
                             basename($class->getMethod($m->name)->getFileName()) == $file) {
 
                             $action = preg_replace('/action/i', '', $m->name);
+                            
+                            $action = $filter->filter($action);
+                            
                             if ($role != '') {
                                 $result[$key][$controllerName]['part'][$action]['access'] = $this->_acl->isAllowed($role['name'], $resource, $action);
                             } else {
