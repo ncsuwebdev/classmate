@@ -1,3 +1,0 @@
-<p>
-ClassMate documentation
-</p>

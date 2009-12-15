@@ -1,1 +1,0 @@
-You must first add locations in the Admin interface before you can schedule workshops.
