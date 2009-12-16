@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configData>
+  <production>
+    <app>
+      <theme>classmate</theme>
+    </app>
+    <user>
+      <fileUploadAllowableExtensions val="doc, pdf, zip, jpg, png, bmp"/>
+      <numHoursEvaluationAvailability val="72"/>
+      <fileUploadPathWorkshop val="/afs/unity/web/c/classmate-deo/files/workshop"/>
+      <fromEmailAddress val="classreg@ncsu.edu"/>
+    </user>
+  </production>
+</configData>
