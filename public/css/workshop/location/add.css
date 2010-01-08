@@ -1,0 +1,22 @@
+.wysiwyg {
+    margin-top: 30px;
+}
+
+.editor {
+    background-color: #F4F4F4;
+    margin: 4px 2px;
+    padding: 6px 4px;
+    border: 1px solid #EEE;
+}
+
+#editorDisplay {
+    border: 1px solid #CCC;
+    margin: 0px 0px 10px 0px;
+    padding: 1px 3px;
+    width: 300px;
+    display: none;
+}
+
+.editor span {
+    margin-left: 10px;
+}

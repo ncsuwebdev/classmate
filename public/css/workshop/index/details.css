@@ -1,0 +1,291 @@
+div.link {
+    background-image: url(../../../images/link.png);
+    background-repeat: no-repeat;  
+    background-position: 3px 5px;	
+    padding: 5px 0px 5px 25px;
+    background-color: #F4F4F4;
+    margin-bottom: 10px;
+}
+
+div#links {
+	margin: 12px 0px;
+}
+div.link * {
+    background-image: none; 
+}
+
+div.link .linkName {
+	font-weight: bold;
+}
+
+.buttons {
+	margin-top: 5px;
+	float:right;
+}
+#editWorkshopButton {
+	float: right;	
+}
+
+div#documents {
+    padding: 12px 0px;
+}
+
+div.document {
+    padding-top: 3px;
+    margin: 0px 0px 10px 0px;
+    background-color: #F4F4F4;
+    min-height: 45px;
+}
+
+div.document .icon {
+    background-image: url(../../../images/doctype/generic.png);
+    background-repeat: no-repeat;
+    background-position: center 5px;
+    height: 40px;   
+    float: left;
+    text-align: center;
+    width: 70px;
+}
+
+div.document .filesize {
+    color: #777777;
+    font-size: 80%;
+}
+
+div.document .name {
+	font-weight: bold;
+}
+
+div.document span.description {
+    display: block;
+    overflow: auto;
+    max-width: 470px;
+}
+
+div.document div.docType-image {
+    background-image: url(../../../images/doctype/image.png);
+}
+
+div.document div.docType-zip {
+    background-image: url(../../../images/doctype/zip.png);
+}
+
+div.document div.docType-document {
+    background-image: url(../../../images/doctype/document.png);
+}
+
+div.document div.docType-pdf {
+    background-image: url(../../../images/doctype/pdf.png);
+}
+
+div.document div.docType-presentation {
+    background-image: url(../../../images/doctype/presentation.png);
+}
+
+div.document div.docType-spreadsheet {
+    background-image: url(../../../images/doctype/spreadsheet.png);
+}
+
+div.document div.docType-audio {
+    background-image: url(../../../images/doctype/audio.png);
+}
+
+div.document div.docType-video {
+    background-image: url(../../../images/doctype/video.png);
+}
+
+div.document div.docType-application {
+    background-image: url(../../../images/doctype/application.png);
+}
+
+div.document div.docType-text {
+    background-image: url(../../../images/doctype/text.png);
+}
+
+span.doctype {
+    display: block; 
+}
+
+span.docpath {
+    display: none; 
+}
+
+#upload {
+    display: none;  
+}
+
+div#response {
+    background-color: #ffffcc;
+    opacity: 0;
+    display: inline;
+}
+
+.searchTitle {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+div#workshopTitleContainer {
+    padding-bottom: 5px;
+    margin-bottom: 0px;
+    line-height: 32px;
+}
+
+div#workshopTitleContainer img {
+	float: left;
+	padding-right: 10px;
+}
+
+div#workshopTitleContainer .inlineEdit {
+    margin-top: 8px;
+    
+}
+
+#wsTitle {
+	color: #3F3F3F;
+    font-size: 170%;
+    font-weight: bold;
+    margin: 0 0 15px 0px;
+    max-width: 550px;
+}
+
+span#disabled {
+    color: #C00;
+    font-size: 140%;
+    font-weight: bold;
+    margin: 0 10px 0 0px;   
+}
+
+#disabledImage {
+    position: absolute;
+    float: left;
+    margin-top: 16px;
+    margin-left: 16px;
+}
+
+div#tagsView {
+    margin: 0px 0px 20px 0px;
+    height: 22px;
+}
+
+div#editorsView {
+    margin: 0px 0px 5px 0px;
+    height: 22px;
+}
+
+div#tagsView b, div#editorsView b {
+    padding-right: 5px;
+    color: #808080;
+    font-size: 90%;
+}
+
+#taglist, #editorslist {
+    display: inline;    
+}
+
+div#taglist a, div#editorslist span {
+    margin: 0 3px 0 3px;    
+}
+
+div#editorslist span {
+	color: #808080;
+}
+
+div#detailsLeft .sectionTitle {
+    font-size: 110%;
+    margin-right: 10px;
+}
+
+div.sectionBar {
+	margin: 20px 0 10px 0;
+	line-height: 22px;
+	padding-left: 10px;
+}
+
+div.event span.restricted {
+    display: block;
+    padding-left: 23px;
+    background-image: url(../../../images/restricted.png);
+    background-position: top left;    
+    background-repeat: no-repeat;
+}
+
+#workshopCategoryId {
+	height: 16px;
+}
+
+#workshopCategoryId option {
+    background-repeat: no-repeat;
+    padding: 5px 3px 5px 22px;
+    background-position: 2px 2px; 
+    border-bottom: 1px solid #CCC;	
+}
+
+#editorList {
+    width: 150px;   
+}
+
+div.editorName {
+    line-height: 22px;
+    height: 22px;
+    background-color: #6E6E6E;    
+    clear: both;
+    margin-bottom: 3px;
+}
+
+div.editorName p.right {
+    background-image: url(../../../images/h2-right.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px; 
+    float: right;   
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.editorName p.left {
+    background-image: url(../../../images/h2-left.png);
+    background-repeat: no-repeat;  
+    background-position: 0px 0px;   
+    float: left;
+    height: 22px;
+    width: 11px;
+    margin: 0px;
+}
+
+div.editorName a.content {
+    color: #FFFFFF;
+    line-height: 22px;
+    margin: 0px;
+    font-size: 10px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+div.editorName p.closeBtn {
+    float: right;
+    background-image: url(../../../images/x.png);
+    background-repeat: no-repeat;
+    background-position: 0px 3px;
+    width: 16px;
+    cursor: pointer;
+}
+
+div.editorName a.content:hover {
+    text-decoration: none;
+}
+
+div.order {
+	width: 20px;
+	height: 17px;
+	float: left;
+}
+
+div#modalLoading {
+	background-image: url(../../../ot/images/ajax-loader.gif);
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+	margin: 100px auto;
+	display: none;
+}

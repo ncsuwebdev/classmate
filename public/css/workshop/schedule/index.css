@@ -1,0 +1,76 @@
+#jMonthCalendar { 
+    background-color: #FFF;
+    position: relative;
+    display: block;
+    clear: both;
+}
+
+.MonthlyCalendar .MonthNavigation { border-bottom:solid 1px #ddd; clear:both; height:20px; padding:5px 10px 0 10px; }
+.MonthlyCalendar .MonthNavNext { width:10%; float:right; text-align:right; }
+.MonthlyCalendar .MonthNavPrev { width:10%; float:left; }
+.MonthlyCalendar .MonthName { width:80%; text-align:center; font-weight:bold; float:left; }
+
+.MonthlyCalendar { width:100%; border:solid 1px #ddd; border-collapse:collapse; }
+.MonthlyCalendar #CalendarHead { width:100%; background:#F7F7F7 none repeat scroll 0 0; }
+.MonthlyCalendar #CalendarHead .DateHeader { width:14%; text-align:center; }
+
+.MonthlyCalendar #CalendarBody { }
+.DateBox { height:100px; vertical-align:top; border:solid 1px #ddd; }
+.DateLabel { height: 18px; width:100%; background:#F7F7F7 none repeat scroll 0 0; text-align:right; margin-bottom: 2px; }
+.DateLabel a { cursor:pointer; padding:0 5px 2px; text-decoration:none; line-height:15px; }
+
+#CalendarBody .Inactive, #CalendarBody .Weekend { background:#fafafa none repeat scroll 0 0; }
+.Today { background:#FFFFCF none repeat scroll 0 0; }
+
+#jMonthCalendar .Event { font-size:12px; padding:4px; background-color:#DFF7FF; margin-bottom:1px; -moz-border-radius: 8px; border:solid 1px #000; cursor:pointer; display:block; }
+.Event a { text-decoration:none; color:#000; }
+.Event a:hover { text-decoration:underline; }
+
+.bt-content {
+  font-size: small;
+  color: #000;
+  line-height: normal;
+  padding: 10px 5px;    
+}
+
+/* styling for active target elements - usually for background hilighting */
+.bt-active {
+  /* example:
+  background-color: yellow !important;
+  */
+}
+
+#wsTitle {
+    color: #3F3F3F;
+    font-size: 150%;
+    font-weight: bold;
+    margin: 0 0 10px 0px;
+    max-width: 550px;
+}
+
+div.sectionBar {
+    margin: 20px 0 5px 0;
+    line-height: 17px;
+    padding-left: 10px;
+}
+
+div.eventDetails div.info {
+    font-weight: bold;
+    margin-right: 10px;
+    width: 70px;
+    float: left;
+    line-height: 20px;
+}
+
+div.eventDetails div.data {
+    margin-left: 75px;
+    line-height: 20px;
+}
+
+div.description div.info {
+    line-height: 17px;
+}
+
+div.description div.data {
+    line-height: 17px;
+}

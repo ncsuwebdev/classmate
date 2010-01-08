@@ -1,0 +1,55 @@
+div#wsTitle {
+    color: #3F3F3F;
+    font-size: 140%;
+    font-weight: bold;
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+div.sectionBar {
+	margin: 20px 0 10px 0;
+	line-height: 22px;
+	padding-left: 10px;
+}
+
+div.eventDetails div.info {
+	font-weight: bold;
+	margin-right: 10px;
+	width: 90px;
+	float: left;
+	line-height: 25px;
+}
+
+div.eventDetails div.data {
+	margin-left: 102px;
+	line-height: 25px;
+}
+
+.elm {
+	padding: 10px 20px;
+	border-bottom: 1px dashed #CCC;
+}
+
+span label {
+	font-weight: bold;
+}
+
+input[type="radio"] {
+	margin-right: 10px;
+}
+
+textarea {
+	width: 500px;
+	height: 120px;
+}
+
+#instructions {
+	margin: 30px 0px;
+	border: 1px solid #CCC;
+	background-color: #FFFFCC;
+	padding: 20px;
+}
+
+#pageTitle {
+	display: none;
+}

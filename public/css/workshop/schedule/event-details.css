@@ -1,0 +1,37 @@
+#wsTitle {
+    color: #3F3F3F;
+    font-size: 170%;
+    font-weight: bold;
+    margin: 0 0 15px 0px;
+    max-width: 550px;
+}
+
+div.sectionBar {
+    margin: 20px 0 10px 0;
+    line-height: 22px;
+    padding-left: 10px;
+}
+
+div.eventDetails div.info {
+    font-weight: bold;
+    margin-right: 10px;
+    width: 90px;
+    float: left;
+    line-height: 25px;
+}
+
+div.eventDetails div.data {
+    margin-left: 102px;
+    line-height: 25px;
+}
+
+div.prerequisites div.info, div.description div.info {
+    line-height: 17px;
+    margin-top: 10px;
+}
+
+div.prerequisites div.data, div.description div.data {
+    line-height: 17px;
+    padding-top: 10px;
+    margin-right: 200px;
+}

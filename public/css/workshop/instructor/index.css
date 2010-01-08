@@ -1,0 +1,91 @@
+div.banner {
+    padding: 3px 3px 3px 45px;
+    font-weight: bold;
+    border: 1px solid #C0C0c0;
+    background-color: #f4f4f4;  
+    background-repeat: no-repeat;
+    background-position: 4px 4px;
+    line-height: 32px;
+    font-size: 140%;
+    margin: 0 auto;
+    margin-bottom: 30px; 
+    margin-top: 30px;  
+}
+
+div#fullClass {
+    background-image: url(../../../images/class_full.png);
+}
+
+div#restricted {
+    background-image: url(../../../images/emblem-readonly.png);
+    background-position: 3px 3px;
+}
+
+h3#signup {
+    border: 1px solid #0C0;
+    background-color: #DFFFDF;
+    padding: 5px;
+    text-align: center;
+}
+
+div.event span.restricted {
+    display: block;
+    padding-left: 23px;
+    background-image: url(../../../images/restricted.png);
+    background-position: top left;    
+    background-repeat: no-repeat;
+}
+
+#wsTitle {
+    color: #3F3F3F;
+    font-size: 170%;
+    font-weight: bold;
+    margin: 0 0 15px 0px;
+    max-width: 550px;
+}
+
+div.sectionBar {
+    margin: 20px 0 10px 0;
+    line-height: 22px;
+    padding-left: 10px;
+}
+
+div.eventDetails div.info {
+    font-weight: bold;
+    margin-right: 10px;
+    width: 90px;
+    float: left;
+    line-height: 25px;
+}
+
+div.attendedStatus {
+    float: right;    
+    font-weight: bold;
+}
+
+div.eventDetails div.data {
+    margin-left: 102px;
+    line-height: 25px;
+}
+
+div#signupButton {
+    margin: 40px auto;
+}
+
+div#signupButton a {
+    font-size: 150%;
+}
+
+div.listHeader {
+    font-bold: bold;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+div.attendee, div.waitlister {
+    border: 1px solid #5790AF;
+    background-color: #C3DFEF;
+    padding: 7px;
+    margin-bottom: 5px;
+}

@@ -1,0 +1,28 @@
+div.location {
+	padding: 0px 0px 20px 0px;
+    margin: 0px 0px 20px 0px;
+    background: #FFF url(../../../images/dot.gif) repeat-x bottom;	
+}
+
+div.location img {
+	float: left;
+}
+
+div.location div {
+    margin-left: 42px;	
+}
+
+div.location div.name {
+    font-size: 130%;
+    font-weight: bold;	
+}
+
+div.location div.mapit {
+	float: right;
+	background: #FFF url(../../../images/link.png) no-repeat top left;
+}
+
+div.location div.mapit a {
+    margin-left: 22px;
+    background-image: none;
+}
