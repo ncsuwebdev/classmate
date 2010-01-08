@@ -1,0 +1,257 @@
+form-button-edit;Edit
+form-button-del;Delete
+default-index-history:viewReservations;View Reservations For:
+default-index-history:lookup;Lookup
+default-index-history:pastEvents;%1$s %2$s's Past Events
+default-index-history:what;What?
+default-index-history:where;Where?
+default-index-history:notes;Notes:
+default-index-history:taught;Taught
+default-index-history:attended;Attended
+default-index-history:waitlist;%1$s on the waitlist for
+default-index-history:taughtBy;Taught by:
+default-index-history:noInstructor;No Instructor Assigned Yet
+default-index-history:tools;Tools:
+default-index-history:instructorTools;Instructor Tools
+default-index-history:noPast;No Past Reservations Found.
+default-index-history:currentEvents;%1$s %2$s's Current Events
+default-index-history:teaching;Teaching 
+default-index-history:attending;Attending 
+default-index-history:seatsAvailable;%1$s of %2$s seats available.
+default-index-history:waitlistAvailable;%1$s waitlist spots available.
+default-index-history:bothFull;Class and waitlist are full.
+default-index-history:seatsTaken;All %1$s seats are taken.
+default-index-history:linkCancel;Cancel Reservation...
+default-index-history:linkTake;Take Evaluation...
+default-index-history:linkDownload;Download Handouts
+default-index-history:noActive;No Active Reservations Found.
+default-index-index:checkOut;Be sure to check out our upcoming classes.  We'd love to have you!
+default-index-index:myCurrent;My Current Events
+default-index-index:login;Welcome to ClassMate!  To see your events, login below!
+
+reporting-index-index:title;Download Reports
+reporting-index-index:fromDate;From:
+reporting-index-index:toDate;To:
+reporting-index-index:getReport;Get Report
+
+search-index-reindex:title;Re-Index Searches
+search-index-reindex:header;You can re-index the search capabilities for the site from here.
+search-index-reindex:reindex;Re-Index Workshops
+search-index-reindex:confirm;Are you sure you want to re-index the search?
+workshop-evaluate-index:title;Fill out Evaluation
+workshop-evaluate-index:header;Evaluate
+workshop-evaluate-index:eventDetails;Event Details
+workshop-evaluate-index:when;When?
+workshop-evaluate-index:what;What?
+workshop-evaluate-index:where;Where?
+workshop-evaluate-index:instructors;Instructors:
+workshop-evaluate-index:noInstructor;No Instructor Assigned Yet
+workshop-evaluate-index:instructions;Please fill our the evaluation below.  Once you are finished, select <b>Submit Evaluation</b> at the bottom of the page.  You may only fill out the evaluation once.
+workshop-index-index:searchWorkshops;Search for Workshops:
+workshop-index-index:search;Search
+workshop-index-index:title;Search Workshops
+workshop-index-index:header;We regularly teach a wide variety of workshops.  Just use the search box to find the workshop you are interested in!
+workshop-index-index:results;Your search for %1$s returned %2$s results:
+workshop-index-workshopList:title;All Workshops
+workshop-index-add:title;Add New Workshop
+workshop-index-add:header;Enter the information for the workshop you would like to add.
+workshop-index-details:linkEdit;Edit Workshop
+workshop-index-details:disabled;DISABLED!
+workshop-index-details:editors;Editors:
+workshop-index-details:tags;Tags:
+workshop-index-details:none;None
+workshop-index-details:noDescription;No Description Provided.
+workshop-index-details:preReq;Workshop Pre-Requisites
+workshop-index-details:noPreReq;There are no pre-requisites for this workshop.
+workshop-index-details:handouts;Workshop Handouts
+workshop-index-details:addDocument;Add Document
+workshop-index-details:clickIcon;Click the icon to download the file. 
+workshop-index-details:bytes;bytes
+workshop-index-details:noResources;No Resources Found.
+workshop-index-details:onlineResources;Online Resources
+workshop-index-details:addLink;Add Link
+workshop-index-edit:title;Edit Workshop
+workshop-index-edit:header;Make any desired changes to the workshop details.
+workshop-index-addDocument:title;Add Document
+workshop-index-addDocument:header;Select the document you would like to upload for the <b>%1$s</b> workshop.  You should also provide a description for the file that is being uploaded.
+workshop-index-editDocument:title;Edit Document
+workshop-index-editDocument:header;Make any desired changes to the document file description.
+workshop-index-deleteDocument:title;Delete Document
+workshop-index-deleteDocument:header;You have selected to delete this document. Are you sure you want to do this?
+workshop-index-addLink:title;Add Link
+workshop-index-addLink:header;Enter the link you would like to add for the <b>%1$s</b> workshop.
+workshop-index-editLink:title;Edit Link
+workshop-index-editLink:header;Make any desired changes to the link details.
+workshop-index-deleteLink:title;Delete Link
+workshop-index-deleteLink:header;You have selected to delete this link. Are you sure you want to do this?
+workshop-index-right:instructorTools;Instructor Tools...
+workshop-index-right:attending;You are attending.
+workshop-index-right:waitlist;You're on the waitlist.
+workshop-index-right:restricted;Attendance Restricted.
+workshop-index-right:seatsRemaining;%1$s seats remaining.
+workshop-index-right:register;Register...
+workshop-index-right:full;This class is full.
+workshop-index-right:signupWaitlist;Signup to waitlist...
+workshop-index-right:noEvents;No events are scheduled at this time.
+workshop-instructor-addAttendee:title;Add Attendees
+workshop-instructor-addAttendee:header;Manually select users to add to this event.
+workshop-instructor-takeRoll:title;Take Roll
+workshop-instructor-takeRoll:header;Mark the people who are present.
+workshop-instructor-takeRoll:checkAll;Check All
+workshop-instructor-takeRoll:uncheckAll;Uncheck All
+workshop-instructor-contact:title;Email Attendees
+workshop-instructor-contact:header;You can easily contact all users associated with your class.  Select who to send the message to and %1$s will take care of the rest!
+workshop-instructor-evaluationResults:results;Evaluation Results
+workshop-instructor-evaluationResults:noResults;No evaluations have been submitted yet.
+workshop-instructor-evaluationResults:checked;%1$s out of %2$s people checked this box. 
+workshop-instructor-index:header;Instructor Tools for 
+workshop-instructor-index:linkView;View Evaluation Results
+workshop-instructor-index:linkEdit;Edit Event Details
+workshop-instructor-index:instructor;Instructor
+workshop-instructor-index:instructors;Instructors
+workshop-instructor-index:noPreReq;No Prerequisites were defined for this workshop.
+workshop-instructor-index:seatLeft;There is <b>1</b> out of <b>%1$s</b> seats remaining in this class.
+workshop-instructor-index:seatsLeft;There are <b>%1$s</b> out of <b>%2$s</b> seats remaining in this class.
+workshop-instructor-index:linkAdd;Add Attendees
+workshop-instructor-index:linkRoll;Take Roll
+workshop-instructor-index:linkPrintSignupSheet;Print Signup Sheet
+workshop-instructor-index:linkContact;Contact Attendees
+workshop-instructor-index:attendees;Attendees
+workshop-instructor-index:present;Present
+workshop-instructor-index:absent;Absent
+workshop-instructor-index:removeAttendee;Remove %1$s from Attendees
+workshop-instructor-index:noAttendees;No attendees yet.
+workshop-instructor-index:waitlist;Waitlist
+workshop-instructor-index:moveWaistlist;Move %1$s to Attendees
+workshop-instructor-index:removeWaitlist;Remove %1$s from Waitlist
+workshop-location:disabled;DISABLED!
+workshop-location:googleMap;Map With Google Maps!
+workshop-location:noAddress;No Address Provided
+workshop-location-index:title;Our Teaching Labs
+workshop-location-index:header;If you sign up for one of our workshops, chances are your event will be held in one of these locations.  Check out the details for directions.
+workshop-location-index:linkAdd;Add New Lab
+workshop-location-index:noLocations;No Locations Found.
+workshop-location-details:title;Location details: %1$s
+workshop-location-add:title;Add a Location
+workshop-location-add:header;Here you can add a new teaching lab to the system.  This will be a selectable option when scheduling workshops.
+workshop-location-edit:title;Edit Location
+workshop-location-edit:header;You can edit the information for the location using the form below.
+workshop-location-delete:title;Delete Location
+workshop-location-delete:header;You are about to delete the location: %1$s
+workshop-location-details:linkBack;Back to All Labs
+workshop-location-details:maxStudents;Maximum Number of Students:
+workshop-schedule-index:title;Schedule Workshops
+workshop-schedule-index:linkCreate;Create New Event
+workshop-schedule-index:filterLocation;Filter by Location:
+workshop-schedule-index:allLocations;All Locations
+workshop-schedule-index:jan;January
+workshop-schedule-index:feb;February
+workshop-schedule-index:mar;March
+workshop-schedule-index:apr;April
+workshop-schedule-index:may;May
+workshop-schedule-index:jun;June
+workshop-schedule-index:jul;July
+workshop-schedule-index:aug;August
+workshop-schedule-index:sep;September
+workshop-schedule-index:oct;October
+workshop-schedule-index:nov;November
+workshop-schedule-index:dec;December
+workshop-schedule-index:jump;Jump to Date:
+workshop-schedule-editEvent:title;Edit Event
+workshop-schedule-editEvent:header;Use this page to make any desired changes to the event.
+workshop-schedule-addEvent:title;Add New Event
+workshop-schedule-addEvent:header;Enter the information for the event you would like to add to the schedule.  Fields marked with an asterisk are required.
+workshop-schedule-cancelEvent:title;Cancel Event
+workshop-schedule-cancelEvent:header;You are about to delete the event: %1$s taking place on <b>%2$s</b> at <b>%3$s</b>.
+workshop-schedule-cancelEvent:cancel;Yes, Cancel
+workshop-schedule-eventDetails:linkEdit;Edit Event
+workshop-schedule-eventDetails:linkCancel;Cancel Event
+workshop-schedule-eventDetails:linkSignup;Signup For Event
+workshop-schedule-eventDetails:linkLeave;Cancel Reservation
+workshop-schedule-eventDetails:linkTools;Instructor Tools
+workshop-schedule-eventDetails:workshopDetails;Workshop Details
+workshop-schedule-eventDetails:prerequisites;Pre-requisites:
+workshop-schedule-eventDetails:description;Description:
+workshop-schedule-eventDetails:more;More...
+workshop-signup-index:signupFor;Signup for %1$s
+workshop-signup-cancel:cancel;Yes, Cancel My Reservation
+workshop-signup-cancel:keep;No, Keep My Reservation
+workshop-signup-cancel:header;Cancel Reservation for  
+workshop-signup-cancel:sure;Are you sure you want to cancel?
+workshop-signup-cancel:unable;You are not allowed to cancel your reservation this close to the event.
+workshop-signup-cancel:leaveAttending;Canceling your reservation will remove you from the workshop role and give your seat to the next person on the waitlist.
+workshop-signup-cancel:leaveWaitlist;Removing yourself from the waitlist will mean you will not be automatically put into this workshop, should a spot become available.
+workshop-signup-cancel:sureCancel;Are you sure you wish to cancel your reservation?
+workshop-signup-index:header;Signup for 
+workshop-signup-index:instructor;You are set as an instructor for this workshop, therefore you do not need to sign up.
+workshop-signup-index:instructorTools;To access instructor options such as evaluation results, workshop roles, and notification options, <a href="%1$s/workshop/instructor/?eventId=%2$s">click here</a> to access the Instructor Tools.
+workshop-signup-index:alreadySignedUp;You are already signed up for this workshop.
+workshop-signup-index:accessReservation;You can access your reservation from the homepage.
+workshop-signup-index:alreadyWaitlisted;You are on the waitlist for this workshop.
+workshop-signup-index:accessWaitlist;You are on the waitlist for this workshop.  Once a spot becomes available, you will be automatically put into the workshop.  You can access your reservation from the homepage.
+workshop-signup-index:accessRestricted;Access to this workshop is restricted.
+workshop-signup-index:restricted;This workshop has restricted its access to a certain list of people.  If you would still like to attend this workshop, you can try one of the other times this workshop is offered.
+workshop-signup-index:confirm;Please confirm the following information is correct, and that you have any required pre-requisites to take this workshop.
+workshop-signup-index:onlyWaitlist;Only a waitlist spot is currently available.
+workshop-signup-index:seatsTaken;Currently, all %1$s seats are taken in this workshop.  However, there are %2$s waitlist spots available.  If someone already enrolled cancels before the workshop starts, you will automatically be put into the workshop.
+workshop-signup-index:full;We're sorry, this workshop is currently full.
+workshop-signup-index:tryAgain;If you would still like to attend this workshop, you can try one of the other times this workshop is offered.
+workshop-signup-index:linkAttend;Sign-Up To Attend Now!
+workshop-signup-index:linkWaitlist;Sign-Up for the Waitlist Now!
+workshop-signup-index:linkCancel;Cancel, Go Back
+msg-error-accountNotFound;The account requested was not found.
+msg-error-notLoggedIn;This page cannot be accessed unless you are logged in.
+msg-error-formSubmitProblem;There was an error submitting the form.
+msg-error-eventIdNotSet;Event ID not set.
+msg-error-accountIdNotSet;Account ID not set.
+msg-error-workshopIdNotSet;Workshop ID not set in query string.
+msg-error-workshopIdsNotSet;Workshop ID not set.
+msg-error-workshopDocIdNotSet;Workshop Document ID not set in query string.
+msg-error-workshopDocIdsNotSet;Workshop Document ID not set.
+msg-error-workshopLinkIdNotSet;Workshop Link ID not set in query string.
+msg-error-locationIdNotSet;Location ID not set in query string.
+msg-error-noWorkshop;Workshop not found.
+msg-error-noDocument;Document not found.
+msg-error-noEvent;Event not found.
+msg-error-noLink;Link not found.
+msg-error-noLocation;Location not found.
+msg-error-noAccess;You do not have access to edit this.
+msg-error-noWorkshopAccess;You do not have access to view this workshop.
+msg-error-targetDirNotWritable;Target directory %1$s is not writable.
+msg-error-targetDirNotReadable;Target directory is not readable.
+msg-error-noHandouts;This workshop has no handouts yet.
+msg-error-fileNotFound;File not found in file system.
+msg-error-cannotEval;You are an instructor of this event and cannot evaluate it.
+msg-error-notAttended;You are not on record as having attended this event.
+msg-error-evalEnded;The evaluation period for this event has already ended.
+msg-error-alreadyEval;You appear to have already evaluated this event.
+msg-error-noAccount;No account exists for this user.
+msg-error-notInstructor;You are not an instructor for this event.
+msg-error-noAttendees;There are no users registered for the event yet.
+msg-error-eventStartsAfter;Event cannot start after the end time.
+msg-error-eventTimesEqual;Event start and end times cannot be equal.
+msg-error-eventAlreadyScheduled;An event is already scheduled during this time in the selected location.  Please select a new time or location.
+msg-error-notAttending;You are not atteding this class, so you cannot cancel it.
+msg-info-reindexed;Search was successfully re-indexed.
+msg-info-workshopAdded;Workshop was added successfully.
+msg-info-workshopModified;Workshop was modified successfully.
+msg-info-documentAdded;Document was added successfully.
+msg-info-documentModified;Document was modified successfully.
+msg-info-documentDeleted;Document was deleted successfully.
+msg-info-linkAdded;Link was added successfully.
+msg-info-linkModified;Link was modified successfully.
+msg-info-linkDeleted;Link was deleted successfully.
+msg-info-evalThanks;Thanks for your evaluation!
+msg-info-userPromoted;User successfully promoted to attendee list.
+msg-info-userAdded;User(s) successfully added.
+msg-info-userRemoved;User successfully removed.
+msg-info-attendanceRecorded;Attendance succesfully recorded.
+msg-info-emailQueued;Email successfully queued.
+msg-info-locationAdded;Location added successfully.
+msg-info-locationModified;Location edited successfully.
+msg-info-locationDeleted;Location deleted successfully.
+msg-info-eventSaved;Event information saved successfully.
+msg-info-eventAdded;Event added successfully.
+msg-info-eventCanceled;Event successfully cancelled.
+msg-info-signedUp;You have successfully signed up for <b>%1$s</b>.<br /><br />Your reservation will show up on the homepage.  Should you need to cancel your reservation, you can do so from the "My Events" section on the homepage.
+msg-info-canceled;You have successfully canceled your reservation for <b>%1$s</b>.

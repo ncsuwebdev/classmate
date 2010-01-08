@@ -1,0 +1,53 @@
+<?php if ($this->acl['addEvent']) : ?>
+    <a id="addEventLink" href="<?php echo $this->baseUrl(); ?>/workshop/schedule/add-event" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-index:linkCreate"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
+    <br /><br />
+<?php endif; ?>
+<label for="locationFilter"><b><?php echo $this->translate("workshop-schedule-index:filterLocation"); ?></b> </label>
+<select id="locationFilter" name="locationFilter">
+    <option value=""><?php echo $this->translate("workshop-schedule-index:allLocations"); ?></option>
+    <?php foreach ($this->locationList as $locationId => $locationName) : ?>
+        <option value="<?php echo $locationId; ?>"><?php echo $locationName; ?></option>
+    <?php endforeach; ?>
+</select>
+
+<?php
+
+$months = array(
+            1  => $this->translate('workshop-schedule-index:jan'),
+            2  => $this->translate('workshop-schedule-index:feb'),
+            3  => $this->translate('workshop-schedule-index:mar'),
+            4  => $this->translate('workshop-schedule-index:apr'),
+            5  => $this->translate('workshop-schedule-index:may'),
+            6  => $this->translate('workshop-schedule-index:jun'),
+            7  => $this->translate('workshop-schedule-index:jul'),
+            8  => $this->translate('workshop-schedule-index:aug'),
+            9  => $this->translate('workshop-schedule-index:sep'),
+            10 => $this->translate('workshop-schedule-index:oct'),
+            11 => $this->translate('workshop-schedule-index:nov'),
+            12 => $this->translate('workshop-schedule-index:dec')
+          );
+          
+$year = date('Y') - 3;
+
+?>
+
+<label for="dateFilter"><b><?php echo $this->translate("workshop-schedule-index:jump"); ?></b> </label>
+<select id="monthFilter" name="monthFilter">
+    <?php foreach ($months as $key => $value) : ?>
+        <option value="<?php echo $key; ?>"<?php echo ($key == $this->startMonth) ? ' selected="selected"' : ""; ?>><?php echo $value; ?></option>
+    <?php endforeach; ?>
+</select>
+
+<select id="yearFilter" name="yearFilter">
+    <?php while ($year <= (date('Y') + 3)) : ?>
+        <option value="<?php echo $year; ?>"<?php echo ($year == $this->startYear) ? ' selected="selected"' : ""; ?>><?php echo $year; ?></option>
+    <?php $year++; ?>
+    <?php endwhile; ?>
+</select>
+
+
+<br /><br />
+<input type="hidden" id="startYear" value="<?php echo $this->defaultVal($this->startYear, ''); ?>" />
+<input type="hidden" id="startMonth" value="<?php echo $this->defaultVal($this->startMonth, ''); ?>" />
+
+<div id="jMonthCalendar"></div>

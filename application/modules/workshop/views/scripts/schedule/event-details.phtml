@@ -1,0 +1,83 @@
+<?php $hasButton = false; ?>
+<a class="closeButton ui-state-default ui-corner-all linkButtonNoText" style="visibility: hidden; float: right;">&nbsp;<span class="ui-icon ui-icon-close"></span></a>
+<?php if ($this->acl['viewAllInstructorPages'] || ($this->acl['editEvent'] && $this->acl['userEventStatus'] == 'instructor')) : ?>
+    <a id="editLink" href="<?php echo $this->baseUrl(); ?>/workshop/schedule/edit-event?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-eventDetails:linkEdit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+    <?php $hasButton = true; ?>
+<?php endif; ?>
+<?php if ($this->acl['viewAllInstructorPages'] || ($this->acl['cancelEvent'] && $this->acl['userEventStatus'] == 'instructor')) : ?>
+    <a id="deleteLink" href="<?php echo $this->baseUrl(); ?>/workshop/schedule/cancel-event?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-eventDetails:linkCancel"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
+    <?php $hasButton = true; ?>
+<?php endif; ?>
+<?php if ($this->acl['userEventStatus'] != 'instructor' && $this->acl['userEventStatus'] != 'waitlist' && $this->acl['userEventStatus'] != 'attending') : ?>
+    <a id="signupLink" href="<?php echo $this->baseUrl(); ?>/workshop/signup?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-eventDetails:linkSignup"); ?><span class="ui-icon ui-icon-pin-s"></span></a>
+    <?php $hasButton = true; ?>
+<?php elseif (($this->acl['userEventStatus'] == "waitlist" || $this->acl['userEventStatus'] == "attending") && $this->reservationCancelable) : ?>
+    <a id="cancelReservationLink" href="<?php echo $this->baseUrl(); ?>/workshop/signup/cancel/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-eventDetails:linkLeave"); ?><span class="ui-icon ui-icon-pin-s"></span></a>
+    <?php $hasButton = true; ?>
+<?php endif; ?>
+
+<?php if ($this->acl['userEventStatus'] == 'instructor' || $this->acl['viewAllInstructorPages']) : ?>
+    <a id="instructorLink" href="<?php echo $this->baseUrl(); ?>/workshop/instructor/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-eventDetails:linkTools"); ?><span class="ui-icon ui-icon-gear"></span></a>
+    <?php $hasButton = true; ?>
+<?php endif; ?>
+<?php if ($hasButton) : ?>
+<br /><br />
+<?php endif; ?>
+
+<div id="wsTitle">
+    <a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->workshop['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+</div>
+
+<div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-evaluate-index:eventDetails"); ?></div>
+<div class="eventDetails">
+    <div class="when">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
+        <div class="data">
+        <a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details?eventId=<?php echo $this->event['eventId']; ?>">
+        <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+        (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+        <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+        </a>
+        </div>
+    </div>
+    <div class="what">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
+        <div class="data"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->event['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+    </div>
+    </div>
+    <div class="where">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
+        <div class="data">
+            <a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $this->location['locationId']; ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+        </div>
+    </div>              
+    <div class="instructors">
+        <div class="info"><?php echo (count($this->instructors) > 1) ? $this->translate('workshop-instructor-index:instructors') : $this->translate('workshop-instructor-index:instructor'); ?>:</div>
+        <div class="data">
+            <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
+        </div> 
+    </div>
+</div>
+
+<div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-schedule-eventDetails:workshopDetails"); ?></div>
+<div class="eventDetails">
+    <?php if (!$this->shortDisplay) : ?>    
+    <div class="prerequisites">
+        <div class="info"><?php echo $this->translate("workshop-schedule-eventDetails:prerequisites"); ?></div>
+        <div class="data">
+            <?php echo $this->defaultVal($this->workshop['prerequisites'], $this->translate("workshop-instructor-index:noPreReq")); ?>
+        </div> 
+    </div>
+    <?php endif; ?>
+    
+    <div class="description">
+        <div class="info"><?php echo $this->translate("workshop-schedule-eventDetails:description"); ?></div>
+        <div class="data">
+            <?php if ($this->shortDisplay) : ?>
+                <?php echo $this->truncate($this->workshop['description'], 300, ''); ?> <a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details?eventId=<?php echo $this->event['eventId']; ?>"><?php echo $this->translate("workshop-schedule-eventDetails:more"); ?></a>
+            <?php else : ?>
+                <?php echo $this->workshop['description']; ?>
+            <?php endif; ?>
+        </div>
+    </div> 
+</div>

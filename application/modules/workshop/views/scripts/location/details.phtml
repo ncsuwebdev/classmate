@@ -1,0 +1,27 @@
+<a href="<?php echo $this->baseUrl(); ?>/workshop/location/index/" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-location-details:linkBack"); ?><span class="ui-icon ui-icon-triangle-1-w"></span></a>
+<?php if ($this->acl['edit']) : ?>
+<a href="<?php echo $this->baseUrl(); ?>/workshop/location/edit?locationId=<?php echo $this->location->locationId; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+<?php endif; ?>
+<?php if ($this->acl['delete']) : ?>
+<a href="<?php echo $this->baseUrl(); ?>/workshop/location/delete/?locationId=<?php echo $this->location->locationId; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
+<?php endif; ?>
+<br /><br /><br />
+ 
+	<input type="hidden" name="locationId" id="locationId" value="<?php echo $this->location->locationId; ?>" />   
+	<div id="titleContainer">	    
+		<img id="statusImage" src="<?php echo $this->baseUrl(); ?>/images/network-idle.png" alt="<?php echo $this->location->name; ?>" />  
+        <?php if ($this->location->status == 'disabled') : ?>
+        <span id="disabled"><?php echo $this->translate("workshop-location:disabled"); ?></span>
+        <?php endif; ?>
+		<span id="name" rel="type=input&size=40&url=<?php echo $this->baseUrl(); ?>/workshop/location/edit/&response=response"><?php echo $this->location->name; ?></span>
+	</div>
+	<div id="addressContainer">
+	    <?php if ($this->location->address != '') : ?>
+	    <div id="mapit"><a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $this->location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a></div>
+	    <?php endif; ?>    
+	    <div id="address" rel="type=input&size=40&url=<?php echo $this->baseUrl(); ?>/workshop/location/edit/&response=response"><?php echo ($this->location->address == '') ? $this->translate("workshop-location:noAddress") : $this->location->address; ?></div> 
+	</div>   	 
+	<div id="capacityContainer">	
+	   <b><?php echo $this->translate("workshop-location-details:maxStudents"); ?></b> <span id="capacity" rel="type=input&size=5&url=<?php echo $this->baseUrl(); ?>/workshop/location/edit/&response=response"><?php echo $this->location->capacity; ?></span>
+    </div>
+	<div id="description"><?php echo ($this->location->description == '') ? $this->translate("workshop-index-details:noDescription") : $this->location->description; ?></div>

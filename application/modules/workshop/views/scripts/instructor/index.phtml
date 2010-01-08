@@ -1,0 +1,94 @@
+<div id="wsTitle">
+    <?php echo $this->translate("workshop-instructor-index:header"); ?>
+    <a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->workshop['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+</div>
+
+<a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/evaluation-results/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkView"); ?><span class="ui-icon ui-icon-image"></span></a>
+<?php if ($this->isEditable) : ?>
+<a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/edit-event?eventId=<?php echo $this->event['eventId']; ?>&itools=yes" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkEdit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+<?php endif; ?>
+
+<div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-evaluate-index:eventDetails"); ?></div>
+<div class="eventDetails">
+    <div class="when">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
+        <div class="data">
+        <a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details/?eventId=<?php echo $this->event['eventId']; ?>">
+        <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+        (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+        <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+        </a>
+        </div>
+    </div>
+    <div class="what">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
+        <div class="data"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->event['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+    </div>
+    </div>
+    <div class="where">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
+        <div class="data">
+            <a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $this->location['locationId']; ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+        </div>
+    </div>              
+    <div class="instructors">
+        <div class="info"><?php echo (count($this->instructors) > 1) ? $this->translate('workshop-instructor-index:instructors') : $this->translate('workshop-instructor-index:instructor'); ?>:</div>
+        <div class="data">
+            <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
+        </div> 
+    </div>         
+    <div class="prerequisites">
+        <div class="info"><?php echo $this->translate("workshop-schedule-eventDetails:prerequisites"); ?></div>
+        <div class="data">
+            <?php echo $this->defaultVal($this->workshop['prerequisites'], $this->translate("workshop-instructor-index:noPreReq")); ?>
+        </div> 
+    </div> 
+</div>
+
+<h3 id="signup"><?php if ($this->event['maxSize'] - $this->event['roleSize'] == 1): ?><?php echo $this->translate("workshop-instructor-index:seatLeft", array($this->event['maxSize'])); ?><?php else: ?><?php echo $this->translate("workshop-instructor-index:seatsLeft", array($this->event['maxSize'] - $this->event['roleSize'], $this->event['maxSize'])); ?><?php endif; ?></h3>
+
+<br />
+<?php if ($this->isEditable) : ?>
+<?php if ($this->acl['addAttendee']) : ?><a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/add-attendee?eventId=<?php echo $this->event['eventId']; ?>" id="addAttendees" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkAdd"); ?><span class="ui-icon ui-icon-pencil"></span></a><?php endif; ?>
+<?php if ($this->acl['takeRoll']) : ?><a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/take-roll?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkRoll"); ?><span class="ui-icon ui-icon-person"></span></a><?php endif; ?>
+<?php if ($this->acl['printSignupSheet']) : ?><a target="_blank" href="<?php echo $this->baseUrl(); ?>/workshop/instructor/print-signup-sheet?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkPrintSignupSheet"); ?><span class="ui-icon ui-icon-print"></span></a><?php endif; ?>
+<?php if ($this->acl['contact']) : ?><a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/contact/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkContact"); ?><span class="ui-icon ui-icon-mail-closed"></span></a><?php endif; ?>
+<br /><br />
+<?php endif; ?>
+
+<div class="ui-helper-clearfix">
+    <div class="yui-u first">
+    <div class="listHeader ui-widget-header ui-corner-all"><?php echo $this->translate("workshop-instructor-index:attendees"); ?></div>
+        <?php if (count($this->attendeeList) > 0) : ?>
+            <?php foreach ($this->attendeeList as $attendee) : ?>
+                <div class="attendee ui-corner-all">
+                    <?php if ($this->isEditable) : ?>
+                        <div class="attendedStatus"><?php echo ($attendee['attended']) ? $this->translate('workshop-instructor-index:present') : $this->translate('workshop-instructor-index:absent'); ?></div>
+                    <?php endif; ?>
+                    <?php if ($this->isEditable) : ?>
+                    <a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/remove-attendee?eventId=<?php echo $this->event['eventId']; ?>&accountId=<?php echo $attendee['accountId']; ?>" title="<?php echo $this->translate("workshop-instructor-index:removeAttendee", $attendee['firstName']); ?>" id="removeAttendee" class="ui-state-default ui-corner-all linkButtonNoText" style="margin-right: 5px;"><span class="ui-icon ui-icon-minusthick"></span></a>
+                    <?php endif; ?> 
+                    <?php echo $attendee['firstName']; ?> <?php echo $attendee['lastName']; ?> (<?php echo $attendee['username']; ?>)
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <?php echo $this->translate("workshop-instructor-index:noAttendees"); ?>
+        <?php endif; ?>
+    </div>
+    <div class="yui-u">
+    <div class="listHeader ui-widget-header ui-corner-all"><?php echo $this->translate("workshop-instructor-index:waitlist"); ?></div>
+        <?php if (count($this->waitlist) > 0) : ?>
+            <?php foreach ($this->waitlist as $waitlister) : ?>
+                <div class="waitlister ui-corner-all">
+                    <?php if ($this->isEditable) : ?>
+                        <?php if ($this->acl['promoteAttendee']) : ?><a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/promote-attendee?eventId=<?php echo $this->event['eventId']; ?>&accountId=<?php echo $waitlister['accountId']; ?>" title="<?php echo $this->translate("workshop-instructor-index:moveWaistlist", $waitlister['firstName']); ?>" id="promoteAttendee" class="ui-state-default ui-corner-all linkButtonNoText" style="margin-right: 5px;"><span class="ui-icon ui-icon-circle-arrow-w"></span></a><?php endif; ?>
+                        <?php if ($this->acl['removeAttendee']) : ?><a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/remove-attendee?eventId=<?php echo $this->event['eventId']; ?>&accountId=<?php echo $waitlister['accountId']; ?>" title="<?php echo $this->translate("workshop-instructor-index:removeWaistlist", $waitlister['firstName']); ?>" id="removeAttendee" class="ui-state-default ui-corner-all linkButtonNoText" style="margin-right: 5px;"><span class="ui-icon ui-icon-minusthick"></span></a><?php endif; ?>
+                    <?php endif; ?>       
+                    <?php echo $waitlister['firstName']; ?> <?php echo $waitlister['lastName']; ?> (<?php echo $waitlister['username']; ?>)
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <?php echo $this->translate("workshop-instructor-index:noAttendees"); ?>
+        <?php endif; ?>
+    </div>
+</div>

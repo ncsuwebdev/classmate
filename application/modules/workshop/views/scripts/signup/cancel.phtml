@@ -1,0 +1,54 @@
+<div id="wsTitle">
+	<?php echo $this->translate("workshop-signup-cancel:header"); ?>  
+	<a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->workshop['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+</div>
+
+<div id="fullClass" class="banner">
+    <?php if ($this->reservationCancelable) : ?>
+        <?php echo $this->translate("workshop-signup-cancel:sure"); ?>
+    <?php else : ?>
+        <?php echo $this->translate("workshop-signup-cancel:unable"); ?>
+    <?php endif; ?>
+</div>  
+
+<div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-evaluate-index:eventDetails"); ?></div>
+<div class="eventDetails">
+	<div class="when">
+		<div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
+		<div class="data">
+		<a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details/?eventId=<?php echo $this->event['eventId']; ?>">
+	    <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+	 	(<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+	 	<?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+	 	</a>
+		</div>
+	</div>
+ 	<div class="what">
+  		<div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
+  		<div class="data"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->event['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+  	</div>
+ 	</div>
+ 	<div class="where">
+ 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
+ 		<div class="data">
+ 			<a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $this->location['locationId']; ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+ 		</div>
+ 	</div>		        
+ 	<div class="instructors">
+ 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:instructors"); ?></div>
+ 		<div class="data">
+ 		    <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
+        </div> 
+    </div>
+</div>
+<br /><br />
+<?php if ($this->reservationCancelable) : ?>
+    <?php if ($this->status == 'attending'): ?>
+    <?php echo $this->translate("workshop-signup-cancel:leaveAttending"); ?>
+    <?php else: ?>
+    <?php echo $this->translate("workshop-signup-cancel:leaveWaitlist"); ?>
+    <?php endif; ?>
+    <br /><br />
+    <?php echo $this->translate("workshop-signup-cancel:sureCancel"); ?>
+    <?php echo $this->form; ?>
+<?php endif; ?>

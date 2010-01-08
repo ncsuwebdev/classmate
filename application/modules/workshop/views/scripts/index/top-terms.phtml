@@ -1,0 +1,15 @@
+<div id="searchTermsTop"></div>
+<div id="searchTerms">
+    <div id="topTerms"><h2>Top Search Terms</h2></div>
+    <ol>
+    	<?php foreach ($this->topTerms as $t): ?>
+    	<li><a href="<?php echo $this->baseUrl(); ?>/workshop/?search=<?php echo $t->term; ?>"><?php echo $t->term; ?></a></li>
+    	<?php endforeach; ?>
+    </ol>
+</div>
+<div id="searchTermsBottom"></div>
+<?php if ($this->acl['workshopList']) : ?>
+    <br />
+    <div style="text-align: center;"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/workshop-list" class="ui-state-default ui-corner-all linkButtonNoIcon">View the complete list of workshops</a></div>
+    <br />
+<?php endif; ?>

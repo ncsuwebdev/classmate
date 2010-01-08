@@ -1,0 +1,15 @@
+<?php if (count($this->workshops) > 0): ?>
+    <?php foreach ($this->workshops as $w): ?>
+        <div class="workshop">
+            <div class="title">
+                <a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $w['workshopId']; ?>"><?php echo $w['title']; ?></a>
+                <?php if ($w['status'] == 'disabled') : ?>
+                    <span class="disabled">(DISABLED)</span>
+                <?php endif; ?>
+            </div>
+            <div class="description"><?php echo $this->truncate(strip_tags($w['description']), 200); ?></div>
+        </div>
+    <?php endforeach; ?>
+<?php else : ?>
+    No workshops found
+<?php endif; ?>
