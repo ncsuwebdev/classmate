@@ -7563,7 +7563,7 @@ CREATE TABLE IF NOT EXISTS `oit_tbl_ot_nav` (
 --
 
 INSERT INTO `oit_tbl_ot_nav` (`id`, `parent`, `display`, `module`, `controller`, `action`, `link`, `target`) VALUES
-(1, 0, 'Homes', 'default', 'index', 'index', 'index/', '_self'),
+(1, 0, 'Home', 'default', 'index', 'index', 'index/', '_self'),
 (2, 0, 'My Events', 'default', 'index', 'history', 'index/history/', '_self'),
 (3, 0, 'Schedule', 'workshop', 'schedule', 'index', 'workshop/schedule', '_self'),
 (4, 0, 'Workshops', 'workshop', 'index', 'index', 'workshop/', '_self'),
