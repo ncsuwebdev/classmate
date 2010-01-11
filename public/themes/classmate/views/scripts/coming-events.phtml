@@ -1,33 +1,33 @@
 <?php if (count($this->events) != 0): ?>  
-	<?php foreach ($this->events as $e): ?>
-		<div class="event" id="event_<?php echo $e['eventId']; ?>">
-			<div class="text">
-				<div class="workshopName"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $e['workshopId']; ?>"><?php echo $this->truncate($e['workshop']['title'], 50); ?></a></div>
-	            <div class="date"><?php echo $this->dateFormat($e['date'], $this->config->user->medDateFormat->val); ?></div>
-	            <div class="time"><?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> - <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?></div>
-	            <div class="status">
+    <?php foreach ($this->events as $e): ?>
+        <div class="event" id="event_<?php echo $e['eventId']; ?>">
+            <div class="text">
+                <div class="workshopName"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $this->truncate($e['workshop']['title'], 50); ?></a></div>
+                <div class="date"><?php echo $this->dateFormat($e['date'], $this->config->user->medDateFormat->val); ?></div>
+                <div class="time"><?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> - <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?></div>
+                <div class="status">
                 <?php if ($e['status'] == 'instructor'): ?>
-                    <a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/?eventId=<?php echo $e['eventId']; ?>"><?php echo $this->translate("workshop-index-right:instructorTools"); ?></a>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>"><?php echo $this->translate("workshop-index-right:instructorTools"); ?></a>
                 <?php elseif ($e['status'] == 'attending'): ?>
                     <?php echo $this->translate("workshop-index-right:attending"); ?>
                     <br />
-                    <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/cancel/?eventId=<?php echo $e['eventId']; ?>">Cancel...</a>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId']), 'default', true); ?>">Cancel...</a>
                 <?php elseif ($e['status'] == 'waitlist'): ?>
                     <?php echo $this->translate("workshop-index-right:waitlist"); ?>
                     <br />
-                    <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/cancel/?eventId=<?php echo $e['eventId']; ?>">Cancel...</a>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId']), 'default', true); ?>">Cancel...</a>
                 <?php elseif ($e['status'] == 'restricted'): ?>
-                    <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/?eventId=<?php echo $e['eventId']; ?>"><span class="restricted"><?php echo $this->translate("workshop-index-right:restricted"); ?></span></a>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'eventId' => $e['eventId']), 'default', true); ?>"><span class="restricted"><?php echo $this->translate("workshop-index-right:restricted"); ?></span></a>
                 <?php else: ?>
                     <?php if ($e['roleSize'] < $e['maxSize']): ?>
                         <?php echo $this->translate("workshop-index-right:seatsRemaining", array($e['maxSize'] - $e['roleSize'])); ?>
                         <br />
-                        <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/?eventId=<?php echo $e['eventId']; ?>"><?php echo $this->translate("workshop-index-right:register"); ?></a>
+                        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'eventId' => $e['eventId']), 'default', true); ?>"><?php echo $this->translate("workshop-index-right:register"); ?></a>
                     <?php else: ?>
                         <?php if ($e['waitlistSize'] != 0 && $e['waitlistSize'] > $e['waitlistTotal']): ?>
                             <?php echo $this->translate("workshop-index-right:full"); ?>
                             <br />
-                            <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/?eventId=<?php echo $e['eventId']; ?>"><?php echo $this->translate("workshop-index-right:signupWaitlist"); ?></a>
+                            <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'eventId' => $e['eventId']), 'default', true); ?>"><?php echo $this->translate("workshop-index-right:signupWaitlist"); ?></a>
                         <?php else: ?>
                             <?php echo $this->translate("workshop-index-right:full"); ?>
                         <?php endif; ?>                  
@@ -35,10 +35,10 @@
                 <?php endif; ?>
                 </div>
             </div>
-		</div>
-	<?php endforeach; ?>  
+        </div>
+    <?php endforeach; ?>  
 <?php else: ?>
-		<div class="event">
-			<div class="text"><?php echo $this->translate("workshop-index-right:noEvents"); ?></div>
-		</div>
+    <div class="event">
+        <div class="text"><?php echo $this->translate("workshop-index-right:noEvents"); ?></div>
+    </div>
 <?php endif; ?>
