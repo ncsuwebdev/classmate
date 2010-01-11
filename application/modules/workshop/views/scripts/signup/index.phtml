@@ -1,6 +1,6 @@
 <div id="wsTitle">
 	<?php echo $this->translate("workshop-signup-index:header"); ?> 
-	<a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->workshop['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
 </div>
 
 <div id="status">
@@ -48,7 +48,7 @@
 	<div class="when">
 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
 		<div class="data">
-		<a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details/?eventId=<?php echo $this->event['eventId']; ?>">
+		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
 	    <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
 	 	(<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
 	 	<?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
@@ -57,13 +57,13 @@
 	</div>
  	<div class="what">
   		<div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
-  		<div class="data"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $this->event['workshopId']; ?>"><?php echo $this->workshop['title']; ?></a>
+  		<div class="data"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->event['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
   	</div>
  	</div>
  	<div class="where">
  		<div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
  		<div class="data">
- 			<a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $this->location['locationId']; ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+ 			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location' => 'action' => 'details', 'locationId' => $this->location['locationId']), 'default', true); ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
  		</div>
  	</div>		        
  	<div class="instructors">
@@ -83,10 +83,10 @@
 <?php if ($this->status == ''): ?>
 <div id="signupButton">
     <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
-    	<a href="<?php echo $this->baseUrl(); ?>/workshop/signup/reserve/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkAttend"); ?></a>
+    	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkAttend"); ?></a>
     	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton">Cancel</a>
     <?php elseif ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
-    	<a href="<?php echo $this->baseUrl(); ?>/workshop/signup/reserve/?eventId=<?php echo $this->event['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?></a>
+    	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?></a>
     	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton">Cancel</a>
     <?php endif; ?>
     

@@ -2,7 +2,7 @@
     <?php foreach ($this->workshops as $w): ?>
         <div class="workshop">
             <div class="title">
-                <a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $w['workshopId']; ?>"><?php echo $w['title']; ?></a>
+                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $w['workshopId']), 'default', true); ?>"><?php echo $w['title']; ?></a>
                 <?php if ($w['status'] == 'disabled') : ?>
                     <span class="disabled">(DISABLED)</span>
                 <?php endif; ?>

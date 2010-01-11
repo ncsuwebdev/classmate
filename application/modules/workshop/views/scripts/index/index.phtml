@@ -5,7 +5,7 @@
 	<br />
 	<?php foreach ($this->workshops as $w): ?>
 	    <div class="searchResult">
-		    <div class="title"><a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $w->workshopId; ?>"><?php echo $w->title; ?></a></div>
+		    <div class="title"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $w->workshopId), 'default', true); ?>"><?php echo $w->title; ?></a></div>
 		    <div class="description"><?php echo $this->truncate(strip_tags($w->description), 200); ?></div>
 		</div>
 	<?php endforeach; ?>

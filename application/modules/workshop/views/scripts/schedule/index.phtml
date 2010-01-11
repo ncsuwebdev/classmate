@@ -1,5 +1,5 @@
 <?php if ($this->acl['addEvent']) : ?>
-    <a id="addEventLink" href="<?php echo $this->baseUrl(); ?>/workshop/schedule/add-event" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-index:linkCreate"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
+    <a id="addEventLink" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'add-event'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-schedule-index:linkCreate"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
     <br /><br />
 <?php endif; ?>
 <label for="locationFilter"><b><?php echo $this->translate("workshop-schedule-index:filterLocation"); ?></b> </label>

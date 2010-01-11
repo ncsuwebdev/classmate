@@ -3,7 +3,7 @@
     <br /><br />
 
     <?php if ($this->acl['add']) : ?>
-    <a href="<?php echo $this->baseUrl(); ?>/workshop/location/add/" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-location-index:linkAdd"); ?><span class="ui-icon ui-icon-plusthick"></span></a><br /><br />
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'add'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-location-index:linkAdd"); ?><span class="ui-icon ui-icon-plusthick"></span></a><br /><br />
     <?php endif; ?>
 	
     <?php if ($this->locations->count() > 0) : ?>
@@ -15,7 +15,7 @@
     	           <?php if ($location->status == 'disabled') : ?>
                       <b><?php echo $this->translate("workshop-location:disabled"); ?></b> &nbsp; 
                    <?php endif; ?>
-                   <a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $location->locationId; ?>"><?php echo $location->name; ?></a></div>
+                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location->locationId), 'default', true); ?>"><?php echo $location->name; ?></a></div>
     	        <?php if ($location->address != '') : ?>
     	        <div class="mapit"><a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a></div>        
     	        <div class="address"><?php echo $location->address; ?></div>

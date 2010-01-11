@@ -9,7 +9,7 @@
 		        <?php foreach ($this->myEvents as $e): ?>   
 		        <div class="myEvent ui-corner-all">
 		        	<div class="title">
-		        	    <a href="<?php echo $this->baseUrl(); ?>/workshop/schedule/event-details/?eventId=<?php echo $e['eventId']; ?>">
+		        	    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
 		        		<?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
 			        	(<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
 			        	<?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
@@ -26,13 +26,13 @@
 					            <?php elseif ($e['status'] == 'waitlist'): ?>
 					            	<?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
 					            <?php endif; ?>
-					        	<a href="<?php echo $this->baseUrl(); ?>/workshop/index/details/?workshopId=<?php echo $e['workshopId']; ?>"><?php echo $e['workshop']['title']; ?></a>
+					        	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
 					       	</div>
 			        	</div>
 			        	<div class="where">
 			        		<div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
 			        		<div class="data">
-			        			<a href="<?php echo $this->baseUrl(); ?>/workshop/location/details/?locationId=<?php echo $e['location']['locationId']; ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
+			        			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $e['location']['locationId']), 'default', true); ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
 			        		</div>
 			        	</div>		        
 			        	<div class="notes">
@@ -65,16 +65,16 @@
 		                	<div class="info"><?php echo $this->translate("default-index-history:tools"); ?></div>
 		                	<div class="data">
 				            	<?php if ($e['status'] == 'instructor'): ?>
-				                    <a href="<?php echo $this->baseUrl(); ?>/workshop/instructor/?eventId=<?php echo $e['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>	            		
+				                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>	            		
 				            	<?php else: ?>
 					                <?php if ($e['cancelable']): ?>
-					                <a href="<?php echo $this->baseUrl(); ?>/workshop/signup/cancel/?eventId=<?php echo $e['eventId']; ?>&amp;accountId=<?php echo $this->account['accountId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
+					                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account['accountId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
 					                <?php endif; ?>
 						            <?php if ($e['status'] == 'attending' && $e['evaluatable']): ?>
-						            <a href="<?php echo $this->baseUrl(); ?>/workshop/evaluate/?eventId=<?php echo $e['eventId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>
+						            <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'evaluate', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>
 						            <?php endif; ?>
 				                    <?php if ($e['status'] == 'attending' && $e['hasHandouts']): ?>
-				                    <a href="<?php echo $this->baseUrl(); ?>/workshop/index/download-handouts?workshopId=<?php echo $e['workshop']['workshopId']; ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkDownload"); ?><span class="ui-icon ui-icon-circle-arrow-s"></span></a>
+				                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'download-handouts', 'workshopId' => $e['workshop']['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkDownload"); ?><span class="ui-icon ui-icon-circle-arrow-s"></span></a>
 				                    <?php endif; ?>
 				                <?php endif; ?>		                	
 		                	</div>
