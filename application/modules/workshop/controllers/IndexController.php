@@ -395,6 +395,27 @@ class Workshop_IndexController extends Zend_Controller_Action
     	$this->view->form = $form;
     	$this->view->messages = $messages;
     }
+    
+    public function rebuildHandoutsZipAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNeverRender();
+            
+        $get = Zend_Registry::get('getFilter');
+        if (!isset($get->workshopId)) {
+            throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
+        }
+        
+        $document = new Workshop_Document();
+
+        $config = Zend_Registry::get('config');
+            
+        if (!is_writable($config->user->fileUploadPathWorkshop->val)) {
+            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $config->user->fileUploadPathWorkshop->val));
+        }
+
+        $document->rebuildZipFile($get->workshopId);                
+    }
 
     public function addDocumentAction()
     {
@@ -679,7 +700,7 @@ class Workshop_IndexController extends Zend_Controller_Action
         }
 
         $config = Zend_Registry::get('config');
-            
+        
         if (!is_readable($config->user->fileUploadPathWorkshop->val)) {
             throw new Ot_Exception_Data('msg-error-targetDirNotReadable');
         }

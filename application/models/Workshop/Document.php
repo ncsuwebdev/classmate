@@ -61,16 +61,20 @@ class Workshop_Document extends Ot_Db_Table
         
         $zip = new Zip($config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/all_handouts.zip');
                
+        $filesToAdd = array();
+        
         foreach ($documents as $d) {
+            
             $target = $config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/' . $d['name'];
 
             if (is_file($target)) {
-                $zip->addFiles($target);
+                $filesToAdd[] = $target;
             } else {
                 throw new Ot_Exception_Data('File not found: ' . $target);        
             }
         }
         
+        $zip->addFiles($filesToAdd);
         $zip->createZipFile();
     }
     

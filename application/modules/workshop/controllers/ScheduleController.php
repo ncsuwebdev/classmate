@@ -138,9 +138,9 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         $this->view->instructors = $instructors;
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jMonthCalendar-1.1.0.js');
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/public/scripts/jMonthCalendar-1.1.0.js');
         //$this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jMonthCalendar-1.2.2.js');
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.bt.min.js');
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/public/scripts/jquery.bt.min.js');
                
     }
     

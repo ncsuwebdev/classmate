@@ -44,7 +44,8 @@
         <directory>./languages</directory>
       </language>
       <search>
-          <workshopIndexPath>/afs/unity/web/i/itdapps5/searchIndex/classmate/new-workshops</workshopIndexPath>
+          <!--<workshopIndexPath>/afs/unity/web/i/itdapps5/searchIndex/classmate/new-workshops</workshopIndexPath>-->
+          <workshopIndexPath>/tmp</workshopIndexPath>
        </search>
        <profileTypes>
           <faculty>Faculty</faculty>
@@ -78,7 +79,8 @@
       <showTrackbackOnErrors description="Whether or not to show the trackback of the error" val="1"/>
       <numHoursEvaluationAvailability description="The numsber of hours an evaluation is available after an event has finished." val="1000" />
       <numHoursEventCancel description="The number of hours before an event that a user can cancel their reservation." val="1" />
-      <fileUploadPathWorkshop description="Upload directory for workshop handouts." val="/afs/unity/web/c/classmate-deo/files/workshop-new" />
+      <!--<fileUploadPathWorkshop description="Upload directory for workshop handouts." val="/afs/unity/web/c/classmate-deo/files/workshop-new" />-->
+      <fileUploadPathWorkshop description="Upload directory for workshop handouts." val="/usr/local/zend/apache2/htdocs/classmate-workshop-downloads" />
       <fileUploadAllowableExtensions description="The allowable extensions for files.  I would not suggest putting executable files in here..." val="jpg,pdf,doc,ppt,html,txt" />
       <defaultMinWorkshopSize description="Default minimum number of attendees for a workshop" val="5" />
       <defaultWorkshopWaitlistSize description="Default waitlist size for a workshop" val="10" />

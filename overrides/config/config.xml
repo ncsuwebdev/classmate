@@ -2,12 +2,11 @@
 <configData>
   <production>
     <app>
-      <theme>oitclassmate</theme>
+      <theme>classmate</theme>
     </app>
     <user>
       <fileUploadAllowableExtensions val="doc, pdf, zip, jpg, png, bmp"/>
       <numHoursEvaluationAvailability val="72"/>
-      <fileUploadPathWorkshop val="/afs/unity/web/c/classmate-deo/files/workshop"/>
       <fromEmailAddress val="classreg@ncsu.edu"/>
     </user>
   </production>
