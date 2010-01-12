@@ -3047,6 +3047,7 @@ CREATE TABLE IF NOT EXISTS `oit_tbl_ot_auth_adapter` (
   `name` varchar(64) NOT NULL,
   `description` varchar(255) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
+  `displayOrder` int(11) NOT NULL,
   PRIMARY KEY (`adapterKey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
