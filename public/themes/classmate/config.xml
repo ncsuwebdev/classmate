@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configData>
   <production>
+    <theme>
+        <name>Classmate</name>
+        <description>A custom theme specifically designed for Classmate with images of school and learning.</description>
+    </theme>
     <css>
         <file path="reset-fonts-grids-base.css" order="prepend"/>
         <file path="superfish.css" order="append"/>

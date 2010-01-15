@@ -2,7 +2,7 @@
 <configData>
   <production>
     <app>
-      <theme>oitclassmate</theme>
+      <theme>classmate</theme>
     </app>
     <user>
       <fileUploadAllowableExtensions val="doc, pdf, zip, jpg, png, bmp"/>

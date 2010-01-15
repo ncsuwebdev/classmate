@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configData>
   <production>
+    <theme>
+        <name>OIT Classmate</name>
+        <description>The OIT Theme extended to crosswalk.</description>
+    </theme>
     <css>
         <file path="reset-fonts-grids-base.css" order="prepend"/>
 	    <file path="layout.css" order="append"/>
