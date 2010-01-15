@@ -229,7 +229,7 @@ msg-error-noAccount;No account exists for this user.
 msg-error-notInstructor;You are not an instructor for this event.
 msg-error-noAttendees;There are no users registered for the event yet.
 msg-error-eventStartsAfter;Event cannot start after the end time.
-msg-error-eventTimesEqual;Event start and end times cannot be equal.
+msg-error-eventTimesEqual;Event end time must be later than the start time.
 msg-error-eventAlreadyScheduled;An event is already scheduled during this time in the selected location.  Please select a new time or location.
 msg-error-notAttending;You are not atteding this class, so you cannot cancel it.
 msg-info-reindexed;Search was successfully re-indexed.
