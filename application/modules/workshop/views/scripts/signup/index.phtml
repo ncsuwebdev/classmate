@@ -84,10 +84,10 @@
 <div id="signupButton">
     <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
     	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkAttend"); ?></a>
-    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton">Cancel</a>
+    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php elseif ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
     	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?></a>
-    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton">Cancel</a>
+    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php endif; ?>
     
 </div>

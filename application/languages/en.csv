@@ -93,6 +93,8 @@ workshop-index-right:register;Register...
 workshop-index-right:full;This class is full.
 workshop-index-right:signupWaitlist;Signup to waitlist...
 workshop-index-right:noEvents;No events are scheduled at this time.
+workshop-index-top-terms:topSearchTerms:Top Search Terms
+workshop-index-workshop-list:noWorkshops:No workshops were found.
 workshop-instructor-addAttendee:title;Add Attendees
 workshop-instructor-addAttendee:header;Manually select users to add to this event.
 workshop-instructor-takeRoll:title;Take Roll
@@ -124,6 +126,7 @@ workshop-instructor-index:noAttendees;No attendees yet.
 workshop-instructor-index:waitlist;Waitlist
 workshop-instructor-index:moveWaistlist;Move %1$s to Attendees
 workshop-instructor-index:removeWaitlist;Remove %1$s from Waitlist
+workshop-instructor-print-signup-sheet:instructor;Instructor
 workshop-location:disabled;DISABLED!
 workshop-location:googleMap;Map With Google Maps!
 workshop-location:noAddress;No Address Provided
@@ -198,7 +201,7 @@ workshop-signup-index:full;We're sorry, this workshop is currently full.
 workshop-signup-index:tryAgain;If you would still like to attend this workshop, you can try one of the other times this workshop is offered.
 workshop-signup-index:linkAttend;Sign-Up To Attend Now!
 workshop-signup-index:linkWaitlist;Sign-Up for the Waitlist Now!
-workshop-signup-index:linkCancel;Cancel, Go Back
+workshop-signup-index:linkCancel;Cancel
 msg-error-accountNotFound;The account requested was not found.
 msg-error-notLoggedIn;This page cannot be accessed unless you are logged in.
 msg-error-formSubmitProblem;There was an error submitting the form.
