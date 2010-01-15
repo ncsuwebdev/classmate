@@ -37,7 +37,7 @@ $('document').ready(function() {
 		    				closeWhenOthersOpen: true,
 		    				trigger: 'none',
 		    				fill: '#F7F7F7', 
-		    				width: 475,
+		    				width: 500,
 		    				strokeStyle: '#979797',
 		    				strokeWidth: 2,
 		    				spikeLength: 10, 
