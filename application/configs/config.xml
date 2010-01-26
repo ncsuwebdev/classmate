@@ -2,7 +2,7 @@
 <configData>
   <production>
     <app>
-      <version>3.0.0</version>
+      <version>3.0.9</version>
       <theme>classmate</theme>
       <tablePrefix>oit_</tablePrefix>
       <loginOptions>
