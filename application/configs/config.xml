@@ -59,7 +59,6 @@
       <language description="The default language for the application." val="en"/>
       <appTitle description="The title of the application." val="ClassMate"/>
       <appDescription description="The application description." val="It's that simple..."/>
-      <customTheme description="The name of the custom theme to use." val="classmate"/>
       <metaKeywords description="The meta keywords you would like to use for the application." val=""/>
       <fromEmailAddress description="The global from email address.  All email from the system will come from this address." val="admin@app.com"/>
       <fromEmailName description="The global from email name.  This is the name that will be shown with the fromEmailAddress." val="Admin"/>

@@ -3,7 +3,7 @@
   <production>
     <theme>
         <name>Classmate</name>
-        <description>A custom theme specifically designed for Classmate with images of school and learning.</description>
+        <description>The original Classmate theme!</description>
     </theme>
     <css>
         <file path="reset-fonts-grids-base.css" order="prepend"/>
