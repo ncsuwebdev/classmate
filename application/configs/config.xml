@@ -87,6 +87,7 @@
       <numHoursFirstReminder description="The number of hours before a workshop is supposed to start to send a first notification of class attendance." val="24" />
       <numHoursFinalReminder description="The number of hours before a workshop is supposed to start to send a final notification of class attendance." val="12" />
       <numHoursEvaluationReminder description="The number of hours after a workshop is supposed to finish to send a reminder to users to fill out the class evaluation.  This only applies to users who have not filled out the evaluation already, but were marked as attended." val="24" />
+      <minutesToKeepUserActivity description="The number of minutes to keep the logged-in user activity." val="10" />
     </user>
     <triggers>
       <trigger name="Login_Index_Forgot" description="When a user has forgotten their password, they ask for a reset email to be sent to their registered email address.">
