@@ -9,7 +9,6 @@
  
 	<input type="hidden" name="locationId" id="locationId" value="<?php echo $this->location->locationId; ?>" />   
 	<div id="titleContainer">	    
-		<img id="statusImage" src="<?php echo $this->baseUrl(); ?>public/images/network-idle.png" alt="<?php echo $this->location->name; ?>" />  
         <?php if ($this->location->status == 'disabled') : ?>
         <span id="disabled"><?php echo $this->translate("workshop-location:disabled"); ?></span>
         <?php endif; ?>
@@ -20,7 +19,17 @@
 	    <div id="mapit"><a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $this->location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a></div>
 	    <?php endif; ?>    
 	    <div id="address" rel="type=input&size=40&url=<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'edit', 'response' => 'response'), 'default', true); ?>"><?php echo ($this->location->address == '') ? $this->translate("workshop-location:noAddress") : $this->location->address; ?></div> 
-	</div>   	 
+	</div>
+	<div id="typeContainer">
+		<div id="typeName">
+			<span>Location type:</span>
+			<?php echo $this->location->locationType->name;?>
+		</div>
+		<div id="typeDescription">
+			<span>Location Description:</span>
+			<?php echo $this->location->locationType->description != ''? $this->location->locationType->description : $this->translate("workshop-index-details:noDescription");?>
+		</div>
+	</div>	 
 	<div id="capacityContainer">	
 	   <b><?php echo $this->translate("workshop-location-details:maxStudents"); ?></b> <span id="capacity" rel="type=input&size=5&url=<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'edit', 'response' => 'response'), 'default', true); ?>"><?php echo $this->location->capacity; ?></span>
     </div>

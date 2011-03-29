@@ -26,7 +26,7 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class Workshop_LocationController extends Zend_Controller_Action 
+class Workshop_LocationTypeController extends Zend_Controller_Action 
 {	
     /**
      * Allows a user to view the list of locations.
@@ -37,34 +37,18 @@ class Workshop_LocationController extends Zend_Controller_Action
         $this->view->acl = array(
             'add'          => $this->_helper->hasAccess('add'),
             'edit'         => $this->_helper->hasAccess('edit'),
-            'viewDisabled' => $this->_helper->hasAccess('view-disabled')
             );
             
-        $locationDb = new Location();
-
-        $locations = $locationDb->fetchAll(null, 'name');
         $locationType = new LocationType();
-        
-        foreach($locations as $key => $location) {
-			$type = $locationType->getTypeById($location['locationType']);
-			$location->locationType = $type['name'];
-			$locations[$key] = $location;
-        }
 
-        $this->view->locations = $locations;
+        $locationTypes = $locationType->fetchAll(null, 'name');
+
+        $this->view->locationTypes = $locationTypes;
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         
-        $this->_helper->pageTitle('workshop-location-index:title');
+        $this->_helper->pageTitle('workshop-location-type-index:Title');
     }
     
-    /**
-     * If a user has access to this action, they can view the locations that are
-     * disabled.
-     *
-     */    
-    public function viewDisabledAction()
-    {}
-
     /**
      * Allows a user to view the details of a location.
      *
@@ -78,27 +62,22 @@ class Workshop_LocationController extends Zend_Controller_Action
         
     	$get = Zend_Registry::get('getFilter');
     	
-    	if (!isset($get->locationId)) {
-    		throw new Ot_Exception_Input('msg-error-locationIdNotSet');
+    	if (!isset($get->typeId)) {
+    		throw new Ot_Exception_Input('msg-error-typeIdNotSet');
     	}
     	
-    	$location = new Location();
+    	$locationType = new LocationType();
     	
-    	$thisLocation = $location->find($get->locationId);
+    	$thisLocationType = $locationType->find($get->typeId);
     	
-    	if (is_null($thisLocation)) {
-    		throw new Ot_Exception_Data('msg-error-noLocation');
+    	if (is_null($thisLocationType)) {
+    		throw new Ot_Exception_Data('msg-error-noLocationType');
     	}
     	
-        $locationType = new LocationType();
-        
-		$type = $locationType->getTypeById($thisLocation['locationType']);
-		$thisLocation->locationType = $type;
-    	
-    	$this->view->location = $thisLocation;
+    	$this->view->locationType = $thisLocationType;
     	$this->view->messages = $this->_helper->flashMessenger->getMessages();
     	
-    	$this->_helper->pageTitle("workshop-location-details:title", $thisLocation->name);
+    	$this->_helper->pageTitle("workshop-location-type-details:title", $thisLocationType->name);
     }
     
     /**
@@ -108,32 +87,28 @@ class Workshop_LocationController extends Zend_Controller_Action
     public function addAction()
     {
         $messages = array();
-        $location = new Location();
+        $locationType = new LocationType();
         
-        $form = $location->form();
+        $form = $locationType->form();
         
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
             
                 $data = array(
                             'name'        => $form->getValue('name'),
-                			'locationType'=> $form->getValue('locationType'),
-                            'capacity'    => $form->getValue('capacity'),
                             'description' => $form->getValue('description'),
-                            'address'     => $form->getValue('address'),
-                            'status'      => $form->getValue('status')
                         );
                 
-                $locationId = $location->insert($data);
-    
+                $typeId = $locationType->insert($data);
+                
                 $trigger = new Ot_Trigger();
                 $data['accountId'] = Zend_Auth::getInstance()->getIdentity()->accountId;
                 $trigger->setVariables($data);
-                $trigger->dispatch('Location_Add');
+                $trigger->dispatch('LocationType_Add');
+    
+                $this->_helper->flashMessenger->addMessage('msg-info-locationTypeAdded');
                 
-                $this->_helper->flashMessenger->addMessage('msg-info-locationAdded');
-                
-                $this->_helper->redirector->gotoUrl('/workshop/location/details/?locationId=' . $locationId);
+                $this->_helper->redirector->gotoUrl('/workshop/locationType/details/?typeId=' . $typeId);
             } else {
                 $messages[] = "msg-error-formSubmitProblem";
             }
@@ -145,7 +120,7 @@ class Workshop_LocationController extends Zend_Controller_Action
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.wysiwyg.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.wysiwyg.css');
         
-        $this->_helper->pageTitle('workshop-location-add:title');
+        $this->_helper->pageTitle('workshop-location-type-add:Title');
     }
     
     /**
@@ -158,43 +133,39 @@ class Workshop_LocationController extends Zend_Controller_Action
         
         $get = Zend_Registry::get('getFilter');
         
-        if (!isset($get->locationId)) {
-            throw new Ot_Exception_Input('msg-error-locationIdNotSet');
+        if (!isset($get->typeId)) {
+            throw new Ot_Exception_Input('msg-error-typeIdNotSet');
         }      
         
-        $location = new Location();
+        $locationType = new LocationType();
         
-        $thisLocation = $location->find($get->locationId);
+        $thisLocationType = $locationType->find($get->typeId);
         
-        if (is_null($thisLocation)) {
-            throw new Ot_Exception_Data('msg-error-noLocation');
+        if (is_null($thisLocationType)) {
+            throw new Ot_Exception_Data('msg-error-noLocationType');
         }       
         
-        $form = $location->form($thisLocation->toArray());
+        $form = $locationType->form($thisLocationType->toArray());
         
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
             
                 $data = array(
-                            'locationId'  => $form->getValue('locationId'),
+                            'typeId'	  => $form->getValue('typeId'),
                             'name'        => $form->getValue('name'),
-                			'locationType'=> $form->getValue('locationType'),
-                            'capacity'    => $form->getValue('capacity'),
-                            'description' => $form->getValue('description'),
-                            'address'     => $form->getValue('address'),
-                            'status'      => $form->getValue('status')
+                            'description' => $form->getValue('description')
                         );
                 
-                $location->update($data, null);
+                $locationType->update($data, null);
     
                 $trigger = new Ot_Trigger();
                 $data['accountId'] = Zend_Auth::getInstance()->getIdentity()->accountId;
                 $trigger->setVariables($data);
-                $trigger->dispatch('Location_Edit');
+                $trigger->dispatch('LocationType_Edit');
                 
-                $this->_helper->flashMessenger->addMessage('msg-info-locationModified');
+                $this->_helper->flashMessenger->addMessage('msg-info-locationTypeModified');
                 
-                $this->_helper->redirector->gotoUrl('/workshop/location/details/?locationId=' . $form->getValue('locationId'));
+                $this->_helper->redirector->gotoUrl('/workshop/locationType/details/?typeId=' . $form->getValue('typeId'));
             } else {
                 $messages[] = "msg-error-formSubmitProblem";
             }
@@ -203,6 +174,7 @@ class Workshop_LocationController extends Zend_Controller_Action
         $this->view->messages = $messages;
         $this->view->form     = $form;
         
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/workshop/location-type/edit.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.wysiwyg.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.wysiwyg.css');
         
@@ -217,32 +189,32 @@ class Workshop_LocationController extends Zend_Controller_Action
     {       
         $get = Zend_Registry::get('getFilter');
         
-        if (!isset($get->locationId)) {
-            throw new Ot_Exception_Input('msg-error-locationIdNotSet');
+        if (!isset($get->typeId)) {
+            throw new Ot_Exception_Input('msg-error-typeIdNotSet');
         }
         
-        $location = new Location();
+        $locationType = new LocationType();
         
-        $thisLocation = $location->find($get->locationId);
+        $thisLocationType = $locationType->find($get->typeId);
         
-        if (is_null($thisLocation)) {
-            throw new Ot_Exception_Data('msg-error-noLocation');        
+        if (is_null($thisLocationType)) {
+            throw new Ot_Exception_Data('msg-error-noLocationType');        
         }
         
-        $this->view->location = $thisLocation;
+        $this->view->locationType = $thisLocationType;
         
         $form = Ot_Form_Template::delete('deleteForm'); 
         
         if ($this->_request->isPost() && $form->isValid($_POST)) {
-            $where = $location->getAdapter()->quoteInto('locationId = ?', $get->locationId);
-            $location->delete($where);
+            $where = $locationType->getAdapter()->quoteInto('typeId = ?', $get->typeId);
+            $locationType->delete($where);
             
-            $this->_helper->flashMessenger->addMessage('msg-info-locationDeleted');
+            $this->_helper->flashMessenger->addMessage('msg-info-locationTypeDeleted');
             
-            $this->_helper->redirector->gotoUrl('/workshop/location/index');
+            $this->_helper->redirector->gotoUrl('/workshop/locationType/index');
         }
         
-        $this->_helper->pageTitle('workshop-location-delete:title');
+        $this->_helper->pageTitle('workshop-location-type-delete:title');
         $this->view->form = $form;
     } 
 }

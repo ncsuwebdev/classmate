@@ -1,0 +1,33 @@
+<div>
+    <?php echo $this->translate("workshop-location-type-index:header");?>
+    <br /><br />
+
+    <?php if ($this->acl['add']) : ?>
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location-type', 'action' => 'add'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("Add Location Type"); ?><span class="ui-icon ui-icon-plusthick"></span></a><br /><br />
+    <?php endif; ?>
+	
+    <?php if ($this->locationTypes->count() > 0) : ?>
+    	<table class="list">
+    		<thead>
+    			<tr>
+    				<th width="200">Name</th>
+    				<th width="400">Description</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+       		<?php foreach ($this->locationTypes as $type) : ?>
+        	<tr>
+	    	    <td>
+                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'locationType', 'action' => 'details', 'typeId' => $type->typeId), 'default', true); ?>"><?php echo $type->name; ?></a>
+    	        </td>
+        	    <td>
+               	   <?php echo $type->description;?>
+               	</td>
+    	    </tr>
+        	<?php endforeach; ?>
+        	</tbody>
+        </table>
+    <?php else : ?>
+    <?php echo $this->translate("workshop-location-index:noLocations"); ?>
+    <?php endif; ?>
+</div>

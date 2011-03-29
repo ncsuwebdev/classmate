@@ -188,6 +188,12 @@ class Workshop extends Ot_Db_Table
               ->setAttrib('maxlength', '255')
               ->setValue((isset($values['title']) ? $values['title'] : ''));
               
+        $group = $form->createElement('select', 'group', array('label' => 'Offered By:'));
+        $group->addMultiOption('groupId1', 'Test Group1');
+        $group->addMultiOption('groupId2', 'Test Group2');
+        $group->setValue((isset($values['group']) ? $values['group'] : null));
+        //TODO: change this to add all the enabled groups in the database
+              
         $tags = $form->createElement('text', 'tags', array('label' => 'Tags:'));
         $tags->setRequired(false)
              ->addFilter('StringTrim')
@@ -238,7 +244,7 @@ class Workshop extends Ot_Db_Table
                    array('ViewHelper', array('helper' => 'formButton'))
                 ));
         
-        $form->addElements(array($status, $title, $tags, $description, $prerequisites, $editors));
+        $form->addElements(array($status, $title, $group, $tags, $description, $prerequisites, $editors));
 
         $form->setElementDecorators(array(
                   'ViewHelper',

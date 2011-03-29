@@ -144,9 +144,21 @@ div#titleContainer span#disabled {
 
 div#addressContainer {
     margin: 0px 0px 20px 0px;
-    padding-left: 43px;
     height: 22px;
     background: #FFF url(../../../images/dot.gif) repeat-x bottom;
+}
+
+div#typeContainer {
+    margin: 0 0 20px 0;
+}
+
+div#typeContainer span {
+	display: block;
+	font-weight: bold;
+}
+
+div#typeName {
+	margin: 0 0 10px 0;
 }
 
 div#mapit {

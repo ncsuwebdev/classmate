@@ -7,24 +7,41 @@
     <?php endif; ?>
 	
     <?php if ($this->locations->count() > 0) : ?>
+    	<table class="list">
+    	<thead>
+    		<tr>
+    			<th>Room Name</th>
+    			<th>Address</th>
+    			<th>Room Type</th>
+    		</tr>
+    	</thead>
+    	<tbody>
         <?php foreach ($this->locations as $location) : ?>
     	    <?php if (($location->status == 'disabled' && $this->acl['viewDisabled']) || $location->status == 'enabled') : ?>
-    	    <div class="location">
-    	        <img src="<?php echo $this->baseUrl(); ?>/public/images/network-idle.png" alt="<?php echo $location->name; ?>" />
-    	        <div class="name">
+    	    <tr class="location">
+    	        <td class="name" width="200">
     	           <?php if ($location->status == 'disabled') : ?>
                       <b><?php echo $this->translate("workshop-location:disabled"); ?></b> &nbsp; 
                    <?php endif; ?>
-                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location->locationId), 'default', true); ?>"><?php echo $location->name; ?></a></div>
-    	        <?php if ($location->address != '') : ?>
-    	        <div class="mapit"><a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a></div>        
-    	        <div class="address"><?php echo $location->address; ?></div>
+                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location->locationId), 'default', true); ?>"><?php echo $location->name; ?></a>
+                </td>
+				<?php if ($location->address != '') : ?>
+				<td class="address" width="200">
+					<?php echo $location->address; ?>
+					<br />
+    	        	<a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a>
+    	        </td>        
     	        <?php else : ?>
-    	        <div><?php echo $this->translate("workshop-location:noAddress"); ?></div>
+    	        <td><?php echo $this->translate("workshop-location:noAddress"); ?></td>
     	        <?php endif; ?>
-    	    </div>
+    	        <td width="200">
+                	<?php echo $location->locationType;?>
+                </td>
+    	    </tr>
     	    <?php endif; ?>
         <?php endforeach; ?>
+        </tbody>
+    	</table>
     <?php else : ?>
     <?php echo $this->translate("workshop-location-index:noLocations"); ?>
     <?php endif; ?>

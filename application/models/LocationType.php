@@ -26,21 +26,25 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class Location extends Ot_Db_Table
+class LocationType extends Ot_Db_Table
 {
     /**
      * Name of the table in the database
      *
      * @var string
      */
-    protected $_name = 'tbl_location';
+    protected $_name = 'tbl_location_type';
 
     /**
      * Primary key of the table
      *
      * @var string
      */
-    protected $_primary = 'locationId';
+    protected $_primary = 'typeId';
+    
+    public function getTypeById($typeId) {
+    	return $this->find($typeId);
+    }
     
     /**
      * Gets the form for adding and editing a location
@@ -51,7 +55,7 @@ class Location extends Ot_Db_Table
     public function form($values = array())
     {
         $form = new Zend_Form();
-        $form->setAttrib('id', 'locationForm')
+        $form->setAttrib('id', 'locationTypeForm')
              ->setDecorators(array(
                      'FormElements',
                      array('HtmlTag', array('tag' => 'div', 'class' => 'zend_form')),
@@ -65,36 +69,25 @@ class Location extends Ot_Db_Table
               ->setAttrib('maxlength', '64')
               ->setValue((isset($values['name']) ? $values['name'] : ''));
               
-        $status = $form->createElement('select', 'status', array('label' => 'Status:'));
-        $status->addMultiOption('enabled', 'Enabled');
-        $status->addMultiOption('disabled', 'Disabled');
-        $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));
-
-        $locationType = new LocationType();
-        $types = $locationType->fetchAll(null, 'name');
+//        $status = $form->createElement('select', 'status', array('label' => 'Status:'));
+//        $status->addMultiOption('enabled', 'Enabled');
+//        $status->addMultiOption('disabled', 'Disabled');
+//        $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));        
         
-        $type = $form->createElement('select', 'locationType', array('label' => 'Location Type:'));
-		        
-        foreach ($types as $t) {
-        	$type->addMultiOption($t->typeId, $t->name);
-        }
-        $type->setRequired(true)
-        	 ->setValue((isset($values['locationType']) ? $values['locationType'] : '')); 
-        
-        $capacity = $form->createElement('text', 'capacity', array('label' => 'Capacity:'));
-        $capacity->setRequired(true)
-                 ->addFilter('StringTrim')
-                 ->addFilter('StripTags')
-                 ->addValidator('Digits')
-                 ->setAttrib('maxlength', '64')
-                 ->setValue((isset($values['capacity']) ? $values['capacity'] : ''));
+//        $capacity = $form->createElement('text', 'capacity', array('label' => 'Capacity:'));
+//        $capacity->setRequired(true)
+//                 ->addFilter('StringTrim')
+//                 ->addFilter('StripTags')
+//                 ->addValidator('Digits')
+//                 ->setAttrib('maxlength', '64')
+//                 ->setValue((isset($values['capacity']) ? $values['capacity'] : ''));
 
-        $address = $form->createElement('text', 'address', array('label' => 'Address:'));
-        $address->setRequired(true)
-                ->addFilter('StringTrim')
-                ->addFilter('StripTags')
-                ->setAttrib('maxlength', '255')
-                ->setValue((isset($values['address']) ? $values['address'] : ''));                 
+//        $address = $form->createElement('text', 'address', array('label' => 'Address:'));
+//        $address->setRequired(true)
+//                ->addFilter('StringTrim')
+//                ->addFilter('StripTags')
+//                ->setAttrib('maxlength', '255')
+//                ->setValue((isset($values['address']) ? $values['address'] : ''));                 
               
         $description = $form->createElement('textarea', 'description', array('label' => 'Description:')); 
         $description->setRequired(false)
@@ -113,7 +106,7 @@ class Location extends Ot_Db_Table
                    array('ViewHelper', array('helper' => 'formButton'))
                 ));
         
-        $form->addElements(array($name, $status, $type, $capacity, $address, $description));
+        $form->addElements(array($name, $description));
 
         $form->setElementDecorators(array(
                   'ViewHelper',
@@ -123,10 +116,10 @@ class Location extends Ot_Db_Table
               ))
              ->addElements(array($submit, $cancel));
 
-        if (isset($values['locationId'])) {
+        if (isset($values['typeId'])) {
 
-            $locationId = $form->createElement('hidden', 'locationId');
-            $locationId->setValue($values['locationId']);
+            $locationId = $form->createElement('hidden', 'typeId');
+            $locationId->setValue($values['typeId']);
             $locationId->setDecorators(array(
                 array('ViewHelper', array('helper' => 'formHidden'))
             ));

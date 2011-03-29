@@ -143,6 +143,16 @@ workshop-location-delete:title;Delete Location
 workshop-location-delete:header;You are about to delete the location: %1$s
 workshop-location-details:linkBack;Back to All Labs
 workshop-location-details:maxStudents;Maximum Number of Students:
+workshop-location-type-index:Title;Available Location Types
+workshop-location-type-index:header;All Location Types and their descriptions are displayed here
+workshop-location-type-add:Title;Add a Location Type
+workshop-location-type-add:header;Here you can add a new location type to the system. This will be a selectable option when creating teaching labs.
+workshop-location-type-details:title;Location Type Details: %1$s
+workshop-location-type-details:linkBack;Back to All Location Types
+workshop-location-type-edit:title;Edit Location Type
+workshop-location-type-edit:header;You can edit the information for the location type using the form below.
+workshop-location-type-delete:title;Delete Location Type
+workshop-location-type-delete:header;You are about to delete the location type: %1$s
 workshop-schedule-index:title;Schedule Workshops
 workshop-schedule-index:linkCreate;Create New Event
 workshop-schedule-index:filterLocation;Filter by Location:
@@ -218,6 +228,7 @@ msg-error-noDocument;Document not found.
 msg-error-noEvent;Event not found.
 msg-error-noLink;Link not found.
 msg-error-noLocation;Location not found.
+msg-error-noLocationType;Location Type not found.
 msg-error-noAccess;You do not have access to edit this.
 msg-error-noWorkshopAccess;You do not have access to view this workshop.
 msg-error-targetDirNotWritable;Target directory %1$s is not writable.
@@ -235,6 +246,7 @@ msg-error-eventStartsAfter;Event cannot start after the end time.
 msg-error-eventTimesEqual;Event end time must be later than the start time.
 msg-error-eventAlreadyScheduled;An event is already scheduled during this time in the selected location.  Please select a new time or location.
 msg-error-notAttending;You are not atteding this class, so you cannot cancel it.
+msg-error-typeIdNotSet;Type Id not set in the query string.
 msg-info-reindexed;Search was successfully re-indexed.
 msg-info-workshopAdded;Workshop was added successfully.
 msg-info-workshopModified;Workshop was modified successfully.
@@ -253,6 +265,9 @@ msg-info-emailQueued;Email successfully queued.
 msg-info-locationAdded;Location added successfully.
 msg-info-locationModified;Location edited successfully.
 msg-info-locationDeleted;Location deleted successfully.
+msg-info-locationTypeAdded;Location Type deleted succeessfully
+msg-info-locationTypeDeleted;Location Type deleted succeessfully
+msg-info-locationTypeModified;Location Type edited succeessfully
 msg-info-eventSaved;Event information saved successfully.
 msg-info-eventAdded;Event added successfully.
 msg-info-eventCanceled;Event successfully cancelled.
