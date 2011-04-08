@@ -106,7 +106,6 @@ class Workshop_IndexController extends Zend_Controller_Action
     		$where = $db->quoteInto('categoryId = ?', $get->categoryId);
     		
     		$workshops = $workshop->fetchAll($where, 'title');
-//    		var_dump($workshops); exit;
     		$this->view->workshops = $workshops;
     	}
     	
