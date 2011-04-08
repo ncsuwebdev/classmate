@@ -1,0 +1,16 @@
+<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('Back to All Categories'); ?><span class="ui-icon ui-icon-triangle-1-w"></span></a>
+<?php if ($this->acl['edit']) : ?>
+<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'edit', 'categoryId' => $this->category->categoryId), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+<?php endif; ?>
+<?php if ($this->acl['delete']) : ?>
+<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'delete', 'categoryId' => $this->category->categoryId), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
+<?php endif; ?>
+<br /><br /><br />
+ 
+<input type="hidden" name="typeId" id="typeId" value="<?php echo $this->category->categoryId; ?>" />   
+	<strong>Name:</strong>
+	<br />
+	<div id="name"><?php echo $this->category->name; ?></div>
+	<br />
+	<strong>Description:</strong>
+	<div id="description"><?php echo ($this->category->description == '') ? $this->translate("workshop-index-details:noDescription") : $this->category->description; ?></div>

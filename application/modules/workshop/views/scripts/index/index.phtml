@@ -1,7 +1,13 @@
 <?php echo $this->translate("workshop-index-index:header"); ?>
 <?php echo $this->form; ?>
-<?php if ($this->searchTerm != ''): ?>
-	<h3><?php echo $this->translate("workshop-index-index:results", array($this->searchTerm, count($this->workshops))); ?></h3>
+<?php // 
+ 		if (count($this->workshops) > 0):
+?>
+	<?php if ($this->searchTerm != ''):?>
+	<h3><?php echo $this->translate("workshop-index-index:searchResults", array($this->searchTerm, count($this->workshops))); ?></h3>
+	<?php else:?>
+	<h3><?php echo $this->translate("workshop-index-index:categoryResults", array(count($this->workshops))); ?></h3>
+	<?php endif;?>
 	<br />
 	<?php foreach ($this->workshops as $w): ?>
 	    <div class="searchResult">

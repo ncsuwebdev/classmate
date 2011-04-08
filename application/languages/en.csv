@@ -51,13 +51,15 @@ workshop-index-index:searchWorkshops;Search for Workshops:
 workshop-index-index:search;Search
 workshop-index-index:title;Search Workshops
 workshop-index-index:header;We regularly teach a wide variety of workshops.  Just use the search box to find the workshop you are interested in!
-workshop-index-index:results;Your search for %1$s returned %2$s results:
+workshop-index-index:searchResults;Your search for '%1$s' returned %2$s results:
+workshop-index-index:categoryResults;Your search returned %1$s results:
 workshop-index-workshopList:title;All Workshops
 workshop-index-add:title;Add New Workshop
 workshop-index-add:header;Enter the information for the workshop you would like to add.
 workshop-index-details:linkEdit;Edit Workshop
 workshop-index-details:disabled;DISABLED!
 workshop-index-details:editors;Editors:
+workshop-index-details:categories;Category:
 workshop-index-details:tags;Tags:
 workshop-index-details:none;None
 workshop-index-details:noDescription;No Description Provided.
@@ -212,6 +214,15 @@ workshop-signup-index:tryAgain;If you would still like to attend this workshop, 
 workshop-signup-index:linkAttend;Sign-Up To Attend Now!
 workshop-signup-index:linkWaitlist;Sign-Up for the Waitlist Now!
 workshop-signup-index:linkCancel;Cancel
+workshop-category-index:title;Available Workshop Categories
+workshop-category-index:header;All workshop categories and their descriptions are displayed here
+workshop-category-details:title;Category Details: %1$s
+workshop-category-add:title;Add a Category
+workshop-category-add:header;Here you can add a new Workshop Category to the system. This will be a selectable option when creating a new Workshop.
+workshop-category-edit:title;Edit Category
+workshop-category-edit:header;You can edit the information for the workshop category using the form below.
+workshop-category-delete:title;Delete Category
+workshop-category-delete:header;You are about to delete the category: %1$s
 msg-error-accountNotFound;The account requested was not found.
 msg-error-notLoggedIn;This page cannot be accessed unless you are logged in.
 msg-error-formSubmitProblem;There was an error submitting the form.
@@ -223,12 +234,14 @@ msg-error-workshopDocIdNotSet;Workshop Document ID not set in query string.
 msg-error-workshopDocIdsNotSet;Workshop Document ID not set.
 msg-error-workshopLinkIdNotSet;Workshop Link ID not set in query string.
 msg-error-locationIdNotSet;Location ID not set in query string.
+msg-error-categoryIdNotSet;Category ID not set in query string.
 msg-error-noWorkshop;Workshop not found.
 msg-error-noDocument;Document not found.
 msg-error-noEvent;Event not found.
 msg-error-noLink;Link not found.
 msg-error-noLocation;Location not found.
 msg-error-noLocationType;Location Type not found.
+msg-error-category;Category not found.
 msg-error-noAccess;You do not have access to edit this.
 msg-error-noWorkshopAccess;You do not have access to view this workshop.
 msg-error-targetDirNotWritable;Target directory %1$s is not writable.
@@ -265,9 +278,12 @@ msg-info-emailQueued;Email successfully queued.
 msg-info-locationAdded;Location added successfully.
 msg-info-locationModified;Location edited successfully.
 msg-info-locationDeleted;Location deleted successfully.
-msg-info-locationTypeAdded;Location Type deleted succeessfully
-msg-info-locationTypeDeleted;Location Type deleted succeessfully
-msg-info-locationTypeModified;Location Type edited succeessfully
+msg-info-locationTypeAdded;Location Type added successfully.
+msg-info-locationTypeDeleted;Location Type deleted successfully.
+msg-info-locationTypeModified;Location Type edited successfully.
+msg-info-categoryAdded;Category added successfully.
+msg-info-categoryModified;Category edited successfully.
+msg-info-categoryDeleted;Category deleted successfully.
 msg-info-eventSaved;Event information saved successfully.
 msg-info-eventAdded;Event added successfully.
 msg-info-eventCanceled;Event successfully cancelled.

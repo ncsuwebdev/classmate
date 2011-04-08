@@ -1,0 +1,33 @@
+<div>
+    <?php echo $this->translate("workshop-category-index:header");?>
+    <br /><br />
+
+    <?php if ($this->acl['add']) : ?>
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'add'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("Add Workshop Category"); ?><span class="ui-icon ui-icon-plusthick"></span></a><br /><br />
+    <?php endif; ?>
+	
+    <?php if ($this->categories->count() > 0) : ?>
+    	<table class="list">
+    		<thead>
+    			<tr>
+    				<th width="200">Name</th>
+    				<th width="400">Description</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+       		<?php foreach ($this->categories as $category) : ?>
+        	<tr>
+	    	    <td>
+                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'details', 'categoryId' => $category->categoryId), 'default', true); ?>"><?php echo $category->name; ?></a>
+    	        </td>
+        	    <td>
+               	   <?php echo $category->description;?>
+               	</td>
+    	    </tr>
+        	<?php endforeach; ?>
+        	</tbody>
+        </table>
+    <?php else : ?>
+    <?php echo $this->translate("No categories found"); ?>
+    <?php endif; ?>
+</div>

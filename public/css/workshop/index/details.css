@@ -173,7 +173,7 @@ div#editorsView {
     height: 22px;
 }
 
-div#tagsView b, div#editorsView b {
+div#tagsView b, div#editorsView b, div#categoryView b {
     padding-right: 5px;
     color: #808080;
     font-size: 90%;
@@ -289,3 +289,5 @@ div#modalLoading {
 	margin: 100px auto;
 	display: none;
 }
+
+div#

@@ -12,85 +12,85 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Workshop_LocationController
+ * @package    Workshop_EvaluateController
  * @category   Controller
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  * @version    SVN: $Id: $
  */
 
 /**
- * Handles all interaction with workshop locations
+ * Handles all interaction with evalutaions
  *
- * @package    Workshop_LocationController
+ * @package    Workshop_EvaluateController
  * @category   Controller
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class Workshop_LocationTypeController extends Zend_Controller_Action 
-{	
+require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
+
+class Workshop_CategoryController extends Zend_Controller_Action 
+{
 	
-    /**
-     * Allows a user to view the list of locations type
+	/**
+     * Allows a user to view the list of workshop categories
      *
      */
-    public function indexAction()
-    {   
-        $this->view->acl = array(
+	public function indexAction() {
+		$this->view->acl = array(
             'add'          => $this->_helper->hasAccess('add'),
             'edit'         => $this->_helper->hasAccess('edit'),
             );
             
-        $locationType = new LocationType();
+        $category = new Category();
 
-        $locationTypes = $locationType->fetchAll(null, 'name');
+        $categories = $category->fetchAll(null, 'name');
 
-        $this->view->locationTypes = $locationTypes;
+        $this->view->categories = $categories;
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         
-        $this->_helper->pageTitle('workshop-location-type-index:Title');
-    }
-    
-    /**
-     * Allows a user to view the details of a location type
+        $this->_helper->pageTitle('workshop-category-index:title');
+	}
+	
+	/**
+     * Allows a user to view the details of workshop category
      *
      */
-    public function detailsAction()
-    {
-        $this->view->acl = array(
-                    'edit'   => $this->_helper->hasAccess('edit'),
-                    'delete' => $this->_helper->hasAccess('delete')
-                );      
+	public function detailsAction() {
+		$this->view->acl = array(
+        	'edit'   => $this->_helper->hasAccess('edit'),
+            'delete' => $this->_helper->hasAccess('delete')
+        );      
         
     	$get = Zend_Registry::get('getFilter');
     	
-    	if (!isset($get->typeId)) {
-    		throw new Ot_Exception_Input('msg-error-typeIdNotSet');
+    	if (!isset($get->categoryId)) {
+    		throw new Ot_Exception_Input('msg-error-categoryIdNotSet');
     	}
     	
-    	$locationType = new LocationType();
+    	$category = new Category();
     	
-    	$thisLocationType = $locationType->find($get->typeId);
+    	$thisCategory = $category->find($get->categoryId);
     	
-    	if (is_null($thisLocationType)) {
-    		throw new Ot_Exception_Data('msg-error-noLocationType');
+    	if (is_null($thisCategory)) {
+    		throw new Ot_Exception_Data('msg-error-category');
     	}
     	
-    	$this->view->locationType = $thisLocationType;
+    	$this->view->category = $thisCategory;
     	$this->view->messages = $this->_helper->flashMessenger->getMessages();
     	
-    	$this->_helper->pageTitle("workshop-location-type-details:title", $thisLocationType->name);
-    }
-    
-    /**
-     * Allows a user to add a location type
+    	$this->_helper->pageTitle("workshop-category-details:title", $thisCategory->name);
+	}
+	
+	/**
+     * Allows a user to add a workshop category
      *
      */
     public function addAction()
     {
         $messages = array();
-        $locationType = new LocationType();
+        $category = new Category();
         
-        $form = $locationType->form();
+        $form = $category->form();
         
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
@@ -100,16 +100,16 @@ class Workshop_LocationTypeController extends Zend_Controller_Action
                             'description' => $form->getValue('description'),
                         );
                 
-                $typeId = $locationType->insert($data);
+                $categoryId = $category->insert($data);
                 
                 $trigger = new Ot_Trigger();
                 $data['accountId'] = Zend_Auth::getInstance()->getIdentity()->accountId;
                 $trigger->setVariables($data);
-                $trigger->dispatch('LocationType_Add');
+                $trigger->dispatch('Category_Add');
     
-                $this->_helper->flashMessenger->addMessage('msg-info-locationTypeAdded');
+                $this->_helper->flashMessenger->addMessage('msg-info-categoryAdded');
                 
-                $this->_helper->redirector->gotoUrl('/workshop/locationType/details/?typeId=' . $typeId);
+                $this->_helper->redirector->gotoUrl('/workshop/category/details/?categoryId=' . $categoryId);
             } else {
                 $messages[] = "msg-error-formSubmitProblem";
             }
@@ -121,52 +121,52 @@ class Workshop_LocationTypeController extends Zend_Controller_Action
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.wysiwyg.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.wysiwyg.css');
         
-        $this->_helper->pageTitle('workshop-location-type-add:Title');
+        $this->_helper->pageTitle('workshop-category-add:title');
     }
     
     /**
-     * Allows a user to edit a location type
+     * Allows a user to edit a workshop category
      *
      */
-    public function editAction()
+	public function editAction()
     {
         $messages = array();
         
         $get = Zend_Registry::get('getFilter');
         
-        if (!isset($get->typeId)) {
-            throw new Ot_Exception_Input('msg-error-typeIdNotSet');
+        if (!isset($get->categoryId)) {
+            throw new Ot_Exception_Input('msg-error-categoryIdNotSet');
         }      
         
-        $locationType = new LocationType();
+        $category = new Category();
         
-        $thisLocationType = $locationType->find($get->typeId);
+        $thisCategory = $category->find($get->categoryId);
         
-        if (is_null($thisLocationType)) {
-            throw new Ot_Exception_Data('msg-error-noLocationType');
+        if (is_null($thisCategory)) {
+            throw new Ot_Exception_Data('msg-error-category');
         }       
         
-        $form = $locationType->form($thisLocationType->toArray());
+        $form = $category->form($thisCategory->toArray());
         
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
             
                 $data = array(
-                            'typeId'	  => $form->getValue('typeId'),
+                            'categoryId'  => $form->getValue('categoryId'),
                             'name'        => $form->getValue('name'),
                             'description' => $form->getValue('description')
                         );
                 
-                $locationType->update($data, null);
+                $category->update($data, null);
     
                 $trigger = new Ot_Trigger();
                 $data['accountId'] = Zend_Auth::getInstance()->getIdentity()->accountId;
                 $trigger->setVariables($data);
-                $trigger->dispatch('LocationType_Edit');
+                $trigger->dispatch('Category_Edit');
                 
-                $this->_helper->flashMessenger->addMessage('msg-info-locationTypeModified');
+                $this->_helper->flashMessenger->addMessage('msg-info-categoryModified');
                 
-                $this->_helper->redirector->gotoUrl('/workshop/locationType/details/?typeId=' . $form->getValue('typeId'));
+                $this->_helper->redirector->gotoUrl('/workshop/category/details/?categoryId=' . $form->getValue('categoryId'));
             } else {
                 $messages[] = "msg-error-formSubmitProblem";
             }
@@ -175,47 +175,46 @@ class Workshop_LocationTypeController extends Zend_Controller_Action
         $this->view->messages = $messages;
         $this->view->form     = $form;
         
-        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/workshop/location-type/edit.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.wysiwyg.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.wysiwyg.css');
         
-        $this->_helper->pageTitle('workshop-location-edit:title');
+        $this->_helper->pageTitle('workshop-category-edit:title');
     }
     
     /**
-     * Allows a user to delete a location type
+     * Allows a user to delete a workshop category
      *
      */
     public function deleteAction()
     {       
         $get = Zend_Registry::get('getFilter');
         
-        if (!isset($get->typeId)) {
-            throw new Ot_Exception_Input('msg-error-typeIdNotSet');
+        if (!isset($get->categoryId)) {
+            throw new Ot_Exception_Input('msg-error-categoryIdNotSet');
         }
         
-        $locationType = new LocationType();
+        $category = new Category();
         
-        $thisLocationType = $locationType->find($get->typeId);
+        $thisCategory = $category->find($get->categoryId);
         
-        if (is_null($thisLocationType)) {
-            throw new Ot_Exception_Data('msg-error-noLocationType');        
+        if (is_null($thisCategory)) {
+            throw new Ot_Exception_Data('msg-error-category');        
         }
         
-        $this->view->locationType = $thisLocationType;
+        $this->view->category = $thisCategory;
         
         $form = Ot_Form_Template::delete('deleteForm'); 
         
         if ($this->_request->isPost() && $form->isValid($_POST)) {
-            $where = $locationType->getAdapter()->quoteInto('typeId = ?', $get->typeId);
-            $locationType->delete($where);
+            $where = $category->getAdapter()->quoteInto('categoryId = ?', $get->categoryId);
+            $category->delete($where);
             
-            $this->_helper->flashMessenger->addMessage('msg-info-locationTypeDeleted');
+            $this->_helper->flashMessenger->addMessage('msg-info-categoryDeleted');
             
-            $this->_helper->redirector->gotoUrl('/workshop/locationType/index');
+            $this->_helper->redirector->gotoUrl('/workshop/category/index');
         }
         
-        $this->_helper->pageTitle('workshop-location-type-delete:title');
+        $this->_helper->pageTitle('workshop-category-delete:title');
         $this->view->form = $form;
     } 
 }

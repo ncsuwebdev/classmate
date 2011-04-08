@@ -23,7 +23,16 @@
         <?php endif; ?>
         </div>
     </div>  
-    <?php endif; ?>	
+    <?php endif; ?>
+    <div id="categoryView">
+    	<b><?php echo $this->translate("workshop-index-details:categories");?></b>
+    	<?php if(isset($this->category)): ?>
+    	<span><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'details', 'categoryId' => $this->category->categoryId), 'default', true); ?>"><?php echo $this->category->name;?></a></span>
+    	
+    	<?php else:?>
+    	<?php echo $this->translate("workshop-index-details:none");?>
+    	<?php endif;?>
+    </div>
     <div id="tagsView">
         <b><?php echo $this->translate("workshop-index-details:tags"); ?></b>
         <div id="taglist">

@@ -173,6 +173,8 @@ class Workshop extends Ot_Db_Table
      */
     public function form($values = array())
     {
+    	require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
+    	
         $form = new Zend_Form();
         $form->setAttrib('id', 'workshopForm')
              ->setDecorators(array(
@@ -203,7 +205,20 @@ class Workshop extends Ot_Db_Table
         $status = $form->createElement('select', 'status', array('label' => 'Status:'));
         $status->addMultiOption('enabled', 'Enabled');
         $status->addMultiOption('disabled', 'Disabled');
-        $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));        
+        $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));
+        
+        $category = new Category();
+        $categoryList = $category->fetchAll(null, 'name');
+
+        $categories = $form->createElement('select', 'categoryId', array('label' => 'Worshop Category: '));
+        $categories->setRequired(true);
+        
+        foreach ($categoryList as $category) {
+        	$categories->addMultiOption($category->categoryId, $category->name);
+        }
+        
+        $categories->setValue((isset($values['categoryId']) ? $values['categoryId'] : ''));
+        
         
         $prerequisites = $form->createElement('textarea', 'prerequisites', array('label' => 'Pre-Requisites:'));
         $prerequisites->setRequired(false)
@@ -244,7 +259,7 @@ class Workshop extends Ot_Db_Table
                    array('ViewHelper', array('helper' => 'formButton'))
                 ));
         
-        $form->addElements(array($status, $title, $group, $tags, $description, $prerequisites, $editors));
+        $form->addElements(array($status, $title, $categories, $group, $tags, $description, $prerequisites, $editors));
 
         $form->setElementDecorators(array(
                   'ViewHelper',

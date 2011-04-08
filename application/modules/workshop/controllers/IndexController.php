@@ -26,6 +26,8 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
+require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
+
 class Workshop_IndexController extends Zend_Controller_Action 
 {	
     /**
@@ -55,13 +57,24 @@ class Workshop_IndexController extends Zend_Controller_Action
               ->addFilter('StringTrim')
               ->addFilter('StripTags')
               ->setValue((isset($get->search) ? $get->search : ''));
+              
+        $category = new Category();
+    	$categoryList = $category->fetchAll(null, 'name');
+    	
+    	$categories = $form->createElement('select', 'categoryId');
+    	$categories->addMultiOption('', '-- Search By Category -- ');
+    	foreach($categoryList as $c) {
+    		$categories->addMultiOption($c['categoryId'], $c['name']);
+    	}
+    	
+    	$categories->setValue(isset($get->categoryId) ? $get->categoryId : '');
                     
         $submit = $form->createElement('submit', 'submitButton', array('label' => 'workshop-index-index:search'));
         $submit->setDecorators(array(
                    array('ViewHelper', array('helper' => 'formSubmit'))
                  ));
         
-        $form->addElements(array($searchField));
+        $form->addElements(array($searchField, $categories));
 
         $form->setElementDecorators(array(
                   'ViewHelper',
@@ -85,8 +98,20 @@ class Workshop_IndexController extends Zend_Controller_Action
 	        $this->view->workshops = $workshops;
 	        $this->view->searchTerm = $get->search;
     	}
-        	
+    	
+    	if(isset($get->categoryId)) {
+    		$workshop = new Workshop();
+    		
+    		$db = $workshop->getAdapter();
+    		$where = $db->quoteInto('categoryId = ?', $get->categoryId);
+    		
+    		$workshops = $workshop->fetchAll($where, 'title');
+//    		var_dump($workshops); exit;
+    		$this->view->workshops = $workshops;
+    	}
+    	
     	$this->view->topTerms = $searchTerm->getTopSearchTerms(10);
+    	
     	
     	$this->view->layout()->setLayout('search');
     	$this->view->layout()->rightContent = $this->view->render('index/top-terms.phtml');
@@ -143,6 +168,7 @@ class Workshop_IndexController extends Zend_Controller_Action
 	    	    	'title'         => $form->getValue('title'),
 	    	    	'description'   => $form->getValue('description'),
 	    	    	'prerequisites' => $form->getValue('prerequisites'),
+	    	    	'categoryId'	=> $form->getValue('categoryId')
 	    	    );
 	    	    
 	    	    $workshopId = $workshop->insert($data);
@@ -286,12 +312,16 @@ class Workshop_IndexController extends Zend_Controller_Action
 
     	}
     	
+    	$category = new Category();
+    	$thisCategory = $category->find($thisWorkshop->categoryId);
+    	
     	$this->view->layout()->setLayout('twocolumn');
     	$this->view->layout()->rightContent = $this->view->render('index/right.phtml');
     	
     	$this->view->messages = $this->_helper->flashMessenger->getMessages();
     	$this->view->title    = $thisWorkshop->title;
     	$this->view->workshop = $thisWorkshop->toArray();
+    	$this->view->category = $thisCategory;
     }
     
     /**
