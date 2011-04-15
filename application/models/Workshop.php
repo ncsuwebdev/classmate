@@ -58,7 +58,7 @@ class Workshop extends Ot_Db_Table
     public function search($query, $limit = 'none')
     {
         $config = Zend_Registry::get('config');
-        
+       
         try {
             $index = Zend_Search_Lucene::open($config->app->search->workshopIndexPath);
         } catch (Exception $e) {
@@ -160,9 +160,11 @@ class Workshop extends Ot_Db_Table
     	
     	$doc->addField(Zend_Search_Lucene_Field::Text('tags', implode(',', $tagNames)));
     	
+    	$doc->addField(Zend_Search_Lucene_Field::Keyword('categoryId', $thisWorkshop->categoryId));
+    	
     	$doc->addField(Zend_Search_Lucene_Field::UnIndexed('description', $thisWorkshop->description));
     	
-    	$index->addDocument($doc);	
+    	$index->addDocument($doc);
     }
     
    /**

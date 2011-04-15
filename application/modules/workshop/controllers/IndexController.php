@@ -87,27 +87,29 @@ class Workshop_IndexController extends Zend_Controller_Action
     	$this->view->form = $form;
     	
     	$searchTerm = new Search_Term();
+    	$workshops = array();
     	
-    	if (isset($get->search)) {
+    	if ($get->search != '' || $get->categoryId != 0) {
 	    	$workshop = new Workshop();
 	    	
-	    	$workshops = $workshop->search($get->search);
+	    	$query = new Zend_Search_Lucene_Search_Query_MultiTerm();
 	    	
+	    	if($get->search != '') {
+	    		$query->addTerm(new Zend_Search_Lucene_Index_Term($get->search), true);
+	    	}
+	    	
+	    	if($get->categoryId != 0) {
+	    		$query->addTerm(new Zend_Search_Lucene_Index_Term($get->categoryId, 'categoryId'), true);
+	    	}
+	    	
+	    	$workshops = $workshop->search($query);
+
 	    	$searchTerm->increment($get->search);
 	    	
-	        $this->view->workshops = $workshops;
 	        $this->view->searchTerm = $get->search;
-    	}
-    	
-    	if(isset($get->categoryId)) {
-    		$workshop = new Workshop();
-    		
-    		$db = $workshop->getAdapter();
-    		$where = $db->quoteInto('categoryId = ?', $get->categoryId);
-    		
-    		$workshops = $workshop->fetchAll($where, 'title');
-    		$this->view->workshops = $workshops;
-    	}
+    	}  
+
+    	$this->view->workshops = $workshops;
     	
     	$this->view->topTerms = $searchTerm->getTopSearchTerms(10);
     	
