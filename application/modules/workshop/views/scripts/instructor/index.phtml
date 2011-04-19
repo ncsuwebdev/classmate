@@ -52,9 +52,10 @@
 <?php if ($this->acl['addAttendee']) : ?><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'add-attendee', 'eventId' => $this->event['eventId']), 'default', true); ?>" id="addAttendees" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkAdd"); ?><span class="ui-icon ui-icon-pencil"></span></a><?php endif; ?>
 <?php if ($this->acl['takeRoll']) : ?><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'take-roll', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkRoll"); ?><span class="ui-icon ui-icon-person"></span></a><?php endif; ?>
 <?php if ($this->acl['printSignupSheet']) : ?><a target="_blank" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'print-signup-sheet', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkPrintSignupSheet"); ?><span class="ui-icon ui-icon-print"></span></a><?php endif; ?>
+<?php endif; ?>
+
 <?php if ($this->acl['contact']) : ?><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'contact', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-instructor-index:linkContact"); ?><span class="ui-icon ui-icon-mail-closed"></span></a><?php endif; ?>
 <br /><br />
-<?php endif; ?>
 
 <div class="ui-helper-clearfix">
     <div class="yui-u first">
