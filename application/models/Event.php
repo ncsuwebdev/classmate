@@ -452,6 +452,12 @@ class Event extends Ot_Db_Table
               ->setAttrib('style', 'width: 200px')
               ->setValue(isset($values['date']) ? strftime('%A, %B %e, %Y', strtotime($values['date'])) : '');
               
+        $password = $form->createElement('text', 'password', array('label' => 'Event Password:'));
+        $password->addFilter('StringTrim')
+        		->addFilter('StripTags')
+        		->setAttrib('maxlength', '100')
+        		->setValue(isset($values['password']) ? $values['password'] : '');
+              
         // add the start time selector
         $startTimeSub = new Zend_Form_SubForm();
         $startTimeSub->setDecorators(array(
@@ -572,7 +578,7 @@ class Event extends Ot_Db_Table
                    array('ViewHelper', array('helper' => 'formButton'))
                 ));
         
-        $form->addElements(array($workshopElement, $locationElement, $date))
+        $form->addElements(array($workshopElement, $locationElement, $password, $date))
              ->addSubForms(array('startTime' => $startTimeSub, 'endTime' => $endTimeSub))
              ->addElements(array($minSize, $maxSize, $waitlistSize, $instructorElement));
 

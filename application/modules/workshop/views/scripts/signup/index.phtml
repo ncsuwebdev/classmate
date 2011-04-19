@@ -80,15 +80,33 @@
     </div> 
 </div>
 
-<?php if ($this->status == ''): ?>
-<div id="signupButton">
-    <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
-    	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkAttend"); ?></a>
-    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
+
+<form method="POST" action="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'index', 'eventId' => $this->event['eventId']), 'default', true);?>">
+	<?php if (isset($this->event['password']) && $this->event['password'] != ''):?>
+		<div class="sectionBar ui-widget-header ui-corner-left">Password</div>
+		<div class="password">
+			<div class="info">The instructor has specified a password that is required for you to attend this event.</div>
+		</div>
+		<br />
+		<?php if (isset($this->error)) :?>
+			<div class="error" style="color:#f00;" ><?php echo $this->error; ?></div>
+		<?php endif;?>
+		
+		
+		
+		<label><strong>Password: </strong></label>
+		<br />
+		<input type="text" name="password" />
+		<br />
+	<?php endif;?>
+	
+	<br />
+	
+	<?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
+		<input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkAttend"); ?>" style="font-size:23px;" />	
+    	<a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php elseif ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
-    	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'reserve', 'eventId' => $this->event['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?></a>
-    	<a href="javascript:history.go(-1)" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
+		<input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?>" style="font-size:23px;" />
+    	<a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php endif; ?>
-    
-</div>
-<?php endif; ?>
+</form>

@@ -86,7 +86,7 @@ class Event_Instructor extends Ot_Db_Table
         $events = $event->getEvents(null, $eventIds, null, $startDt, $endDt, 'open')->toArray();
 
         foreach ($events as &$e) {
-            $e['workshop'] = $workshop->find($e['workshopId'])->toArray();
+            $e['workshop'] = $workshop->find($e['workshopId']);//->toArray();
         }
         
         return $events;    	

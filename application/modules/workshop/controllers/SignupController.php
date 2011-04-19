@@ -51,6 +51,24 @@ class Workshop_SignupController extends Zend_Controller_Action
         
         $this->view->event = $thisEvent->toArray();
         
+        if($this->_request->isPost()) {
+
+        	// Check if a password is required
+        	if(isset($thisEvent->password)) {
+        		$post = Zend_Registry::get('postFilter');
+        		
+        		// Check if the submitted password is correct
+  				if($post->password == $thisEvent->password) {
+  					$this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
+  				} else {
+  					$this->view->error = '* The password provided is incorrect';
+  				}      	
+  
+        	} else {
+        		$this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
+        	}
+        }
+        
         $location = new Location();        
         $thisLocation = $location->find($thisEvent->locationId);        
         if (is_null($thisLocation)) {
@@ -97,7 +115,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $this->view->status = $status;
         
    		$this->view->layout()->setLayout('twocolumn');
-    	$this->view->layout()->rightContent = $this->view->render('signup/right.phtml');        
+    	$this->view->layout()->rightContent = $this->view->render('signup/right.phtml');
     }
     
     /**

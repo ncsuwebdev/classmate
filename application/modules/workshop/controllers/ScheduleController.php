@@ -487,6 +487,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                 $maxSize      = $form->getValue('maxSize');
                 $waitlistSize = $form->getValue('waitlistSize');
                 $instructors  = $form->getValue('instructors');
+                $password	  = $form->getValue('password');
                 
                 $date = strtotime($date);
                 $date = strftime('%Y', $date) . "-" . strftime('%m', $date) . "-" . strftime('%d', $date);
@@ -571,7 +572,8 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                                   'date'         => $date,
                                   'minSize'      => $minSize,
                                   'maxSize'      => $maxSize,
-                                  'waitlistSize' => $waitlistSize
+                                  'waitlistSize' => $waitlistSize,
+                    			  'password'	 => $password
                                  );
                     
                     $eventId = $event->insert($data);

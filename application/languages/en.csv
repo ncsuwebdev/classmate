@@ -213,7 +213,7 @@ workshop-signup-index:full;We're sorry, this workshop is currently full.
 workshop-signup-index:tryAgain;If you would still like to attend this workshop, you can try one of the other times this workshop is offered.
 workshop-signup-index:linkAttend;Sign-Up To Attend Now!
 workshop-signup-index:linkWaitlist;Sign-Up for the Waitlist Now!
-workshop-signup-index:linkCancel;Cancel
+workshop-signup-index:linkCancel;Return to Schedule
 workshop-category-index:title;Available Workshop Categories
 workshop-category-index:header;All workshop categories and their descriptions are displayed here
 workshop-category-details:title;Category Details: %1$s
