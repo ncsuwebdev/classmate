@@ -123,6 +123,8 @@ workshop-instructor-index:linkContact;Contact Attendees
 workshop-instructor-index:attendees;Attendees
 workshop-instructor-index:present;Present
 workshop-instructor-index:absent;Absent
+workshop-instructor-index:attended;Attended
+workshop-instructor-index:notAttended;Did not attend
 workshop-instructor-index:removeAttendee;Remove %1$s from Attendees
 workshop-instructor-index:noAttendees;No attendees yet.
 workshop-instructor-index:waitlist;Waitlist
