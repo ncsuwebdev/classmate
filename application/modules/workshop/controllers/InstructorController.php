@@ -124,10 +124,8 @@ class Workshop_InstructorController extends Zend_Controller_Action
     /**
      * Displays a print view of a signup sheet
      */
-    public function printSignupSheetAction()
+    public function exportSignupSheetAction()
     {
-        $this->_helper->layout->disableLayout();
-        
         $get = Zend_Registry::get('getFilter');
                 
         if (!isset($get->eventId)) {
@@ -140,7 +138,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
         if (is_null($thisEvent)) {
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
-        $this->view->event = $thisEvent->toArray();
+        
         
         // lookup the instructors
         $instructor = new Event_Instructor();
@@ -150,7 +148,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
         foreach ($instructors as $i) {
             $instructorList[] = $i['firstName'] . ' ' . $i['lastName'];
         }
-        $this->view->instructors = $instructorList;
+        
         
         $this->_checkValidViewer($instructors);
         
@@ -160,7 +158,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
         if (is_null($thisLocation)) {
             throw new Ot_Exception_Data('msg-error-noLocation');
         }
-        $this->view->location = $thisLocation->toArray();
+        
         
         // lookup the corresponding workshop
         $workshop = new Workshop();
@@ -168,12 +166,83 @@ class Workshop_InstructorController extends Zend_Controller_Action
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
-        $this->view->workshop = $thisWorkshop->toArray();
+        
         
         // lookup the attendees of the event
         $attendee = new Event_Attendee();
         $attendeeList = $attendee->getAttendeesForEvent($thisEvent->eventId, 'attending');
-        $this->view->attendeeList = $attendeeList;
+        
+        
+        if($this->_request->isPost()) {
+        	
+        	$post = Zend_Registry::get('postFilter');
+        	
+        	if(!isset($post->fileType)) {
+	        	throw new Ot_Exception_Data('msg-error-noFileType');
+	        }
+        	
+        	$thisEvent = $thisEvent->toArray();
+        	$thisEvent['instructors'] = $instructorList;
+        	$thisEvent['location'] = $thisLocation['name'];
+        	$thisEvent['workshopTitle'] = $thisWorkshop['title'];
+        	$thisEvent['attendeeList'] = $attendeeList;
+        	
+        	
+        	
+        	$filename = isset($post->fileName) ? $post->fileName : 'Signup_sheet_' . str_replace(' ', '_', $thisWorkshop['name']) . '_' . date('m_d_Y');
+        	$path = APPLICATION_PATH . '/../cache/';
+        	
+        	if($post->fileType == 'pdf') {
+        		$filename .= '.pdf';
+        		
+        		$pdf = new Event_Pdf($filename);
+        		
+        		$pdfString = $pdf->generateSignupSheet($thisEvent);
+        		
+        		header('Content-Disposition: inline; filname=' . $filename);
+        		header('Content-length: ' . strlen($pdfString));
+        		header('Content-type: application/x-pdf');
+            	echo $pdfString;
+            	
+        	} else if ($post->fileType == 'xls') {
+        		$filename .= '.xlsx';
+        		$excel = new Event_Excel();
+        		
+        		$objPHPExcel = $excel->generateSignupSheet($thisEvent);
+
+        		$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+
+        		$objWriter->save($path . $filename);
+
+        		header('Content-Disposition: attachment; filename=' . $filename);
+        		header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        		echo file_get_contents($path . $filename);
+        		
+        	} else if ($post->fileType == 'csv') {
+        		$filename .= '.csv';
+        		
+        		$outString = 'First Name,Last Name' . chr(10);
+        		
+        		foreach ($thisEvent['attendeeList'] as $a) {
+        			$outString .= $a['firstName'] . ',' . $a['lastName'] . chr(10);
+        		}
+        		
+        		header('Content-Disposition: attachment; filename=' . $filename);
+        		header('Content-Type: application/csv');
+        		
+        		echo $outString;
+        	}
+        	
+        	$this->_helper->layout->disableLayout();
+        	$this->_helper->viewRenderer->setNeverRender();
+        	
+        } else {
+        	$this->view->event = $thisEvent->toArray();
+        	$this->view->instructors = $instructorList;
+        	$this->view->location = $thisLocation->toArray();
+        	$this->view->workshop = $thisWorkshop->toArray();
+        	$this->view->attendeeList = $attendeeList;
+        }
     }
     
     /**

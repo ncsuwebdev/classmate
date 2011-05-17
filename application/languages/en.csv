@@ -118,7 +118,7 @@ workshop-instructor-index:seatLeft;There is <b>1</b> out of <b>%1$s</b> seats re
 workshop-instructor-index:seatsLeft;There are <b>%1$s</b> out of <b>%2$s</b> seats remaining in this class.
 workshop-instructor-index:linkAdd;Add Attendees
 workshop-instructor-index:linkRoll;Take Roll
-workshop-instructor-index:linkPrintSignupSheet;Print Signup Sheet
+workshop-instructor-index:linkExportSignupSheet;Export Signup Sheet
 workshop-instructor-index:linkContact;Contact Attendees
 workshop-instructor-index:attendees;Attendees
 workshop-instructor-index:present;Present
@@ -130,7 +130,12 @@ workshop-instructor-index:noAttendees;No attendees yet.
 workshop-instructor-index:waitlist;Waitlist
 workshop-instructor-index:moveWaistlist;Move %1$s to Attendees
 workshop-instructor-index:removeWaitlist;Remove %1$s from Waitlist
-workshop-instructor-print-signup-sheet:instructor;Instructor
+workshop-instructor-export-signup-sheet:header;Export Signup Sheet for workshop %1$s
+workshop-instructor-export-signup-sheet:details;Select the file type and preview your export.
+workshop-instructor-export-signup-sheet:exportDetails;Export Details
+workshop-instructor-export-signup-sheet:instructor;Instructor
+workshop-instructor-export-signup-sheet:preview;Preview
+workshop-instructor-export-signup-sheet:Cancel;Return to Event Details
 workshop-location:disabled;DISABLED!
 workshop-location:googleMap;Map With Google Maps!
 workshop-location:noAddress;No Address Provided
@@ -262,6 +267,7 @@ msg-error-eventTimesEqual;Event end time must be later than the start time.
 msg-error-eventAlreadyScheduled;An event is already scheduled during this time in the selected location.  Please select a new time or location.
 msg-error-notAttending;You are not atteding this class, so you cannot cancel it.
 msg-error-typeIdNotSet;Type Id not set in the query string.
+msg-error-noFileType;Filetype not specified.
 msg-info-reindexed;Search was successfully re-indexed.
 msg-info-workshopAdded;Workshop was added successfully.
 msg-info-workshopModified;Workshop was modified successfully.
