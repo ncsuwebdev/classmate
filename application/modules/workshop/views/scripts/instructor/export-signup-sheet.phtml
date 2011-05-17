@@ -8,7 +8,7 @@
     
     <form action="" method="post">
     	<label>File Type:</label>
-    	<select name="fileType">
+    	<select id="fileType" name="fileType">
     		<option value="pdf">Document (.pdf)</option>
     		<option value="xls">MS Office Spreadsheet (.xlsx)</option>
     		<option value="csv">Spreadsheet (.csv)</option>
@@ -19,28 +19,29 @@
     	
 		<input type="submit" name="exportList" value="Export Signup Sheet" />
 		<a style="text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'index', 'eventId' => $this->event['eventId']), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-instructor-export-signup-sheet:Cancel'); ?></a>
-		
     </form>
     
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-instructor-export-signup-sheet:preview"); ?></div>
 <div id="exportPreview" style="">
-        <div class="header title"><?php echo $this->workshop['title']; ?></div>
-        <div class="header"><?php echo $this->location['name']; ?></div>
-        <div class="header">
-            <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-            (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-            <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
-        </div>
-        <div class="header">
-            <?php echo $this->translate('workshop-instructor-export-signup-sheet:instructor'); ?><?php echo (count($this->instructors) != 1) ? 's' : ''; ?>: <?php echo implode(',', $this->instructors); ?>
+		<div id="header">
+	        <div class="header title"><?php echo $this->workshop['title']; ?></div>
+	        <div class="header"><?php echo $this->location['name']; ?></div>
+	        <div class="header">
+	            <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+	            (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+	            <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+	        </div>
+	        <div class="header">
+	            <?php echo $this->translate('workshop-instructor-export-signup-sheet:instructor'); ?><?php echo (count($this->instructors) != 1) ? 's' : ''; ?>: <?php echo implode(',', $this->instructors); ?>
+	        </div>
         </div>
         
         <table id="previewTable">
         	<thead>
         		<tr>
-        			<td width="15%">First Name</td>
-        			<td width="15%">Last Name</td>
-        			<td width="70%">Signature</td>
+        			<td>First Name</td>
+        			<td>Last Name</td>
+        			<td id="signature" width="70%">Signature</td>
         		</tr>
         	</thead>
             <tbody>
