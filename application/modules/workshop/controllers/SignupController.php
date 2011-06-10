@@ -152,7 +152,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         
         $instructor = new Event_Instructor();
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
-                
+        
         $instructorNames = array();
         $instructorEmails = array();
         
@@ -160,11 +160,12 @@ class Workshop_SignupController extends Zend_Controller_Action
             $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
             $instructorEmails[] = $i['emailAddress'];
         }
-
+        
         $status = 'attending';
         $attendee = new Event_Attendee();
         
         $status = $attendee->makeReservation(Zend_Auth::getInstance()->getIdentity()->accountId, $thisEvent->eventId);
+        $thisEvent->roleSize++;
 
         $this->_helper->flashMessenger->addMessage($this->view->translate('msg-info-signedUp', $thisWorkshop->title));
         
@@ -208,6 +209,10 @@ class Workshop_SignupController extends Zend_Controller_Action
         	$trigger->dispatch('Event_Signup_Waitlist');
         } else {
             $trigger->dispatch('Event_Signup');
+        }
+        
+        if ($thisEvent->roleSize == $thisEvent->maxSize) {
+        	$trigger->dispatch('Event_Signup_Full');
         }
         
         $this->_redirect('/');       
@@ -279,6 +284,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $this->view->events = $newEvents;
     	
         $form = Ot_Form_Template::delete('cancelReservation', 'workshop-signup-cancel:cancel', 'workshop-signup-cancel:keep');
+        
     	if ($this->_request->isPost() && $form->isValid($_POST)) {
  
 	        $instructorNames = array();

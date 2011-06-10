@@ -54,10 +54,12 @@ workshop-index-index:header;We regularly teach a wide variety of workshops.  Jus
 workshop-index-index:searchResults;Your search for '%1$s' returned %2$s results:
 workshop-index-index:categoryResults;Your search returned %1$s results:
 workshop-index-workshopList:title;All Workshops
+workshop-index-workshopList:noDescription;No description provided
+workshop-index-workshopList:noPrerequisites;No prerequisites provided
 workshop-index-add:title;Add New Workshop
 workshop-index-add:header;Enter the information for the workshop you would like to add.
 workshop-index-details:linkEdit;Edit Workshop
-workshop-index-details:disabled;DISABLED!
+workshop-index-details:disabled;To enable this workshop, click 'Edit Workshop' and change the workshop's status to 'Enabled' 
 workshop-index-details:editors;Editors:
 workshop-index-details:categories;Category:
 workshop-index-details:tags;Tags:
@@ -97,6 +99,7 @@ workshop-index-right:signupWaitlist;Signup to waitlist...
 workshop-index-right:noEvents;No events are scheduled at this time.
 workshop-index-top-terms:topSearchTerms:Top Search Terms
 workshop-index-workshop-list:noWorkshops:No workshops were found.
+workshop-index-add:preRequisites;Pre-Requisites:
 workshop-instructor-addAttendee:title;Add Attendees
 workshop-instructor-addAttendee:header;Manually select users to add to this event.
 workshop-instructor-takeRoll:title;Take Roll
@@ -136,7 +139,7 @@ workshop-instructor-export-signup-sheet:exportDetails;Export Details
 workshop-instructor-export-signup-sheet:instructor;Instructor
 workshop-instructor-export-signup-sheet:preview;Preview
 workshop-instructor-export-signup-sheet:Cancel;Return to Event Details
-workshop-location:disabled;DISABLED!
+workshop-location:disabled;To enable this workshop, click 'Edit Workshop' and change the workshop's status to 'Enabled'
 workshop-location:googleMap;Map With Google Maps!
 workshop-location:noAddress;No Address Provided
 workshop-location-index:title;Our Teaching Labs

@@ -6,7 +6,9 @@
 	<?php endif; ?>
 	<div id="wsTitle">
         <?php if ($this->workshop['status'] == 'disabled'): ?>
-        <span id="disabled"><?php echo $this->translate("workshop-index-details:disabled"); ?></span>
+        <div id="disabled">
+        	<span class="ui-icon ui-icon-closethick" style="float:left;"></span><span class="disabledText">DISABLED! </span><?php echo $this->translate("workshop-index-details:disabled"); ?>
+        </div>
         <?php endif; ?>		
 		<?php echo $this->workshop['title']; ?>
 	</div>

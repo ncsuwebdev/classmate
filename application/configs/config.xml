@@ -248,6 +248,21 @@
 		    <var name="workshopName" description="Name of the workshop the user signed up for"/>
 		    <var name="workshopStartTime" description="Start time (hh:mm am/pm) the workshop occurs."/>
 		</trigger>
+		<trigger name="Event_Evaluation_Notification" description="When an event is over, sends an email to attendees to evaluate the event.">
+		    <var name="instructorEmails" description="Comma separated list of instructor email addresses"/>
+		    <var name="instructorNames" description="Comma separated list of instructor names"/>
+		    <var name="locationAddress" description="Address of the location where the workshop will be taught"/>
+		    <var name="locationName" description="Name of the location where the workshop will be taught."/>
+		    <var name="studentEmail" description="Email address of the user who signed up for the workshop."/>
+		    <var name="studentName" description="Name of the user who signed up for the workshop."/>
+		    <var name="studentUsername" description="Username of user"/>
+		    <var name="workshopCurrentEnrollment" description="Current enrollment for the workshop"/>
+		    <var name="workshopDate" description="Date (mm/dd/yyyy) when the workshop occurs."/>
+		    <var name="workshopEndTime" description="End time (hh:mm am/pm) of the workshop."/>
+		    <var name="workshopMinimumEnrollment" description="Minimum enrollment for the workshop"/>
+		    <var name="workshopName" description="Name of the workshop the user signed up for"/>
+		    <var name="workshopStartTime" description="Start time (hh:mm am/pm) the workshop occurs."/>
+		</trigger>
 		<trigger name="Event_Evaluation_Reminder" description="Triggered (via cron) to remind attendees who have not filled out evaluation forms to do so.">
 		    <var name="instructorEmails" description="Comma separated list of instructor email addresses"/>
 		    <var name="instructorNames" description="Comma separated list of instructor names"/>
@@ -300,6 +315,20 @@
 		    <var name="workshopStartTime" description="Start time (hh:mm am/pm) the workshop occurs."/>
 		</trigger>
 		<trigger name="Event_Signup" description="Fires when someone signs up for an event">
+		    <var name="instructorEmails" description="Comma separated list of instructor email addresses"/>
+		    <var name="instructorNames" description="Comma separated list of instructor names"/>
+		    <var name="locationAddress" description="Address of the location where the workshop will be taught"/>
+		    <var name="locationName" description="Name of the location where the workshop will be taught."/>
+		    <var name="studentEmail" description="Email address of the user who signed up for the workshop."/>
+		    <var name="studentName" description="Name of the user who signed up for the workshop."/>
+		    <var name="studentUsername" description="Username of the user who signed up for the workshop."/>
+		    <var name="workshopDate" description="Date (mm/dd/yyyy) when the workshop occurs."/>
+		    <var name="workshopEndTime" description="End time (hh:mm am/pm) of the workshop."/>
+		    <var name="workshopMinimumEnrollment" description="Minimum enrollment for the workshop"/>
+		    <var name="workshopName" description="Name of the workshop the user signed up for"/>
+		    <var name="workshopStartTime" description="Start time (hh:mm am/pm) the workshop occurs."/>
+		</trigger>
+		<trigger name="Event_Signup_Full" description="Fires when an event has been filled">
 		    <var name="instructorEmails" description="Comma separated list of instructor email addresses"/>
 		    <var name="instructorNames" description="Comma separated list of instructor names"/>
 		    <var name="locationAddress" description="Address of the location where the workshop will be taught"/>

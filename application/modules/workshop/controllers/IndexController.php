@@ -124,6 +124,10 @@ class Workshop_IndexController extends Zend_Controller_Action
     
     public function workshopListAction()
     {
+    	$this->view->acl = array(
+            'viewDisabled' => $this->_helper->hasAccess('view-disabled')
+        );
+    	
         $workshop = new Workshop();
         
         $where = null;
@@ -131,8 +135,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');   
         }
         
-        $workshops = $workshop->fetchAll($where, 'title ASC')->toArray();
-
+        $workshops = $workshop->fetchAll($where, array('status', 'title ASC'))->toArray();
+        
         $this->view->workshops = $workshops;
         
         $this->_helper->pageTitle("workshop-index-workshopList:title");

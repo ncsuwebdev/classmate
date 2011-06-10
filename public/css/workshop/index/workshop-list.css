@@ -17,3 +17,27 @@ span.disabled {
     color: #000000;
     font-size: 1.1em;
 }
+
+#workshopTable td {
+	text-align : center;
+}
+
+#workshopTable td.title {
+	font-weight : bold;
+}
+
+td.enabled {
+	color : green;
+}
+
+td.disabled {
+	color : red;
+}
+
+tr.rowHoverEnabled {
+	background-color : #DDF7DD;
+}
+
+tr.rowHoverDisabled {
+	background-color : #FFD6CC;
+}

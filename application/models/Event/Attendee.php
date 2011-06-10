@@ -42,13 +42,18 @@ class Event_Attendee extends Ot_Db_Table
      */
     protected $_primary = array('eventId', 'accountId');
     
-    public function getAttendeesForEvent($eventId, $status='all')
+    public function getAttendeesForEvent($eventId, $status='all', $attended=false)
     {
         $where = $this->getAdapter()->quoteInto('eventId = ?', $eventId);
         
         if ($status != 'all') {
         	$where .= ' AND ' . 
         	   $this->getAdapter()->quoteInto('status = ?', $status);
+        }
+        
+        if ($attended) {
+        	$where .= ' AND ' .
+        		$this->getAdapter()->quoteInto('attended = ?', $attended);
         }
         
         $result = $this->fetchAll($where, 'timestamp ASC')->toArray();

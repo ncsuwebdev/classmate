@@ -222,7 +222,7 @@ class Workshop extends Ot_Db_Table
         $categories->setValue((isset($values['categoryId']) ? $values['categoryId'] : ''));
         
         
-        $prerequisites = $form->createElement('textarea', 'prerequisites', array('label' => 'Pre-Requisites:'));
+        $prerequisites = $form->createElement('textarea', 'prerequisites', array('label' => 'workshop-index-add:preRequisites'));
         $prerequisites->setRequired(false)
                  ->addFilter('StringTrim')
                  ->setAttrib('style', 'width: 95%; height: 200px;')

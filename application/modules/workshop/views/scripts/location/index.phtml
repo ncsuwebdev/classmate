@@ -7,36 +7,34 @@
     <?php endif; ?>
 	
     <?php if ($this->locations->count() > 0) : ?>
-    	<table class="list">
+    	<table id="locationTable" class="list">
     	<thead>
-    		<tr>
-    			<th>Room Name</th>
-    			<th>Address</th>
-    			<th>Room Type</th>
+    		<tr class="ui-widget-header">
+    			<th width="200">Room Name</th>
+    			<th width="300">Address</th>
+    			<th width="200">Room Type</th>
+    			<th width="100">Status</th>
     		</tr>
     	</thead>
     	<tbody>
         <?php foreach ($this->locations as $location) : ?>
     	    <?php if (($location->status == 'disabled' && $this->acl['viewDisabled']) || $location->status == 'enabled') : ?>
     	    <tr class="location">
-    	        <td class="name" width="200">
-    	           <?php if ($location->status == 'disabled') : ?>
-                      <b><?php echo $this->translate("workshop-location:disabled"); ?></b> &nbsp; 
-                   <?php endif; ?>
+    	        <td class="name">
                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location->locationId), 'default', true); ?>"><?php echo $location->name; ?></a>
                 </td>
 				<?php if ($location->address != '') : ?>
-				<td class="address" width="200">
+				<td class="address">
 					<?php echo $location->address; ?>
-					<br />
-    	        	<a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><?php echo $this->translate("workshop-location:googleMap"); ?></a>
+    	        	<a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><img width="25" src="/classmate/images/maps_marker.png" title="<?php echo $this->translate("workshop-location:googleMap"); ?>" /></a>
     	        </td>        
     	        <?php else : ?>
     	        <td><?php echo $this->translate("workshop-location:noAddress"); ?></td>
     	        <?php endif; ?>
-    	        <td width="200">
+    	        <td>
                 	<?php echo $location->locationType;?>
                 </td>
+                <td class="status <?php echo $location->status; ?>"><?php echo ucwords($location->status); ?></td>
     	    </tr>
     	    <?php endif; ?>
         <?php endforeach; ?>

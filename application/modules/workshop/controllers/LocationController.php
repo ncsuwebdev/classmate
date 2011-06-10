@@ -42,7 +42,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             
         $locationDb = new Location();
 
-        $locations = $locationDb->fetchAll(null, 'name');
+        $locations = $locationDb->fetchAll(null, array('status', 'name'));
         $locationType = new LocationType();
         
         foreach($locations as $key => $location) {

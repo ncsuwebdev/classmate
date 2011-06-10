@@ -1,28 +1,23 @@
-div.location {
-	padding: 0px 0px 20px 0px;
-    margin: 0px 0px 20px 0px;
-    background: #FFF url(../../../images/dot.gif) repeat-x bottom;	
+#locationTable {
+	text-align : center;
 }
 
-div.location img {
-	float: left;
+#locationTable td.name {
+	font-weight : bold;
 }
 
-div.location div {
-    margin-left: 42px;	
+td.enabled {
+	color : green;
 }
 
-div.location div.name {
-    font-size: 130%;
-    font-weight: bold;	
+td.disabled {
+	color : red;
 }
 
-div.location div.mapit {
-	float: right;
-	background: #FFF url(../../../images/link.png) no-repeat top left;
+tr.rowHoverEnabled {
+	background-color : #DDF7DD;
 }
 
-div.location div.mapit a {
-    margin-left: 22px;
-    background-image: none;
+tr.rowHoverDisabled {
+	background-color : #FFD6CC;
 }

@@ -143,17 +143,22 @@ div#workshopTitleContainer .inlineEdit {
 
 #wsTitle {
 	color: #3F3F3F;
-    font-size: 170%;
     font-weight: bold;
     margin: 0 0 15px 0px;
     max-width: 550px;
 }
 
-span#disabled {
-    color: #C00;
-    font-size: 140%;
-    font-weight: bold;
-    margin: 0 10px 0 0px;   
+div#disabled {
+	background-color : #FFD6CC;
+	line-height: 140%;
+    margin: 0 10px 10px 0px;
+	border-radius : 5px;
+	padding : 5px;
+}
+
+div#disabled .disabledText {
+	color: #C00;
+	font-weight : bold;
 }
 
 #disabledImage {
