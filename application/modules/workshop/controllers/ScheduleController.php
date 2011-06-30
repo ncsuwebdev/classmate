@@ -349,7 +349,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
     	        	if (ctype_alnum($form->getValue('formKey'))) {
     	        		$formKey = $form->getValue('formKey');
     	        	} else {
-		    	        $regex = '(?<=key\=)[a-zA-Z0-9]*';
+		    	        $regex = '(?<=key\=)\w*';
 		                $matches = array();
 		                preg_match_all ('/'.$regex.'/is', $form->getValue('formKey'), $matches);
 		                
@@ -363,7 +363,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
     	        	if (ctype_alnum($form->getValue('answerKey'))) {
     	        		$answerKey = $form->getValue('answerKey');
     	        	} else {
-	    	        	$regex = '(?<=key\=)[a-zA-Z0-9]*';
+	    	        	$regex = '(?<=key\=)\w*';
 		              	preg_match_all ("/".$regex."/is", $form->getValue('answerKey'), $matches);
 		              	if(count($matches) > 0) {
 							$answerKey = $matches[0][0];
@@ -555,14 +555,14 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                 $answerKey		= $form->getValue('answerKey'); 
                 
                 if (isset($formKey) && $formKey != '') {
-	                $regex = '(?<=key\=)[a-zA-Z0-9]*';
+	                $regex = '(?<=key\=)\w*';
 	                $matches = array();
 	                preg_match_all ("/".$regex."/is", $form->getValue('formKey'), $matches);
 					$formKey = $matches[0][0];
                 }
                 
                 if (isset($answerKey) && $answerKey != '') {
-					$regex = '(?<=key\=)[a-zA-Z0-9]*';
+					$regex = '(?<=key\=)\w*';
 					$matches = array();
 	              	preg_match_all ("/".$regex."/is", $form->getValue('answerKey'), $matches);
 					$answerKey = $matches[0][0];
