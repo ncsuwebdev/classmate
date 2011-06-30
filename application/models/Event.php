@@ -399,6 +399,110 @@ class Event extends Ot_Db_Table
         return $ret;
     }
     
+    public function insert(array $data) {
+    	
+    	$keys = array();
+    	
+    	if($data['evaluationType'] == 'google') {
+    		$keys['formKey'] = $data['formKey'];
+    		$keys['answerKey'] = $data['answerKey'];
+    	}
+    	
+    	unset($data['formKey'], $data['answerKey']);
+    	
+    	$dba = $this->getAdapter();
+    	
+    	$inTransaction = false;
+    	
+    	try {
+    		$dba->beginTransaction();
+    	} catch (Exception $e) {
+    		$inTransaction = true;
+    	}
+    	
+    	try {
+    		$eventId = parent::insert($data);
+    	} catch (Exception $e) {
+    		if ($inTransaction) {
+    			$dba->rollBack();
+    		}
+    		throw $e;
+    	}
+
+    	if(count($keys) > 0) {
+    		$keys['eventId'] = $eventId;
+    		
+    		$evaluationKey = new Evaluation_Key();
+    		
+    		try {
+    			$evaluationKey->insert($keys);
+    		} catch (Exception $e) {
+    			if (!$inTransaction) {
+    				$dba->rollBack();
+    			}
+    			throw $e;
+    		}
+    	}
+    	
+    	if (!$inTransaction) {
+    		$dba->commit();
+    	}
+    	
+    	return $eventId;
+    }
+    
+    public function update(array $data, $where) {
+    	
+    	$keys = array();
+    	
+    	$dba = $this->getAdapter();
+    	$inTransaction = false;
+    	
+    	try {
+    		$dba->beginTransaction();
+    	} catch (Exception $e) {
+    		$inTransaction = true;
+    	}
+    	
+    	$evaluationKey = new Evaluation_Key();
+    	
+    	if($data['evaluationType'] == 'google') {
+    		$keys['eventId'] = $data['eventId'];
+    		$keys['formKey'] = $data['formKey'];
+    		$keys['answerKey'] = $data['answerKey'];
+    		
+    		try {
+    			$evaluationKey->update($keys, null);
+    		} catch (Exception $e) {
+    			$dba->rollBack();
+    			throw $e;
+    		}
+    		
+    	} elseif ($data['evaluationType'] == 'default') {
+    		$where = $evaluationKey->getAdapter()->quoteInto('eventId = ?', $data['eventId']);
+    		
+    		try {
+    			$evaluationKey->delete($where);
+    		} catch (Exception $e) {
+    			$dba->rollBack();
+    			throw $e;
+    		}
+    	}
+    	
+    	unset($data['formKey'], $data['answerKey']);
+    	
+    	try {
+    		parent::update($data, $where);
+    	} catch (Exception $e) {
+    		$dba->rollBack();
+    		throw $e;
+    	}
+    	
+    	if (!$inTransaction) {
+    		$dba->commit();
+    	}
+    }
+    
     public function form($values = array())
     {
         $config = Zend_Registry::get('config');
@@ -542,6 +646,8 @@ class Event extends Ot_Db_Table
         $instructorElement->setMultiOptions($instructorList)
                           ->setAttrib('size', 10)
                           ->setValue(isset($values['instructorIds']) ? $values['instructorIds'] : '');
+                          
+		
         
         $minSize = $form->createElement('text', 'minSize', array('label' => 'Min Size:'));
         $minSize->setRequired(true)
@@ -566,7 +672,44 @@ class Event extends Ot_Db_Table
                      ->setAttrib('maxlength', '64')
                      ->setAttrib('style', 'width: 50px;')
                      ->setValue((isset($values['waitlistSize']) ? $values['waitlistSize'] : $config->user->defaultWorkshopWaitlistSize->val));
-                  
+                     
+        $evaluationType = $form->createElement('select', 'evaluationType', array('label' => 'Evaluation Type:'));
+        $evaluationType->setMultiOptions( array('default' =>'Default', 'google' => 'Google Form'))
+        		->setRequired(true)
+        		->setValue((isset($values['evaluationType']) ? $values['evaluationType'] : 'default'));
+        		
+        $formKey = $form->createElement('textarea', 'formKey', array('label' => 'Google Form Question Key:'));
+        $formKey->setAttribs(array(
+        			'cols' => '10',
+        			'rows' => '5',
+        			'style'=> 'width : 250px;'
+	       		))
+        		->addDecorators(array(
+        			'ViewHelper',
+        			'Errors',
+        			'HtmlTag',
+        			array('Label', array('tag' => 'span')),
+        			array(array('elementDiv' => 'HtmlTag'), array('tag' => 'div', 'id' => 'formKey', 'class' => 'elm'))
+        		))
+        		->setValue((isset($values['formKey']) ? $values['formKey'] : ''));
+        		
+        $answerKey = $form->createElement('textarea', 'answerKey', array('label' => 'Google Form Answer Key:'));
+        $answerKey->addFilter('StringTrim')
+        		->addFilter('StripTags')
+        		->setAttribs(array(
+        			'cols' => '10',
+        			'rows' => '3',
+        			'style'=> 'width : 250px;'	
+	       		))
+        		->addDecorators(array(
+        			'ViewHelper',
+        			'Errors',
+        			'HtmlTag',
+        			array('Label', array('tag' => 'span')),
+        			array(array('elementDiv' => 'HtmlTag'), array('tag' => 'div', 'id' => 'answerKey', 'class' => 'elm'))
+        		))
+        		->setValue((isset($values['answerKey']) ? $values['answerKey'] : ''));
+        		
         $submit = $form->createElement('submit', 'submitButton', array('label' => 'Submit'));
         $submit->setDecorators(array(
                    array('ViewHelper', array('helper' => 'formSubmit'))
@@ -578,9 +721,12 @@ class Event extends Ot_Db_Table
                    array('ViewHelper', array('helper' => 'formButton'))
                 ));
         
-        $form->addElements(array($workshopElement, $locationElement, $password, $date))
+        $form->addElements(array($workshopElement, $locationElement, $password, $date, $evaluationType))
              ->addSubForms(array('startTime' => $startTimeSub, 'endTime' => $endTimeSub))
              ->addElements(array($minSize, $maxSize, $waitlistSize, $instructorElement));
+             
+		$form->addDisplayGroup(array('instructors'), 'instructors-group', array('legend' => 'Instructors'));
+		$form->addDisplayGroup(array('workshop', 'password', 'location', 'minSize', 'maxSize', 'waitlistSize'), 'generalInformation', array('legend' => 'General Information'));
 
         $form->setElementDecorators(array(
                   'ViewHelper',
@@ -589,6 +735,35 @@ class Event extends Ot_Db_Table
                   array('Label', array('tag' => 'span')),
               ))
              ->addElements(array($submit, $cancel));
+             
+        $form->addElements(array($evaluationType, $formKey, $answerKey));
+		$form->addDisplayGroup(array('evaluationType', 'formKey', 'answerKey'), 'evaluationTypes', array('legend' => 'Evaluations'));
+		$form->addDisplayGroup(array('submitButton', 'cancel'), 'buttons');
+		
+		$form->setDisplayGroupDecorators(array(
+			'FormElements',
+			array('HtmlTag',
+				array(
+					'tag' => 'div',
+					'class' => 'widget-content'
+				)
+			),
+			array(
+				array('elementDiv' => 'HtmlTag'),
+				array(
+					'tag' => 'div',
+					'class' => array('widget-footer','ui-corner-bottom'),
+					'placement' => Zend_Form_Decorator_Abstract::APPEND,
+				)
+			),
+			array('FieldSet',array('class' => 'formField'))
+		));
+		
+		$buttons = $form->getDisplayGroup('buttons');
+		$buttons->setDecorators(array(
+			'FormElements',
+			array('HtmlTag', array('tag' => 'div', 'style' => 'clear : both;')
+		)));
 
         if (isset($values['eventId'])) {
 
@@ -600,6 +775,7 @@ class Event extends Ot_Db_Table
 
             $form->addElement($eventId);
         }
+        
         return $form;
     }
     

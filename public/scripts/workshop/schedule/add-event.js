@@ -1,4 +1,6 @@
 $('document').ready(function () {
+	$('legend').addClass('ui-widget-header').addClass('ui-corner-top');
+	
 	$('#date').datepicker({
 		dateFormat: 'DD, MM d, yy'
 	});
@@ -39,7 +41,9 @@ $('document').ready(function () {
     	$('#instructorSearch').val('');
     	
     	addInstructor(data.id, data.name);
-    });	
+    });
+    
+    evaluations_init();
 });
 
 var instructors = new Array();
@@ -47,10 +51,10 @@ var instructors = new Array();
 function addInstructor(id, display)
 {
 	if ($.inArray(id, instructors) == -1) {
-    	var html = '<div class="instructor" id="instructor_' + id + '">'
-    	         + '<a class="ui-state-default ui-corner-all linkButtonNoText removeInstructor"><span class="ui-icon ui-icon-minusthick"/></a>'
-    	         + '<span>' + display + '</span>'
-    	         + '</div>';
+		var html = '<div class="instructor" id="instructor_' + id + '">'
+			+ '<a class="ui-state-default ui-corner-all linkButtonNoText removeInstructor" title="Remove Instructor"><span class="ui-icon ui-icon-minusthick"/></a>'
+			+ '<span class="instructorName">' + display + '</span>'
+			+ '</div>';
     	
     	$('#instructorDisplay').append(html).css('display', 'block');
     	
@@ -70,4 +74,25 @@ function addInstructor(id, display)
     		}
     	});
 	}
+}
+
+function evaluations_init() {
+	$('#evaluationHelp').hide();
+	
+	if($('#evaluationType').val() == 'default') {
+		$('#formKey, #answerKey').hide();
+	}
+	
+	$('#evaluationType').change(function() {
+		if($(this).val() == 'default') {
+			$('#formKey, #answerKey').slideUp('fast');
+		} else if ($(this).val() == 'google') {
+			$('#formKey, #answerKey').slideDown('fast');
+		}
+	});
+	
+	
+	$('#evaluationInfo').click(function() {
+		$('#evaluationHelp').dialog();
+	});
 }

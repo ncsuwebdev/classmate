@@ -35,4 +35,14 @@
 <div id="instructions">
 	<?php echo $this->translate("workshop-evaluate-index:instructions"); ?>
 </div>
-    <?php echo $this->form; ?>
+
+<?php if($this->event['evaluationType'] == 'google'): ?>
+<div>
+	<form method="POST" action="" >
+		<input type="submit" name="googleSubmit" value="Submit Evaluation" style="margin-bottom : 10px;" />
+	</form>
+	<iframe name="evaluation" id="evaluation" height="100%" src="https://spreadsheets.google.com/spreadsheet/embeddedform?formkey=<?php echo $this->keys['formKey']; ?>">Custom Form</iframe>
+</div>
+<?php else: ?>
+     <?php echo $this->form; ?>
+<?php endif;?>     

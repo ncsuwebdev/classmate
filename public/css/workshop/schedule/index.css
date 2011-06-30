@@ -16,14 +16,23 @@
 
 .MonthlyCalendar #CalendarBody { }
 .DateBox { height:100px; vertical-align:top; border:solid 1px #ddd; }
-.DateLabel { height: 18px; width:100%; background:#F7F7F7 none repeat scroll 0 0; text-align:right; margin-bottom: 2px; }
+.DateLabel { height: 18px; width:100%; background:#F7F7F7 none repeat scroll 0 0; -moz-border-radius: 8px; border-radius : 8px; text-align:right; margin-bottom: 2px; }
 .DateLabel a { cursor:pointer; padding:0 5px 2px; text-decoration:none; line-height:15px; }
 
 #CalendarBody .Inactive, #CalendarBody .Weekend { background:#fafafa none repeat scroll 0 0; }
 .Today { background:#FFFFCF none repeat scroll 0 0; }
 
-#jMonthCalendar .Event { font-size:12px; padding:4px; background-color:#DFF7FF; margin-bottom:1px; -moz-border-radius: 8px; border:solid 1px #000; cursor:pointer; display:block; }
-.Event a { text-decoration:none; color:#000; }
+#jMonthCalendar .Event { font-size:12px;
+	padding:4px;
+	background-color:#4b711c;
+	margin-bottom:1px;
+	-moz-border-radius: 5px;
+	border-radius : 5px;
+	border:solid 1px #777;
+	cursor:pointer;
+	display:block;
+}
+.Event a { text-decoration:none; color:#FFF; background : none !important;}
 .Event a:hover { text-decoration:underline; }
 
 .bt-content {
@@ -35,9 +44,9 @@
 
 /* styling for active target elements - usually for background hilighting */
 .bt-active {
-  /* example:
-  background-color: yellow !important;
-  */
+  /*
+   *background-color: yellow;
+   */
 }
 
 #wsTitle {
@@ -73,4 +82,12 @@ div.description div.info {
 
 div.description div.data {
     line-height: 17px;
+}
+
+#CalendarHead td, #CalendarHead th {
+	border-color : #A3A3A3;
+}
+
+#CalendarHead th {
+	color : #434343;
 }

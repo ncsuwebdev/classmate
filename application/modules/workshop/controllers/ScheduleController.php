@@ -311,6 +311,19 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         }
         
         $thisEvent = $thisEvent->toArray();
+        
+        if($thisEvent['evaluationType'] == 'google') {
+        	$evaluationKey = new Evaluation_Key();
+        	$keys = $evaluationKey->find($get->eventId);
+        	
+        	if(is_null($keys)) {
+        		throw new Ot_Exception_Data('Missing Form Keys');
+        	}
+        	
+        	$thisEvent['formKey'] = $keys['formKey'];
+        	$thisEvent['answerKey'] = $keys['answerKey'];
+        }
+        
         $thisEvent['instructorIds'] = $currentInstructors;
         
         $originalMaxSize = $thisEvent['maxSize'];
@@ -320,16 +333,45 @@ class Workshop_ScheduleController extends Zend_Controller_Action
     	if ($this->_request->isPost()) {
     	    if ($form->isValid($_POST)) {
 
-        		$eventId      = $form->getValue('eventId');
-    	        $workshopId   = $form->getValue('workshop');
-    	        $locationId   = $form->getValue('location');
-    	        $startTime    = $form->getValue('startTime');
-    	        $endTime      = $form->getValue('endTime');
-    	        $date         = $form->getValue('date');
-    	        $minSize      = $form->getValue('minSize');
-    	        $maxSize      = $form->getValue('maxSize');
-    	        $waitlistSize = $form->getValue('waitlistSize');
-    	        $instructors  = $form->getValue('instructors');
+        		$eventId      	= $form->getValue('eventId');
+    	        $workshopId   	= $form->getValue('workshop');
+    	        $locationId   	= $form->getValue('location');
+    	        $startTime    	= $form->getValue('startTime');
+    	        $endTime      	= $form->getValue('endTime');
+    	        $date         	= $form->getValue('date');
+    	        $minSize      	= $form->getValue('minSize');
+    	        $maxSize      	= $form->getValue('maxSize');
+    	        $waitlistSize 	= $form->getValue('waitlistSize');
+    	        $instructors  	= $form->getValue('instructors');
+    	        $evaluationType	= $form->getValue('evaluationType');
+
+    	        if($evaluationType == 'google') {
+    	        	if (ctype_alnum($form->getValue('formKey'))) {
+    	        		$formKey = $form->getValue('formKey');
+    	        	} else {
+		    	        $regex = '(?<=key\=)[a-zA-Z0-9]*';
+		                $matches = array();
+		                preg_match_all ('/'.$regex.'/is', $form->getValue('formKey'), $matches);
+		                
+		                if(isset($matches[0][0])) {
+							$formKey = $matches[0][0];
+		                } else {
+		                	throw new Ot_Exception_Data('The Google Form Key is incorrect');
+		                }
+    	        	}
+    	        	
+    	        	if (ctype_alnum($form->getValue('answerKey'))) {
+    	        		$answerKey = $form->getValue('answerKey');
+    	        	} else {
+	    	        	$regex = '(?<=key\=)[a-zA-Z0-9]*';
+		              	preg_match_all ("/".$regex."/is", $form->getValue('answerKey'), $matches);
+		              	if(count($matches) > 0) {
+							$answerKey = $matches[0][0];
+		              	} else {
+		              		throw new Ot_Exception_Data('The Google Answer Key is incorrect');
+		              	}
+    	        	}
+    	        }
     	        
     	        $date = strtotime($date);
     	        $date = strftime('%Y', $date) . "-" . strftime('%m', $date) . "-" . strftime('%d', $date);   	        
@@ -367,7 +409,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                 
     	        $startTime = $startTime['hour'] . ":" . $startTime['minute'] . ":00";
     	        $endTime   = $endTime['hour'] . ":" . $endTime['minute'] . ":00";
-    	        	            
+
                 $where = $event->getAdapter()->quoteInto('date = ?', $date)
                        . " AND " . $event->getAdapter()->quoteInto('locationId = ?', $locationId)
                        . " AND " . $event->getAdapter()->quoteInto('eventId != ?', $eventId)
@@ -405,18 +447,36 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                         }
                     }
                 }
+                
+    	    	$evaluationCheck = true;
+                
+    	    	/*
+    	    	 * TODO: Make this work better (see the regex section above)
+    	    	 */
+                if ($evaluationType == 'google') {
+                	$evaluationCheck = isset($formKey) && isset($answerKey);
+                } else {
+                	$evaluationCheck = $evaluationType == 'default';
+                }
+                
+                if (!$evaluationCheck) {
+                	$messages[] = 'msg-error-eventFormKeyMissing';
+                }
 
-                if (!$conflictFound && $timesOk) {
+                if (!$conflictFound && $timesOk && $evaluationCheck) {
         	        
-        	        $data = array('eventId'      => $eventId,
-        	                      'locationId'   => $locationId,
-        	                      'workshopId'   => $workshopId,
-        	                      'startTime'    => $startTime,
-        	                      'endTime'      => $endTime,
-        	                      'date'         => $date,
-        	                      'minSize'      => $minSize,
-        	                      'maxSize'      => $maxSize,
-        	                      'waitlistSize' => $waitlistSize
+        	        $data = array('eventId'      	=> $eventId,
+        	                      'locationId'   	=> $locationId,
+        	                      'workshopId'   	=> $workshopId,
+        	                      'startTime'    	=> $startTime,
+        	                      'endTime'      	=> $endTime,
+        	                      'date'         	=> $date,
+        	                      'minSize'      	=> $minSize,
+        	                      'maxSize'      	=> $maxSize,
+        	                      'waitlistSize' 	=> $waitlistSize,
+        	        			  'evaluationType'	=> $evaluationType,
+        	        			  'formKey'			=> $formKey,
+        	        			  'answerKey'		=> $answerKey
         	                     );
         	        
         	        $event->update($data, null);
@@ -450,8 +510,11 @@ class Workshop_ScheduleController extends Zend_Controller_Action
     	}
     	
         $this->view->messages = $messages;
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/workshop/schedule/help.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.tooltip.min.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.autocomplete.css');
+        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/workshop/schedule/help.css');
         $this->view->form = $form;
         $this->_helper->pageTitle('workshop-schedule-editEvent:title');	
     }
@@ -477,17 +540,33 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
+                $workshopId   	= $form->getValue('workshop');
+                $locationId   	= $form->getValue('location');
+                $startTime    	= $form->getValue('startTime');
+                $endTime      	= $form->getValue('endTime');
+                $date         	= $form->getValue('date');
+                $minSize      	= $form->getValue('minSize');
+                $maxSize      	= $form->getValue('maxSize');
+                $waitlistSize 	= $form->getValue('waitlistSize');
+                $instructors  	= $form->getValue('instructors');
+                $password	  	= $form->getValue('password');
+                $evaluationType	= $form->getValue('evaluationType');
+                $formKey		= $form->getValue('formKey');
+                $answerKey		= $form->getValue('answerKey'); 
                 
-                $workshopId   = $form->getValue('workshop');
-                $locationId   = $form->getValue('location');
-                $startTime    = $form->getValue('startTime');
-                $endTime      = $form->getValue('endTime');
-                $date         = $form->getValue('date');
-                $minSize      = $form->getValue('minSize');
-                $maxSize      = $form->getValue('maxSize');
-                $waitlistSize = $form->getValue('waitlistSize');
-                $instructors  = $form->getValue('instructors');
-                $password	  = $form->getValue('password');
+                if (isset($formKey) && $formKey != '') {
+	                $regex = '(?<=key\=)[a-zA-Z0-9]*';
+	                $matches = array();
+	                preg_match_all ("/".$regex."/is", $form->getValue('formKey'), $matches);
+					$formKey = $matches[0][0];
+                }
+                
+                if (isset($answerKey) && $answerKey != '') {
+					$regex = '(?<=key\=)[a-zA-Z0-9]*';
+					$matches = array();
+	              	preg_match_all ("/".$regex."/is", $form->getValue('answerKey'), $matches);
+					$answerKey = $matches[0][0];
+                }
                 
                 $date = strtotime($date);
                 $date = strftime('%Y', $date) . "-" . strftime('%m', $date) . "-" . strftime('%d', $date);
@@ -562,18 +641,33 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                         }
                     }
                 }
+                
+                $evaluationCheck = true;
+                
+                if ($evaluationType == 'google') {
+                	$evaluationCheck = isset($formKey) && isset($answerKey);
+                } else {
+                	$evaluationCheck = $evaluationType == 'default';
+                }
+                
+                if (!$evaluationCheck) {
+                	$messages[] = 'msg-error-eventFormKeyMissing';
+                }
 
-                if (!$conflictFound && $timesOk) {
+                if (!$conflictFound && $timesOk && $evaluationCheck) {
                     
-                    $data = array('locationId'   => $locationId,
-                                  'workshopId'   => $workshopId,
-                                  'startTime'    => $startTime,
-                                  'endTime'      => $endTime,
-                                  'date'         => $date,
-                                  'minSize'      => $minSize,
-                                  'maxSize'      => $maxSize,
-                                  'waitlistSize' => $waitlistSize,
-                    			  'password'	 => $password
+                    $data = array('locationId'   	=> $locationId,
+                                  'workshopId'   	=> $workshopId,
+                                  'startTime'    	=> $startTime,
+                                  'endTime'      	=> $endTime,
+                                  'date'         	=> $date,
+                                  'minSize'      	=> $minSize,
+                                  'maxSize'      	=> $maxSize,
+                                  'waitlistSize' 	=> $waitlistSize,
+                    			  'password'	 	=> $password,
+                    			  'evaluationType'	=> $evaluationType,
+                    			  'formKey'			=> $formKey,
+                    			  'answerKey'		=> $answerKey
                                  );
                     
                     $eventId = $event->insert($data);
@@ -595,7 +689,9 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->view->messages = $messages;
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/workshop/schedule/help.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.autocomplete.css');
+        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/workshop/schedule/help.css');
         $this->view->form = $form;
         $this->_helper->pageTitle('workshop-schedule-addEvent:title');
     }

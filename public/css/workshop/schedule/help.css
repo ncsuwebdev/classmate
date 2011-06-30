@@ -1,0 +1,93 @@
+@CHARSET "UTF-8";
+
+.helpDialog {
+	background : #F7F7F7;
+	-moz-box-shadow: 4px 8px 15px #555;
+	-webkit-box-shadow: 4px 8px 15px #555;
+	box-shadow: 4px 8px 15px #555;
+}
+
+div.slides {
+	overflow : hidden;
+}
+
+div.slide {
+	float : left;
+	display : block;
+	width : 583px;
+	padding : 10px;
+	border-right : #BBB solid 1px;
+}
+
+div.slide-header {
+	font-size : 18px;
+	font-weight : bold;
+	margin-bottom : 5px;
+}
+
+div.nav {
+	display : block;
+	width : 1%;
+	height : 100%;
+	cursor : pointer;
+}
+	
+div.left {
+	padding : 0 4% 0 0;
+	float : left;
+}
+
+div.right {
+	padding : 0 2%;
+	float : right;
+}
+
+#left_arrow {
+	height : 30px;
+	display : block;
+	background : url('../../../images/leftArrow_gray.png') no-repeat;
+	width : 17px;
+	float : left;
+	margin-top : 150px;
+	margin-left : 0;
+	margin-right : auto; 
+}
+
+#right_arrow {
+	height : 30px;
+	display : block;
+	background : url('../../../images/rightArrow_gray.png') no-repeat;
+	width : 17px;
+	margin-top : 150px;
+	margin-left : auto;
+	margin-right : 5%;
+}
+ 
+div.nav:hover #right_arrow {
+	background-position : 0 -30px;
+}
+
+div.nav:hover #left_arrow {
+	background-position : 0 -30px;
+}
+	
+div.middle {
+	display : block;
+	float : left;
+	height : 100%;
+	width : 90%;
+}
+
+div#slideWrapper {
+	position : relative;
+}
+
+div.slide-contents {
+	height : 100%;
+	padding : 5px 5px 0 0;
+}
+
+div.slide-contents img {
+	float : right;
+	margin : 5px;
+}

@@ -53,3 +53,12 @@ textarea {
 #pageTitle {
 	display: none;
 }
+
+#evaluation {
+	width : 100%;
+	border : none;
+}
+
+#evaluation body h1.ss-form-title {
+	color : red;
+}

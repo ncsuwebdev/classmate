@@ -46,7 +46,7 @@ workshop-evaluate-index:what;What?
 workshop-evaluate-index:where;Where?
 workshop-evaluate-index:instructors;Instructors:
 workshop-evaluate-index:noInstructor;No Instructor Assigned Yet
-workshop-evaluate-index:instructions;Please fill our the evaluation below.  Once you are finished, select <b>Submit Evaluation</b> at the bottom of the page.  You may only fill out the evaluation once.
+workshop-evaluate-index:instructions;Please fill out the evaluation below. Once you are finished, select <b>Submit Evaluation</b>.  You may only fill out the evaluation once.
 workshop-index-index:searchWorkshops;Search for Workshops:
 workshop-index-index:search;Search
 workshop-index-index:title;Search Workshops
@@ -198,6 +198,7 @@ workshop-schedule-eventDetails:workshopDetails;Workshop Details
 workshop-schedule-eventDetails:prerequisites;Pre-requisites:
 workshop-schedule-eventDetails:description;Description:
 workshop-schedule-eventDetails:more;More...
+workshop-schedule-info:tooltip;We allow instructors to choose their method of evaluation. You may choose between collecting your data using: <ul><li>the default Classmate questionaire (limited) or</li><li>via a Google form (you create the questionnaire)</li></ul>Click the link to learn more. 
 workshop-signup-index:signupFor;Signup for %1$s
 workshop-signup-cancel:cancel;Yes, Cancel My Reservation
 workshop-signup-cancel:keep;No, Keep My Reservation
@@ -252,6 +253,7 @@ msg-error-noLink;Link not found.
 msg-error-noLocation;Location not found.
 msg-error-noLocationType;Location Type not found.
 msg-error-category;Category not found.
+msg-error-noFormKey;Google form key not found.
 msg-error-noAccess;You do not have access to edit this.
 msg-error-noWorkshopAccess;You do not have access to view this workshop.
 msg-error-targetDirNotWritable;Target directory %1$s is not writable.
@@ -268,6 +270,7 @@ msg-error-noAttendees;There are no users registered for the event yet.
 msg-error-eventStartsAfter;Event cannot start after the end time.
 msg-error-eventTimesEqual;Event end time must be later than the start time.
 msg-error-eventAlreadyScheduled;An event is already scheduled during this time in the selected location.  Please select a new time or location.
+msg-error-eventFormKeyMissing;A Key for the evaluation forms is missing.
 msg-error-notAttending;You are not atteding this class, so you cannot cancel it.
 msg-error-typeIdNotSet;Type Id not set in the query string.
 msg-error-noFileType;Filetype not specified.

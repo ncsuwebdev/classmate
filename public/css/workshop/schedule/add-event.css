@@ -1,18 +1,64 @@
 .instructor {
     background-color: #F4F4F4;
     margin: 4px 2px;
-    padding: 6px 4px;
+    padding: 4px;
     border: 1px solid #EEE;
+	height : 10px;
+	clear : both;
 }
 
 #instructorDisplay {
     border: 1px solid #CCC;
-    margin: 0px 0px 10px 0px;
+    margin : auto 0;
     padding: 1px 3px;
-    width: 300px;
+    width: 80%;
     display: none;
 }
 
-.instructor span {
-    margin-left: 10px;
+label {
+	font-weight : bold;
+}
+
+span.instructorName {
+	display : block;
+	max-width : 75%;
+	height : 30px;
+	margin : none;
+}
+
+a.removeInstructor {
+	float : left;
+	height : 7px;
+	padding : none;
+	margin : none;
+	background : none;
+	border : none;
+}
+
+.formField {
+	float : left;
+	width : 275px;
+	margin : 0 10px 10px 0;
+}
+
+.widget-content {
+	padding : 5px;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+}
+
+.widget-footer {
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+fieldset {
+	padding : none;
+	margin : none;
+}
+
+legend {
+	padding:2px 5px;
+	width : 95.99%;
 }

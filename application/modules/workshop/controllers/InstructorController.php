@@ -811,55 +811,67 @@ class Workshop_InstructorController extends Zend_Controller_Action
         
         $this->_checkValidViewer($instructors);    	
         
-        // get the evaluationId from the eventId
-        $evaluation = new Evaluation();
-        $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $thisEvent->eventId);
-        $evaluations = $evaluation->fetchAll($where);
-        if ($evaluations->count() == 0) {
-            $this->view->noEvaluationsYet = true;
+        if($thisEvent['evaluationType'] == 'custom') {
+	        // get the evaluationId from the eventId
+	        $evaluation = new Evaluation();
+	        $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $thisEvent->eventId);
+	        $evaluations = $evaluation->fetchAll($where);
+	        if ($evaluations->count() == 0) {
+	            $this->view->noEvaluationsYet = true;
+	        }
+	        
+	        $this->view->totalEvaluations = $evaluations->count();
+	        
+	        $ca = new Ot_Custom();
+	                
+	        $questions = $ca->getAttributesForObject('evaluations');
+	        
+	        foreach ($questions as &$q) {
+	            $q['options'] = $ca->convertOptionsToArray($q['options']);
+	            
+	            $answers = array();
+	            foreach ($evaluations as $e) {
+	                $tmpAnswers = $ca->getData($q['objectId'], $e->evaluationId);
+	                
+	                $tmp = array();
+	                foreach ($tmpAnswers as $ta) {
+	                    $tmp[$ta['attribute']['attributeId']] = $ta['value'];
+	                }
+	                
+	                $answers[] = $tmp;
+	            }
+	           
+	            if ($q['type'] == 'ranking' || $q['type'] == 'select' || $q['type'] == 'radio') {
+	                foreach ($q['options'] as $value) {
+	                    $answerCount = 0;
+	                    
+	                    foreach ($answers as $a) {
+	                        if ($a[$q['attributeId']] == $value) {
+	                            $answerCount++;
+	                        }
+	                    }   
+	                    
+	                    $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
+	                }
+	            } else {
+	                foreach ($answers as $a) {
+	                    $q['results'][] = $a[$q['attributeId']];   
+	                }
+	            }
+	        }
+	
+	        $this->view->evaluationResults = $questions;  
+        } elseif ($thisEvent['evaluationType'] == 'google') {
+        	$evaluationKeys = new Evaluation_Key();
+        	$keys = $evaluationKeys->find($get->eventId);
+        	
+        	if (is_null($keys)) {
+	            throw new Ot_Exception_Data('msg-error-noFormKey');
+	        }
+        	
+        	$this->view->keys = $keys->toArray();
         }
         
-        $this->view->totalEvaluations = $evaluations->count();
-        
-        $ca = new Ot_Custom();
-                
-        $questions = $ca->getAttributesForObject('evaluations');
-        
-        foreach ($questions as &$q) {
-            $q['options'] = $ca->convertOptionsToArray($q['options']);
-            
-            $answers = array();
-            foreach ($evaluations as $e) {
-                $tmpAnswers = $ca->getData($q['objectId'], $e->evaluationId);
-                
-                $tmp = array();
-                foreach ($tmpAnswers as $ta) {
-                    $tmp[$ta['attribute']['attributeId']] = $ta['value'];
-                }
-                
-                $answers[] = $tmp;
-            }
-           
-            if ($q['type'] == 'ranking' || $q['type'] == 'select' || $q['type'] == 'radio') {
-                foreach ($q['options'] as $value) {
-                    $answerCount = 0;
-                    
-                    foreach ($answers as $a) {
-                        if ($a[$q['attributeId']] == $value) {
-                            $answerCount++;
-                        }
-                    }   
-                    
-                    $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
-                }
-            } else {
-                foreach ($answers as $a) {
-                    $q['results'][] = $a[$q['attributeId']];   
-                }
-            }
-        }
-
-        $this->view->evaluationResults = $questions;  
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.gchart.min.js');   
     }
 }

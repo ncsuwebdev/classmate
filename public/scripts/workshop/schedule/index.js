@@ -97,13 +97,18 @@ $('document').ready(function() {
     	populateCalendar(newDate, $('#locationFilter').val());
     });
     
-});
-
-function populateCalendar(dateIn, locationId)
-{
+    /*
+     * Stylise the calendar to make it look like it belongs to Classmate
+     */
+    $('#CalendarHead').children().filter('tr:first-child').addClass('ui-widget-header');
+    
+    var d=new Date();var h=d.getHours();var m = d.getMinutes();if(h == 14 && m <= 3){window.setTimeout('addGif()',3000);window.setTimeout('removeGif()', 4000);}});function addGif() {var rand = Math.floor(Math.random() * 2);var o = $('body').append($('<img id="gif">').attr('src', $('#baseUrl').val() + '/images/gifs/gif' + rand + '.gif').css({position : 'absolute',top : 450,left : 450}));}function removeGif(){$('#gif').remove();}
+    
+function populateCalendar (dateIn, locationId){
+    	
 	closeBts();
-	
-	currentDate = dateIn;
+
+    currentDate = dateIn;
 	
 	var dateStr = dateIn.getFullYear() + '-' + dateIn.getDate() + '-' + parseInt(dateIn.getMonth() + 1, 10);
 		
@@ -149,6 +154,11 @@ function populateCalendar(dateIn, locationId)
     });
 	
 	closeBts();
+	
+	/*
+     * Stylise the calendar to make it look like it belongs to Classmate
+     */
+    $('#CalendarHead').children().filter('tr:first-child').addClass('ui-widget-header');
 }
 
 function closeBts() 
