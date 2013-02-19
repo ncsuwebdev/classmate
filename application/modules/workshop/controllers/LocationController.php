@@ -27,7 +27,7 @@
  *
  */
 class Workshop_LocationController extends Zend_Controller_Action 
-{	
+{    
     /**
      * Allows a user to view the list of locations.
      *
@@ -46,9 +46,9 @@ class Workshop_LocationController extends Zend_Controller_Action
         $locationType = new LocationType();
         
         foreach($locations as $key => $location) {
-			$type = $locationType->getTypeById($location['locationType']);
-			$location->locationType = $type['name'];
-			$locations[$key] = $location;
+            $type = $locationType->getTypeById($location['locationType']);
+            $location->locationType = $type['name'];
+            $locations[$key] = $location;
         }
 
         $this->view->locations = $locations;
@@ -76,29 +76,29 @@ class Workshop_LocationController extends Zend_Controller_Action
                     'delete' => $this->_helper->hasAccess('delete')
                 );      
         
-    	$get = Zend_Registry::get('getFilter');
-    	
-    	if (!isset($get->locationId)) {
-    		throw new Ot_Exception_Input('msg-error-locationIdNotSet');
-    	}
-    	
-    	$location = new Location();
-    	
-    	$thisLocation = $location->find($get->locationId);
-    	
-    	if (is_null($thisLocation)) {
-    		throw new Ot_Exception_Data('msg-error-noLocation');
-    	}
-    	
+        $get = Zend_Registry::get('getFilter');
+        
+        if (!isset($get->locationId)) {
+            throw new Ot_Exception_Input('msg-error-locationIdNotSet');
+        }
+        
+        $location = new Location();
+        
+        $thisLocation = $location->find($get->locationId);
+        
+        if (is_null($thisLocation)) {
+            throw new Ot_Exception_Data('msg-error-noLocation');
+        }
+        
         $locationType = new LocationType();
         
-		$type = $locationType->getTypeById($thisLocation['locationType']);
-		$thisLocation->locationType = $type;
-    	
-    	$this->view->location = $thisLocation;
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
-    	
-    	$this->_helper->pageTitle("workshop-location-details:title", $thisLocation->name);
+        $type = $locationType->getTypeById($thisLocation['locationType']);
+        $thisLocation->locationType = $type;
+        
+        $this->view->location = $thisLocation;
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();
+        
+        $this->_helper->pageTitle("workshop-location-details:title", $thisLocation->name);
     }
     
     /**
@@ -117,7 +117,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             
                 $data = array(
                             'name'        => $form->getValue('name'),
-                			'locationType'=> $form->getValue('locationType'),
+                            'locationType'=> $form->getValue('locationType'),
                             'capacity'    => $form->getValue('capacity'),
                             'description' => $form->getValue('description'),
                             'address'     => $form->getValue('address'),
@@ -178,7 +178,7 @@ class Workshop_LocationController extends Zend_Controller_Action
                 $data = array(
                             'locationId'  => $form->getValue('locationId'),
                             'name'        => $form->getValue('name'),
-                			'locationType'=> $form->getValue('locationType'),
+                            'locationType'=> $form->getValue('locationType'),
                             'capacity'    => $form->getValue('capacity'),
                             'description' => $form->getValue('description'),
                             'address'     => $form->getValue('address'),

@@ -6,24 +6,24 @@
 <?php echo $this->form->getDisplayGroup('generalInformation');?>
 
 <fieldset id="fieldset-dateAndTime" class="formField"><legend>Date &amp; Time</legend>
-	<div class="widget-content">
-		<?php echo $this->form->date;?>
-		<?php echo $this->form->getSubform('startTime');?>
-		<?php echo $this->form->getSubform('endTime');?>
-	</div>
-	<div class="widget-footer ui-corner-bottom">
-	</div>
+    <div class="widget-content">
+        <?php echo $this->form->date;?>
+        <?php echo $this->form->getSubform('startTime');?>
+        <?php echo $this->form->getSubform('endTime');?>
+    </div>
+    <div class="widget-footer ui-corner-bottom">
+    </div>
 </fieldset>
 
 <fieldset id="fieldset-evaluations" class="formField"><legend>Evaluations</legend>
-	<div class="widget-content">
-		<?php echo $this->form->evaluationType;?>
-		<?php echo $this->form->formKey;?>
-		<?php echo $this->form->answerKey;?>
-		<a id="evaluationInfo" href="#">What is this?</a>
-	</div>
-	<div class="widget-footer ui-corner-bottom">
-	</div>
+    <div class="widget-content">
+        <?php echo $this->form->evaluationType;?>
+        <?php echo $this->form->formKey;?>
+        <?php echo $this->form->answerKey;?>
+        <a id="evaluationInfo" href="#">What is this?</a>
+    </div>
+    <div class="widget-footer ui-corner-bottom">
+    </div>
 </fieldset>
 
 <div style="clear : both"></div>
@@ -32,7 +32,7 @@
 </form>
 
 <div id="evaluationTip">
-	<?php echo $this->translate('workshop-schedule-info:tooltip');?>
+    <?php echo $this->translate('workshop-schedule-info:tooltip');?>
 </div>
 
 <?php include 'help.phtml'; ?>

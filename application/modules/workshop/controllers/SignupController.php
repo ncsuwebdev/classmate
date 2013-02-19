@@ -27,24 +27,24 @@
  *
  */
 class Workshop_SignupController extends Zend_Controller_Action 
-{	
+{    
     /**
      * The main page a person sees when they want to sign up for an event
      *
      */
     public function indexAction()
-    {    	
+    {        
         $get = Zend_Registry::get('getFilter');
         
         if (!isset($get->eventId)) {
-        	throw new Ot_Exception_Input('msg-error-eventIdNotSet');
+            throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
         $event = new Event();
         $thisEvent = $event->find($get->eventId);
         
         if (is_null($thisEvent)) {
-        	throw new Ot_Exception_Data('msg-error-noEvent');
+            throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
         $status = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $thisEvent->eventId);
@@ -53,20 +53,20 @@ class Workshop_SignupController extends Zend_Controller_Action
         
         if($this->_request->isPost()) {
 
-        	// Check if a password is required
-        	if(isset($thisEvent->password)) {
-        		$post = Zend_Registry::get('postFilter');
-        		
-        		// Check if the submitted password is correct
-  				if($post->password == $thisEvent->password) {
-  					$this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
-  				} else {
-  					$this->view->error = '* The password provided is incorrect';
-  				}      	
+            // Check if a password is required
+            if(isset($thisEvent->password)) {
+                $post = Zend_Registry::get('postFilter');
+                
+                // Check if the submitted password is correct
+                  if($post->password == $thisEvent->password) {
+                      $this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
+                  } else {
+                      $this->view->error = '* The password provided is incorrect';
+                  }          
   
-        	} else {
-        		$this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
-        	}
+            } else {
+                $this->_redirect('/workshop/signup/reserve/eventId/'. $get->eventId, null);
+            }
         }
         
         $location = new Location();        
@@ -80,7 +80,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $workshop = new Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
-        	throw new Ot_Exception_Data('msg-error-noWorkshop');
+            throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         $this->view->workshop = $thisWorkshop->toArray();
         
@@ -90,7 +90,7 @@ class Workshop_SignupController extends Zend_Controller_Action
 
         $inst = array();
         foreach ($instructors as $i) {
-        	$inst[] = $i['firstName'] . ' ' . $i['lastName'];
+            $inst[] = $i['firstName'] . ' ' . $i['lastName'];
         }
         
         $this->view->instructors = $inst;
@@ -102,20 +102,20 @@ class Workshop_SignupController extends Zend_Controller_Action
         
         $newEvents = array();
           
-	    foreach ($events as $e) {
-	    	if ($e['eventId'] != $thisEvent->eventId) {
-	            $e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $e['eventId']);
-    			$e['workshop'] = $thisWorkshop->toArray();
-    			$newEvents[] = $e;
-	    	}
-	    }   
-	    
-	    $this->view->events = $newEvents;
+        foreach ($events as $e) {
+            if ($e['eventId'] != $thisEvent->eventId) {
+                $e['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $e['eventId']);
+                $e['workshop'] = $thisWorkshop->toArray();
+                $newEvents[] = $e;
+            }
+        }   
+        
+        $this->view->events = $newEvents;
         
         $this->view->status = $status;
         
-   		$this->view->layout()->setLayout('twocolumn');
-    	$this->view->layout()->rightContent = $this->view->render('signup/right.phtml');
+           $this->view->layout()->setLayout('twocolumn');
+        $this->view->layout()->rightContent = $this->view->render('signup/right.phtml');
     }
     
     /**
@@ -134,14 +134,14 @@ class Workshop_SignupController extends Zend_Controller_Action
         $thisEvent = $event->find($get->eventId);
         
         if (is_null($thisEvent)) {
-        	throw new Ot_Exception_Data('msg-error-noEvent');
+            throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
         $location = new Location();
         $thisLocation = $location->find($thisEvent->locationId);
         
         if (is_null($thisLocation)) {
-        	throw new Ot_Exception_Data('msg-error-noLocation');
+            throw new Ot_Exception_Data('msg-error-noLocation');
         }
 
         $workshop = new Workshop();
@@ -206,13 +206,13 @@ class Workshop_SignupController extends Zend_Controller_Action
         $trigger->setVariables($data);
         
         if ($status == 'waitlist') {
-        	$trigger->dispatch('Event_Signup_Waitlist');
+            $trigger->dispatch('Event_Signup_Waitlist');
         } else {
             $trigger->dispatch('Event_Signup');
         }
         
         if ($thisEvent->roleSize == $thisEvent->maxSize) {
-        	$trigger->dispatch('Event_Signup_Full');
+            $trigger->dispatch('Event_Signup_Full');
         }
         
         $this->_redirect('/');       
@@ -224,7 +224,7 @@ class Workshop_SignupController extends Zend_Controller_Action
      */
     public function cancelAction()
     {
-        $get = Zend_Registry::get('getFilter');	        
+        $get = Zend_Registry::get('getFilter');            
         
         if (!isset($get->eventId)) {
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
@@ -265,7 +265,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);        
         $inst = array();
         foreach ($instructors as $i) {
-        	$inst[] = $i['firstName'] . ' ' . $i['lastName'];
+            $inst[] = $i['firstName'] . ' ' . $i['lastName'];
         }
         $this->view->instructors = $inst;
         
@@ -282,72 +282,72 @@ class Workshop_SignupController extends Zend_Controller_Action
         }   
         
         $this->view->events = $newEvents;
-    	
+        
         $form = Ot_Form_Template::delete('cancelReservation', 'workshop-signup-cancel:cancel', 'workshop-signup-cancel:keep');
         
-    	if ($this->_request->isPost() && $form->isValid($_POST)) {
+        if ($this->_request->isPost() && $form->isValid($_POST)) {
  
-	        $instructorNames = array();
-	        $instructorEmails = array();
-	        
-	        foreach ($instructors as $i) {
-	            $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
-	            $instructorEmails[] = $i['emailAddress'];
-	        }
-        	        
+            $instructorNames = array();
+            $instructorEmails = array();
+            
+            foreach ($instructors as $i) {
+                $instructorNames[] = $i['firstName'] . ' ' . $i['lastName'];
+                $instructorEmails[] = $i['emailAddress'];
+            }
+                    
             $attendee->cancelReservation(Zend_Auth::getInstance()->getIdentity()->accountId, $thisEvent->eventId);
             
             $startDt = strtotime($thisEvent->date . ' ' . $thisEvent->startTime);
             $endDt   = strtotime($thisEvent->date . ' ' . $thisEvent->endTime);
         
-	        $data = array(
-	            'workshopName'              => $thisWorkshop->title,
-	            'workshopDate'              => date('m/d/Y', $startDt),
-	            'workshopStartTime'         => date('g:i a', $startDt),
-	            'workshopEndTime'           => date('g:i a', $endDt),
-	            'workshopMinimumEnrollment' => $thisEvent->minSize,
-	            'locationName'              => $thisLocation->name,
-	            'locationAddress'           => $thisLocation->address,
-	            'instructorNames'           => implode(', ', $instructorNames),
-	            'instructorEmails'          => implode(', ', $instructorEmails),
-	            'studentEmail'              => Zend_Auth::getInstance()->getIdentity()->emailAddress,
-	            'studentName'               => Zend_Auth::getInstance()->getIdentity()->firstName . ' ' . Zend_Auth::getInstance()->getIdentity()->lastName,
-	            'studentUsername'           => Zend_Auth::getInstance()->getIdentity()->username
-	        );       
-	        
+            $data = array(
+                'workshopName'              => $thisWorkshop->title,
+                'workshopDate'              => date('m/d/Y', $startDt),
+                'workshopStartTime'         => date('g:i a', $startDt),
+                'workshopEndTime'           => date('g:i a', $endDt),
+                'workshopMinimumEnrollment' => $thisEvent->minSize,
+                'locationName'              => $thisLocation->name,
+                'locationAddress'           => $thisLocation->address,
+                'instructorNames'           => implode(', ', $instructorNames),
+                'instructorEmails'          => implode(', ', $instructorEmails),
+                'studentEmail'              => Zend_Auth::getInstance()->getIdentity()->emailAddress,
+                'studentName'               => Zend_Auth::getInstance()->getIdentity()->firstName . ' ' . Zend_Auth::getInstance()->getIdentity()->lastName,
+                'studentUsername'           => Zend_Auth::getInstance()->getIdentity()->username
+            );       
+            
             $this->_helper->flashMessenger->addMessage($this->view->translate('msg-info-canceled', $thisWorkshop->title));
         
             $trigger = new Ot_Trigger();
             $trigger->setVariables($data);
-            $trigger->dispatch('Event_Cancel_Reservation');   	        
+            $trigger->dispatch('Event_Cancel_Reservation');               
 
             $account = new Ot_Account();
             
             if ($status != 'waitlist') {
-		    	$waiting = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
-		        if (count($waiting) != 0) {	            
-		            $newAccount = $account->find($waiting[0]['accountId']);
-		            
-		            if (!is_null($newAccount)) {
-		            	$attendee->makeReservation($newAccount->accountId, $thisEvent->eventId);
-		            	
-			            $data['studentEmail']    = $newAccount->emailAddress;
-			            $data['studentName']     = $newAccount->firstName . ' ' . $newAccount->lastName;
-			            $data['studentUsername'] = $newAccount->username;
-			            
-			            $trigger = new Ot_Trigger();
-			            $trigger->setVariables($data);
-			            $trigger->dispatch('Event_Waitlist_To_Attending'); 
-		            }  	            
-		        }	
+                $waiting = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
+                if (count($waiting) != 0) {                
+                    $newAccount = $account->find($waiting[0]['accountId']);
+                    
+                    if (!is_null($newAccount)) {
+                        $attendee->makeReservation($newAccount->accountId, $thisEvent->eventId);
+                        
+                        $data['studentEmail']    = $newAccount->emailAddress;
+                        $data['studentName']     = $newAccount->firstName . ' ' . $newAccount->lastName;
+                        $data['studentUsername'] = $newAccount->username;
+                        
+                        $trigger = new Ot_Trigger();
+                        $trigger->setVariables($data);
+                        $trigger->dispatch('Event_Waitlist_To_Attending'); 
+                    }                  
+                }    
             }        
         
             $this->_redirect('/');
-    	}
-    	
-    	$this->view->form = $form;
-    	$this->view->layout()->setLayout('twocolumn');
-    	$this->view->layout()->rightContent = $this->view->render('signup/right.phtml'); 
+        }
+        
+        $this->view->form = $form;
+        $this->view->layout()->setLayout('twocolumn');
+        $this->view->layout()->rightContent = $this->view->render('signup/right.phtml'); 
     }
     
     public function editAllReservationsAction()

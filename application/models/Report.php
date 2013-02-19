@@ -26,7 +26,7 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-class Report
+class App_Model_Report
 {
     
     public function getReportCsv($fromDate, $toDate)

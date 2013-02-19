@@ -1,3 +1,5 @@
 <?php
-class Bootstrap extends Ot_Bootstrap 
-{}
+class Bootstrap extends Ot_Application_Bootstrap_Bootstrap
+{
+    
+}

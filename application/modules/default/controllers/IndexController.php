@@ -39,65 +39,65 @@ class IndexController extends Zend_Controller_Action
             $this->view->hideFeature = true;
         }
         
-    	$event = new Event();
-    	$upcoming = $event->getEvents(null, null, null, time(), null, 'open', 5)->toArray();
-    	
-    	$workshop = new Workshop();
-    	
-    	foreach ($upcoming as &$u) {
-    		$u['workshop'] = $workshop->find($u['workshopId'])->toArray();
-    		if (Zend_Auth::getInstance()->hasIdentity()) {
-    			$u['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $u['eventId']);
-    		} else {
-    		    $u['status'] = '';
-    		}
-    	}
-    	
-    	$this->view->upcoming = $upcoming;
-    	
-    	$searchTerm = new Search_Term();
-    	
-    	$this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(5)->toArray();
-    	
-    	if (Zend_Auth::getInstance()->hasIdentity()) {
-    		$this->view->loggedIn = true;
-    	
-    		$myEvents = $event->getEventsForUser(Zend_Auth::getInstance()->getIdentity()->accountId);
+        $event = new Event();
+        $upcoming = $event->getEvents(null, null, null, time(), null, 'open', 5)->toArray();
         
-	        $this->view->myEvents = $myEvents['currentEvents'];
-	        $this->view->account = Zend_Auth::getInstance()->getIdentity()->toArray();
-    	}
-    	
-    	$this->_helper->layout->setLayout('homepage');
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
+        $workshop = new Workshop();
+        
+        foreach ($upcoming as &$u) {
+            $u['workshop'] = $workshop->find($u['workshopId'])->toArray();
+            if (Zend_Auth::getInstance()->hasIdentity()) {
+                $u['status'] = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $u['eventId']);
+            } else {
+                $u['status'] = '';
+            }
+        }
+        
+        $this->view->upcoming = $upcoming;
+        
+        $searchTerm = new Search_Term();
+        
+        $this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(5)->toArray();
+        
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            $this->view->loggedIn = true;
+        
+            $myEvents = $event->getEventsForUser(Zend_Auth::getInstance()->getIdentity()->accountId);
+        
+            $this->view->myEvents = $myEvents['currentEvents'];
+            $this->view->account = Zend_Auth::getInstance()->getIdentity()->toArray();
+        }
+        
+        $this->_helper->layout->setLayout('homepage');
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();
     }
     
     public function historyAction()
     {
-    	$account = new Ot_Account();
-    	
-    	$thisAccount = Zend_Auth::getInstance()->getIdentity();
-    	
-    	$get = Zend_Registry::get('getFilter');
-    	if (isset($get->accountId)) {
-    		if ($this->_helper->hasAccess('edit-all-reservations', 'workshop_signup')) {
-    			$thisAccount = $account->find($get->accountId);
-    		}
-    		
-    		if (is_null($thisAccount)) {
-    			throw new Ot_Exception_Data('msg-error-accountNotFound');
-    		}
-    	}
-    	
-    	if (is_null($thisAccount)) {
-    		throw new Ot_Exception_Data('msg-error-notLoggedIn');
-    	}
-    	
-    	$this->view->acl = array(
-    		'editAllReservations' => $this->_helper->hasAccess('edit-all-reservations', 'workshop_signup'),
-    	);
-    	
-    	$form = new Zend_Form();
+        $account = new Ot_Account();
+        
+        $thisAccount = Zend_Auth::getInstance()->getIdentity();
+        
+        $get = Zend_Registry::get('getFilter');
+        if (isset($get->accountId)) {
+            if ($this->_helper->hasAccess('edit-all-reservations', 'workshop_signup')) {
+                $thisAccount = $account->find($get->accountId);
+            }
+            
+            if (is_null($thisAccount)) {
+                throw new Ot_Exception_Data('msg-error-accountNotFound');
+            }
+        }
+        
+        if (is_null($thisAccount)) {
+            throw new Ot_Exception_Data('msg-error-notLoggedIn');
+        }
+        
+        $this->view->acl = array(
+            'editAllReservations' => $this->_helper->hasAccess('edit-all-reservations', 'workshop_signup'),
+        );
+        
+        $form = new Zend_Form();
         $form->setAttrib('id', 'accountForm')
              ->setMethod(Zend_Form::METHOD_GET)
              ->setDecorators(array(
@@ -113,7 +113,7 @@ class IndexController extends Zend_Controller_Action
         $accounts = $account->fetchAll(null, array('lastName', 'firstName'));
         
         foreach ($accounts as $a) {
-        	$accountSelect->addMultiOption($a->accountId, $a->firstName . ' ' . $a->lastName . ' (' . $a->username . ')');
+            $accountSelect->addMultiOption($a->accountId, $a->firstName . ' ' . $a->lastName . ' (' . $a->username . ')');
         }
                     
         $submit = $form->createElement('submit', 'submitButton', array('label' => 'default-index-history:lookup'));
@@ -131,21 +131,21 @@ class IndexController extends Zend_Controller_Action
               ))
              ->addElements(array($submit));
              
-    	$this->view->form = $form;
-    	
-    	$event = new Event();
-    	
-    	$myEvents = $event->getEventsForUser($thisAccount->accountId);
+        $this->view->form = $form;
+        
+        $event = new Event();
+        
+        $myEvents = $event->getEventsForUser($thisAccount->accountId);
         
         $this->view->myEvents = $myEvents['currentEvents'];
         $this->view->myPastEvents = $myEvents['pastEvents'];
         $this->view->account = $thisAccount->toArray();
 
-    	$this->view->hideFeature = true;
-    	$this->_helper->layout->setLayout('my');
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();    
+        $this->view->hideFeature = true;
+        $this->_helper->layout->setLayout('my');
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();    
 
-	    $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');
-	    $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.autocomplete.css');     	
+        $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');
+        $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.autocomplete.css');         
     }
 }

@@ -46,9 +46,9 @@ class Search_IndexController extends Zend_Controller_Action
         //echo $search;
         if ($search != '') {
             foreach ($tags as $t) {
-    	        if (strpos(strtolower($t->name), $search) !== false) {
-    	        	echo $t->name . "|" . $t->tagId . "\n";
-    	        }
+                if (strpos(strtolower($t->name), $search) !== false) {
+                    echo $t->name . "|" . $t->tagId . "\n";
+                }
             }
         }
     }
@@ -59,26 +59,26 @@ class Search_IndexController extends Zend_Controller_Action
      */
     public function reindexAction()
     {
-    	$form = Ot_Form_Template::delete('reindex', 'search-index-reindex:reindex');
-    	
-    	if ($this->_request->isPost() && $form->isValid($_POST)) {
-	    	set_time_limit(0);
-	    	
-	    	$workshop = new Workshop();
-	        	
-	        $workshops = $workshop->fetchAll();
-	        	
-	        foreach ($workshops as $w) {
-	        	$workshop->index($w);
-	        }
-	        
-	        $this->_helper->flashMessenger->addMessage('msg-info-reindexed');
-	        
-	        $this->_redirect('/');
-	        
-    	}
-    	
-    	$this->view->form = $form;
-    	$this->_helper->pageTitle('search-index-reindex:title');
+        $form = Ot_Form_Template::delete('reindex', 'search-index-reindex:reindex');
+        
+        if ($this->_request->isPost() && $form->isValid($_POST)) {
+            set_time_limit(0);
+            
+            $workshop = new Workshop();
+                
+            $workshops = $workshop->fetchAll();
+                
+            foreach ($workshops as $w) {
+                $workshop->index($w);
+            }
+            
+            $this->_helper->flashMessenger->addMessage('msg-info-reindexed');
+            
+            $this->_redirect('/');
+            
+        }
+        
+        $this->view->form = $form;
+        $this->_helper->pageTitle('search-index-reindex:title');
     }
 }

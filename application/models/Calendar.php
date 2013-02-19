@@ -26,7 +26,7 @@
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  *
  */
-class Calendar 
+class App_Model_Calendar 
 {
     
     public function getCalendar($month = null, $year = null, $location = null)
@@ -162,22 +162,22 @@ class Calendar
         $workshop = new Workshop();
         
         if ($week == 1) {
-        	
-        	$calData['prevWeekNum'] = 52;
-        	$calData['prevYear'] = $year - 1;
-        	$calData['nextWeekNum'] = 2;
-        	$calData['nextYear'] = $year;
+            
+            $calData['prevWeekNum'] = 52;
+            $calData['prevYear'] = $year - 1;
+            $calData['nextWeekNum'] = 2;
+            $calData['nextYear'] = $year;
         
         } else if ($week == 52) {
-        	
-        	$calData['prevWeekNum'] = 51;
+            
+            $calData['prevWeekNum'] = 51;
             $calData['prevYear'] = $year;
             $calData['nextWeekNum'] = 1;
             $calData['nextYear'] = $year + 1;
-        	
+            
         } else {
-        	
-        	$calData['prevWeekNum'] = $week - 1;
+            
+            $calData['prevWeekNum'] = $week - 1;
             $calData['prevYear'] = $year;
             $calData['nextWeekNum'] = $week + 1;
             $calData['nextYear'] = $year;

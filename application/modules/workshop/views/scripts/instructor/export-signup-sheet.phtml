@@ -7,43 +7,43 @@
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-instructor-export-signup-sheet:exportDetails"); ?></div>
     
     <form action="" method="post">
-    	<label>File Type:</label>
-    	<select id="fileType" name="fileType">
-    		<option value="pdf">Document (.pdf)</option>
-    		<option value="xls">MS Office Spreadsheet (.xlsx)</option>
-    		<option value="csv">Spreadsheet (.csv)</option>
-    	</select>
-    	
-    	<label>File name:</label>
-    	<input style="display: block;" type="text" name="fileName" />
-    	
-		<input type="submit" name="exportList" value="Export Signup Sheet" />
-		<a style="text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'index', 'eventId' => $this->event['eventId']), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-instructor-export-signup-sheet:Cancel'); ?></a>
+        <label>File Type:</label>
+        <select id="fileType" name="fileType">
+            <option value="pdf">Document (.pdf)</option>
+            <option value="xls">MS Office Spreadsheet (.xlsx)</option>
+            <option value="csv">Spreadsheet (.csv)</option>
+        </select>
+        
+        <label>File name:</label>
+        <input style="display: block;" type="text" name="fileName" />
+        
+        <input type="submit" name="exportList" value="Export Signup Sheet" />
+        <a style="text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'index', 'eventId' => $this->event['eventId']), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-instructor-export-signup-sheet:Cancel'); ?></a>
     </form>
     
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-instructor-export-signup-sheet:preview"); ?></div>
 <div id="exportPreview" style="">
-		<div id="header">
-	        <div class="header title"><?php echo $this->workshop['title']; ?></div>
-	        <div class="header"><?php echo $this->location['name']; ?></div>
-	        <div class="header">
-	            <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-	            (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-	            <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
-	        </div>
-	        <div class="header">
-	            <?php echo $this->translate('workshop-instructor-export-signup-sheet:instructor'); ?><?php echo (count($this->instructors) != 1) ? 's' : ''; ?>: <?php echo implode(',', $this->instructors); ?>
-	        </div>
+        <div id="header">
+            <div class="header title"><?php echo $this->workshop['title']; ?></div>
+            <div class="header"><?php echo $this->location['name']; ?></div>
+            <div class="header">
+                <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+                (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+                <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+            </div>
+            <div class="header">
+                <?php echo $this->translate('workshop-instructor-export-signup-sheet:instructor'); ?><?php echo (count($this->instructors) != 1) ? 's' : ''; ?>: <?php echo implode(',', $this->instructors); ?>
+            </div>
         </div>
         
         <table id="previewTable">
-        	<thead>
-        		<tr>
-        			<td>First Name</td>
-        			<td>Last Name</td>
-        			<td id="signature" width="70%">Signature</td>
-        		</tr>
-        	</thead>
+            <thead>
+                <tr>
+                    <td>First Name</td>
+                    <td>Last Name</td>
+                    <td id="signature" width="70%">Signature</td>
+                </tr>
+            </thead>
             <tbody>
                 <?php foreach (array_splice($this->attendeeList, 0, 20) as $a) : ?>
                     <tr>

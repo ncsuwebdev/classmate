@@ -30,13 +30,13 @@ require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
 
 class Workshop_CategoryController extends Zend_Controller_Action 
 {
-	
-	/**
+    
+    /**
      * Allows a user to view the list of workshop categories
      *
      */
-	public function indexAction() {
-		$this->view->acl = array(
+    public function indexAction() {
+        $this->view->acl = array(
             'add'          => $this->_helper->hasAccess('add'),
             'edit'         => $this->_helper->hasAccess('edit'),
             );
@@ -49,39 +49,39 @@ class Workshop_CategoryController extends Zend_Controller_Action
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         
         $this->_helper->pageTitle('workshop-category-index:title');
-	}
-	
-	/**
+    }
+    
+    /**
      * Allows a user to view the details of workshop category
      *
      */
-	public function detailsAction() {
-		$this->view->acl = array(
-        	'edit'   => $this->_helper->hasAccess('edit'),
+    public function detailsAction() {
+        $this->view->acl = array(
+            'edit'   => $this->_helper->hasAccess('edit'),
             'delete' => $this->_helper->hasAccess('delete')
         );      
         
-    	$get = Zend_Registry::get('getFilter');
-    	
-    	if (!isset($get->categoryId)) {
-    		throw new Ot_Exception_Input('msg-error-categoryIdNotSet');
-    	}
-    	
-    	$category = new Category();
-    	
-    	$thisCategory = $category->find($get->categoryId);
-    	
-    	if (is_null($thisCategory)) {
-    		throw new Ot_Exception_Data('msg-error-category');
-    	}
-    	
-    	$this->view->category = $thisCategory;
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
-    	
-    	$this->_helper->pageTitle("workshop-category-details:title", $thisCategory->name);
-	}
-	
-	/**
+        $get = Zend_Registry::get('getFilter');
+        
+        if (!isset($get->categoryId)) {
+            throw new Ot_Exception_Input('msg-error-categoryIdNotSet');
+        }
+        
+        $category = new Category();
+        
+        $thisCategory = $category->find($get->categoryId);
+        
+        if (is_null($thisCategory)) {
+            throw new Ot_Exception_Data('msg-error-category');
+        }
+        
+        $this->view->category = $thisCategory;
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();
+        
+        $this->_helper->pageTitle("workshop-category-details:title", $thisCategory->name);
+    }
+    
+    /**
      * Allows a user to add a workshop category
      *
      */
@@ -128,7 +128,7 @@ class Workshop_CategoryController extends Zend_Controller_Action
      * Allows a user to edit a workshop category
      *
      */
-	public function editAction()
+    public function editAction()
     {
         $messages = array();
         

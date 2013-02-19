@@ -4,7 +4,7 @@
  * of the files specified by the addFiles() method.
  *
  */
-class Zip
+class App_Model_Zip
 {
     /**
      * The path to the zip file to be created

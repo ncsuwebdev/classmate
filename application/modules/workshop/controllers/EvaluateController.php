@@ -72,7 +72,7 @@ class Workshop_EvaluateController extends Zend_Controller_Action
         }
         
         if ($eu->hasCompleted($thisAccount->accountId, $thisEvent->eventId)) {
-        	throw new Ot_Exception_Access('msg-error-alreadyEval');
+            throw new Ot_Exception_Access('msg-error-alreadyEval');
         }
                     
         $workshop = new Workshop();
@@ -87,7 +87,7 @@ class Workshop_EvaluateController extends Zend_Controller_Action
 
         $inst = array();
         foreach ($instructors as $i) {
-        	$inst[] = $i['firstName'] . ' ' . $i['lastName'];
+            $inst[] = $i['firstName'] . ' ' . $i['lastName'];
         }
         
         $this->view->instructors = $inst;
@@ -100,70 +100,70 @@ class Workshop_EvaluateController extends Zend_Controller_Action
         }
         $this->view->location = $thisLocation->toArray();
         
-    	if ($thisEvent->evaluationType == 'custom') {
-        	$form = $evaluation->form();
-        	$this->view->form = $form;
+        if ($thisEvent->evaluationType == 'custom') {
+            $form = $evaluation->form();
+            $this->view->form = $form;
         }
         
         if ($this->_request->isPost()) {
-        	
-        	if ($thisEvent->evaluationType == 'custom') {
-        	
-	        	if ($form->isValid($_POST)) {
-	        	    
-	        		
-	        		$custom = new Ot_Custom();
-	                $attributes = $custom->getAttributesForObject('evaluations');
-	        
-	                $data = array();
-	                foreach ($attributes as $a) {
-	                    $data[$a['attributeId']] = (is_null($form->getValue('custom_' . $a['attributeId']))) ? '' : $form->getValue('custom_' . $a['attributeId']);
-	                }                   
-	                    
-		            // custom attributes is the custom array that will be save by the CustomAttributes model
-		            $evaluation->saveEvaluation($thisEvent->eventId, $thisAccount->accountId, $data);
-		            
-		            $this->_helper->flashMessenger->addMessage('msg-info-evalThanks');
-		        
-		            $this->_redirect('/');        		
-	        	}
-	        	
-        	} elseif ($thisEvent->evaluationType == 'google' && isset($_POST['googleSubmit'])) {
+            
+            if ($thisEvent->evaluationType == 'custom') {
+            
+                if ($form->isValid($_POST)) {
+                    
+                    
+                    $custom = new Ot_Custom();
+                    $attributes = $custom->getAttributesForObject('evaluations');
+            
+                    $data = array();
+                    foreach ($attributes as $a) {
+                        $data[$a['attributeId']] = (is_null($form->getValue('custom_' . $a['attributeId']))) ? '' : $form->getValue('custom_' . $a['attributeId']);
+                    }                   
+                        
+                    // custom attributes is the custom array that will be save by the CustomAttributes model
+                    $evaluation->saveEvaluation($thisEvent->eventId, $thisAccount->accountId, $data);
+                    
+                    $this->_helper->flashMessenger->addMessage('msg-info-evalThanks');
+                
+                    $this->_redirect('/');                
+                }
+                
+            } elseif ($thisEvent->evaluationType == 'google' && isset($_POST['googleSubmit'])) {
 
-        		$eu = new Evaluation_User();
-	        	$dba = $eu->getAdapter();
-	        	
-	        	$dba->beginTransaction();
-	        
-		        $data = array('eventId'   => $get->eventId,
-		                      'accountId' => $thisAccount->accountId
-		        		);
-		                     
-		        try {
-		            $eu->insert($data);
-		        } catch (Exception $e) {
-		           	$dba->rollBack();
-		            throw $e;
-		        }
-		        
-		        $dba->commit();
-		        
-		        $this->_helper->flashMessenger->addMessage('msg-info-evalThanks');
-		        
-		        $this->_redirect('/');
-        	}
+                $eu = new Evaluation_User();
+                $dba = $eu->getAdapter();
+                
+                $dba->beginTransaction();
+            
+                $data = array('eventId'   => $get->eventId,
+                              'accountId' => $thisAccount->accountId
+                        );
+                             
+                try {
+                    $eu->insert($data);
+                } catch (Exception $e) {
+                       $dba->rollBack();
+                    throw $e;
+                }
+                
+                $dba->commit();
+                
+                $this->_helper->flashMessenger->addMessage('msg-info-evalThanks');
+                
+                $this->_redirect('/');
+            }
         }   
 
-    	if ($thisEvent->evaluationType == 'google') {
-        	$evaluationKeys = new Evaluation_Key();
-        	
-        	$keys = $evaluationKeys->find($get->eventId);
-        	
-	        if (is_null($keys)) {
-	            throw new Ot_Exception_Data('msg-error-noFormKey');
-	        }
-	        
-	        $this->view->keys = $keys->toArray();
+        if ($thisEvent->evaluationType == 'google') {
+            $evaluationKeys = new Evaluation_Key();
+            
+            $keys = $evaluationKeys->find($get->eventId);
+            
+            if (is_null($keys)) {
+                throw new Ot_Exception_Data('msg-error-noFormKey');
+            }
+            
+            $this->view->keys = $keys->toArray();
         }
         
         $this->_helper->pageTitle('workshop-evaluate-index:title');

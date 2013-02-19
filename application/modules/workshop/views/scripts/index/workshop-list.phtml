@@ -1,33 +1,33 @@
 <?php if (count($this->workshops) > 0): ?>
-	<table id="workshopTable" class="list">
-		<thead>
-			<tr class="ui-widget-header">
-				<th width="150">Workshop Title</th>
-				<th width="300">Description</th>
-				<th width="300">Prerequisites</th>
-				<th width="100">Status</th>
-			</tr>
-		</thead>
-		<tbody>
+    <table id="workshopTable" class="list">
+        <thead>
+            <tr class="ui-widget-header">
+                <th width="150">Workshop Title</th>
+                <th width="300">Description</th>
+                <th width="300">Prerequisites</th>
+                <th width="100">Status</th>
+            </tr>
+        </thead>
+        <tbody>
     <?php foreach ($this->workshops as $w): ?>
-    	<?php if (($w['status'] == 'disabled' && $this->acl['viewDisabled']) || $w['status'] == 'enabled') :?>
-    	<tr class="workshop">
-        	<td class="title">
-            	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $w['workshopId']), 'default', true); ?>"><?php echo $w['title']; ?></a>
+        <?php if (($w['status'] == 'disabled' && $this->acl['viewDisabled']) || $w['status'] == 'enabled') :?>
+        <tr class="workshop">
+            <td class="title">
+                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $w['workshopId']), 'default', true); ?>"><?php echo $w['title']; ?></a>
             </td>
             <td class="description">
             <?php echo !empty($w['description']) ? $this->truncate(strip_tags($w['description']), 200) : $this->translate('workshop-index-workshopList:noDescription'); ?>
             </td>
             <td>
-            	<?php echo !empty($w['prerequisites']) ? $this->truncate(strip_tags($w['description']), 200) : $this->translate('workshop-index-workshopList:noPrerequisites'); ?>
+                <?php echo !empty($w['prerequisites']) ? $this->truncate(strip_tags($w['description']), 200) : $this->translate('workshop-index-workshopList:noPrerequisites'); ?>
             </td>
             <td class="status <?php echo $w['status']; ?>">
-            	<?php echo ucwords($w['status']); ?>
+                <?php echo ucwords($w['status']); ?>
             </td>
         </tr>
         <?php endif;?>
     <?php endforeach; ?>
-    	</tbody>
+        </tbody>
     </table>
 <?php else : ?>
     <?php echo $this->translate('workshop-index-workshop-list:noWorkshops'); ?>

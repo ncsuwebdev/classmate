@@ -66,7 +66,7 @@
                     <?php if ($this->isEditable) : ?>
                         <div class="attendedStatus"><?php echo ($attendee['attended']) ? $this->translate('workshop-instructor-index:present') : $this->translate('workshop-instructor-index:absent'); ?></div>
                     <?php else :?>
-                    	<div class="attendedStatus"><?php echo ($attendee['attended']) ? $this->translate('workshop-instructor-index:attended') : $this->translate('workshop-instructor-index:notAttended'); ?></div>
+                        <div class="attendedStatus"><?php echo ($attendee['attended']) ? $this->translate('workshop-instructor-index:attended') : $this->translate('workshop-instructor-index:notAttended'); ?></div>
                     <?php endif; ?>
                     <?php if ($this->isEditable) : ?>
                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'action' => 'remove-attendee', 'eventId' => $this->event['eventId'], 'accountId' => $attendee['accountId']), 'default', true); ?>" title="<?php echo $this->translate("workshop-instructor-index:removeAttendee", $attendee['firstName']); ?>" id="removeAttendee" class="ui-state-default ui-corner-all linkButtonNoText" style="margin-right: 5px;"><span class="ui-icon ui-icon-minusthick"></span></a>

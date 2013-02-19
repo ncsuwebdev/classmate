@@ -2,9 +2,9 @@
 <div id="searchTerms">
     <div id="topTerms"><h2><?php echo $this->translate('workshop-index-top-terms:topSearchTerms'); ?></h2></div>
     <ol>
-    	<?php foreach ($this->topTerms as $t): ?>
-    	<li><a href="<?php echo $this->url(array('module' => 'workshop', 'search' => $t->term), 'default', true); ?>"><?php echo $t->term; ?></a></li>
-    	<?php endforeach; ?>
+        <?php foreach ($this->topTerms as $t): ?>
+        <li><a href="<?php echo $this->url(array('module' => 'workshop', 'search' => $t->term), 'default', true); ?>"><?php echo $t->term; ?></a></li>
+        <?php endforeach; ?>
     </ol>
 </div>
 <div id="searchTermsBottom"></div>

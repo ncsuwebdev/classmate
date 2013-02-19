@@ -1,112 +1,112 @@
 <div id="wsTitle">
-	<?php echo $this->translate("workshop-signup-index:header"); ?> 
-	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
+    <?php echo $this->translate("workshop-signup-index:header"); ?> 
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
 </div>
 
 <div id="status">
-	<?php if ($this->status == 'instructor'): ?>
-		<?php echo $this->translate("workshop-signup-index:instructor"); ?>
-		<br /><br />
-		<?php echo $this->translate("workshop-signup-index:instructorTools", array($this->baseUrl(), $this->event['eventId'])); ?>
-	<?php elseif ($this->status == 'attending'): ?>
-		<h3 id="signup"><?php echo $this->translate("workshop-signup-index:alreadySignedUp"); ?></h3>
-		<?php echo $this->translate("workshop-signup-index:accessReservation"); ?><br /><br />
-	<?php elseif ($this->status == 'waitlist'): ?>
-		<h3 id="signup"><?php echo $this->translate("workshop-signup-index:alreadyWaitlisted"); ?></h3>
-		<?php echo $this->translate("workshop-signup-index:accessWaitlist"); ?><br /><br />
-	<?php elseif ($this->status == 'restricted'): ?>
-		<div id="restricted" class="banner">
-	        <?php echo $this->translate("workshop-signup-index:accessRestricted"); ?>
-	    </div>
-	    <?php echo $this->translate("workshop-signup-index:restricted"); ?><br /><br />
-	<?php else: ?>
-	    <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
-	    	<h3 id="signup"><?php if ($this->event['maxSize'] - $this->event['roleSize'] == 1): ?><?php echo $this->translate("workshop-instructor-index:seatLeft", array($this->event['maxSize'])); ?><?php else: ?><?php echo $this->translate("workshop-instructor-index:seatsLeft", array($this->event['maxSize'] - $this->event['roleSize'], $this->event['maxSize'])); ?><?php endif; ?></h3>
+    <?php if ($this->status == 'instructor'): ?>
+        <?php echo $this->translate("workshop-signup-index:instructor"); ?>
+        <br /><br />
+        <?php echo $this->translate("workshop-signup-index:instructorTools", array($this->baseUrl(), $this->event['eventId'])); ?>
+    <?php elseif ($this->status == 'attending'): ?>
+        <h3 id="signup"><?php echo $this->translate("workshop-signup-index:alreadySignedUp"); ?></h3>
+        <?php echo $this->translate("workshop-signup-index:accessReservation"); ?><br /><br />
+    <?php elseif ($this->status == 'waitlist'): ?>
+        <h3 id="signup"><?php echo $this->translate("workshop-signup-index:alreadyWaitlisted"); ?></h3>
+        <?php echo $this->translate("workshop-signup-index:accessWaitlist"); ?><br /><br />
+    <?php elseif ($this->status == 'restricted'): ?>
+        <div id="restricted" class="banner">
+            <?php echo $this->translate("workshop-signup-index:accessRestricted"); ?>
+        </div>
+        <?php echo $this->translate("workshop-signup-index:restricted"); ?><br /><br />
+    <?php else: ?>
+        <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
+            <h3 id="signup"><?php if ($this->event['maxSize'] - $this->event['roleSize'] == 1): ?><?php echo $this->translate("workshop-instructor-index:seatLeft", array($this->event['maxSize'])); ?><?php else: ?><?php echo $this->translate("workshop-instructor-index:seatsLeft", array($this->event['maxSize'] - $this->event['roleSize'], $this->event['maxSize'])); ?><?php endif; ?></h3>
             <br />
             <?php echo $this->translate("workshop-signup-index:confirm"); ?><br />
-	    <?php else: ?>
-	        <?php if ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
-	        	<div id="fullClass" class="banner">
-				    <?php echo $this->translate("workshop-signup-index:onlyWaitlist"); ?>
-				</div>
-				<br />
-	            <?php echo $this->translate("workshop-signup-index:seatsTaken", array($this->event['maxSize'], $this->event['waitlistSize'] - $this->event['waitlistTotal'])); ?>
-	            <br /><br />
-	            <?php echo $this->translate("workshop-signup-index:confirm"); ?><br />
-	        <?php else: ?>  
-	            <div id="fullClass" class="banner">
-	            <?php echo $this->translate("workshop-signup-index:full"); ?>
-	            </div>
-	            <?php echo $this->translate("workshop-signup-index:tryAgain"); ?>
-	        <?php endif; ?>                  
-	    <?php endif; ?>
-	<?php endif; ?>
-	</div>
-	
+        <?php else: ?>
+            <?php if ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
+                <div id="fullClass" class="banner">
+                    <?php echo $this->translate("workshop-signup-index:onlyWaitlist"); ?>
+                </div>
+                <br />
+                <?php echo $this->translate("workshop-signup-index:seatsTaken", array($this->event['maxSize'], $this->event['waitlistSize'] - $this->event['waitlistTotal'])); ?>
+                <br /><br />
+                <?php echo $this->translate("workshop-signup-index:confirm"); ?><br />
+            <?php else: ?>  
+                <div id="fullClass" class="banner">
+                <?php echo $this->translate("workshop-signup-index:full"); ?>
+                </div>
+                <?php echo $this->translate("workshop-signup-index:tryAgain"); ?>
+            <?php endif; ?>                  
+        <?php endif; ?>
+    <?php endif; ?>
+    </div>
+    
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-evaluate-index:eventDetails"); ?></div>
 <div class="eventDetails">
-	<div class="when">
-		<div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
-		<div class="data">
-		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
-	    <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-	 	(<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-	 	<?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
-	 	</a>
-		</div>
-	</div>
- 	<div class="what">
-  		<div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
-  		<div class="data"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->event['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
-  	</div>
- 	</div>
- 	<div class="where">
- 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
- 		<div class="data">
- 			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $this->location['locationId']), 'default', true); ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
- 		</div>
- 	</div>		        
- 	<div class="instructors">
- 		<div class="info"><?php echo (count($this->instructors) > 1) ? $this->translate('workshop-instructor-index:instructors') : $this->translate('workshop-instructor-index:instructor'); ?>:</div>
+    <div class="when">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
         <div class="data">
- 		    <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
+        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
+        <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+         (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+         <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+         </a>
+        </div>
+    </div>
+     <div class="what">
+          <div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
+          <div class="data"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->event['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
+      </div>
+     </div>
+     <div class="where">
+         <div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
+         <div class="data">
+             <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $this->location['locationId']), 'default', true); ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+         </div>
+     </div>                
+     <div class="instructors">
+         <div class="info"><?php echo (count($this->instructors) > 1) ? $this->translate('workshop-instructor-index:instructors') : $this->translate('workshop-instructor-index:instructor'); ?>:</div>
+        <div class="data">
+             <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
         </div> 
     </div>         
- 	<div class="prerequisites">
- 		<div class="info"><?php echo $this->translate("workshop-schedule-eventDetails:prerequisites"); ?></div>
- 		<div class="data">
- 		    <?php echo $this->defaultVal($this->workshop['prerequisites'], $this->translate("workshop-instructor-index:noPreReq")); ?>
+     <div class="prerequisites">
+         <div class="info"><?php echo $this->translate("workshop-schedule-eventDetails:prerequisites"); ?></div>
+         <div class="data">
+             <?php echo $this->defaultVal($this->workshop['prerequisites'], $this->translate("workshop-instructor-index:noPreReq")); ?>
         </div> 
     </div> 
 </div>
 
 
 <form method="POST" action="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'index', 'eventId' => $this->event['eventId']), 'default', true);?>">
-	<?php if (isset($this->event['password']) && $this->event['password'] != ''):?>
-		<div class="sectionBar ui-widget-header ui-corner-left">Password</div>
-		<div class="password">
-			<div class="info">The instructor has specified a password that is required for you to attend this event.</div>
-		</div>
-		<br />
-		<?php if (isset($this->error)) :?>
-			<div class="error" style="color:#f00;" ><?php echo $this->error; ?></div>
-		<?php endif;?>
-		
-		
-		
-		<label><strong>Password: </strong></label>
-		<br />
-		<input type="text" name="password" />
-		<br />
-	<?php endif;?>
-	
-	<br />
-	
-	<?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
-		<input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkAttend"); ?>" style="font-size:23px;" />	
-    	<a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
+    <?php if (isset($this->event['password']) && $this->event['password'] != ''):?>
+        <div class="sectionBar ui-widget-header ui-corner-left">Password</div>
+        <div class="password">
+            <div class="info">The instructor has specified a password that is required for you to attend this event.</div>
+        </div>
+        <br />
+        <?php if (isset($this->error)) :?>
+            <div class="error" style="color:#f00;" ><?php echo $this->error; ?></div>
+        <?php endif;?>
+        
+        
+        
+        <label><strong>Password: </strong></label>
+        <br />
+        <input type="text" name="password" />
+        <br />
+    <?php endif;?>
+    
+    <br />
+    
+    <?php if ($this->event['roleSize'] < $this->event['maxSize']): ?>
+        <input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkAttend"); ?>" style="font-size:23px;" />    
+        <a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php elseif ($this->event['waitlistSize'] != 0 && $this->event['waitlistSize'] > $this->event['waitlistTotal']): ?>
-		<input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?>" style="font-size:23px;" />
-    	<a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
+        <input type="submit" value="<?php echo $this->translate("workshop-signup-index:linkWaitlist"); ?>" style="font-size:23px;" />
+        <a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php endif; ?>
 </form>

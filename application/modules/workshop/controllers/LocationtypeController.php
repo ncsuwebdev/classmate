@@ -27,8 +27,8 @@
  *
  */
 class Workshop_LocationtypeController extends Zend_Controller_Action 
-{	
-	
+{    
+    
     /**
      * Allows a user to view the list of locations type
      *
@@ -61,24 +61,24 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
                     'delete' => $this->_helper->hasAccess('delete')
                 );      
         
-    	$get = Zend_Registry::get('getFilter');
-    	
-    	if (!isset($get->typeId)) {
-    		throw new Ot_Exception_Input('msg-error-typeIdNotSet');
-    	}
-    	
-    	$locationType = new LocationType();
-    	
-    	$thisLocationType = $locationType->find($get->typeId);
-    	
-    	if (is_null($thisLocationType)) {
-    		throw new Ot_Exception_Data('msg-error-noLocationType');
-    	}
-    	
-    	$this->view->locationType = $thisLocationType;
-    	$this->view->messages = $this->_helper->flashMessenger->getMessages();
-    	
-    	$this->_helper->pageTitle("workshop-location-type-details:title", $thisLocationType->name);
+        $get = Zend_Registry::get('getFilter');
+        
+        if (!isset($get->typeId)) {
+            throw new Ot_Exception_Input('msg-error-typeIdNotSet');
+        }
+        
+        $locationType = new LocationType();
+        
+        $thisLocationType = $locationType->find($get->typeId);
+        
+        if (is_null($thisLocationType)) {
+            throw new Ot_Exception_Data('msg-error-noLocationType');
+        }
+        
+        $this->view->locationType = $thisLocationType;
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();
+        
+        $this->_helper->pageTitle("workshop-location-type-details:title", $thisLocationType->name);
     }
     
     /**
@@ -152,7 +152,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
             if ($form->isValid($_POST)) {
             
                 $data = array(
-                            'typeId'	  => $form->getValue('typeId'),
+                            'typeId'      => $form->getValue('typeId'),
                             'name'        => $form->getValue('name'),
                             'description' => $form->getValue('description')
                         );

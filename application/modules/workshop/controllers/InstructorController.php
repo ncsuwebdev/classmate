@@ -27,11 +27,11 @@
  *
  */
 class Workshop_InstructorController extends Zend_Controller_Action 
-{	
-	
-	protected function _checkValidViewer($instructorList)
-	{
-	    $iList = array();
+{    
+    
+    protected function _checkValidViewer($instructorList)
+    {
+        $iList = array();
         foreach ($instructorList as $i) {
             $iList[] = $i['accountId'];
         }
@@ -40,22 +40,22 @@ class Workshop_InstructorController extends Zend_Controller_Action
             && !in_array(Zend_Auth::getInstance()->getIdentity()->accountId, $iList)) {
                 throw new Ot_Exception_Access('msg-error-noWorkshopAccess');
         }
-	}
-	
-	/**
-	 * Allows a user to view all the intructor pages
-	 *
-	 */
-	public function viewAllInstructorPagesAction()
-	{}
+    }
+    
+    /**
+     * Allows a user to view all the intructor pages
+     *
+     */
+    public function viewAllInstructorPagesAction()
+    {}
 
-	
+    
     /**
      * The main instructor page for an event.
      *
      */
     public function indexAction()
-    {    	    	
+    {                
         $get = Zend_Registry::get('getFilter');
                 
         if (!isset($get->eventId)) {
@@ -174,74 +174,74 @@ class Workshop_InstructorController extends Zend_Controller_Action
         
         
         if($this->_request->isPost()) {
-        	
-        	$post = Zend_Registry::get('postFilter');
-        	
-        	if(!isset($post->fileType)) {
-	        	throw new Ot_Exception_Data('msg-error-noFileType');
-	        }
-        	
-        	$thisEvent = $thisEvent->toArray();
-        	$thisEvent['instructors'] = $instructorList;
-        	$thisEvent['location'] = $thisLocation['name'];
-        	$thisEvent['workshopTitle'] = $thisWorkshop['title'];
-        	$thisEvent['attendeeList'] = $attendeeList;
-        	
-        	
-        	
-        	$filename = isset($post->fileName) ? $post->fileName : 'Signup_sheet_' . str_replace(' ', '_', $thisWorkshop['name']) . '_' . date('m_d_Y');
-        	$path = APPLICATION_PATH . '/../cache/';
-        	
-        	if($post->fileType == 'pdf') {
-        		$filename .= '.pdf';
-        		
-        		$pdf = new Event_Pdf($filename);
-        		
-        		$pdfString = $pdf->generateSignupSheet($thisEvent);
-        		
-        		header('Content-Disposition: inline; filname=' . $filename);
-        		header('Content-length: ' . strlen($pdfString));
-        		header('Content-type: application/x-pdf');
-            	echo $pdfString;
-            	
-        	} else if ($post->fileType == 'xls') {
-        		$filename .= '.xlsx';
-        		$excel = new Event_Excel();
-        		
-        		$objPHPExcel = $excel->generateSignupSheet($thisEvent);
+            
+            $post = Zend_Registry::get('postFilter');
+            
+            if(!isset($post->fileType)) {
+                throw new Ot_Exception_Data('msg-error-noFileType');
+            }
+            
+            $thisEvent = $thisEvent->toArray();
+            $thisEvent['instructors'] = $instructorList;
+            $thisEvent['location'] = $thisLocation['name'];
+            $thisEvent['workshopTitle'] = $thisWorkshop['title'];
+            $thisEvent['attendeeList'] = $attendeeList;
+            
+            
+            
+            $filename = isset($post->fileName) ? $post->fileName : 'Signup_sheet_' . str_replace(' ', '_', $thisWorkshop['name']) . '_' . date('m_d_Y');
+            $path = APPLICATION_PATH . '/../cache/';
+            
+            if($post->fileType == 'pdf') {
+                $filename .= '.pdf';
+                
+                $pdf = new Event_Pdf($filename);
+                
+                $pdfString = $pdf->generateSignupSheet($thisEvent);
+                
+                header('Content-Disposition: inline; filname=' . $filename);
+                header('Content-length: ' . strlen($pdfString));
+                header('Content-type: application/x-pdf');
+                echo $pdfString;
+                
+            } else if ($post->fileType == 'xls') {
+                $filename .= '.xlsx';
+                $excel = new Event_Excel();
+                
+                $objPHPExcel = $excel->generateSignupSheet($thisEvent);
 
-        		$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+                $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 
-        		$objWriter->save($path . $filename);
+                $objWriter->save($path . $filename);
 
-        		header('Content-Disposition: attachment; filename=' . $filename);
-        		header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        		echo file_get_contents($path . $filename);
-        		
-        	} else if ($post->fileType == 'csv') {
-        		$filename .= '.csv';
-        		
-        		$outString = 'First Name,Last Name' . chr(10);
-        		
-        		foreach ($thisEvent['attendeeList'] as $a) {
-        			$outString .= $a['firstName'] . ',' . $a['lastName'] . chr(10);
-        		}
-        		
-        		header('Content-Disposition: attachment; filename=' . $filename);
-        		header('Content-Type: application/csv');
-        		
-        		echo $outString;
-        	}
-        	
-        	$this->_helper->layout->disableLayout();
-        	$this->_helper->viewRenderer->setNeverRender();
-        	
+                header('Content-Disposition: attachment; filename=' . $filename);
+                header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                echo file_get_contents($path . $filename);
+                
+            } else if ($post->fileType == 'csv') {
+                $filename .= '.csv';
+                
+                $outString = 'First Name,Last Name' . chr(10);
+                
+                foreach ($thisEvent['attendeeList'] as $a) {
+                    $outString .= $a['firstName'] . ',' . $a['lastName'] . chr(10);
+                }
+                
+                header('Content-Disposition: attachment; filename=' . $filename);
+                header('Content-Type: application/csv');
+                
+                echo $outString;
+            }
+            
+            $this->_helper->layout->disableLayout();
+            $this->_helper->viewRenderer->setNeverRender();
+            
         } else {
-        	$this->view->event = $thisEvent->toArray();
-        	$this->view->instructors = $instructorList;
-        	$this->view->location = $thisLocation->toArray();
-        	$this->view->workshop = $thisWorkshop->toArray();
-        	$this->view->attendeeList = $attendeeList;
+            $this->view->event = $thisEvent->toArray();
+            $this->view->instructors = $instructorList;
+            $this->view->location = $thisLocation->toArray();
+            $this->view->workshop = $thisWorkshop->toArray();
+            $this->view->attendeeList = $attendeeList;
         }
     }
     
@@ -342,20 +342,20 @@ class Workshop_InstructorController extends Zend_Controller_Action
      */
     public function addAttendeeAction()
     {
-    	if ($this->_request->isXmlHttpRequest()) {
+        if ($this->_request->isXmlHttpRequest()) {
            $this->_helper->layout->disableLayout();    
         } else {
             $this->_helper->pageTitle('workshop-instructor-addAttendee:title');
         } 
-    	
-    	$messages = array();
-    		
-    	$get = Zend_Registry::get('getFilter');
-    		
+        
+        $messages = array();
+            
+        $get = Zend_Registry::get('getFilter');
+            
         if (!isset($get->eventId)) {
             throw new Internal_Exception_Input('msg-error-eventIdNotSet');
         }
-	        
+            
         // lookup the event
         $event = new Event();
         $thisEvent = $event->find($get->eventId);
@@ -363,7 +363,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
             throw new Internal_Exception_Data('msg-error-noEvent');
         }
         
-	    $workshop = new Workshop();
+        $workshop = new Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
             throw new Internal_Exception_Data('msg-error-noWorkshop');
@@ -394,7 +394,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
         
         $waitlist = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
         
-	    $userExclude = array();
+        $userExclude = array();
         foreach ($attendeeList as $a) {
             $userExclude[] = $a['accountId'];
         }
@@ -427,46 +427,46 @@ class Workshop_InstructorController extends Zend_Controller_Action
         if ($this->_request->isPost()) {
             if ($form->isValid($_POST)) {
                 foreach ($form->getValue('users') as $accountId) {
-                	
-                	if (!in_array($accountId, $userExclude)) {
-                	    $account = new Ot_Account();       
+                    
+                    if (!in_array($accountId, $userExclude)) {
+                        $account = new Ot_Account();       
                         $user = $account->find($accountId);
         
                         if (!is_null($user)) {
-                        	$status = $attendee->makeReservation($accountId, $thisEvent->eventId, $form->getValue('type'));
-                        	
-                        	$data['studentEmail'] = $user->emailAddress;
-                        	$data['studentFirstName']  = $user->firstName;
-                        	$data['studentLastName']   = $user->lastName;
-                        	$data['studentUsername']   = $user->username;
-                        	$data['studentAccountId']  = $user->accountId;
-                        	
-                        	if ($status == 'waitlist') {
-        			            $waiting = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
-        			                    
-        			            $position = 1;
-        			                   
-        			            foreach ($waiting as $w) {
-        			                if ($accountId == $w['accountId']) {
-        			                    break;
-        			                }
-        			                $position++;
-        			            }
-        			    
-        			            $data['waitlistPosition'] = $position; 
+                            $status = $attendee->makeReservation($accountId, $thisEvent->eventId, $form->getValue('type'));
+                            
+                            $data['studentEmail'] = $user->emailAddress;
+                            $data['studentFirstName']  = $user->firstName;
+                            $data['studentLastName']   = $user->lastName;
+                            $data['studentUsername']   = $user->username;
+                            $data['studentAccountId']  = $user->accountId;
+                            
+                            if ($status == 'waitlist') {
+                                $waiting = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');
+                                        
+                                $position = 1;
+                                       
+                                foreach ($waiting as $w) {
+                                    if ($accountId == $w['accountId']) {
+                                        break;
+                                    }
+                                    $position++;
+                                }
+                        
+                                $data['waitlistPosition'] = $position; 
 
-        			            $trigger = new Ot_Trigger();
+                                $trigger = new Ot_Trigger();
                                 $trigger->setVariables($data);
                                 $trigger->dispatch('Instructor_Registered_User_For_Waitlist');
-        			            
-                        	} else {
-                        	    
-                        	    $trigger = new Ot_Trigger();
+                                
+                            } else {
+                                
+                                $trigger = new Ot_Trigger();
                                 $trigger->setVariables($data);
                                 $trigger->dispatch('Instructor_Registered_User');
-                        	}
+                            }
                         }
-                	}
+                    }
                 }
                 
                 $this->_helper->flashMessenger->addMessage('msg-info-userAdded');
@@ -592,7 +592,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
      *
      */
     public function takeRollAction()
-    {    	
+    {        
         if ($this->_request->isXmlHttpRequest()) {
            $this->_helper->layout->disableLayout();    
         } else {
@@ -686,7 +686,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
             $this->_helper->pageTitle('workshop-instructor-contact:title');
         }        
         
-    	$get = Zend_Registry::get('getFilter');
+        $get = Zend_Registry::get('getFilter');
 
         if (!isset($get->eventId)) {
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
@@ -714,18 +714,18 @@ class Workshop_InstructorController extends Zend_Controller_Action
         
         $form = $event->contactForm(array('eventId' => $eventId));
         
-    	if ($this->_request->isPost()) {
-    		if ($form->isValid($_POST)) {
-    	            	        
-        		$recipients = array();
-        		$attendees = new Event_Attendee();
-        		
+        if ($this->_request->isPost()) {
+            if ($form->isValid($_POST)) {
+                                
+                $recipients = array();
+                $attendees = new Event_Attendee();
+                
                 $recipients = $attendees->getAttendeesForEvent($thisEvent->eventId, $form->getValue('recipients'));
                                 
                 if ($form->getValue('emailInstructors')) {
                     $instructor = new Event_Instructor();
                     $instructorList = $instructor->getInstructorsForEvent($thisEvent->eventId);
-                	$recipients = array_merge($recipients, $instructorList);
+                    $recipients = array_merge($recipients, $instructorList);
                 }
                 
                 $this->_checkValidViewer($instructorList);
@@ -737,7 +737,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
                 $mail->addTo($thisAccount->emailAddress);
                 
                 foreach ($recipients as $r) {
-                	$mail->addBcc($r['emailAddress']);
+                    $mail->addBcc($r['emailAddress']);
                 }
                 
                 $eq = new Ot_Email_Queue();
@@ -747,20 +747,20 @@ class Workshop_InstructorController extends Zend_Controller_Action
                     'attributeId'    => $thisEvent->eventId,
                     'zendMailObject' => $mail,
                 );
-        		
+                
                 $eq->queueEmail($data);
                 
                 //$mail->send();
                 $this->_helper->flashMessenger->addMessage('msg-info-emailQueued');
-        		$this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
-    		} else {
-                $messages[] = "msg-error-formSubmitProblem";    		    
-    		}
-    	}
-    	
-    	$this->view->messages = $messages;
-    	$this->view->thisAccount = $thisAccount;
-    	$this->view->form = $form;
+                $this->_redirect('/workshop/instructor/?eventId=' . $thisEvent->eventId);
+            } else {
+                $messages[] = "msg-error-formSubmitProblem";                
+            }
+        }
+        
+        $this->view->messages = $messages;
+        $this->view->thisAccount = $thisAccount;
+        $this->view->form = $form;
     }
     
     
@@ -771,20 +771,20 @@ class Workshop_InstructorController extends Zend_Controller_Action
      */
     public function evaluationResultsAction()
     {
-    	$get = Zend_Registry::get('getFilter');
-    	
-    	if (!isset($get->eventId)) {
-    		throw new Ot_Exception_Input('msg-error-eventIdNotSet');
-    	}
-    	
-    	$event = new Event();
-    	
-    	$thisEvent = $event->find($get->eventId);
-    	if (is_null($thisEvent)) {
-    		throw new Ot_Exception_Data('msg-error-noEvent');
-    	}
-    	$this->view->event = $thisEvent->toArray();
-    	
+        $get = Zend_Registry::get('getFilter');
+        
+        if (!isset($get->eventId)) {
+            throw new Ot_Exception_Input('msg-error-eventIdNotSet');
+        }
+        
+        $event = new Event();
+        
+        $thisEvent = $event->find($get->eventId);
+        if (is_null($thisEvent)) {
+            throw new Ot_Exception_Data('msg-error-noEvent');
+        }
+        $this->view->event = $thisEvent->toArray();
+        
         $workshop = new Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
@@ -798,7 +798,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
         if (is_null($thisLocation)) {
             throw new Ot_Exception_Data('msg-error-noLocation');
         }   
-        $this->view->location = $thisLocation->toArray();  	
+        $this->view->location = $thisLocation->toArray();      
         
         $instructor = new Event_Instructor();
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
@@ -809,67 +809,67 @@ class Workshop_InstructorController extends Zend_Controller_Action
         }
         $this->view->instructors = $instructorList;
         
-        $this->_checkValidViewer($instructors);    	
+        $this->_checkValidViewer($instructors);        
         
         if($thisEvent['evaluationType'] == 'custom') {
-	        // get the evaluationId from the eventId
-	        $evaluation = new Evaluation();
-	        $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $thisEvent->eventId);
-	        $evaluations = $evaluation->fetchAll($where);
-	        if ($evaluations->count() == 0) {
-	            $this->view->noEvaluationsYet = true;
-	        }
-	        
-	        $this->view->totalEvaluations = $evaluations->count();
-	        
-	        $ca = new Ot_Custom();
-	                
-	        $questions = $ca->getAttributesForObject('evaluations');
-	        
-	        foreach ($questions as &$q) {
-	            $q['options'] = $ca->convertOptionsToArray($q['options']);
-	            
-	            $answers = array();
-	            foreach ($evaluations as $e) {
-	                $tmpAnswers = $ca->getData($q['objectId'], $e->evaluationId);
-	                
-	                $tmp = array();
-	                foreach ($tmpAnswers as $ta) {
-	                    $tmp[$ta['attribute']['attributeId']] = $ta['value'];
-	                }
-	                
-	                $answers[] = $tmp;
-	            }
-	           
-	            if ($q['type'] == 'ranking' || $q['type'] == 'select' || $q['type'] == 'radio') {
-	                foreach ($q['options'] as $value) {
-	                    $answerCount = 0;
-	                    
-	                    foreach ($answers as $a) {
-	                        if ($a[$q['attributeId']] == $value) {
-	                            $answerCount++;
-	                        }
-	                    }   
-	                    
-	                    $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
-	                }
-	            } else {
-	                foreach ($answers as $a) {
-	                    $q['results'][] = $a[$q['attributeId']];   
-	                }
-	            }
-	        }
-	
-	        $this->view->evaluationResults = $questions;  
+            // get the evaluationId from the eventId
+            $evaluation = new Evaluation();
+            $where = $evaluation->getAdapter()->quoteInto('eventId = ?', $thisEvent->eventId);
+            $evaluations = $evaluation->fetchAll($where);
+            if ($evaluations->count() == 0) {
+                $this->view->noEvaluationsYet = true;
+            }
+            
+            $this->view->totalEvaluations = $evaluations->count();
+            
+            $ca = new Ot_Custom();
+                    
+            $questions = $ca->getAttributesForObject('evaluations');
+            
+            foreach ($questions as &$q) {
+                $q['options'] = $ca->convertOptionsToArray($q['options']);
+                
+                $answers = array();
+                foreach ($evaluations as $e) {
+                    $tmpAnswers = $ca->getData($q['objectId'], $e->evaluationId);
+                    
+                    $tmp = array();
+                    foreach ($tmpAnswers as $ta) {
+                        $tmp[$ta['attribute']['attributeId']] = $ta['value'];
+                    }
+                    
+                    $answers[] = $tmp;
+                }
+               
+                if ($q['type'] == 'ranking' || $q['type'] == 'select' || $q['type'] == 'radio') {
+                    foreach ($q['options'] as $value) {
+                        $answerCount = 0;
+                        
+                        foreach ($answers as $a) {
+                            if ($a[$q['attributeId']] == $value) {
+                                $answerCount++;
+                            }
+                        }   
+                        
+                        $q['results'][] = array('answerLabel' => $value, 'answerCount' => $answerCount);
+                    }
+                } else {
+                    foreach ($answers as $a) {
+                        $q['results'][] = $a[$q['attributeId']];   
+                    }
+                }
+            }
+    
+            $this->view->evaluationResults = $questions;  
         } elseif ($thisEvent['evaluationType'] == 'google') {
-        	$evaluationKeys = new Evaluation_Key();
-        	$keys = $evaluationKeys->find($get->eventId);
-        	
-        	if (is_null($keys)) {
-	            throw new Ot_Exception_Data('msg-error-noFormKey');
-	        }
-        	
-        	$this->view->keys = $keys->toArray();
+            $evaluationKeys = new Evaluation_Key();
+            $keys = $evaluationKeys->find($get->eventId);
+            
+            if (is_null($keys)) {
+                throw new Ot_Exception_Data('msg-error-noFormKey');
+            }
+            
+            $this->view->keys = $keys->toArray();
         }
         
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.gchart.min.js');   

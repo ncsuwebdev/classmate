@@ -2,16 +2,16 @@
     <div id="modalLoading"></div>
 </div>
     <?php if ($this->acl['edit']): ?>
-	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton" id="editWorkshopButton"><?php echo $this->translate("workshop-index-details:linkEdit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
-	<?php endif; ?>
-	<div id="wsTitle">
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton" id="editWorkshopButton"><?php echo $this->translate("workshop-index-details:linkEdit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+    <?php endif; ?>
+    <div id="wsTitle">
         <?php if ($this->workshop['status'] == 'disabled'): ?>
         <div id="disabled">
-        	<span class="ui-icon ui-icon-closethick" style="float:left;"></span><span class="disabledText">DISABLED! </span><?php echo $this->translate("workshop-index-details:disabled"); ?>
+            <span class="ui-icon ui-icon-closethick" style="float:left;"></span><span class="disabledText">DISABLED! </span><?php echo $this->translate("workshop-index-details:disabled"); ?>
         </div>
-        <?php endif; ?>		
-		<?php echo $this->workshop['title']; ?>
-	</div>
+        <?php endif; ?>        
+        <?php echo $this->workshop['title']; ?>
+    </div>
     <?php if ($this->acl['edit']): ?>
     <div id="editorsView">
         <b><?php echo $this->translate("workshop-index-details:editors"); ?></b>
@@ -27,13 +27,13 @@
     </div>  
     <?php endif; ?>
     <div id="categoryView">
-    	<b><?php echo $this->translate("workshop-index-details:categories");?></b>
-    	<?php if(isset($this->category)): ?>
-    	<span><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'details', 'categoryId' => $this->category->categoryId), 'default', true); ?>"><?php echo $this->category->name;?></a></span>
-    	
-    	<?php else:?>
-    	<?php echo $this->translate("workshop-index-details:none");?>
-    	<?php endif;?>
+        <b><?php echo $this->translate("workshop-index-details:categories");?></b>
+        <?php if(isset($this->category)): ?>
+        <span><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'category', 'action' => 'details', 'categoryId' => $this->category->categoryId), 'default', true); ?>"><?php echo $this->category->name;?></a></span>
+        
+        <?php else:?>
+        <?php echo $this->translate("workshop-index-details:none");?>
+        <?php endif;?>
     </div>
     <div id="tagsView">
         <b><?php echo $this->translate("workshop-index-details:tags"); ?></b>
@@ -47,10 +47,10 @@
         <?php endif; ?>
         </div>
     </div>
-	<div id="descriptionView"><?php echo $this->defaultVal($this->workshop['description'], $this->translate("workshop-index-details:noDescription")); ?></div>    
-	
-	<div class="sectionBar ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-index-details:preReq"); ?></div>
-	
+    <div id="descriptionView"><?php echo $this->defaultVal($this->workshop['description'], $this->translate("workshop-index-details:noDescription")); ?></div>    
+    
+    <div class="sectionBar ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-index-details:preReq"); ?></div>
+    
     <div id="prerequisitesView"><?php echo $this->defaultVal($this->workshop['prerequisites'], $this->translate("workshop-index-details:noPreReq")); ?></div>
     
     <?php if ($this->acl['addDocuments'] || count($this->documents) != 0): ?>
@@ -61,60 +61,60 @@
     <?php if ($this->acl['addDocuments']): ?>
     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'add-document', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("workshop-index-details:addDocument"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
     <?php endif; ?>      
-	<div id="documents">
-		<?php if (count($this->documents) != 0): ?>
-			<?php echo $this->translate("workshop-index-details:clickIcon"); ?>
-		    <?php foreach ($this->documents as $d): ?>
-		    <div class="document">
-	        	<?php if ($this->acl['editDocument'] || $this->acl['deleteDocument']): ?>
-	        	<div class="buttons">
-	        		<?php if ($this->acl['editDocument']): ?>
-	        		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
-	        		<?php endif; ?>
-	        		<?php if ($this->acl['deleteDocument']): ?>
-	        		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'delete-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
-	        		<?php endif; ?>
-	        	</div>
-	        	<?php endif; ?>		    
-		        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'download-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>">
-		            <div class="icon docType-<?php echo $d['type']; ?>"></div>
-			    </a>
-			    <span class="name"><?php echo $this->truncate($d['name'], 50); ?></span> (<span class="filesize"><?php echo $d['filesize']; ?> <?php echo $this->translate("workshop-index-details:bytes"); ?></span>)
-			    <span class="description"><?php echo $this->defaultVal($d['description'], $this->translate("workshop-index-details:noDescription")); ?></span>
-		    </div>
-		    <?php endforeach; ?>
-		<?php else: ?>
-		<div class="none"><?php echo $this->translate("workshop-index-details:noResources"); ?></div>
-		<?php endif; ?>
-		</div>
-	<?php endif; ?>
-	<div class="ui-helper-clearfix"></div>
+    <div id="documents">
+        <?php if (count($this->documents) != 0): ?>
+            <?php echo $this->translate("workshop-index-details:clickIcon"); ?>
+            <?php foreach ($this->documents as $d): ?>
+            <div class="document">
+                <?php if ($this->acl['editDocument'] || $this->acl['deleteDocument']): ?>
+                <div class="buttons">
+                    <?php if ($this->acl['editDocument']): ?>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+                    <?php endif; ?>
+                    <?php if ($this->acl['deleteDocument']): ?>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'delete-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>            
+                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'download-document', 'workshopDocumentId' => $d['workshopDocumentId']), 'default', true); ?>">
+                    <div class="icon docType-<?php echo $d['type']; ?>"></div>
+                </a>
+                <span class="name"><?php echo $this->truncate($d['name'], 50); ?></span> (<span class="filesize"><?php echo $d['filesize']; ?> <?php echo $this->translate("workshop-index-details:bytes"); ?></span>)
+                <span class="description"><?php echo $this->defaultVal($d['description'], $this->translate("workshop-index-details:noDescription")); ?></span>
+            </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+        <div class="none"><?php echo $this->translate("workshop-index-details:noResources"); ?></div>
+        <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <div class="ui-helper-clearfix"></div>
     <div class="sectionBar ui-widget-header ui-corner-left">      
         <?php echo $this->translate("workshop-index-details:onlineResources"); ?>
     </div>
-    	<?php if ($this->acl['addLink']): ?>
-    	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'add-link', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("workshop-index-details:addLink"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
-    	<?php endif; ?>  
-    	<div id="links">
+        <?php if ($this->acl['addLink']): ?>
+        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'add-link', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("workshop-index-details:addLink"); ?><span class="ui-icon ui-icon-plusthick"></span></a>
+        <?php endif; ?>  
+        <div id="links">
         <?php if (count($this->links) != 0): ?>
-	        <?php foreach ($this->links as $l): ?>
-	        <div class="link">
-	        	<?php if ($this->acl['editLink'] || $this->acl['deleteLink']): ?>
-	        	<div class="buttons">
-	        		<?php if ($this->acl['editLink']): ?>
-	        		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit-link', 'workshopLinkId' => $l['workshopLinkId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
-	        		<?php endif; ?>
-	        		<?php if ($this->acl['deleteLink']): ?>
-	        		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'delete-link', 'workshopLinkId' => $l['workshopLinkId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
-	        		<?php endif; ?>
-	        	</div>
-	        	<?php endif; ?>
-	        	<div class="linkName"><?php echo $l['name']; ?></div>
-		        <a href="<?php echo $l['url']; ?>" target="_blank"><?php echo $this->truncate($l['url'], 70); ?></a>
-		    </div>
-		    <?php endforeach; ?>
-		    <?php else: ?>
-	        <div class="none"><?php echo $this->translate("workshop-index-details:noResources"); ?></div>
-	    <?php endif; ?>
+            <?php foreach ($this->links as $l): ?>
+            <div class="link">
+                <?php if ($this->acl['editLink'] || $this->acl['deleteLink']): ?>
+                <div class="buttons">
+                    <?php if ($this->acl['editLink']): ?>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'edit-link', 'workshopLinkId' => $l['workshopLinkId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-edit"); ?><span class="ui-icon ui-icon-pencil"></span></a>
+                    <?php endif; ?>
+                    <?php if ($this->acl['deleteLink']): ?>
+                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'delete-link', 'workshopLinkId' => $l['workshopLinkId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton modalButton"><?php echo $this->translate("form-button-del"); ?><span class="ui-icon ui-icon-minusthick"></span></a>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
+                <div class="linkName"><?php echo $l['name']; ?></div>
+                <a href="<?php echo $l['url']; ?>" target="_blank"><?php echo $this->truncate($l['url'], 70); ?></a>
+            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <div class="none"><?php echo $this->translate("workshop-index-details:noResources"); ?></div>
+        <?php endif; ?>
     </div>
     <div class="ui-helper-clearfix"></div>

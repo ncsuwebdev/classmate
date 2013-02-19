@@ -1,170 +1,170 @@
 <?php if ($this->acl['editAllReservations']): ?>
-	<div id="viewReservationsFor">
-		<?php echo $this->form; ?>
-	</div>
+    <div id="viewReservationsFor">
+        <?php echo $this->form; ?>
+    </div>
 <?php else: ?>
-	<div id="spacer"></div>
+    <div id="spacer"></div>
 <?php endif; ?>
 <div class="yui-u first">
-	<div id="homepagePaperLeft" class="homepagePaper">
-	<div class="ui-helper-clearfix"></div>
-	    <div id="yourColumnLeft" class="yourColumn">
-	    	<div id="myEventsHeaderLeft" class="myEventsHeader">
-	    	<?php echo $this->translate("default-index-history:pastEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
-	    	</div>
-	    	<div class="ui-helper-clearfix"></div>	    
-	        <div id="myEventsLeft" class="myEvents">
-	        	<?php if (count($this->myPastEvents) != 0): ?>
-		        <?php foreach ($this->myPastEvents as $e): ?>   
-		        <div class="myEvent ui-corner-all">
-		        	<div class="title">
-		        	    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
-		        		<?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
-			        	(<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
-			        	<?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
-			        	</a>
-			     	</div>
-		        	<div class="details">
-		        		<div class="what">
-			        		<div class="info"><?php echo $this->translate("default-index-history:what"); ?></div>
-			        		<div class="data">
-				        		<?php if ($e['status'] == 'instructor'): ?>
-					        		<?php echo $this->translate("default-index-history:taught"); ?> 
-					            <?php elseif ($e['status'] == 'attending'): ?>
-					            	<?php echo $this->translate("default-index-history:attended"); ?> 
-					            <?php elseif ($e['status'] == 'waitlist'): ?>
-					            	<?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
-					            <?php endif; ?>
-					        	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
-					       	</div>
-			        	</div>
-			        	<div class="where">
-			        		<div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
-			        		<div class="data">
-			        			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $e['location']['locationId']), 'default', true); ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
-			        		</div>
-			        	</div>		        
-			        	<div class="notes">
-			        		<div class="info"><?php echo $this->translate("default-index-history:notes"); ?></div>
-			        		<div class="data">
-			        			<?php echo $this->translate("default-index-history:taughtBy"); ?> 
-			                    <?php echo (!isset($e['instructors']) || count($e['instructors']) == 0) ? $this->translate('default-index-history:noInstructor') : implode(', ', $e['instructors']); ?>
-				             </div>
-		                </div>  
-	                </div>  
-	                <?php if ($e['status'] == 'instructor'): ?>
-	                <div class="ui-helper-clearfix"></div>
-		                <div class="tools">
-		                	<div class="info"><?php echo $this->translate("default-index-history:tools"); ?></div>
-		                	<div class="data">
-		                	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>                	
-		                	</div>
-		                </div>  
-		            <?php endif; ?>
-		        </div>
-		        <?php endforeach; ?>    
-		        <?php else: ?>
-		        <?php echo $this->translate("default-index-history:noPast"); ?>
-		        <?php endif; ?>    
-	        </div>  
-	    </div>
-	    <div class="ui-helper-clearfix"></div>
+    <div id="homepagePaperLeft" class="homepagePaper">
+    <div class="ui-helper-clearfix"></div>
+        <div id="yourColumnLeft" class="yourColumn">
+            <div id="myEventsHeaderLeft" class="myEventsHeader">
+            <?php echo $this->translate("default-index-history:pastEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
+            </div>
+            <div class="ui-helper-clearfix"></div>        
+            <div id="myEventsLeft" class="myEvents">
+                <?php if (count($this->myPastEvents) != 0): ?>
+                <?php foreach ($this->myPastEvents as $e): ?>   
+                <div class="myEvent ui-corner-all">
+                    <div class="title">
+                        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
+                        <?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
+                        (<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
+                        <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
+                        </a>
+                     </div>
+                    <div class="details">
+                        <div class="what">
+                            <div class="info"><?php echo $this->translate("default-index-history:what"); ?></div>
+                            <div class="data">
+                                <?php if ($e['status'] == 'instructor'): ?>
+                                    <?php echo $this->translate("default-index-history:taught"); ?> 
+                                <?php elseif ($e['status'] == 'attending'): ?>
+                                    <?php echo $this->translate("default-index-history:attended"); ?> 
+                                <?php elseif ($e['status'] == 'waitlist'): ?>
+                                    <?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
+                                <?php endif; ?>
+                                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
+                               </div>
+                        </div>
+                        <div class="where">
+                            <div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
+                            <div class="data">
+                                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $e['location']['locationId']), 'default', true); ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
+                            </div>
+                        </div>                
+                        <div class="notes">
+                            <div class="info"><?php echo $this->translate("default-index-history:notes"); ?></div>
+                            <div class="data">
+                                <?php echo $this->translate("default-index-history:taughtBy"); ?> 
+                                <?php echo (!isset($e['instructors']) || count($e['instructors']) == 0) ? $this->translate('default-index-history:noInstructor') : implode(', ', $e['instructors']); ?>
+                             </div>
+                        </div>  
+                    </div>  
+                    <?php if ($e['status'] == 'instructor'): ?>
+                    <div class="ui-helper-clearfix"></div>
+                        <div class="tools">
+                            <div class="info"><?php echo $this->translate("default-index-history:tools"); ?></div>
+                            <div class="data">
+                            <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>                    
+                            </div>
+                        </div>  
+                    <?php endif; ?>
+                </div>
+                <?php endforeach; ?>    
+                <?php else: ?>
+                <?php echo $this->translate("default-index-history:noPast"); ?>
+                <?php endif; ?>    
+            </div>  
+        </div>
+        <div class="ui-helper-clearfix"></div>
     </div>
 </div>    
 <div class="yui-u">
-	<div id="homepagePaperRight" class="homepagePaper">
-	<div class="ui-helper-clearfix"></div>
-	    <div id="yourColumnRight" class="yourColumn">
-	    	<div id="myEventsHeaderRight" class="myEventsHeader">
-	    	<?php echo $this->translate("default-index-history:currentEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
-	    	</div>
-	    	<div class="ui-helper-clearfix"></div>	    
-	        <div id="myEventsRight" class="myEvents">
-	        	<?php if (count($this->myEvents) != 0): ?>
-		        <?php foreach ($this->myEvents as $e): ?>   
-		        <div class="myEvent ui-corner-all">
-		        	<div class="title">
-		        	    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
-		        		<?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
-			        	(<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
-			        	<?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
-			        	</a>
-			     	</div>
-		        	<div class="details">
-		        		<div class="what">
-			        		<div class="info"><?php echo $this->translate("default-index-history:what"); ?></div>
-			        		<div class="data">
-				        		<?php if ($e['status'] == 'instructor'): ?>
-					        		<?php echo $this->translate("default-index-history:teaching"); ?> 
-					            <?php elseif ($e['status'] == 'attending'): ?>
-					            	<?php echo $this->translate("default-index-history:attending"); ?> 
-					            <?php elseif ($e['status'] == 'waitlist'): ?>
-					            	<?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
-					            <?php endif; ?>
-					        	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
-					       	</div>
-			        	</div>
-			        	<div class="where">
-			        		<div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
-			        		<div class="data">
-			        			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $e['location']['locationId']), 'default', true); ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
-			        		</div>
-			        	</div>		        
-			        	<div class="notes">
-			        		<div class="info"><?php echo $this->translate("default-index-history:notes"); ?></div>
-			        		<div class="data">
-				            	<?php if ($e['status'] == 'instructor'): ?>
-			                    	<?php if ($e['roleSize'] < $e['maxSize']): ?>
-			                        	<div class="seatAvailable"> <?php echo $this->translate("default-index-history:seatsAvailable", array($e['maxSize']  - $e['roleSize'], $e['maxSize'])); ?></div>
-				                    <?php else: ?>
-				                        <?php if ($e['waitlistSize'] != 0): ?>
-				                            <?php if ($e['waitlistTotal'] < $e['waitlistSize']): ?>
-				                                <div class="waitlistAvailable"> <?php echo $this->translate("default-index-history:waitlistAvailable", array($e['waitlistSize'] - $e['waitlistTotal'])); ?></div>
-				                            <?php else: ?>
-				                                <div class="fullClass"> <?php echo $this->translate("default-index-history:bothFull"); ?></div>
-				                            <?php endif; ?> 
-				                        <?php else: ?>
-				                        <div class="fullClass"> <?php echo $this->translate("default-index-history:seatsTaken", $e['maxSize']); ?>  </div>  
-				                        <?php endif; ?>
-				                    <?php endif; ?>				                <?php endif; ?>
-					                
-					            <div class="instructor"><?php echo $this->translate("default-index-history:taughtBy"); ?> </b>
-			                    <?php echo (!isset($e['instructors']) || count($e['instructors']) == 0) ? $this->translate('default-index-history:noInstructor') : implode(', ', $e['instructors']); ?>
-			                    </div> 
-				             </div>
-		                </div>  
-	                </div>  
-	                <?php if ($e['status'] == 'instructor' || $e['cancelable'] || ($e['status'] == 'attending' && ($e['evaluatable'] || $e['hasHandouts']))): ?>
-	                
-	                <div class="ui-helper-clearfix"></div>
-		                <div class="tools">
-		                	<div class="info"><?php echo $this->translate("default-index-history:tools"); ?></div>
-		                	<div class="data">
-				            	<?php if ($e['status'] == 'instructor'): ?>
-				                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>	            		
-				            	<?php else: ?>
-					                <?php if ($e['cancelable']): ?>
-					                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account['accountId']), 'default', true); ?>>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
-					                <?php endif; ?>
-						            <?php if ($e['status'] == 'attending' && $e['evaluatable']): ?>
-						            <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'evaluate', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>
-						            <?php endif; ?>
-				                    <?php if ($e['status'] == 'attending' && $e['hasHandouts']): ?>
-				                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'download-handouts', 'workshopId' => $e['workshop']['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkDownload"); ?><span class="ui-icon ui-icon-circle-arrow-s"></span></a>
-				                    <?php endif; ?>
-				                <?php endif; ?>		                	
-		                	</div>
-		                </div>  
-		                <?php endif; ?>
-		        </div>
-		        
-		        <?php endforeach; ?>    
-		        <?php else: ?>
-		        <?php echo $this->translate("default-index-history:noActive"); ?>
-		        <?php endif; ?>    
-	        </div>
-	    </div>
-	    <div class="ui-helper-clearfix"></div>
+    <div id="homepagePaperRight" class="homepagePaper">
+    <div class="ui-helper-clearfix"></div>
+        <div id="yourColumnRight" class="yourColumn">
+            <div id="myEventsHeaderRight" class="myEventsHeader">
+            <?php echo $this->translate("default-index-history:currentEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
+            </div>
+            <div class="ui-helper-clearfix"></div>        
+            <div id="myEventsRight" class="myEvents">
+                <?php if (count($this->myEvents) != 0): ?>
+                <?php foreach ($this->myEvents as $e): ?>   
+                <div class="myEvent ui-corner-all">
+                    <div class="title">
+                        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
+                        <?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
+                        (<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
+                        <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
+                        </a>
+                     </div>
+                    <div class="details">
+                        <div class="what">
+                            <div class="info"><?php echo $this->translate("default-index-history:what"); ?></div>
+                            <div class="data">
+                                <?php if ($e['status'] == 'instructor'): ?>
+                                    <?php echo $this->translate("default-index-history:teaching"); ?> 
+                                <?php elseif ($e['status'] == 'attending'): ?>
+                                    <?php echo $this->translate("default-index-history:attending"); ?> 
+                                <?php elseif ($e['status'] == 'waitlist'): ?>
+                                    <?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
+                                <?php endif; ?>
+                                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
+                               </div>
+                        </div>
+                        <div class="where">
+                            <div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
+                            <div class="data">
+                                <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $e['location']['locationId']), 'default', true); ?>"><?php echo $this->truncate($e['location']['name'], 50); ?></a>
+                            </div>
+                        </div>                
+                        <div class="notes">
+                            <div class="info"><?php echo $this->translate("default-index-history:notes"); ?></div>
+                            <div class="data">
+                                <?php if ($e['status'] == 'instructor'): ?>
+                                    <?php if ($e['roleSize'] < $e['maxSize']): ?>
+                                        <div class="seatAvailable"> <?php echo $this->translate("default-index-history:seatsAvailable", array($e['maxSize']  - $e['roleSize'], $e['maxSize'])); ?></div>
+                                    <?php else: ?>
+                                        <?php if ($e['waitlistSize'] != 0): ?>
+                                            <?php if ($e['waitlistTotal'] < $e['waitlistSize']): ?>
+                                                <div class="waitlistAvailable"> <?php echo $this->translate("default-index-history:waitlistAvailable", array($e['waitlistSize'] - $e['waitlistTotal'])); ?></div>
+                                            <?php else: ?>
+                                                <div class="fullClass"> <?php echo $this->translate("default-index-history:bothFull"); ?></div>
+                                            <?php endif; ?> 
+                                        <?php else: ?>
+                                        <div class="fullClass"> <?php echo $this->translate("default-index-history:seatsTaken", $e['maxSize']); ?>  </div>  
+                                        <?php endif; ?>
+                                    <?php endif; ?>                                <?php endif; ?>
+                                    
+                                <div class="instructor"><?php echo $this->translate("default-index-history:taughtBy"); ?> </b>
+                                <?php echo (!isset($e['instructors']) || count($e['instructors']) == 0) ? $this->translate('default-index-history:noInstructor') : implode(', ', $e['instructors']); ?>
+                                </div> 
+                             </div>
+                        </div>  
+                    </div>  
+                    <?php if ($e['status'] == 'instructor' || $e['cancelable'] || ($e['status'] == 'attending' && ($e['evaluatable'] || $e['hasHandouts']))): ?>
+                    
+                    <div class="ui-helper-clearfix"></div>
+                        <div class="tools">
+                            <div class="info"><?php echo $this->translate("default-index-history:tools"); ?></div>
+                            <div class="data">
+                                <?php if ($e['status'] == 'instructor'): ?>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>                        
+                                <?php else: ?>
+                                    <?php if ($e['cancelable']): ?>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account['accountId']), 'default', true); ?>>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
+                                    <?php endif; ?>
+                                    <?php if ($e['status'] == 'attending' && $e['evaluatable']): ?>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'evaluate', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>
+                                    <?php endif; ?>
+                                    <?php if ($e['status'] == 'attending' && $e['hasHandouts']): ?>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'download-handouts', 'workshopId' => $e['workshop']['workshopId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkDownload"); ?><span class="ui-icon ui-icon-circle-arrow-s"></span></a>
+                                    <?php endif; ?>
+                                <?php endif; ?>                            
+                            </div>
+                        </div>  
+                        <?php endif; ?>
+                </div>
+                
+                <?php endforeach; ?>    
+                <?php else: ?>
+                <?php echo $this->translate("default-index-history:noActive"); ?>
+                <?php endif; ?>    
+            </div>
+        </div>
+        <div class="ui-helper-clearfix"></div>
     </div>
 </div>
 

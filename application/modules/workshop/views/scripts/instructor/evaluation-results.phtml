@@ -1,92 +1,92 @@
 <div id="wsTitle">
-	<?php echo $this->translate("workshop-evaluate-index:header"); ?>
-	<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
+    <?php echo $this->translate("workshop-evaluate-index:header"); ?>
+    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
 </div>
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-evaluate-index:eventDetails"); ?></div>
 <div class="eventDetails">
-	<div class="when">
-		<div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
-		<div class="data">
-		<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
-	    <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-	 	(<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-	 	<?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
-	 	</a>
-		</div>
-	</div>
- 	<div class="what">
-  		<div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
-  		<div class="data"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->event['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
-  	</div>
- 	</div>
- 	<div class="where">
- 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
- 		<div class="data">
- 			<a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $this->location['locationId']), 'default', true); ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
- 		</div>
- 	</div>		        
- 	<div class="instructors">
- 		<div class="info"><?php echo $this->translate("workshop-evaluate-index:instructors"); ?></div>
- 		<div class="data">
- 		    <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
+    <div class="when">
+        <div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
+        <div class="data">
+        <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
+        <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
+         (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
+         <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+         </a>
+        </div>
+    </div>
+     <div class="what">
+          <div class="info"><?php echo $this->translate("workshop-evaluate-index:what"); ?></div>
+          <div class="data"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->event['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
+      </div>
+     </div>
+     <div class="where">
+         <div class="info"><?php echo $this->translate("workshop-evaluate-index:where"); ?></div>
+         <div class="data">
+             <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $this->location['locationId']), 'default', true); ?>"><?php echo $this->truncate($this->location['name'], 50); ?></a>
+         </div>
+     </div>                
+     <div class="instructors">
+         <div class="info"><?php echo $this->translate("workshop-evaluate-index:instructors"); ?></div>
+         <div class="data">
+             <?php echo (count($this->instructors) == 0) ? $this->translate('workshop-evaluate-index:noInstructor') : implode(', ', $this->instructors); ?>
         </div> 
     </div>  
 </div>
 <div class="sectionBar  ui-widget-header ui-corner-left"><?php echo $this->translate("workshop-instructor-evaluationResults:results"); ?></div>
 <?php if ($this->event['evaluationType'] == 'custom'):?>
-	<?php if ($this->noEvaluationsYet): ?>
-	    <p style="font-size: 1.2em;"><?php echo $this->translate("workshop-instructor-evaluationResults:noResults"); ?></p>
-	<?php else: ?>
-	<input type="hidden" id="totalEntries" value="<?php echo $this->totalEvaluations; ?>" />
-	<div id="questionPanes">
-	    <div class="questionContent">
-	        <?php foreach ($this->evaluationResults as $q): ?>
-	        	<div class="question">
-	        		<div class="questionTitle"><?php echo $q['label']; ?></div>
-	        		<div class="questionResults">
-	            <?php if ($q['type'] == 'radio' || $q['type'] == 'ranking' || $q['type'] == 'select'): ?>
-	                    <table id="question_<?php echo $q['attributeId']; ?>" class="graph" border="1">
-	                    	<thead>
-		                        <tr>
-		                            <?php foreach ($q['options'] as $opt): ?>
-		                            <th><?php echo $opt; ?></th>
-		                            <?php endforeach; ?>
-		                        </tr>
-		                    </thead>
-		                    <tbody>
-		                        <tr>
-		                        <?php foreach ($q['results'] as $r): ?>
-		                            <td><?php echo $r['answerCount']; ?></td>
-		                        <?php endforeach; ?>
-		                        </tr>
-		                    </tbody>
-	                    </table>
-	            <?php elseif ($q['type'] == 'text' || $q['type'] == 'textarea'): ?>
-	                            <?php foreach ($q['results'] as $r): ?>
-	                                <?php if ($r != ""): ?>
-	                                <div class="comment"><?php echo nl2br($r); ?></div>
-	                                <?php endif; ?>
-	                            <?php endforeach; ?>
-	            <?php elseif ($q['type'] == 'checkbox'): ?>
-	                        <div class="checkbox">
-	                            <?php 
-	                            $total = 0;
-	                            foreach ($q['results'] as $r) {
-	                            	if ($r == 1) {
-	                            		$total++;
-	                            	}
-	                            }
-	                            ?>
-	                            <?php echo $this->translate("workshop-instructor-evaluationResults:checked", array($total, $this->totalEvaluations)); ?>
-	                        </div>
-	            <?php endif; ?>
-	            	</div>
-	           	</div>
-	        <?php endforeach; ?>
-	    </div>
-	</div>
-	<?php endif; ?>
+    <?php if ($this->noEvaluationsYet): ?>
+        <p style="font-size: 1.2em;"><?php echo $this->translate("workshop-instructor-evaluationResults:noResults"); ?></p>
+    <?php else: ?>
+    <input type="hidden" id="totalEntries" value="<?php echo $this->totalEvaluations; ?>" />
+    <div id="questionPanes">
+        <div class="questionContent">
+            <?php foreach ($this->evaluationResults as $q): ?>
+                <div class="question">
+                    <div class="questionTitle"><?php echo $q['label']; ?></div>
+                    <div class="questionResults">
+                <?php if ($q['type'] == 'radio' || $q['type'] == 'ranking' || $q['type'] == 'select'): ?>
+                        <table id="question_<?php echo $q['attributeId']; ?>" class="graph" border="1">
+                            <thead>
+                                <tr>
+                                    <?php foreach ($q['options'] as $opt): ?>
+                                    <th><?php echo $opt; ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <?php foreach ($q['results'] as $r): ?>
+                                    <td><?php echo $r['answerCount']; ?></td>
+                                <?php endforeach; ?>
+                                </tr>
+                            </tbody>
+                        </table>
+                <?php elseif ($q['type'] == 'text' || $q['type'] == 'textarea'): ?>
+                                <?php foreach ($q['results'] as $r): ?>
+                                    <?php if ($r != ""): ?>
+                                    <div class="comment"><?php echo nl2br($r); ?></div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                <?php elseif ($q['type'] == 'checkbox'): ?>
+                            <div class="checkbox">
+                                <?php 
+                                $total = 0;
+                                foreach ($q['results'] as $r) {
+                                    if ($r == 1) {
+                                        $total++;
+                                    }
+                                }
+                                ?>
+                                <?php echo $this->translate("workshop-instructor-evaluationResults:checked", array($total, $this->totalEvaluations)); ?>
+                            </div>
+                <?php endif; ?>
+                    </div>
+                   </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
 <?php else: ?>
-	<iframe frameborder="0" style="width : 100%;" height="300" src='https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<?php echo $this->keys['answerKey']; ?>&single=true&gid=0&output=html'></iframe>
+    <iframe frameborder="0" style="width : 100%;" height="300" src='https://spreadsheets.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<?php echo $this->keys['answerKey']; ?>&single=true&gid=0&output=html'></iframe>
 <?php endif;?>
 
