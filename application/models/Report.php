@@ -31,10 +31,10 @@ class App_Model_Report
     
     public function getReportCsv($fromDate, $toDate)
     {        
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $workshop = new Workshop();
-        $location = new Location();
-        $attendee = new Event_Attendee();
+        $location = new App_Model_DbTable_Location();
+        $attendee = new App_Model_DbTable_EventAttendee();
         
         // go ahead and get all the workshops so we don't have to do loads of DB queries
         $workshopList = $workshop->fetchAll();

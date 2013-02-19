@@ -70,7 +70,7 @@ class App_Model_DbTable_Location extends Ot_Db_Table
         $status->addMultiOption('disabled', 'Disabled');
         $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));
 
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         $types = $locationType->fetchAll(null, 'name');
         
         $type = $form->createElement('select', 'locationType', array('label' => 'Location Type:'));

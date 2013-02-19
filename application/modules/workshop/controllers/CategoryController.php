@@ -28,7 +28,7 @@
  */
 require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
 
-class Workshop_CategoryController extends Zend_Controller_Action 
+class WorkshopCategoryController extends Zend_Controller_Action 
 {
     
     /**

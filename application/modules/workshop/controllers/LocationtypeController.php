@@ -40,7 +40,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
             'edit'         => $this->_helper->hasAccess('edit'),
             );
             
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
 
         $locationTypes = $locationType->fetchAll(null, 'name');
 
@@ -67,7 +67,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-typeIdNotSet');
         }
         
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         $thisLocationType = $locationType->find($get->typeId);
         
@@ -88,7 +88,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
     public function addAction()
     {
         $messages = array();
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         $form = $locationType->form();
         
@@ -138,7 +138,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-typeIdNotSet');
         }      
         
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         $thisLocationType = $locationType->find($get->typeId);
         
@@ -194,7 +194,7 @@ class Workshop_LocationtypeController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-typeIdNotSet');
         }
         
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         $thisLocationType = $locationType->find($get->typeId);
         

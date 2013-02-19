@@ -12,7 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Workshop_Link
+ * @package    WorkshopLink
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  * @version    SVN: $Id: Bug.php 156 2007-07-20 12:57:10Z jfaustin@EOS.NCSU.EDU $
@@ -21,7 +21,7 @@
 /**
  * Model to do deal with workshop links
  *
- * @package    Workshop_Link
+ * @package    WorkshopLink
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Information Technology Division
  *
@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopLink extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_workshop_link';
+    protected $_name = 'tbl_WorkshopLink';
 
     /**
      * Primary key of the table

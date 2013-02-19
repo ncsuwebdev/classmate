@@ -33,7 +33,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_event_attendee';
+    protected $_name = 'tbl_EventAttendee';
 
     /**
      * Primary key of the table
@@ -116,8 +116,8 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
             return array();
         }
         
-        $event = new Event();
-        $workshop = new Workshop();
+        $event = new App_Model_DbTable_Event();
+        $workshop = new App_Model_DbTable_Workshop();
         
         $events = $event->getEvents(null, array_keys($eventIds), null, $startDt, $endDt, 'open')->toArray();
 
@@ -132,7 +132,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
     
     public function fillEvent($eventId)
     {
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $thisEvent = $event->find($eventId);
         
         if (($thisEvent->roleSize >= $thisEvent->maxSize) || $thisEvent->waitlistTotal == 0) {
@@ -156,7 +156,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
 
     public function makeReservation($accountId, $eventId, $overrideStatus = 'firstAvailable')
     {
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $status = $event->getStatusOfUserForEvent($accountId, $eventId);
         
         if ($status == 'restricted') {
@@ -265,7 +265,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
     
     public function cancelReservation($accountId, $eventId)
     {
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $status = $event->getStatusOfUserForEvent($accountId, $eventId);
         
         if ($status == 'restricted') {

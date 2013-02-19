@@ -44,7 +44,7 @@ class App_Model_DbTable_Tag extends Ot_Db_Table
     
     public function getTagsForAttribute($attributeName, $attributeId)
     {
-        $tagMap = new Tag_Map();
+        $tagMap = new App_Model_DbTable_TagMap();
         
         $where = $tagMap->getAdapter()->quoteInto('attributeName = ?', $attributeName) . 
            ' AND ';
@@ -76,7 +76,7 @@ class App_Model_DbTable_Tag extends Ot_Db_Table
     
     public function getAttributeIdsWithTag($attributeName, $tagId)
     {
-        $tagMap = new TagMap();
+        $tagMap = new App_Model_DbTable_TagMap();
         $ids = array();
         
         $dba = $this->getAdapter();
@@ -109,7 +109,7 @@ class App_Model_DbTable_Tag extends Ot_Db_Table
      */
     public function setTagsForAttribute($attributeName, $attributeId, $tags)
     {
-        $tagMap = new Tag_Map();
+        $tagMap = new App_Model_DbTable_TagMap();
         $dba = $tagMap->getAdapter();
         
         $dba->beginTransaction();

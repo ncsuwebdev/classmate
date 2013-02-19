@@ -68,7 +68,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             $this->view->eventId = $eventId;
             $this->view->startInEditMode = 1;
             
-            $e = new Event();
+            $e = new App_Model_DbTable_Event();
             $thisEvent = $e->find($eventId)->toArray();
             
             $this->view->locationId = $thisEvent['locationId'];
@@ -100,7 +100,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->_helper->pageTitle('workshop-schedule-index:title');
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
         $workshops = $workshop->fetchAll($where, 'title');
         
@@ -112,7 +112,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->view->workshops = $workshopList;
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
         $locations = $location->fetchAll($where, 'name');
         
@@ -180,11 +180,11 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         $endDate->setDay($endDate->get(Zend_Date::MONTH_DAYS));
         $endDate->addDay(6 - $endDate->get(Zend_Date::WEEKDAY_DIGIT));
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
                
         $events = $event->getEvents(null, null, $locationId, $startDate->getTimestamp(), $endDate->getTimestamp(), array('open', 'closed'), null)->toArray();
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         
         foreach ($events as &$e) {
             $e['startTime'] = strftime('%l:%M %p', strtotime($e['startTime']));
@@ -208,7 +208,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         if (!Zend_Auth::getInstance()->hasIdentity()) {
             $userEventStatus = false;
@@ -217,7 +217,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         }
 
         
-            $i = new Event_Instructor();
+            $i = new App_Model_DbTable_EventInstructor();
         $where = $i->getAdapter()->quoteInto('eventId = ?', $get->eventId);
         $results = $i->fetchAll($where);
         
@@ -245,8 +245,8 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->view->shortDisplay = $short;
         
-        $workshop = new Workshop();
-        $location = new Location();
+        $workshop = new App_Model_DbTable_Workshop();
+        $location = new App_Model_DbTable_Location();
         
         $thisEvent = $event->find($get->eventId);
         
@@ -254,7 +254,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
-        $i = new Event_Instructor();
+        $i = new App_Model_DbTable_EventInstructor();
         $currentInstructors = $i->getInstructorsForEvent($get->eventId);
         $instructor = array();
         foreach ($currentInstructors as $r) {
@@ -288,7 +288,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         $thisEvent = $event->find($get->eventId);
         
@@ -296,7 +296,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
-        $i = new Event_Instructor();
+        $i = new App_Model_DbTable_EventInstructor();
         $where = $i->getAdapter()->quoteInto('eventId = ?', $get->eventId);
         $results = $i->fetchAll($where);
         
@@ -313,7 +313,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         $thisEvent = $thisEvent->toArray();
         
         if($thisEvent['evaluationType'] == 'google') {
-            $evaluationKey = new Evaluation_Key();
+            $evaluationKey = new App_Model_DbTable_Evalutaion_Key();
             $keys = $evaluationKey->find($get->eventId);
             
             if(is_null($keys)) {
@@ -481,7 +481,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                     
                     $event->update($data, null);
                     
-                    $instructor = new Event_Instructor();
+                    $instructor = new App_Model_DbTable_EventInstructor();
                     
                     $where = $instructor->getAdapter()->quoteInto('eventId = ?', $eventId);
                     $instructor->delete($where);
@@ -492,7 +492,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                     
                     // move people on the waitlist (if any) to the newly added spots
                     if ($maxSize > $originalMaxSize) {
-                        $attendee = new Event_Attendee();
+                        $attendee = new App_Model_DbTable_EventAttendee();
                         $attendee->fillEvent($eventId);
                     }
                     
@@ -529,7 +529,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $get = Zend_Registry::get('getFilter');
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         $values = array();
         if (isset($get->date)) {
@@ -672,7 +672,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                     
                     $eventId = $event->insert($data);
                     
-                    $instructor = new Event_Instructor();
+                    $instructor = new App_Model_DbTable_EventInstructor();
                     
                     foreach ($instructors as $i) {
                         $instructor->insert(array('accountId' => $i, 'eventId' => $eventId));
@@ -708,9 +708,9 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $event = new Event();
-        $location = new Location();
+        $workshop = new App_Model_DbTable_Workshop();
+        $event = new App_Model_DbTable_Event();
+        $location = new App_Model_DbTable_Location();
         
         $thisEvent = $event->find($get->eventId);
         
@@ -718,7 +718,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
-        $i = new Event_Instructor();
+        $i = new App_Model_DbTable_EventInstructor();
         $where = $i->getAdapter()->quoteInto('eventId = ?', $get->eventId);
         $results = $i->fetchAll($where);
         
@@ -759,7 +759,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
                 throw $e;
             }
             
-            $attendee = new Event_Attendee();
+            $attendee = new App_Model_DbTable_EventAttendee();
             try {
                 $attendee->update($data, $where);
             } catch (Exception $e) {

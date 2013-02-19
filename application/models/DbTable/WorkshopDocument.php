@@ -21,7 +21,7 @@
 /**
  * Model to interact with the Documents
  *
- * @package    Workshop_Document
+ * @package    WorkshopDocument
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_workshop_document';
+    protected $_name = 'tbl_WorkshopDocument';
 
     /**
      * Primary key of the table
@@ -59,7 +59,7 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
             throw new Ot_Exception_Data('Target directory is not readable');
         }
         
-        $zip = new Zip($config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/all_handouts.zip');
+        $zip = new App_Model_Zip($config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/all_handouts.zip');
                
         $filesToAdd = array();
         

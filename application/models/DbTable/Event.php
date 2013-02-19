@@ -217,7 +217,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         
         $dba = $this->getAdapter();
         
-        $instructor = new Event_Instructor();
+        $instructor = new App_Model_DbTable_EventInstructor();
         $where = $dba->quoteInto('accountId = ?', $accountId) . 
            ' AND ' . 
            $dba->quoteInto('eventId = ?', $eventId);
@@ -230,7 +230,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         $where .= ' AND ' . 
            $dba->quoteInto('status != ?', 'canceled');
            
-        $attendee = new Event_Attendee();
+        $attendee = new App_Model_DbTable_EventAttendee();
         
         $res = $attendee->fetchAll($where);
         
@@ -249,12 +249,12 @@ class App_Model_DbTable_Event extends Ot_Db_Table
     {
            $config = Zend_Registry::get('config');
            
-           $attendee   = new Event_Attendee();
-           $instructor = new Event_Instructor();
-           $location   = new Location(); 
-           $document   = new Workshop_Document();
+           $attendee   = new App_Model_DbTable_EventAttendee();
+           $instructor = new App_Model_DbTable_EventInstructor();
+           $location   = new App_Model_DbTable_Location(); 
+           $document   = new App_Model_DbTable_WorkshopDocument();
            $account    = new Ot_Account();
-           $eu         = new Evaluation_User();
+           $eu         = new App_Model_DbTable_Evalutaion_User();
                           
            $stayOpen = new Zend_Date();
            $stayOpen->subHour($config->user->numHoursEvaluationAvailability->val);
@@ -432,7 +432,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         if(count($keys) > 0) {
             $keys['eventId'] = $eventId;
             
-            $evaluationKey = new Evaluation_Key();
+            $evaluationKey = new App_Model_DbTable_Evalutaion_Key();
             
             try {
                 $evaluationKey->insert($keys);
@@ -464,7 +464,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
             $inTransaction = true;
         }
         
-        $evaluationKey = new Evaluation_Key();
+        $evaluationKey = new App_Model_DbTable_Evalutaion_Key();
         
         if($data['evaluationType'] == 'google') {
             $keys['eventId'] = $data['eventId'];
@@ -515,7 +515,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
                      'Form',
              ));
 
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
         $workshops = $workshop->fetchAll($where, 'title');
         
@@ -528,7 +528,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         $workshopElement->setMultiOptions($workshopList)
                         ->setValue(isset($values['workshopId']) ? $values['workshopId'] : '');
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         $where = $location->getAdapter()->quoteInto('status = ?', 'enabled');
         $locations = $location->fetchAll($where, 'name');
         
@@ -863,7 +863,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
                      'Form',
              ));
 
-        $attendee = new Event_Attendee();
+        $attendee = new App_Model_DbTable_EventAttendee();
         
         $attendees = $attendee->getAttendeesForEvent($values['eventId'], 'attending');
         

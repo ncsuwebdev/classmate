@@ -40,10 +40,10 @@ class Workshop_LocationController extends Zend_Controller_Action
             'viewDisabled' => $this->_helper->hasAccess('view-disabled')
             );
             
-        $locationDb = new Location();
+        $locationDb = new App_Model_DbTable_Location();
 
         $locations = $locationDb->fetchAll(null, array('status', 'name'));
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         foreach($locations as $key => $location) {
             $type = $locationType->getTypeById($location['locationType']);
@@ -82,7 +82,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-locationIdNotSet');
         }
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         
         $thisLocation = $location->find($get->locationId);
         
@@ -90,7 +90,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noLocation');
         }
         
-        $locationType = new LocationType();
+        $locationType = new App_Model_DbTable_LocationType();
         
         $type = $locationType->getTypeById($thisLocation['locationType']);
         $thisLocation->locationType = $type;
@@ -108,7 +108,7 @@ class Workshop_LocationController extends Zend_Controller_Action
     public function addAction()
     {
         $messages = array();
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         
         $form = $location->form();
         
@@ -162,7 +162,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-locationIdNotSet');
         }      
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         
         $thisLocation = $location->find($get->locationId);
         
@@ -221,7 +221,7 @@ class Workshop_LocationController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-locationIdNotSet');
         }
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         
         $thisLocation = $location->find($get->locationId);
         

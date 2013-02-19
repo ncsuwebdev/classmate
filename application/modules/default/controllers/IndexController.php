@@ -32,17 +32,17 @@ class IndexController extends Zend_Controller_Action
      *
      */
     public function indexAction()
-    {        
+    {                        
         $get = Zend_Registry::get('getFilter');
         
         if (isset($get->shelf)) {
             $this->view->hideFeature = true;
         }
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $upcoming = $event->getEvents(null, null, null, time(), null, 'open', 5)->toArray();
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         
         foreach ($upcoming as &$u) {
             $u['workshop'] = $workshop->find($u['workshopId'])->toArray();
@@ -55,7 +55,7 @@ class IndexController extends Zend_Controller_Action
         
         $this->view->upcoming = $upcoming;
         
-        $searchTerm = new Search_Term();
+        $searchTerm = new App_Model_DbTable_SearchTerm();
         
         $this->view->popularSearchTerms = $searchTerm->getTopSearchTerms(5)->toArray();
         
@@ -69,7 +69,7 @@ class IndexController extends Zend_Controller_Action
         }
         
         $this->_helper->layout->setLayout('homepage');
-        $this->view->messages = $this->_helper->flashMessenger->getMessages();
+        $this->view->messages = $this->_helper->flashMessenger->getMessages();        
     }
     
     public function historyAction()
@@ -133,7 +133,7 @@ class IndexController extends Zend_Controller_Action
              
         $this->view->form = $form;
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         $myEvents = $event->getEventsForUser($thisAccount->accountId);
         

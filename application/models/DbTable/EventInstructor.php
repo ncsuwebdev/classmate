@@ -33,7 +33,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_event_instructor';
+    protected $_name = 'tbl_EventInstructor';
 
     /**
      * Primary key of the table
@@ -80,8 +80,8 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
             return array();
         }
         
-        $event = new Event();
-        $workshop = new Workshop();
+        $event = new App_Model_DbTable_Event();
+        $workshop = new App_Model_DbTable_Workshop();
         
         $events = $event->getEvents(null, $eventIds, null, $startDt, $endDt, 'open')->toArray();
 
@@ -131,7 +131,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
         
         // remove anyone who's either in the attendee list, waitlist, or an instructor
         // for this event so they can't be added to the list
-        $attendee = new Event_Attendee();
+        $attendee = new App_Model_DbTable_EventAttendee();
         $attendeeList = $attendee->getAttendeesForEvent($values['eventId'], 'attending');
         $waitlist = $attendee->getAttendeesForEvent($values['eventId'], 'waitlist');
         $instructors = $this->getInstructorsForEvent($values['eventId']);

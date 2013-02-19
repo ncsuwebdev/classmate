@@ -39,7 +39,7 @@ class Search_IndexController extends Zend_Controller_Action
 
         $search = $get->q;
         
-        $tag = new Tag();
+        $tag = new App_Model_DbTable_Tag();
         
         $tags = $tag->fetchAll();
         
@@ -64,7 +64,7 @@ class Search_IndexController extends Zend_Controller_Action
         if ($this->_request->isPost() && $form->isValid($_POST)) {
             set_time_limit(0);
             
-            $workshop = new Workshop();
+            $workshop = new App_Model_DbTable_Workshop();
                 
             $workshops = $workshop->fetchAll();
                 

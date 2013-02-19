@@ -44,7 +44,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
     
     public function getRelatedWorkshops($workshopId, $limit = 'none')
     {
-        $tag = new Tag();
+        $tag = new App_Model_DbTable_Tag();
         $tags = $tag->getTagsForAttribute('workshopId', $workshopId);
         
         $tagNames = array();
@@ -129,7 +129,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
             }
         }
         
-        $tag = new Tag();
+        $tag = new App_Model_DbTable_Tag();
         $tags = $tag->getTagsForAttribute('workshopId', $workshopId);
         
         $tagNames = array();

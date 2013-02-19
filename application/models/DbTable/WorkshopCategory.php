@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopCategory extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_workshop_category';
+    protected $_name = 'tbl_WorkshopCategory';
 
     /**
      * Primary key of the table

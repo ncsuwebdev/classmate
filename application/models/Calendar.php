@@ -105,7 +105,7 @@ class App_Model_Calendar
                 $sd = $calData['startDay']; 
             }
             
-            $event = new Event();
+            $event = new App_Model_DbTable_Event();
             
             // put the numbers in the rows
             for ($z = $sd; $z < 7; $z++) {
@@ -158,7 +158,7 @@ class App_Model_Calendar
     {
         
         $zd = new Zend_Date();
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $workshop = new Workshop();
         
         if ($week == 1) {

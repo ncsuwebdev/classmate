@@ -68,7 +68,7 @@ class App_Model_DbTable_Evaluation extends Ot_Db_Table
             throw $e;
         }
         
-        $eu = new Evaluation_User();
+        $eu = new App_Model_DbTable_Evalutaion_User();
         
         $data = array('eventId'   => $eventId,
                       'accountId' => $accountId

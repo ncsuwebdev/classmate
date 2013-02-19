@@ -40,7 +40,7 @@ class Workshop_SignupController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $thisEvent = $event->find($get->eventId);
         
         if (is_null($thisEvent)) {
@@ -69,7 +69,7 @@ class Workshop_SignupController extends Zend_Controller_Action
             }
         }
         
-        $location = new Location();        
+        $location = new App_Model_DbTable_Location();        
         $thisLocation = $location->find($thisEvent->locationId);        
         if (is_null($thisLocation)) {
             throw new Ot_Exception_Data('msg-error-noLocation');
@@ -77,7 +77,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $this->view->location = $thisLocation->toArray();
         
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
@@ -85,7 +85,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         $this->view->workshop = $thisWorkshop->toArray();
         
         
-        $instructor = new Event_Instructor();
+        $instructor = new App_Model_DbTable_EventInstructor();
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);   
 
         $inst = array();
@@ -130,27 +130,27 @@ class Workshop_SignupController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $thisEvent = $event->find($get->eventId);
         
         if (is_null($thisEvent)) {
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         $thisLocation = $location->find($thisEvent->locationId);
         
         if (is_null($thisLocation)) {
             throw new Ot_Exception_Data('msg-error-noLocation');
         }
 
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $instructor = new Event_Instructor();
+        $instructor = new App_Model_DbTable_EventInstructor();
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);
         
         $instructorNames = array();
@@ -162,7 +162,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         }
         
         $status = 'attending';
-        $attendee = new Event_Attendee();
+        $attendee = new App_Model_DbTable_EventAttendee();
         
         $status = $attendee->makeReservation(Zend_Auth::getInstance()->getIdentity()->accountId, $thisEvent->eventId);
         $thisEvent->roleSize++;
@@ -230,11 +230,11 @@ class Workshop_SignupController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event      = new Event();
-        $location   = new Location(); 
-        $workshop   = new Workshop();
-        $instructor = new Event_Instructor();
-        $attendee   = new Event_Attendee();
+        $event      = new App_Model_DbTable_Event();
+        $location   = new App_Model_DbTable_Location(); 
+        $workshop   = new App_Model_DbTable_Workshop();
+        $instructor = new App_Model_DbTable_EventInstructor();
+        $attendee   = new App_Model_DbTable_EventAttendee();
         
         $thisEvent = $event->find($get->eventId);
         if (is_null($thisEvent)) {

@@ -86,11 +86,11 @@ class Workshop_IndexController extends Zend_Controller_Action
 
         $this->view->form = $form;
         
-        $searchTerm = new Search_Term();
+        $searchTerm = new App_Model_DbTable_SearchTerm();
         $workshops = array();
         
         if ($get->search != '' || $get->categoryId != 0) {
-            $workshop = new Workshop();
+            $workshop = new App_Model_DbTable_Workshop();
             
             $query = new Zend_Search_Lucene_Search_Query_MultiTerm();
             
@@ -128,7 +128,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             'viewDisabled' => $this->_helper->hasAccess('view-disabled')
         );
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         
         $where = null;
         if (!$this->_helper->hasAccess('view-disabled')) {
@@ -152,14 +152,14 @@ class Workshop_IndexController extends Zend_Controller_Action
     
     
     /**
-     * The function to add a new workshop to the system.
+     * The function to add a new App_Model_DbTable_Workshop to the system.
      *
      */
     public function addAction()
     {       
-        $workshop = new Workshop();
-        $tag      = new Tag();
-        $we       = new Workshop_Editor();
+        $workshop = new App_Model_DbTable_Workshop();
+        $tag      = new App_Model_DbTable_Tag();
+        $we       = new App_Model_DbTable_WorkshopEditor();
         
         $form = $workshop->form(); 
                 
@@ -230,7 +230,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
         }
         
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         
         $thisWorkshop = $workshop->find($get->workshopId);
         
@@ -238,13 +238,13 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
                         
-        $document = new Workshop_Document();
+        $document = new App_Model_DbTable_WorkshopDocument();
         $this->view->documents = $document->getDocumentsForWorkshop($thisWorkshop->workshopId);
         
-        $tag = new Tag();
+        $tag = new App_Model_DbTable_Tag();
         $this->view->tags = $tag->getTagsForAttribute('workshopId', $thisWorkshop->workshopId);
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         $events = $event->getEvents($thisWorkshop->workshopId, null, null, time(), null, 'open')->toArray();
         
         $auth = Zend_Auth::getInstance();
@@ -260,10 +260,10 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         $this->view->events = $events;
         
-        $wl = new Workshop_Link();
+        $wl = new App_Model_DbTable_WorkshopLink();
         $this->view->links = $wl->getLinksForWorkshop($thisWorkshop->workshopId)->toArray();
         
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         $locations = $location->fetchAll();
         
         $locs = array();
@@ -273,7 +273,7 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         $this->view->locations = $locs;
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         
         $isEditor = false;        
         if ($this->_helper->hasAccess('edit-all-workshops')) {
@@ -297,7 +297,7 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         if ($this->view->acl['edit']) {
 
-            $we = new Workshop_Editor();
+            $we = new App_Model_DbTable_WorkshopEditor();
             $where = $we->getAdapter()->quoteInto('workshopId = ?', $thisWorkshop->workshopId);
             $results = $we->fetchAll($where);
             
@@ -341,9 +341,9 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $tag      = new Tag();
-        $we       = new Workshop_Editor();
+        $workshop = new App_Model_DbTable_Workshop();
+        $tag      = new App_Model_DbTable_Tag();
+        $we       = new App_Model_DbTable_WorkshopEditor();
         
         
         $thisWorkshop = $workshop->find($get->workshopId);
@@ -365,7 +365,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             array_push($thisWorkshopArray['tags'], $t['name']);
         }
         
-        $we = new Workshop_Editor();
+        $we = new App_Model_DbTable_WorkshopEditor();
         $where = $we->getAdapter()->quoteInto('workshopId = ?', $thisWorkshop->workshopId);
         $results = $we->fetchAll($where);
             
@@ -441,7 +441,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
         }
         
-        $document = new Workshop_Document();
+        $document = new App_Model_DbTable_WorkshopDocument();
 
         $config = Zend_Registry::get('config');
             
@@ -465,15 +465,15 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $document = new Workshop_Document();
+        $workshop = new App_Model_DbTable_Workshop();
+        $document = new App_Model_DbTable_WorkshopDocument();
         
         $thisWorkshop = $workshop->find($get->workshopId);
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        
@@ -549,8 +549,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopDocIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $document = new Workshop_Document();
+        $workshop = new App_Model_DbTable_Workshop();
+        $document = new App_Model_DbTable_WorkshopDocument();
         
         $thisDocument = $document->find($get->workshopDocumentId);
         if (is_null($thisDocument)) {
@@ -562,7 +562,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        
@@ -621,8 +621,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopDocIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $document = new Workshop_Document();
+        $workshop = new App_Model_DbTable_Workshop();
+        $document = new App_Model_DbTable_WorkshopDocument();
         
         $thisDocument = $document->find($get->workshopDocumentId);
         if (is_null($thisDocument)) {
@@ -634,7 +634,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        
@@ -683,8 +683,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdsNotSet');
         }
         
-        $workshop = new Workshop;
-        $document = new Workshop_Document();
+        $workshop = new App_Model_DbTable_Workshop;
+        $document = new App_Model_DbTable_WorkshopDocument();
         
         $thisWorkshop = $workshop->find($get->workshopId);
         if (is_null($thisWorkshop)) {
@@ -727,7 +727,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdsNotSet');
         }
         
-        $document = new Workshop_Document();
+        $document = new App_Model_DbTable_WorkshopDocument();
         
         $thisDocument = $document->find($get->workshopDocumentId);
         if (is_null($thisDocument)) {
@@ -768,15 +768,15 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $link = new Workshop_Link;
+        $workshop = new App_Model_DbTable_Workshop();
+        $link = new App_Model_DbTable_WorkshopLink;
         
         $thisWorkshop = $workshop->find($get->workshopId);
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        
@@ -830,8 +830,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopLinkIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $link = new Workshop_Link;
+        $workshop = new App_Model_DbTable_Workshop();
+        $link = new App_Model_DbTable_WorkshopLink;
         
         $thisLink = $link->find($get->workshopLinkId);
         if (is_null($thisLink)) {
@@ -843,7 +843,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        
@@ -896,8 +896,8 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-workshopLinkIdNotSet');
         }
         
-        $workshop = new Workshop();
-        $link = new Workshop_Link;
+        $workshop = new App_Model_DbTable_Workshop();
+        $link = new App_Model_DbTable_WorkshopLink;
         
         $thisLink = $link->find($get->workshopLinkId);
         if (is_null($thisLink)) {
@@ -909,7 +909,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         
-        $we = new Workshop_Editor();        
+        $we = new App_Model_DbTable_WorkshopEditor();        
         if (!$this->_helper->hasAccess('edit-all-workshops') && 
             !$we->isEditor($thisWorkshop->workshopId, Zend_Auth::getInstance()->getIdentity()->accountId)) {
             throw new Ot_Exception_Access('msg-error-noAccess');        

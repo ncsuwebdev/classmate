@@ -12,7 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Tag_Map
+ * @package    TagMap
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  * @version    SVN: $Id: $
@@ -21,7 +21,7 @@
 /**
  * Model to map tags to attributes
  *
- * @package    Tag_Map
+ * @package    TagMap
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
@@ -33,7 +33,7 @@ class App_Model_DbTable_TagMap extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_tag_map';
+    protected $_name = 'tbl_TagMap';
 
     /**
      * Primary key of the table

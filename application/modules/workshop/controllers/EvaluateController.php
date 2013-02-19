@@ -41,9 +41,9 @@ class Workshop_EvaluateController extends Zend_Controller_Action
             throw new Ot_Exception_Input('msg-error-eventIdNotSet');
         }
         
-        $event      = new Event();
-        $eu         = new Evaluation_User();
-        $evaluation = new Evaluation();
+        $event      = new App_Model_DbTable_Event();
+        $eu         = new App_Model_DbTable_Evalutaion_User();
+        $evaluation = new App_Model_DbTable_Evalutaion();
 
         $thisEvent = $event->find($get->eventId);
         if (is_null($thisEvent)) {
@@ -75,14 +75,14 @@ class Workshop_EvaluateController extends Zend_Controller_Action
             throw new Ot_Exception_Access('msg-error-alreadyEval');
         }
                     
-        $workshop = new Workshop();
+        $workshop = new App_Model_DbTable_Workshop();
         $thisWorkshop = $workshop->find($thisEvent->workshopId);        
         if (is_null($thisWorkshop)) {
             throw new Ot_Exception_Data('msg-error-noWorkshop');
         }
         $this->view->workshop = $thisWorkshop->toArray();
             
-        $instructor = new Event_Instructor();
+        $instructor = new App_Model_DbTable_EventInstructor();
         $instructors = $instructor->getInstructorsForEvent($thisEvent->eventId);   
 
         $inst = array();
@@ -93,7 +93,7 @@ class Workshop_EvaluateController extends Zend_Controller_Action
         $this->view->instructors = $inst;
             
         // lookup the location of the event
-        $location = new Location();
+        $location = new App_Model_DbTable_Location();
         $thisLocation = $location->find($thisEvent->locationId);
         if (is_null($thisLocation)) {
             throw new Ot_Exception_Data('msg-error-noLocation');
@@ -130,7 +130,7 @@ class Workshop_EvaluateController extends Zend_Controller_Action
                 
             } elseif ($thisEvent->evaluationType == 'google' && isset($_POST['googleSubmit'])) {
 
-                $eu = new Evaluation_User();
+                $eu = new App_Model_DbTable_Evalutaion_User();
                 $dba = $eu->getAdapter();
                 
                 $dba->beginTransaction();
@@ -155,7 +155,7 @@ class Workshop_EvaluateController extends Zend_Controller_Action
         }   
 
         if ($thisEvent->evaluationType == 'google') {
-            $evaluationKeys = new Evaluation_Key();
+            $evaluationKeys = new App_Model_DbTable_Evalutaion_Key();
             
             $keys = $evaluationKeys->find($get->eventId);
             

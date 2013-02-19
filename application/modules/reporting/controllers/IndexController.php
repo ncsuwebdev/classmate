@@ -37,7 +37,7 @@ class Reporting_IndexController extends Zend_Controller_Action
     {   
         $messages = array();
                      
-        $report = new Report();
+        $report = new App_Model_Report();
         $form = $report->form();
         
         if ($this->_request->isPost()) {

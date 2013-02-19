@@ -12,7 +12,7 @@
  * obtain it through the world-wide-web, please send an email
  * to itappdev@ncsu.edu so we can send you a copy immediately.
  *
- * @package    Evaluation_User
+ * @package    EvaluationUser
  * @category   Model
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  * @version    SVN: $Id: $
