@@ -3,21 +3,21 @@ class App_Cronjob_WorkshopEvaluationNotification implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-$vr = new Ot_Var_Register();
+        $vr = new Ot_Var_Register();
         
         $checkDtStart = new Zend_Date($this->_lastRunDt);
         
         $checkDtEnd = new Zend_Date();
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         $events = $event->getEvents(null, null, null, $checkDtStart->getTimestamp(), $checkDtEnd->getTimestamp(), 'open');
         
-        $location   = new Location();
-        $workshop   = new Workshop();
-        $instructor = new Event_Instructor();
-        $attendee   = new Event_Attendee();
-        $eu         = new Evaluation_User();
+        $location   = new App_Model_DbTable_Location();
+        $workshop   = new App_Model_DbTable_Workshop();
+        $instructor = new App_Model_DbTable_EventInstructor();
+        $attendee   = new App_Model_DbTable_EventAttendee();
+        $eu         = new App_Model_DbTable_EvaluationUser();
         
         foreach ($events as $e) {
             
@@ -62,20 +62,18 @@ $vr = new Ot_Var_Register();
                     'instructorEmails'          => implode(', ', $instructorEmails),
                 );      
                     
-                $attenders = $attendee->getAttendeesForEvent($e->eventId, 'attending', true);
-                
-                
+                $attenders = $attendee->getAttendeesForEvent($e->eventId, 'attending', true);                                
     
                 foreach ($attenders as $a) {
-                        $trigger = new Ot_Trigger();
-                        $trigger->setVariables($data);
-                        
-                        $trigger->accountId   = $a['accountId'];
-                        $trigger->studentEmail = $a['emailAddress'];
-                        $trigger->studentName  = $a['firstName'] . ' ' . $a['lastName'];
-                        $trigger->studentUsername = $a['username'];
-                        
-                        $trigger->dispatch('Event_Evaluation_Notification');
+                    $trigger = new Ot_Trigger();
+                    $trigger->setVariables($data);
+
+                    $trigger->accountId   = $a['accountId'];
+                    $trigger->studentEmail = $a['emailAddress'];
+                    $trigger->studentName  = $a['firstName'] . ' ' . $a['lastName'];
+                    $trigger->studentUsername = $a['username'];
+
+                    $trigger->dispatch('Event_Evaluation_Notification');
                 }
             }
         }        

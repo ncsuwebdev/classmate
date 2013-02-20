@@ -3,7 +3,7 @@ class App_Cronjob_WorkshopEvaluationReminder implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-$vr = new Ot_Var_Register();
+        $vr = new Ot_Var_Register();
         
         $checkDtStart = new Zend_Date($this->_lastRunDt);
         $checkDtStart->subHour($vr->getVar('numHoursEvaluationReminder')->getValue());
@@ -11,15 +11,15 @@ $vr = new Ot_Var_Register();
         $checkDtEnd = new Zend_Date();
         $checkDtEnd->subHour($vr->getVar('numHoursEvaluationReminder')->getValue());
         
-        $event = new Event();
+        $event = new App_Model_DbTable_Event();
         
         $events = $event->getEvents(null, null, null, $checkDtStart->getTimestamp(), $checkDtEnd->getTimestamp(), 'open');
         
-        $location   = new Location();
-        $workshop   = new Workshop();
-        $instructor = new Event_Instructor();
-        $attendee   = new Event_Attendee();
-        $eu         = new Evaluation_User();
+        $location   = new App_Model_DbTable_Location();
+        $workshop   = new App_Model_DbTable_Workshop();
+        $instructor = new App_Model_DbTable_EventInstructor();
+        $attendee   = new App_Model_DbTable_EventAttendee();
+        $eu         = new App_Model_DbTable_EvaluationUser();
         
         foreach ($events as $e) {
             

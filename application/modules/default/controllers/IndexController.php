@@ -68,7 +68,6 @@ class IndexController extends Zend_Controller_Action
             $this->view->account = Zend_Auth::getInstance()->getIdentity();
         }
         
-        //$this->_helper->layout->setLayout('homepage');
         $this->view->messages = $this->_helper->flashMessenger->getMessages();        
     }
     
@@ -109,9 +108,7 @@ class IndexController extends Zend_Controller_Action
         $accountSelect = $form->createElement('select', 'accountId', array('label' => 'default-index-history:viewReservations'));
         $accountSelect->setRequired(false);
                 
-        $account = new Ot_Model_DbTable_Account();
-        $accounts = $account->fetchAll(null, array('lastName', 'firstName'));
-        
+        $accounts = $account->fetchAll(null, array('lastName', 'firstName'));        
         foreach ($accounts as $a) {
             $accountSelect->addMultiOption($a->accountId, $a->firstName . ' ' . $a->lastName . ' (' . $a->username . ')');
         }
@@ -139,10 +136,9 @@ class IndexController extends Zend_Controller_Action
         
         $this->view->myEvents = $myEvents['currentEvents'];
         $this->view->myPastEvents = $myEvents['pastEvents'];
-        $this->view->account = $thisAccount->toArray();
+        $this->view->account = $thisAccount;
 
         $this->view->hideFeature = true;
-        $this->_helper->layout->setLayout('my');
         $this->view->messages = $this->_helper->flashMessenger->getMessages();    
 
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');

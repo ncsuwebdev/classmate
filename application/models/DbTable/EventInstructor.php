@@ -60,7 +60,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
         $account = new Ot_Model_DbTable_Account();
         $where = $account->getAdapter()->quoteInto('accountId IN (?)', $accountIds);
         
-        return $account->fetchAll($where, array('lastName', 'firstName'))->toArray();        
+        return $account->fetchAll($where, array('lastName', 'firstName'));        
     }
     
     public function getEventsForInstructor($accountId, $startDt = null, $endDt = null)
@@ -123,7 +123,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
         
         // get all the users available for the instructor list
         $otAccount = new Ot_Model_DbTable_Account();
-        $accounts = $otAccount->fetchAll(null, array('lastName', 'firstName'))->toArray();
+        $accounts = $otAccount->fetchAll(null, array('lastName', 'firstName'));
         $userList = array();
         foreach ($accounts as $a) {
             $userList[$a['accountId']] = $a['lastName'] . ", " . $a['firstName'];            

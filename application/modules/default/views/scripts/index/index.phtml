@@ -1,4 +1,24 @@
-        <div id="yourColumn">
+<div class="yui-u first">
+    <div class="homepageHeader ui-state-default">Upcoming Classes</div>
+    <div class="homepageContent">
+        <div id="paper">
+            <div>
+            <?php echo $this->translate('default-index-index:checkOut'); ?>
+            </div>
+        </div>
+        <?php echo $this->comingEvents($this->upcoming, 3); ?>
+    </div>
+</div>    
+<div class="yui-u">
+    <div class="homepageHeader ui-state-default">
+        <?php if ($this->isLoggedIn): ?>
+        <?php echo $this->translate("default-index-history:currentEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
+        <?php else: ?>
+        <?php echo $this->translate("default-index-index:myCurrent"); ?>
+        <?php endif; ?>
+    </div>
+
+    <div id="yourColumn">
         <?php if ($this->loggedIn): ?>
             <div id="myEventsHeaderRight" class="myEventsHeader"">
             <?php echo $this->translate("default-index-history:currentEvents", array($this->account->firstName, $this->account->lastName)); ?>
@@ -109,4 +129,6 @@
                 </div>   
               </div>         
         <?php endif;?>
-        </div>
+    </div>
+</div>
+<div class="ui-helper-clearfix"></div>

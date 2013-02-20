@@ -10,7 +10,7 @@
     <div class="ui-helper-clearfix"></div>
         <div id="yourColumnLeft" class="yourColumn">
             <div id="myEventsHeaderLeft" class="myEventsHeader">
-            <?php echo $this->translate("default-index-history:pastEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
+            <?php echo $this->translate("default-index-history:pastEvents", array($this->account->firstName, $this->account->lastName)); ?>
             </div>
             <div class="ui-helper-clearfix"></div>        
             <div id="myEventsLeft" class="myEvents">
@@ -76,7 +76,7 @@
     <div class="ui-helper-clearfix"></div>
         <div id="yourColumnRight" class="yourColumn">
             <div id="myEventsHeaderRight" class="myEventsHeader">
-            <?php echo $this->translate("default-index-history:currentEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
+            <?php echo $this->translate("default-index-history:currentEvents", array($this->account->firstName, $this->account->lastName)); ?>
             </div>
             <div class="ui-helper-clearfix"></div>        
             <div id="myEventsRight" class="myEvents">
@@ -144,7 +144,7 @@
                                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>                        
                                 <?php else: ?>
                                     <?php if ($e['cancelable']): ?>
-                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account['accountId']), 'default', true); ?>>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account->accountId), 'default', true); ?>>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
                                     <?php endif; ?>
                                     <?php if ($e['status'] == 'attending' && $e['evaluatable']): ?>
                                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'evaluate', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>

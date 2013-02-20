@@ -52,3 +52,89 @@ div.filterForm {
 	padding: 10px;
 	margin: 0 auto;
 }
+
+
+#rightColumn {
+    background-image: url(../images/rightbar.png);
+    background-repeat: repeat-x;
+    background-color: #D7D7D7;
+    padding: 20px 5px;
+}
+
+#rightColumn a {
+    color: #A00;
+}
+
+.homepageHeader, .myEventsHeader {
+    padding: 3px 6px;
+    font-weight: bold;
+    background-color: #EEE;
+    border: 1px solid #CCC;
+}
+
+.homepageContent, .myEvents {
+    padding: 14px 6px;
+    background-color: #f8f8f8;
+    border: 1px solid #CCC;
+    border-top: 0px;
+}
+
+#yourColumn .myEventsHeader {
+    display: none;
+}
+
+div.myEvent {
+	border-bottom: 1px dashed #CCC;
+	padding: 0px 0px 10px 0px;
+	margin-bottom: 10px;
+}
+
+div.myEvent div.title {
+    line-height: 26px;
+    padding: 0px 4px;
+    font-weight: bold;
+}
+
+div.myEvent div.details {
+    margin: 2px 5px 0px 5px;
+    min-height: 50px;
+}
+
+div.myEvent div.info {
+    font-weight: bold;
+    margin-right: 10px;
+    width: 50px;
+    float: left;
+}
+
+div.myEvent div.data {
+    margin-left: 62px;
+}
+
+div.myEvent div.tools {
+    margin: 8px 5px 14px 5px;
+}
+
+div#paper {
+    margin-bottom: 20px;
+}
+
+div.event {
+    margin: 10px 10px;
+    border-bottom: 1px dashed #999;
+    padding-bottom: 10px;
+}
+
+div.event div.text {
+	
+}
+
+div.event .workshopName {
+    padding: 3px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+div.event div.date, div.event div.time, div.event div.status {
+    padding: 1px 5px;
+}

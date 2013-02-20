@@ -42,14 +42,21 @@ class Workshop_LocationController extends Zend_Controller_Action
             
         $locationDb = new App_Model_DbTable_Location();
 
-        $locations = $locationDb->fetchAll(null, array('status', 'name'));
-        $locationType = new App_Model_DbTable_LocationType();
+        $locations = $locationDb->fetchAll(null, array('status', 'name'))->toArray();
         
-        foreach($locations as $key => $location) {
-            $type = $locationType->getTypeById($location['locationType']);
-            $location->locationType = $type['name'];
-            $locations[$key] = $location;
+        $locationType = new App_Model_DbTable_LocationType();
+        $locationTypes = $locationType->fetchAll();
+        
+        $locationTypeMap = array();
+        foreach ($locationTypes as $type) {
+            $locationTypeMap[$type->id] = $type->toArray();
         }
+        
+        foreach ($locations as &$location) {                
+            $location['locationType'] = (isset($locationTypeMap[$location['locationTypeId']])) ? $locationTypeMap[$location['locationTypeId']] : array();
+        }
+        
+        unset($location);
 
         $this->view->locations = $locations;
         $this->view->messages = $this->_helper->flashMessenger->getMessages();

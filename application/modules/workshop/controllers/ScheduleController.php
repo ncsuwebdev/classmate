@@ -101,8 +101,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         $this->_helper->pageTitle('workshop-schedule-index:title');
         
         $workshop = new App_Model_DbTable_Workshop();
-        $where = $workshop->getAdapter()->quoteInto('status = ?', 'enabled');
-        $workshops = $workshop->fetchAll($where, 'title');
+        $workshops = $workshop->fetchAll($workshop->getAdapter()->quoteInto('status = ?', 'enabled'), 'title');
         
         $workshopList = array();
         $workshopList[0] = "";
@@ -126,18 +125,8 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         
         $this->view->locationList = $locationList;
         
-        //get all the users available for the instructor list
-        $profile = new Ot_Model_DbTable_Account();
-        $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
-        
-        $instructors = array();
-        
-        foreach ($profiles as $p) {
-            $instructors[$p['username']] = $p['lastName'] . ", " . $p['firstName'];            
-        }
         
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
-        $this->view->instructors = $instructors;
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/public/scripts/jMonthCalendar-1.1.0.js');
         //$this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jMonthCalendar-1.2.2.js');
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/public/scripts/jquery.bt.min.js');
@@ -216,8 +205,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
             $userEventStatus = $event->getStatusOfUserForEvent(Zend_Auth::getInstance()->getIdentity()->accountId, $get->eventId); 
         }
 
-        
-            $i = new App_Model_DbTable_EventInstructor();
+        $i = new App_Model_DbTable_EventInstructor();
         $where = $i->getAdapter()->quoteInto('eventId = ?', $get->eventId);
         $results = $i->fetchAll($where);
         
@@ -258,7 +246,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         $currentInstructors = $i->getInstructorsForEvent($get->eventId);
         $instructor = array();
         foreach ($currentInstructors as $r) {
-            $instructor[] = $r['firstName'] . ' ' . $r['lastName'];
+            $instructor[] = $r->firstName . ' ' . $r->lastName;
         }
         
         $this->view->instructors = $instructor;

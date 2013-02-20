@@ -3,8 +3,8 @@
         <div class="event" id="event_<?php echo $e['eventId']; ?>">
             <div class="text">
                 <div class="workshopName"><a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $this->truncate($e['workshop']['title'], 50); ?></a></div>
-                <div class="date"><?php echo $this->dateFormat($e['date'], $this->config->user->medDateFormat->val); ?></div>
-                <div class="time"><?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> - <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?></div>
+                <div class="date"><?php echo $this->dateFormat($e['date'], $this->varReg('medDateFormat')); ?></div>
+                <div class="time"><?php echo $this->dateFormat($e['startTime'], $this->varReg('timeFormat->val); ?> - <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat')); ?></div>
                 <div class="status">
                 <?php if ($e['status'] == 'instructor'): ?>
                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>"><?php echo $this->translate("workshop-index-right:instructorTools"); ?></a>

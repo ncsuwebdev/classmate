@@ -6,7 +6,7 @@
     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'add'), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("workshop-location-index:linkAdd"); ?><span class="ui-icon ui-icon-plusthick"></span></a><br /><br />
     <?php endif; ?>
     
-    <?php if ($this->locations->count() > 0) : ?>
+    <?php if (count($this->locations) > 0) : ?>
         <table id="locationTable" class="list">
         <thead>
             <tr class="ui-widget-header">
@@ -18,23 +18,23 @@
         </thead>
         <tbody>
         <?php foreach ($this->locations as $location) : ?>
-            <?php if (($location->status == 'disabled' && $this->acl['viewDisabled']) || $location->status == 'enabled') : ?>
+            <?php if (($location['status'] == 'disabled' && $this->acl['viewDisabled']) || $location['status'] == 'enabled') : ?>
             <tr class="location">
-                <td class="name">
-                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location->locationId), 'default', true); ?>"><?php echo $location->name; ?></a>
+                <td class="name" style="text-align:left">
+                   <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'location', 'action' => 'details', 'locationId' => $location['locationId']), 'default', true); ?>"><?php echo $location['name']; ?></a>
                 </td>
-                <?php if ($location->address != '') : ?>
-                <td class="address">
-                    <?php echo $location->address; ?>
-                    <a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location->address; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><img width="25" src="/classmate/images/maps_marker.png" title="<?php echo $this->translate("workshop-location:googleMap"); ?>" /></a>
+                <?php if ($location['address'] != '') : ?>
+                <td class="address" style="text-align:left">
+                    <?php echo $location['address']; ?>
+                    <a href="http://maps.google.com/maps?f=q&hl=en&geocode=&q=<?php echo $location['address']; ?>&ie=UTF8&z=16&iwloc=addr" target="_blank"><img width="25" src="/classmate/images/maps_marker.png" title="<?php echo $this->translate("workshop-location:googleMap"); ?>" /></a>
                 </td>        
                 <?php else : ?>
-                <td><?php echo $this->translate("workshop-location:noAddress"); ?></td>
+                <td style="text-align:left"><?php echo $this->translate("workshop-location:noAddress"); ?></td>
                 <?php endif; ?>
                 <td>
-                    <?php echo $location->locationType;?>
+                    <?php echo (isset($location['locationType']['name'])) ? $location['locationType']['name'] : 'None';?>
                 </td>
-                <td class="status <?php echo $location->status; ?>"><?php echo ucwords($location->status); ?></td>
+                <td class="status <?php echo $location['status']; ?>"><?php echo ucwords($location['status']); ?></td>
             </tr>
             <?php endif; ?>
         <?php endforeach; ?>
