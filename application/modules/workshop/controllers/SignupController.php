@@ -90,7 +90,7 @@ class Workshop_SignupController extends Zend_Controller_Action
 
         $inst = array();
         foreach ($instructors as $i) {
-            $inst[] = $i['firstName'] . ' ' . $i['lastName'];
+            $inst[] = $i->firstName . ' ' . $i->lastName;
         }
         
         $this->view->instructors = $inst;

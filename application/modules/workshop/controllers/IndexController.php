@@ -303,15 +303,13 @@ class Workshop_IndexController extends Zend_Controller_Action
             if (count($currentEditors) != 0) {
                 $account = new Ot_Model_DbTable_Account();
                 $accounts = $account->fetchAll($account->getAdapter()->quoteInto('accountId IN (?)', $currentEditors), array('lastName', 'firstName'));
-                
-                $currentEditors = $accounts->toArray();
             }
             
             $this->view->editors = $currentEditors;     
 
         }
         
-        $category = new Category();
+        $category = new App_Model_DbTable_WorkshopCategory();
         $thisCategory = $category->find($thisWorkshop->categoryId);
         
         $this->view->messages = $this->_helper->flashMessenger->getMessages();

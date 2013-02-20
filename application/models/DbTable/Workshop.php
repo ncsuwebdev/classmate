@@ -175,8 +175,6 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
      */
     public function form($values = array())
     {
-        require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
-        
         $form = new Zend_Form();
         $form->setAttrib('id', 'workshopForm')
              ->setDecorators(array(
@@ -209,7 +207,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
         $status->addMultiOption('disabled', 'Disabled');
         $status->setValue((isset($values['status']) ? $values['status'] : 'enabled'));
         
-        $category = new Category();
+        $category = new App_Model_DbTable_WorkshopCategory();
         $categoryList = $category->fetchAll(null, 'name');
 
         $categories = $form->createElement('select', 'categoryId', array('label' => 'Worshop Category: '));

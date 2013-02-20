@@ -79,9 +79,9 @@ class Workshop_LocationController extends Zend_Controller_Action
     public function detailsAction()
     {
         $this->view->acl = array(
-                    'edit'   => $this->_helper->hasAccess('edit'),
-                    'delete' => $this->_helper->hasAccess('delete')
-                );      
+            'edit'   => $this->_helper->hasAccess('edit'),
+            'delete' => $this->_helper->hasAccess('delete')
+        );      
         
         $get = Zend_Registry::get('getFilter');
         
@@ -97,15 +97,17 @@ class Workshop_LocationController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noLocation');
         }
         
+        $thisLocation = $thisLocation->toArray();
+        
         $locationType = new App_Model_DbTable_LocationType();
         
-        $type = $locationType->getTypeById($thisLocation['locationType']);
-        $thisLocation->locationType = $type;
+        $type = $locationType->getTypeById($thisLocation['locationTypeId']);
+        $thisLocation['locationType'] = $type;
         
         $this->view->location = $thisLocation;
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         
-        $this->_helper->pageTitle("workshop-location-details:title", $thisLocation->name);
+        $this->_helper->pageTitle("workshop-location-details:title", $thisLocation['name']);
     }
     
     /**
