@@ -299,7 +299,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
             $instructorEmails[] = $i['emailAddress'];
         }
         
-        $otAccount = new Ot_Account();       
+        $otAccount = new Ot_Model_DbTable_Account();       
         $up = $otAccount->find($accountId);
         
         if (is_null($up)) {
@@ -429,7 +429,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
                 foreach ($form->getValue('users') as $accountId) {
                     
                     if (!in_array($accountId, $userExclude)) {
-                        $account = new Ot_Account();       
+                        $account = new Ot_Model_DbTable_Account();       
                         $user = $account->find($accountId);
         
                         if (!is_null($user)) {
@@ -517,7 +517,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noLocation');
         }           
             
-        $otAccount = new Ot_Account();       
+        $otAccount = new Ot_Model_DbTable_Account();       
         $up = $otAccount->find($get->accountId);
             
         if (is_null($up)) {
@@ -703,7 +703,7 @@ class Workshop_InstructorController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noEvent');
         }
         
-        $otAccount = new Ot_Account();
+        $otAccount = new Ot_Model_DbTable_Account();
         $thisAccount = $otAccount->find(Zend_Auth::getInstance()->getIdentity()->accountId);
         
         $status = $event->getStatusOfUserForEvent($thisAccount->accountId, $eventId);

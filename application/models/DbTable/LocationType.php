@@ -33,7 +33,7 @@ class App_Model_DbTable_LocationType extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_LocationType';
+    protected $_name = 'tbl_location_type';
 
     /**
      * Primary key of the table

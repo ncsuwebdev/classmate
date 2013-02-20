@@ -33,7 +33,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_EventInstructor';
+    protected $_name = 'tbl_event_instructor';
 
     /**
      * Primary key of the table
@@ -57,7 +57,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
             return array();
         }
         
-        $account = new Ot_Account();
+        $account = new Ot_Model_DbTable_Account();
         $where = $account->getAdapter()->quoteInto('accountId IN (?)', $accountIds);
         
         return $account->fetchAll($where, array('lastName', 'firstName'))->toArray();        
@@ -122,7 +122,7 @@ class App_Model_DbTable_EventInstructor extends Ot_Db_Table
              ->setValue(isset($values['type']) ? $values['type'] : '');
         
         // get all the users available for the instructor list
-        $otAccount = new Ot_Account();
+        $otAccount = new Ot_Model_DbTable_Account();
         $accounts = $otAccount->fetchAll(null, array('lastName', 'firstName'))->toArray();
         $userList = array();
         foreach ($accounts as $a) {

@@ -3,13 +3,13 @@ class App_Cronjob_WorkshopEvaluationReminder implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-$config = Zend_Registry::get('config');
+$vr = new Ot_Var_Register();
         
         $checkDtStart = new Zend_Date($this->_lastRunDt);
-        $checkDtStart->subHour($config->user->numHoursEvaluationReminder->val);
+        $checkDtStart->subHour($vr->getVar('numHoursEvaluationReminder')->getValue());
         
         $checkDtEnd = new Zend_Date();
-        $checkDtEnd->subHour($config->user->numHoursEvaluationReminder->val);
+        $checkDtEnd->subHour($vr->getVar('numHoursEvaluationReminder')->getValue());
         
         $event = new Event();
         
@@ -31,7 +31,7 @@ $config = Zend_Registry::get('config');
                 
             
                 $evalAvailableDt = new Zend_Date($endDt);
-                $evalAvailableDt->addHour($config->user->numHoursEvaluationAvailability->val);
+                $evalAvailableDt->addHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
                 
                 if ($evalAvailableDt->getTimestamp() > time()) {
                     

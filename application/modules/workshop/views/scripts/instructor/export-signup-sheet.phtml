@@ -27,9 +27,9 @@
             <div class="header title"><?php echo $this->workshop['title']; ?></div>
             <div class="header"><?php echo $this->location['name']; ?></div>
             <div class="header">
-                <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-                (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-                <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+                <?php echo $this->dateFormat($this->event['date'], $this->varReg('longDateFormat')); ?> 
+                (<?php echo $this->dateFormat($this->event['startTime'], $this->varReg('timeFormat')); ?> -
+                <?php echo $this->dateFormat($this->event['endTime'], $this->varReg('timeFormat')); ?>)
             </div>
             <div class="header">
                 <?php echo $this->translate('workshop-instructor-export-signup-sheet:instructor'); ?><?php echo (count($this->instructors) != 1) ? 's' : ''; ?>: <?php echo implode(',', $this->instructors); ?>

@@ -65,16 +65,16 @@ class IndexController extends Zend_Controller_Action
             $myEvents = $event->getEventsForUser(Zend_Auth::getInstance()->getIdentity()->accountId);
         
             $this->view->myEvents = $myEvents['currentEvents'];
-            $this->view->account = Zend_Auth::getInstance()->getIdentity()->toArray();
+            $this->view->account = Zend_Auth::getInstance()->getIdentity();
         }
         
-        $this->_helper->layout->setLayout('homepage');
+        //$this->_helper->layout->setLayout('homepage');
         $this->view->messages = $this->_helper->flashMessenger->getMessages();        
     }
     
     public function historyAction()
     {
-        $account = new Ot_Account();
+        $account = new Ot_Model_DbTable_Account();
         
         $thisAccount = Zend_Auth::getInstance()->getIdentity();
         
@@ -109,7 +109,7 @@ class IndexController extends Zend_Controller_Action
         $accountSelect = $form->createElement('select', 'accountId', array('label' => 'default-index-history:viewReservations'));
         $accountSelect->setRequired(false);
                 
-        $account = new Ot_Account();
+        $account = new Ot_Model_DbTable_Account();
         $accounts = $account->fetchAll(null, array('lastName', 'firstName'));
         
         foreach ($accounts as $a) {

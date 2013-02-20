@@ -127,7 +127,7 @@ class Workshop_ScheduleController extends Zend_Controller_Action
         $this->view->locationList = $locationList;
         
         //get all the users available for the instructor list
-        $profile = new Ot_Account();
+        $profile = new Ot_Model_DbTable_Account();
         $profiles = $profile->fetchAll(null, array('lastName', 'firstName'))->toArray();
         
         $instructors = array();

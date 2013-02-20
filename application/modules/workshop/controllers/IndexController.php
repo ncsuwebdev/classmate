@@ -307,7 +307,7 @@ class Workshop_IndexController extends Zend_Controller_Action
             }
             
             if (count($currentEditors) != 0) {
-                $account = new Ot_Account();
+                $account = new Ot_Model_DbTable_Account();
                 $accounts = $account->fetchAll($account->getAdapter()->quoteInto('accountId IN (?)', $currentEditors), array('lastName', 'firstName'));
                 
                 $currentEditors = $accounts->toArray();
@@ -443,10 +443,10 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         $document = new App_Model_DbTable_WorkshopDocument();
 
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
             
-        if (!is_writable($config->user->fileUploadPathWorkshop->val)) {
-            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $config->user->fileUploadPathWorkshop->val));
+        if (!is_writable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
+            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $vr->getVar('fileUploadPathWorkshop')->getValue()));
         }
 
         $document->rebuildZipFile($get->workshopId);                
@@ -479,10 +479,10 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Access('msg-error-noAccess');        
         }        
 
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
             
-        if (!is_writable($config->user->fileUploadPathWorkshop->val)) {
-            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $config->user->fileUploadPathWorkshop->val));
+        if (!is_writable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
+            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $vr->getVar('fileUploadPathWorkshop')->getValue()));
         }
 
         $form = $document->form(array('workshopId' => $thisWorkshop->workshopId));
@@ -504,7 +504,7 @@ class Workshop_IndexController extends Zend_Controller_Action
                     'filesize'    => $fileInfo['size'],
                 );
                 
-                $targetPath = $config->user->fileUploadPathWorkshop->val . '/' . $thisWorkshop->workshopId;
+                $targetPath = $vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $thisWorkshop->workshopId;
                 
                 if (!is_dir($targetPath)) {
                     mkdir($targetPath);
@@ -568,10 +568,10 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Access('msg-error-noAccess');        
         }              
 
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
             
-        if (!is_writable($config->user->fileUploadPathWorkshop->val)) {
-            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $config->user->fileUploadPathWorkshop->val));
+        if (!is_writable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
+            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $vr->getVar('fileUploadPathWorkshop')->getValue()));
         }
         
         $form = $document->form($thisDocument->toArray());
@@ -640,10 +640,10 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Access('msg-error-noAccess');        
         }    
 
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
             
-        if (!is_writable($config->user->fileUploadPathWorkshop->val)) {
-            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $config->user->fileUploadPathWorkshop->val));
+        if (!is_writable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
+            throw new Ot_Exception_Access($this->view->translate('msg-error-targetDirNotWritable', $vr->getVar('fileUploadPathWorkshop')->getValue()));
         }
                     
         $form = Ot_Form_Template::delete('deleteDocument');
@@ -651,7 +651,7 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         if ($this->_request->isPost() && $form->isValid($_POST)) {
             
-            $target = $config->user->fileUploadPathWorkshop->val . '/' . $thisWorkshop->workshopId . '/' . $thisDocument->name;
+            $target = $vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $thisWorkshop->workshopId . '/' . $thisDocument->name;
             if (is_file($target)) {
                 unlink($target);
             }
@@ -697,13 +697,13 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data("msg-error-noHandouts");
         }
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
             
-        if (!is_readable($config->user->fileUploadPathWorkshop->val)) {
+        if (!is_readable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
             throw new Ot_Exception_Data('msg-error-targetDirNotReadable');
         }
             
-        $target = $config->user->fileUploadPathWorkshop->val . '/' . $thisWorkshop->workshopId . '/all_handouts.zip';
+        $target = $vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $thisWorkshop->workshopId . '/all_handouts.zip';
                 
         $this->_helper->viewRenderer->setNeverRender();
         $this->view->layout()->disableLayout();
@@ -734,13 +734,13 @@ class Workshop_IndexController extends Zend_Controller_Action
             throw new Ot_Exception_Data('msg-error-noDocument');
         }
 
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
-        if (!is_readable($config->user->fileUploadPathWorkshop->val)) {
+        if (!is_readable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
             throw new Ot_Exception_Data('msg-error-targetDirNotReadable');
         }
             
-        $target = $config->user->fileUploadPathWorkshop->val . '/' . $thisDocument->workshopId . '/' . $thisDocument->name;
+        $target = $vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $thisDocument->workshopId . '/' . $thisDocument->name;
         
         if (!is_file($target)) {
             throw new Ot_Exception_Data('msg-error-fileNotFound');

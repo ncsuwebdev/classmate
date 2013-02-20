@@ -3,7 +3,7 @@ class App_Cronjob_WorkshopEvaluationNotification implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-$config = Zend_Registry::get('config');
+$vr = new Ot_Var_Register();
         
         $checkDtStart = new Zend_Date($this->_lastRunDt);
         

@@ -63,11 +63,11 @@ class Workshop_EvaluateController extends Zend_Controller_Action
             throw new Ot_Exception_Access('msg-error-notAttended');
         }        
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         $endDt = strtotime($thisEvent->date . " " . $thisEvent->endTime);
         
-        if (time() > ($endDt + ($config->user->numHoursEvaluationAvailability->val * 3600))) {
+        if (time() > ($endDt + ($vr->getVar('numHoursEvaluationAvailability')->getValue() * 3600))) {
             throw new Ot_Exception_Access('msg-error-evalEnded');        
         }
         

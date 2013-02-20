@@ -33,7 +33,7 @@ class App_Model_DbTable_EvaluationUser extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_EvaluationUser';
+    protected $_name = 'tbl_evaluation_user';
 
     /**
      * Primary key of the table

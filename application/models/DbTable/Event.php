@@ -167,9 +167,9 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         
         $endDt   = new Zend_Date(strtotime($thisEvent->date . ' ' . $thisEvent->endTime));
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
-        $endDt->addHour($config->user->numHoursEvaluationAvailability->val);
+        $endDt->addHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
         
         return ($endDt->getTimestamp() > $time);        
     }
@@ -187,9 +187,9 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         $startDt = new Zend_Date(strtotime($thisEvent->date . ' ' . $thisEvent->startTime));
         $endDt   = new Zend_Date(strtotime($thisEvent->date . ' ' . $thisEvent->endTime));
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
-        $endDt->addHour($config->user->numHoursEvaluationAvailability->val);
+        $endDt->addHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
         
         return ($startDt->getTimestamp() < $time && $endDt->getTimestamp() > $time);        
     }
@@ -204,11 +204,11 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         
         $time = time();
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         $startDt = new Zend_Date(strtotime($thisEvent->date . ' ' . $thisEvent->startTime));
                         
-        $startDt->subHour($config->user->numHoursEventCancel->val);
+        $startDt->subHour($vr->getVar('numHoursEventCancel')->getValue());
         return ($startDt->getTimestamp() > $time);
     }
     
@@ -247,17 +247,17 @@ class App_Model_DbTable_Event extends Ot_Db_Table
     
     public function getEventsForUser($accountId)
     {
-           $config = Zend_Registry::get('config');
+           $vr = new Ot_Var_Register();
            
            $attendee   = new App_Model_DbTable_EventAttendee();
            $instructor = new App_Model_DbTable_EventInstructor();
            $location   = new App_Model_DbTable_Location(); 
            $document   = new App_Model_DbTable_WorkshopDocument();
-           $account    = new Ot_Account();
-           $eu         = new App_Model_DbTable_Evalutaion_User();
+           $account    = new Ot_Model_DbTable_Account();
+           $eu         = new App_Model_DbTable_EvaluationUser();
                           
            $stayOpen = new Zend_Date();
-           $stayOpen->subHour($config->user->numHoursEvaluationAvailability->val);
+           $stayOpen->subHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
 
         $locationCache = array(); 
         
@@ -272,7 +272,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
             // we determine if the class is open
             $startDt = new Zend_Date(strtotime($r['date'] . ' ' . $r['startTime']));
             $endDt   = new Zend_Date(strtotime($r['date'] . ' ' . $r['endTime']));
-            $endDt->addHour($config->user->numHoursEvaluationAvailability->val);
+            $endDt->addHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
             
             $r['evaluatable'] = $this->isEvaluatable($r['eventId']);
             
@@ -295,7 +295,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
             $r['cancelable'] = false;
             
             if ($r['active']) {
-                $startDt->subHour($config->user->numHoursEventCancel->val);
+                $startDt->subHour($vr->getVar('numHoursEventCancel')->getValue());
                 $r['cancelable']  = ($startDt->getTimestamp() > $time); 
                            
                 if ($r['status'] == 'waitlist') {
@@ -320,7 +320,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         foreach ($teaching as &$t) {
             $startDt = new Zend_Date(strtotime($t['date'] . ' ' . $t['startTime']));
             $endDt   = new Zend_Date(strtotime($t['date'] . ' ' . $t['endTime']));
-            $endDt->addHour($config->user->numHoursEvaluationAvailability->val);
+            $endDt->addHour($vr->getVar('numHoursEvaluationAvailability')->getValue());
             
             $t = array_merge(array('startDt' => $startDt->getTimestamp()), $t);
             
@@ -505,7 +505,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
     
     public function form($values = array())
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         $form = new Zend_Form();
         $form->setAttrib('id', 'eventForm')
@@ -635,7 +635,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         $endTimeSub->addElements(array($endTimeHour, $endTimeMinute, $endTimeMeridian));
         
         // get all the users available for the instructor list
-        $otAccount = new Ot_Account();
+        $otAccount = new Ot_Model_DbTable_Account();
         $accounts = $otAccount->fetchAll(null, array('lastName', 'firstName'))->toArray();
         $instructorList = array();
         foreach ($accounts as $a) {
@@ -655,7 +655,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
                 ->addFilter('StripTags')
                 ->setAttrib('maxlength', '64')
                 ->setAttrib('style', 'width: 50px;')
-                ->setValue((isset($values['minSize']) ? $values['minSize'] : $config->user->defaultMinWorkshopSize->val));
+                ->setValue((isset($values['minSize']) ? $values['minSize'] : $vr->getVar('defaultMinWorkshopSize')->getValue()));
         
         $maxSize = $form->createElement('text', 'maxSize', array('label' => 'Max Size:'));
         $maxSize->setRequired(true)
@@ -671,7 +671,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
                      ->addFilter('StripTags')
                      ->setAttrib('maxlength', '64')
                      ->setAttrib('style', 'width: 50px;')
-                     ->setValue((isset($values['waitlistSize']) ? $values['waitlistSize'] : $config->user->defaultWorkshopWaitlistSize->val));
+                     ->setValue((isset($values['waitlistSize']) ? $values['waitlistSize'] : $vr->getVar('defaultWorkshopWaitlistSize')->getValue()));
                      
         $evaluationType = $form->createElement('select', 'evaluationType', array('label' => 'Evaluation Type:'));
         $evaluationType->setMultiOptions( array('default' =>'Default', 'google' => 'Google Form'))
@@ -867,7 +867,7 @@ class App_Model_DbTable_Event extends Ot_Db_Table
         
         $attendees = $attendee->getAttendeesForEvent($values['eventId'], 'attending');
         
-        $otAccount = new Ot_Account();
+        $otAccount = new Ot_Model_DbTable_Account();
         
         $attendeeList = array();
         foreach ($attendees as $a) {

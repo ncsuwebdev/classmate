@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopEditor extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_WorkshopEditor';
+    protected $_name = 'tbl_workshop_editor';
 
     /**
      * Primary key of the table

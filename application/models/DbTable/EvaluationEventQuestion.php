@@ -33,7 +33,7 @@ class App_Model_DbTable_EvaluationEventQuestion extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_EvaluationEventQuestion';
+    protected $_name = 'tbl_evaluation_event_question';
 
     /**
      * Primary key of the table

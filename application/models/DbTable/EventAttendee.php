@@ -33,7 +33,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_EventAttendee';
+    protected $_name = 'tbl_event_attendee';
 
     /**
      * Primary key of the table
@@ -67,7 +67,7 @@ class App_Model_DbTable_EventAttendee extends Ot_Db_Table
             return array();
         }
         
-        $account = new Ot_Account();
+        $account = new Ot_Model_DbTable_Account();
         $where = $account->getAdapter()->quoteInto('accountId IN (?)', $accountIds);
         
         $accounts = $account->fetchAll($where, array('lastName', 'firstName'))->toArray();

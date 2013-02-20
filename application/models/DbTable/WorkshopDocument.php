@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_WorkshopDocument';
+    protected $_name = 'tbl_workshop_document';
 
     /**
      * Primary key of the table
@@ -53,19 +53,19 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
     {                    
         $documents = $this->getDocumentsForWorkshop($workshopId);
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
            
-        if (!is_readable($config->user->fileUploadPathWorkshop->val)) {
+        if (!is_readable($vr->getVar('fileUploadPathWorkshop')->getValue())) {
             throw new Ot_Exception_Data('Target directory is not readable');
         }
         
-        $zip = new App_Model_Zip($config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/all_handouts.zip');
+        $zip = new App_Model_Zip($vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $workshopId . '/all_handouts.zip');
                
         $filesToAdd = array();
         
         foreach ($documents as $d) {
             
-            $target = $config->user->fileUploadPathWorkshop->val . '/' . $workshopId . '/' . $d['name'];
+            $target = $vr->getVar('fileUploadPathWorkshop')->getValue() . '/' . $workshopId . '/' . $d['name'];
 
             if (is_file($target)) {
                 $filesToAdd[] = $target;
@@ -86,7 +86,7 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
      */
     public function form($values = array())
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         $form = new Zend_Form();
         $form->setAttrib('id', 'documentForm')
@@ -101,7 +101,7 @@ class App_Model_DbTable_WorkshopDocument extends Ot_Db_Table
         $file->setRequired(true)
              ->addValidator('Count', false, 1)
              ->addValidator('Size', false, 10240000)
-             ->addValidator('Extension', false, $config->user->fileUploadAllowableExtensions->val ? $config->user->fileUploadAllowableExtensions->val : "")
+             ->addValidator('Extension', false, $vr->getVar('fileUploadAllowableExtensions')->getValue())
              ;
              
         if (!isset($values['workshopDocumentId'])) {

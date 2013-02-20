@@ -321,7 +321,7 @@ class Workshop_SignupController extends Zend_Controller_Action
             $trigger->setVariables($data);
             $trigger->dispatch('Event_Cancel_Reservation');               
 
-            $account = new Ot_Account();
+            $account = new Ot_Model_DbTable_Account();
             
             if ($status != 'waitlist') {
                 $waiting = $attendee->getAttendeesForEvent($thisEvent->eventId, 'waitlist');

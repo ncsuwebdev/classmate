@@ -19,9 +19,9 @@
                 <div class="myEvent ui-corner-all">
                     <div class="title">
                         <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
-                        <?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
-                        (<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
-                        <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
+                        <?php echo $this->dateFormat($e['date'], $this->varReg('longDateFormat')); ?> 
+                        (<?php echo $this->dateFormat($e['startTime'], $this->varReg('timeFormat')); ?> -
+                        <?php echo $this->dateFormat($e['endTime'], $this->varReg('timeFormat')); ?>)
                         </a>
                      </div>
                     <div class="details">
@@ -85,9 +85,9 @@
                 <div class="myEvent ui-corner-all">
                     <div class="title">
                         <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
-                        <?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
-                        (<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
-                        <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
+                        <?php echo $this->dateFormat($e['date'], $this->varReg('longDateFormat')); ?> 
+                        (<?php echo $this->dateFormat($e['startTime'], $this->varReg('timeFormat')); ?> -
+                        <?php echo $this->dateFormat($e['endTime'], $this->varReg('timeFormat')); ?>)
                         </a>
                      </div>
                     <div class="details">

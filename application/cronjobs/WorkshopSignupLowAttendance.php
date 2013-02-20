@@ -3,7 +3,7 @@ class App_Cronjob_WorkshopSignupLowAttendance implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         $event = new Event();
         
@@ -14,7 +14,7 @@ class App_Cronjob_WorkshopSignupLowAttendance implements Ot_Cron_JobInterface
         $instructor = new Event_Instructor();
         
         $checkDt = new Zend_Date($this->_lastRunDt);
-        $checkDt->addHour($config->user->numHoursLowAttendanceNotification->val);
+        $checkDt->addHour($vr->getVar('numHoursLowAttendanceNotification')->getValue());
         
         foreach ($events as $e) {
             

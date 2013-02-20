@@ -3,7 +3,7 @@ class App_Cronjob_WorkshopSignupReminder implements Ot_Cron_JobInterface
 {
     public function execute($lastRunDt = null)
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
 
         $event = new Event();
         
@@ -23,10 +23,10 @@ class App_Cronjob_WorkshopSignupReminder implements Ot_Cron_JobInterface
             $endDt   = strtotime($e->date . ' ' . $e->endTime);
             
             $firstDt = new Zend_Date($startDt);
-            $firstDt->subHour($config->user->numHoursFirstReminder->val);
+            $firstDt->subHour($vr->getVar('numHoursFirstReminder')->getValue());
             
             $finalDt = new Zend_Date($startDt);
-            $finalDt->subHour($config->user->numHoursFinalReminder->val);
+            $finalDt->subHour($vr->getVar('numHoursFinalReminder')->getValue());
             
             $notification = null;
             

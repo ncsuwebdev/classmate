@@ -33,7 +33,7 @@ class App_Model_DbTable_EventRestriction extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_EventRestriction';
+    protected $_name = 'tbl_event_restriction';
 
     /**
      * Primary key of the table

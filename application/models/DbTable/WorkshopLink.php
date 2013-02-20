@@ -33,7 +33,7 @@ class App_Model_DbTable_WorkshopLink extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_WorkshopLink';
+    protected $_name = 'tbl_workshop_link';
 
     /**
      * Primary key of the table

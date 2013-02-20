@@ -33,7 +33,7 @@ class App_Model_DbTable_TagMap extends Ot_Db_Table
      *
      * @var string
      */
-    protected $_name = 'tbl_TagMap';
+    protected $_name = 'tbl_tag_map';
 
     /**
      * Primary key of the table

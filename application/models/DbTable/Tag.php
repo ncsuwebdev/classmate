@@ -202,7 +202,7 @@ class App_Model_DbTable_Tag extends Ot_Db_Table
     
     public function index($tagId, $tagName)
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         try {
             $index = Zend_Search_Lucene::open($config->search->tagIndexPath);

@@ -1,8 +1,8 @@
         <div id="yourColumn">
         <?php if ($this->loggedIn): ?>
             <div id="myEventsHeaderRight" class="myEventsHeader"">
-            <?php echo $this->translate("default-index-history:currentEvents", array($this->account['firstName'], $this->account['lastName'])); ?>
-            </div>
+            <?php echo $this->translate("default-index-history:currentEvents", array($this->account->firstName, $this->account->lastName)); ?>
+            </div>                        
             <div class="ui-helper-clearfix"></div>        
             <div id="myEventsRight" class="myEvents">
                 <?php if (count($this->myEvents) != 0): ?>
@@ -10,9 +10,9 @@
                 <div class="myEvent ui-corner-all">
                     <div class="title">
                         <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $e['eventId']), 'default', true); ?>">
-                        <?php echo $this->dateFormat($e['date'], $this->config->user->longDateFormat->val); ?> 
-                        (<?php echo $this->dateFormat($e['startTime'], $this->config->user->timeFormat->val); ?> -
-                        <?php echo $this->dateFormat($e['endTime'], $this->config->user->timeFormat->val); ?>)
+                        <?php echo $this->dateFormat($e['date'], $this->varReg('longDateFormat')); ?> 
+                        (<?php echo $this->dateFormat($e['startTime'], $this->varReg('timeFormat')); ?> -
+                        <?php echo $this->dateFormat($e['endTime'], $this->varReg('timeFormat')); ?>)
                         </a>
                      </div>
                     <div class="details">
@@ -27,7 +27,7 @@
                                     <?php echo $this->translate("default-index-history:waitlist", $this->ordinal($e['waitlistPosition'])); ?>
                                 <?php endif; ?>
                                 <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $e['workshopId']), 'default', true); ?>"><?php echo $e['workshop']['title']; ?></a>
-                               </div>
+                            </div>
                         </div>
                         <div class="where">
                             <div class="info"><?php echo $this->translate("default-index-history:where"); ?></div>
@@ -68,7 +68,7 @@
                                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'instructor', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:instructorTools"); ?><span class="ui-icon ui-icon-suitcase"></span></a>                        
                                 <?php else: ?>
                                     <?php if ($e['cancelable']): ?>
-                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account['accountId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
+                                    <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'signup', 'action' => 'cancel', 'eventId' => $e['eventId'], 'accountId' => $this->account->accountId), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkCancel"); ?><span class="ui-icon ui-icon-cancel"></span></a>
                                     <?php endif; ?>
                                     <?php if ($e['status'] == 'attending' && $e['evaluatable']): ?>
                                     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'evaluate', 'eventId' => $e['eventId']), 'default', true); ?>" class="ui-state-default ui-corner-all linkButton"><?php echo $this->translate("default-index-history:linkTake"); ?><span class="ui-icon ui-icon-image"></span></a>

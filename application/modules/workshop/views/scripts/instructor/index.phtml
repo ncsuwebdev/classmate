@@ -14,9 +14,9 @@
         <div class="info"><?php echo $this->translate("workshop-evaluate-index:when"); ?></div>
         <div class="data">
         <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'event-details', 'eventId' => $this->event['eventId']), 'default', true); ?>">
-        <?php echo $this->dateFormat($this->event['date'], $this->config->user->longDateFormat->val); ?> 
-        (<?php echo $this->dateFormat($this->event['startTime'], $this->config->user->timeFormat->val); ?> -
-        <?php echo $this->dateFormat($this->event['endTime'], $this->config->user->timeFormat->val); ?>)
+        <?php echo $this->dateFormat($this->event['date'], $this->varReg('longDateFormat')); ?> 
+        (<?php echo $this->dateFormat($this->event['startTime'], $this->varReg('timeFormat')); ?> -
+        <?php echo $this->dateFormat($this->event['endTime'], $this->varReg('timeFormat')); ?>)
         </a>
         </div>
     </div>

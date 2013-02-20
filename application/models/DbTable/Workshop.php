@@ -57,7 +57,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
     
     public function search($query, $limit = 'none')
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
        
         try {
             $index = Zend_Search_Lucene::open($config->app->search->workshopIndexPath);
@@ -79,7 +79,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
      */
     public function deleteFromIndex($workshopId)
     {
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         if ($workshopId instanceof Zend_Db_Table_Row) {
             $thisWorkshop = $workshopId;
@@ -116,7 +116,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
     public function index($workshopId)
     {
         
-        $config = Zend_Registry::get('config');
+        $vr = new Ot_Var_Register();
         
         if ($workshopId instanceof Zend_Db_Table_Row) {
             $thisWorkshop = $workshopId;
@@ -241,7 +241,7 @@ class App_Model_DbTable_Workshop extends Ot_Db_Table
         $editors->setRequired(false)
                 ->setAttrib('size', '10');
                 
-        $account = new Ot_Account();
+        $account = new Ot_Model_DbTable_Account();
         $accounts = $account->fetchAll(null, array('lastName', 'firstName'));
         
         foreach ($accounts as $a) {
