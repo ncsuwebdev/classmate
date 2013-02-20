@@ -26,8 +26,6 @@
  * @copyright  Copyright (c) 2007 NC State University Office of Information Technology
  *
  */
-require_once(APPLICATION_PATH . '/models/Workshop/Category.php');
-
 class Workshop_IndexController extends Zend_Controller_Action 
 {    
     /**
@@ -38,8 +36,8 @@ class Workshop_IndexController extends Zend_Controller_Action
     public function indexAction()
     {   
         $this->view->acl = array(
-                               'workshopList' => $this->_helper->hasAccess('workshop-list')
-                           );
+            'workshopList' => $this->_helper->hasAccess('workshop-list')
+        );
          
         $get = Zend_Registry::get('getFilter');
         
@@ -58,7 +56,7 @@ class Workshop_IndexController extends Zend_Controller_Action
               ->addFilter('StripTags')
               ->setValue((isset($get->search) ? $get->search : ''));
               
-        $category = new Category();
+        $category = new App_Model_DbTable_WorkshopCategory();
         $categoryList = $category->fetchAll(null, 'name');
         
         $categories = $form->createElement('select', 'categoryId');
@@ -111,11 +109,7 @@ class Workshop_IndexController extends Zend_Controller_Action
 
         $this->view->workshops = $workshops;
         
-        $this->view->topTerms = $searchTerm->getTopSearchTerms(10);
-        
-        
-        $this->view->layout()->setLayout('search');
-        $this->view->layout()->rightContent = $this->view->render('index/top-terms.phtml');
+        $this->view->topTerms = $searchTerm->getTopSearchTerms(10);                
         
         $this->view->headScript()->appendFile($this->view->baseUrl() . '/scripts/jquery.autocomplete.js');
         $this->view->headLink()->appendStylesheet($this->view->baseUrl() . '/css/jquery.autocomplete.css');        
@@ -319,9 +313,6 @@ class Workshop_IndexController extends Zend_Controller_Action
         
         $category = new Category();
         $thisCategory = $category->find($thisWorkshop->categoryId);
-        
-        $this->view->layout()->setLayout('twocolumn');
-        $this->view->layout()->rightContent = $this->view->render('index/right.phtml');
         
         $this->view->messages = $this->_helper->flashMessenger->getMessages();
         $this->view->title    = $thisWorkshop->title;

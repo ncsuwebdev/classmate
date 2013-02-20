@@ -112,10 +112,7 @@ class Workshop_SignupController extends Zend_Controller_Action
         
         $this->view->events = $newEvents;
         
-        $this->view->status = $status;
-        
-           $this->view->layout()->setLayout('twocolumn');
-        $this->view->layout()->rightContent = $this->view->render('signup/right.phtml');
+        $this->view->status = $status;        
     }
     
     /**
@@ -346,8 +343,6 @@ class Workshop_SignupController extends Zend_Controller_Action
         }
         
         $this->view->form = $form;
-        $this->view->layout()->setLayout('twocolumn');
-        $this->view->layout()->rightContent = $this->view->render('signup/right.phtml'); 
     }
     
     public function editAllReservationsAction()

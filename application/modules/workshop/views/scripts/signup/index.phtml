@@ -1,3 +1,7 @@
+<div class="yui-ge">
+    <div id="leftColumn" class="yui-u first">
+        
+
 <div id="wsTitle">
     <?php echo $this->translate("workshop-signup-index:header"); ?> 
     <a href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'index', 'action' => 'details', 'workshopId' => $this->workshop['workshopId']), 'default', true); ?>"><?php echo $this->workshop['title']; ?></a>
@@ -110,3 +114,9 @@
         <a style="font-size:23px; text-decoration:none;" href="<?php echo $this->url(array('module' => 'workshop', 'controller' => 'schedule', 'action' => 'index'), 'default', true);?>"><?php echo $this->translate('workshop-signup-index:linkCancel'); ?></a>
     <?php endif; ?>
 </form>
+    </div>
+    
+    <div id="rightColumn" class="yui-u">
+         <?php echo $this->comingEvents($this->events); ?>
+    </div>
+</div>
